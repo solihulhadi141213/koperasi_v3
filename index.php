@@ -24,7 +24,8 @@
             ?>
             <main id="main" class="main">
                 <?php
-                    include "_Partial/PageTitle.php";
+                    // Melakukan Routing Komponen Agar Lebih Ringan Berdasarkan Halaman (Page)
+                    // include "_Partial/PageTitle.php";
                     include "_Partial/RoutingPage.php";
                     include "_Partial/Modal.php";
                 ?>

@@ -5,13 +5,7 @@
             //Koneksi
             include "_Config/Connection.php";
             include "_Config/SettingGeneral.php";
-            $Page="Login";
             include "_Partial/JsPlugin.php";
-            if(!empty($_GET['Notifikasi'])){
-                $Notifikasi=$_GET['Notifikasi'];
-            }else{
-                $Notifikasi="";
-            }
         ?>
     </head>
     <body>
@@ -77,14 +71,9 @@
                                             <div class="col-12">
                                                 <button class="btn btn-primary w-100" type="submit">Login</button>
                                             </div>
-                                            <!-- <div class="col-12">
-                                                <a href="Pendaftaran.php" class="btn btn-warning w-100">
-                                                    Daftar
-                                                </a>
-                                            </div> -->
-                                            <!-- <div class="col-12">
+                                            <div class="col-12">
                                                 <p class="small mb-0">Anda Lupa Password? <a href="LupaPassword.php">Reset password</a></p>
-                                            </div> -->
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
@@ -100,7 +89,6 @@
         <?php
             include "_Partial/BackToTop.php";
             include "_Partial/FooterJs.php";
-            include "_Partial/RoutingJs.php";
         ?>
         <script>
             //Kondisi saat tampilkan password

@@ -45,7 +45,7 @@
             "RekapitulasiTransaksi"=>  "_Page/RekapitulasiTransaksi/RekapitulasiTransaksi.php",
             "BagiHasil"         =>  "_Page/BagiHasil/BagiHasil.php",
             "CetakInvoice"      =>  "_Page/CetakInvoice/CetakInvoice.php",
-            "Error"             =>  "_Page/Error/Error.php",
+            "Error"             =>  "_Page/Error/Error.php"
         ];
 
         //Tangkap 'Page'
