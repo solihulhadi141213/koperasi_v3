@@ -107,17 +107,11 @@
             </ul>
         </li>
         <li class="nav-item">
-            <a class="nav-link <?php if($PageMenu!=="Supplier"){echo "collapsed";} ?>" href="index.php?Page=Supplier">
-                <i class="bi bi-truck"></i>
-                <span>Supplier</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link <?php if($PageMenu=="Barang"||$PageMenu=="BarangExpired"||$PageMenu=="StockOpename"){echo "";}else{echo "collapsed";} ?>" data-bs-target="#icons2-nav" data-bs-toggle="collapse" href="javascript:void(0);">
+            <a class="nav-link <?php if($PageMenu=="Barang"||$PageMenu=="BarangExpired"||$PageMenu=="StockOpename"||$PageMenu=="Supplier"){echo "";}else{echo "collapsed";} ?>" data-bs-target="#icons2-nav" data-bs-toggle="collapse" href="javascript:void(0);">
                 <i class="bi bi-box-seam"></i>
                 <span>Barang</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="icons2-nav" class="nav-content collapse <?php if($PageMenu=="Barang"||$PageMenu=="BarangExpired"||$PageMenu=="StockOpename"){echo "show";} ?>" data-bs-parent="#sidebar-nav">
+            <ul id="icons2-nav" class="nav-content collapse <?php if($PageMenu=="Barang"||$PageMenu=="BarangExpired"||$PageMenu=="StockOpename"||$PageMenu=="Supplier"){echo "show";} ?>" data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="index.php?Page=Barang" class="<?php if($PageMenu=="Barang"){echo "active";} ?>">
                         <i class="bi bi-circle"></i><span>Master Barang</span>
@@ -131,6 +125,11 @@
                 <li>
                     <a href="index.php?Page=StockOpename" class="<?php if($PageMenu=="StockOpename"){echo "active";} ?>">
                         <i class="bi bi-circle"></i><span>Stock Opename</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="index.php?Page=Supplier" class="<?php if($PageMenu=="Supplier"){echo "active";} ?>">
+                        <i class="bi bi-circle"></i><span>Supplier</span>
                     </a>
                 </li>
             </ul>

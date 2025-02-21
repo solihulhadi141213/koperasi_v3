@@ -3,116 +3,59 @@
         include "_Page/Dashboard/Dashboard.php";
     }else{
         $Page=$_GET['Page'];
-        if($Page=="AksesFitur"){
-            include "_Page/AksesFitur/AksesFitur.php";
-        }
-        if($Page=="AksesEntitas"){
-            include "_Page/AksesEntitas/AksesEntitas.php";
-        }
-        if($Page=="Akses"){
-            include "_Page/Akses/Akses.php";
-        }
-        if($Page=="Anggota"){
-            include "_Page/Anggota/Anggota.php";
-        }
-        if($Page=="AnggotaKeluarMasuk"){
-            include "_Page/AnggotaKeluarMasuk/AnggotaKeluarMasuk.php";
-        }
-        if($Page=="RekapAnggota"){
-            include "_Page/RekapAnggota/RekapAnggota.php";
-        }
-        if($Page=="JenisSimpanan"){
-            include "_Page/JenisSimpanan/JenisSimpanan.php";
-        }
-        if($Page=="SimpananWajib"){
-            include "_Page/SimpananWajib/SimpananWajib.php";
-        }
-        if($Page=="RekapSimpanan"){
-            include "_Page/RekapSimpanan/RekapSimpanan.php";
-        }
-        if($Page=="Tagihan"){
-            include "_Page/Tagihan/Tagihan.php";
-        }
-        if($Page=="RekapPinjaman"){
-            include "_Page/RekapPinjaman/RekapPinjaman.php";
-        }
-        if($Page=="JenisTransaksi"){
-            include "_Page/JenisTransaksi/JenisTransaksi.php";
-        }
-        if($Page=="Transaksi"){
-            include "_Page/Transaksi/Transaksi.php";
-        }
-        if($Page=="RekapTransaksi"){
-            include "_Page/RekapTransaksi/RekapTransaksi.php";
-        }
-        if($Page=="Version"){
-            include "_Page/Version/Version.php";
-        }
-        if($Page=="SettingGeneral"){
-            include "_Page/SettingGeneral/SettingGeneral.php";
-        }
-        if($Page=="EntitasAkses"){
-            include "_Page/EntitasAkses/EntitasAkses.php";
-        }
-        if($Page=="ApiDoc"){
-            include "_Page/ApiDoc/ApiDoc.php";
-        }
-        if($Page=="Tabungan"){
-            include "_Page/Tabungan/Tabungan.php";
-        }
-        if($Page=="Pinjaman"){
-            include "_Page/Pinjaman/Pinjaman.php";
-        }
-        if($Page=="AutoJurnal"){
-            include "_Page/AutoJurnal/AutoJurnal.php";
-        }
-        if($Page=="MyProfile"){
-            include "_Page/MyProfile/MyProfile.php";
-        }
-        if($Page=="Help"){
-            include "_Page/Help/Help.php";
-        }
-        if($Page=="SettingEmail"){
-            include "_Page/SettingService/SettingService.php";
-        }
-        if($Page=="RiwayatAnggota"){
-            include "_Page/RiwayatAnggota/RiwayatAnggota.php";
-        }
-        if($Page=="Aktivitas"){
-            include "_Page/Aktivitas/Aktivitas.php";
-        }
-        if($Page=="AkunPerkiraan"){
-            include "_Page/AkunPerkiraan/AkunPerkiraan.php";
-        }
-        if($Page=="Jurnal"){
-            include "_Page/Jurnal/Jurnal.php";
-        }
-        if($Page=="SimpanPinjam"){
-            include "_Page/SimpanPinjam/SimpanPinjam.php";
-        }
-        if($Page=="BukuBesar"){
-            include "_Page/BukuBesar/BukuBesar.php";
-        }
-        if($Page=="NeracaSaldo"){
-            include "_Page/NeracaSaldo/NeracaSaldo.php";
-        }
-        if($Page=="LabaRugi"){
-            include "_Page/LabaRugi/LabaRugi.php";
-        }
-        if($Page=="RiwayatSimpanPinjam"){
-            include "_Page/RiwayatSimpanPinjam/RiwayatSimpanPinjam.php";
-        }
-        if($Page=="RekapitulasiTransaksi"){
-            include "_Page/RekapitulasiTransaksi/RekapitulasiTransaksi.php";
-        }
-        if($Page=="BagiHasil"){
-            include "_Page/BagiHasil/BagiHasil.php";
-        }
-        if($Page=="CetakInvoice"){
-            include "_Page/CetakInvoice/CetakInvoice.php";
-        }
-        if($Page=="Error"){
-            include "_Page/Error/Error.php";
+        //Index Halaman
+        $page_arry=[
+            "AksesFitur"        =>  "_Page/AksesFitur/AksesFitur.php",
+            "AksesEntitas"      =>  "_Page/Akses/Akses.php",
+            "Akses"             =>  "_Page/Akses/Akses.php",
+            "Anggota"           =>  "_Page/Anggota/Anggota.php",
+            "AnggotaKeluarMasuk"=>  "_Page/AnggotaKeluarMasuk/AnggotaKeluarMasuk.php",
+            "RekapAnggota"      =>  "_Page/RekapAnggota/RekapAnggota.php",
+            "JenisSimpanan"     =>  "_Page/JenisSimpanan/JenisSimpanan.php",
+            "SimpananWajib"     =>  "_Page/SimpananWajib/SimpananWajib.php",
+            "RekapSimpanan"     =>  "_Page/RekapSimpanan/RekapSimpanan.php",
+            "Tagihan"           =>  "_Page/Tagihan/Tagihan.php",
+            "RekapPinjaman"     =>  "_Page/RekapPinjaman/RekapPinjaman.php",
+            "JenisTransaksi"    =>  "_Page/JenisTransaksi/JenisTransaksi.php",
+            "Transaksi"         =>  "_Page/Transaksi/Transaksi.php",
+            "RekapTransaksi"    =>  "_Page/RekapTransaksi/RekapTransaksi.php",
+            "Version"           =>  "_Page/Version/Version.php",
+            "SettingGeneral"    =>  "_Page/SettingGeneral/SettingGeneral.php",
+            "EntitasAkses"      =>  "_Page/EntitasAkses/EntitasAkses.php",
+            "ApiDoc"            =>  "_Page/ApiDoc/ApiDoc.php",
+            "Tabungan"          =>  "_Page/Tabungan/Tabungan.php",
+            "Pinjaman"          =>  "_Page/Pinjaman/Pinjaman.php",
+            "Barang"            =>  "_Page/Barang/Barang.php",
+            "BarangExpired"     =>  "_Page/BarangExpired/BarangExpired.php",
+            "StockOpename"      =>  "_Page/StockOpename/StockOpename.php",
+            "Supplier"          =>  "_Page/Supplier/Supplier.php",
+            "AutoJurnal"        =>  "_Page/AutoJurnal/AutoJurnal.php",
+            "MyProfile"         =>  "_Page/MyProfile/MyProfile.php",
+            "Help"              =>  "_Page/Help/Help.php",
+            "SettingEmail"      =>  "_Page/SettingService/SettingService.php",
+            "RiwayatAnggota"    =>  "_Page/RiwayatAnggota/RiwayatAnggota.php",
+            "Aktivitas"         =>  "_Page/Aktivitas/Aktivitas.php",
+            "AkunPerkiraan"     =>  "_Page/AkunPerkiraan/AkunPerkiraan.php",
+            "Jurnal"            =>  "_Page/Jurnal/Jurnal.php",
+            "SimpanPinjam"      =>  "_Page/SimpanPinjam/SimpanPinjam.php",
+            "BukuBesar"         =>  "_Page/BukuBesar/BukuBesar.php",
+            "NeracaSaldo"       =>  "_Page/NeracaSaldo/NeracaSaldo.php",
+            "LabaRugi"          =>  "_Page/LabaRugi/LabaRugi.php",
+            "RiwayatSimpanPinjam"=>  "_Page/RiwayatSimpanPinjam/RiwayatSimpanPinjam.php",
+            "RekapitulasiTransaksi"=>  "_Page/RekapitulasiTransaksi/RekapitulasiTransaksi.php",
+            "BagiHasil"         =>  "_Page/BagiHasil/BagiHasil.php",
+            "CetakInvoice"      =>  "_Page/CetakInvoice/CetakInvoice.php",
+            "Error"             =>  "_Page/Error/Error.php",
+        ];
+
+        //Tangkap 'Page'
+        $Page = !empty($_GET['Page']) ? $_GET['Page'] : "";
+
+        //Kondisi Pada masing-masing Page
+        if (array_key_exists($Page, $page_arry)) { 
+            include $page_arry[$Page]; 
+        } else { 
+            include "_Page/Dashboard/Dashboard.php";
         }
     }
 ?>

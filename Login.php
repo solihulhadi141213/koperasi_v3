@@ -15,36 +15,31 @@
         ?>
     </head>
     <body>
-        <main class="login_background">
+        <main class="landing_background">
             <div class="container">
                 <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
                     <div class="container">
                         <div class="row justify-content-center">
                             <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <img src="assets/img/<?php echo $logo;?>" alt="" width="100px">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <div class="d-flex justify-content-center py-4">
+                                            <a href="" class="logo d-flex align-items-center w-auto">
+                                                <span class="d-none d-lg-block text-white"><?php echo $title_page;?></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="card mb-3">
                                     <div class="card-body">
                                         <div class="pb-2">
                                             <h5 class="card-title text-center pb-0 fs-4">Login Ke Akun Anda</h5>
                                             <p class="text-center small">Masukan Email Dan Password Untuk Melakukan Login</p>
-                                            <?php
-                                                if($Notifikasi=="Berhasil"){
-                                                    echo '<div class="alert alert-success alert-dismissible fade show" role="alert">';
-                                                    echo '  Pendaftaran <b>Berhasil</b>, silahkan lakukan validasi email pada pesan yang kami kirim ke email anda. ';
-                                                    echo '  Apabila anda tidak menerima email, kunjungi  <a href="UlangiVerifikasiEmail.php">halaman berikut</a>';
-                                                    echo '  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
-                                                    echo '</div>';
-                                                }else{
-                                                    if($Notifikasi=="KirimUlangValidasiEmailBerhasil"){
-                                                        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">';
-                                                        echo '  Kami telah mengirimkan ulang kode validasi email ke alamat yang anda input. ';
-                                                        echo '  Silahkan cek kembali inbox email anda.</a>';
-                                                        echo '  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
-                                                        echo '</div>';
-                                                    }else{
-                                                        
-                                                    }
-                                                }
-                                            ?>
                                         </div>
                                         <form action="javascript:void(0);" class="row g-3" id="ProsesLogin">
                                             <div class="col-12">
@@ -115,6 +110,25 @@
                 }else{
                     $('#password').attr('type','password');
                 }
+            });
+
+            //Submit Login
+            $('#ProsesLogin').submit(function(){
+                var ProsesLogin = $('#ProsesLogin').serialize();
+                var Loading='<div class="spinner-border text-info" role="status"><span class="visually-hidden">Loading...</span></div>';
+                $('#NotifikasiLogin').html("Loading...");
+                $.ajax({
+                    type 	    : 'POST',
+                    url 	    : '_Page/Login/ProsesLogin.php',
+                    data 	    :  ProsesLogin,
+                    success     : function(data){
+                        $('#NotifikasiLogin').html(data);
+                        var NotifikasiProsesLoginBerhasil=$('#NotifikasiProsesLoginBerhasil').html();
+                        if(NotifikasiProsesLoginBerhasil=="Success"){
+                            window.location.href = "index.php";
+                        }
+                    }
+                });
             });
         </script>
     </body>

@@ -1,8 +1,6 @@
 <?php
     include "_Page/Logout/ModalLogout.php";
-    if(empty($_GET['Page'])){
-        $Page="";
-    }else{
+    if(!empty($_GET['Page'])){
         $Page=$_GET['Page'];
         if($Page=="MyProfile"){
             include "_Page/MyProfile/ModalMyProfile.php";
