@@ -1,0 +1,19 @@
+{
+    "db_name":"akses_entitas",
+    "db_action":"INSERT",
+    "type_data":"Single",
+    "metadata":{
+        "primary_key":"uuid_akses_entitas",
+        "value_key":"550e8400-e29b-41d4-a716-446655440000",
+        "include_data":[
+            {
+                "colum_name":"akses",
+                "colum_value":"Admin"
+            },
+            {
+                "colum_name":"keterangan",
+                "colum_value":"Pihak yang berwenang menggunakan semua fitur"
+            }
+        ]
+    }
+}
