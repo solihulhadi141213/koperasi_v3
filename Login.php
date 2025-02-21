@@ -30,59 +30,30 @@
                                     </div>
                                 </div>
                                 <div class="card mb-3">
-                                    <div class="card-body">
-                                        <div class="pb-2">
-                                            <h5 class="card-title text-center pb-0 fs-4">Login Ke Akun Anda</h5>
-                                            <p class="text-center small">Masukan Email Dan Password Untuk Melakukan Login</p>
+                                    <?php
+                                        if(empty($_GET['Page'])){
+                                            include "_Page/Login/Login.php";
+                                        }else{
+                                            $Page=$_GET['Page'];
+                                            if($Page=="LupaPassword"){
+                                                include "_Page/ResetPassword/ResetPassword.php";
+                                            }
+                                        }
+                                    ?>
+                                </div>
+                                <div class="credits text-center">
+                                    <small>
+                                        <div class="copyright text-white">
+                                            &copy; Copyright <strong><span><?php echo "$title_page"; ?></span></strong>. All Rights Reserved 2023
                                         </div>
-                                        <form action="javascript:void(0);" class="row g-3" id="ProsesLogin">
-                                            <div class="col-12">
-                                                <label for="mode_akses" class="form-label">Mode Akses</label>
-                                                <select name="mode_akses" id="mode_akses" class="form-control">
-                                                    <option value="Pengurus">Pengurus</option>
-                                                    <option value="Anggota">Anggota</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-12">
-                                                <label for="email" class="form-label">Email</label>
-                                                <div class="input-group has-validation">
-                                                    <span class="input-group-text" id="inputGroupPrepend">@</span>
-                                                    <input type="email" name="email" class="form-control" id="email" required>
-                                                    <div class="invalid-feedback">Please enter your username.</div>
-                                                </div>
-                                            </div>
-                                            <div class="col-12">
-                                                <label for="password" class="form-label">Password</label>
-                                                <input type="password" name="password" class="form-control" id="password" required>
-                                                <div class="invalid-feedback">Please enter your password!</div>
-                                                <small class="credit">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="Tampilkan" id="TampilkanPassword2" name="TampilkanPassword2">
-                                                        <label class="form-check-label" for="TampilkanPassword2">
-                                                            Tampilkan Password
-                                                        </label>
-                                                    </div>
-                                                </small>
-                                            </div>
-                                            <div class="col-12">
-                                                Pastikan email dan password sudah benar.
-                                            </div>
-                                            <div class="col-12" id="NotifikasiLogin"></div>
-                                            <div class="col-12">
-                                                <button class="btn btn-primary w-100" type="submit">Login</button>
-                                            </div>
-                                            <div class="col-12">
-                                                <p class="small mb-0">Anda Lupa Password? <a href="LupaPassword.php">Reset password</a></p>
-                                            </div>
-                                        </form>
-                                    </div>
+                                        <div class="credits text-white">
+                                            Designed by <span class="text text-decoration-underline"><?php echo "$AuthorAplikasi"; ?></span>
+                                        </div>
+                                    </small>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <?php
-                        // include "_Partial/Copyright.php";
-                    ?>
                 </section>
             </div>
     </main>
@@ -114,6 +85,51 @@
                         var NotifikasiProsesLoginBerhasil=$('#NotifikasiProsesLoginBerhasil').html();
                         if(NotifikasiProsesLoginBerhasil=="Success"){
                             window.location.href = "index.php";
+                        }
+                    }
+                });
+            });
+
+            $('#ProsesResetPassword').submit(function(){
+                var ProsesResetPassword = $('#ProsesResetPassword').serialize();
+                var Loading='<div class="spinner-border text-info" role="status"><span class="visually-hidden">Loading...</span></div>';
+                $('#NotifikasiResetPassword').html("Loading...");
+                $.ajax({
+                    type 	    : 'POST',
+                    url 	    : '_Page/ResetPassword/ProsesResetPassword.php',
+                    data 	    :  ProsesResetPassword,
+                    success     : function(data){
+                        $('#NotifikasiResetPassword').html(data);
+                        var NotifikasiResetPasswordBerhasil=$('#NotifikasiResetPasswordBerhasil').html();
+                        if(NotifikasiResetPasswordBerhasil=="Success"){
+                            window.location.href = "LupaPassword.php?Page=KirimKodeBerhasil";
+                        }
+                    }
+                });
+            });
+            //Kondisi saat tampilkan password
+            $('.form-check-input').click(function(){
+                if($(this).is(':checked')){
+                    $('#PasswordBaru1').attr('type','text');
+                    $('#PasswordBaru2').attr('type','text');
+                }else{
+                    $('#PasswordBaru1').attr('type','password');
+                    $('#PasswordBaru2').attr('type','password');
+                }
+            });
+            $('#ProsesUbahPassword').submit(function(){
+                var ProsesUbahPassword = $('#ProsesUbahPassword').serialize();
+                var Loading='<div class="spinner-border text-info" role="status"><span class="visually-hidden">Loading...</span></div>';
+                $('#NotifikasiUbahPassword').html("Loading...");
+                $.ajax({
+                    type 	    : 'POST',
+                    url 	    : '_Page/ResetPassword/ProsesUbahPassword.php',
+                    data 	    :  ProsesUbahPassword,
+                    success     : function(data){
+                        $('#NotifikasiUbahPassword').html(data);
+                        var NotifikasiUbahPasswordBerhasil=$('#NotifikasiUbahPasswordBerhasil').html();
+                        if(NotifikasiUbahPasswordBerhasil=="Success"){
+                            window.location.href = "LupaPassword.php?Page=Berhasil";
                         }
                     }
                 });

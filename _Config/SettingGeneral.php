@@ -11,7 +11,5 @@
     $favicon= $DataSettingGeneral['favicon'];
     $logo= $DataSettingGeneral['logo'];
     $base_url= $DataSettingGeneral['base_url'];
-
-    //Author Statis Di Isi Disini
-    $AuthorAplikasi="Solihul Hadi";
+    $AuthorAplikasi= $DataSettingGeneral['author'];
 ?>
