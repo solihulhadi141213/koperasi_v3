@@ -14,17 +14,17 @@
             <ul id="akses-nav" class="nav-content collapse <?php if($PageMenu=="AksesFitur"||$PageMenu=="AksesEntitas"||$PageMenu=="Akses"){echo "show";} ?>" data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="index.php?Page=AksesFitur" class="<?php if($PageMenu=="AksesFitur"){echo "active";} ?>">
-                        <i class="bi bi-circle"></i><span>Fitur</span>
+                        <i class="bi bi-circle"></i><span>Fitur Aplikasi</span>
                     </a>
                 </li>
                 <li>
                     <a href="index.php?Page=AksesEntitas" class="<?php if($PageMenu=="AksesEntitas"){echo "active";} ?>">
-                        <i class="bi bi-circle"></i><span>Entitas</span>
+                        <i class="bi bi-circle"></i><span>Entitas Pengurus</span>
                     </a>
                 </li>
                 <li>
                     <a href="index.php?Page=Akses" class="<?php if($PageMenu=="Akses"){echo "active";} ?>">
-                        <i class="bi bi-circle"></i><span>Akses</span>
+                        <i class="bi bi-circle"></i><span>Akses Pengurus</span>
                     </a>
                 </li>
             </ul>
@@ -67,7 +67,7 @@
                 </li>
                 <li>
                     <a href="index.php?Page=SimpananWajib" class="<?php if($PageMenu=="SimpananWajib"){echo "active";} ?>">
-                        <i class="bi bi-circle"></i><span>Kewajiban</span>
+                        <i class="bi bi-circle"></i><span>Simpanan Wajib</span>
                     </a>
                 </li>
                 <li>
@@ -246,7 +246,7 @@
         <li class="nav-item">
             <a class="nav-link <?php if($PageMenu!=="Help"){echo "collapsed";} ?>" href="index.php?Page=Help&Sub=HelpData">
                 <i class="bi bi-question"></i>
-                <span>Bantuan</span>
+                <span>Dokumentasi</span>
             </a>
         </li>
         <li class="nav-item">

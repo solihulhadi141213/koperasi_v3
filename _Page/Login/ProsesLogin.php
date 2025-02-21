@@ -34,8 +34,8 @@
             $stmt = $Conn->prepare("SELECT * FROM akses WHERE email_akses = ? AND password = ?");
             $stmt->bind_param("ss", $email, $passwordMd5);
         } else {
-            $stmt = $Conn->prepare("SELECT * FROM anggota WHERE email = ? AND password = ?");
-            $stmt->bind_param("ss", $email, $password);
+            $stmt = $Conn->prepare("SELECT * FROM akses_anggota WHERE email = ? AND password = ?");
+            $stmt->bind_param("ss", $email, $passwordMd5);
         }
 
         if ($stmt === false) {
@@ -47,7 +47,7 @@
         $DataAkses = $result->fetch_assoc();
 
         if ($DataAkses) {
-            $id_akses = $mode_akses == "Pengurus" ? $DataAkses["id_akses"] : $DataAkses["id_anggota"];
+            $id_akses = $mode_akses == "Pengurus" ? $DataAkses["id_akses"] : $DataAkses["id_akses_anggota"];
 
             // Delete old login tokens
             $deleteTokenStmt = $Conn->prepare("DELETE FROM akses_login WHERE id_akses = ? AND kategori = ?");
@@ -76,7 +76,7 @@
                 echo '<code>Terjadi kesalahan pada saat membuat sesi login</code>';
             }
         } else {
-            echo '<code>Kombinasi password dan email yang Anda gunakan tidak valid</code>';
+            echo '<code>Kombinasi password dan email yang Anda gunakan tidak valid mode: '.$mode_akses.' '.$passwordMd5.'</code>';
         }
     }
 ?>

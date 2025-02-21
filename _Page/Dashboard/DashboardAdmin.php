@@ -1,4 +1,7 @@
 <?php
+    //Jumlah Barang
+    $JumlahBarang = mysqli_num_rows(mysqli_query($Conn, "SELECT id_barang FROM barang"));
+    $JumlahBarangFormat = "" . number_format($JumlahBarang,0,',','.');
     //Jumlah Anggota Aktif
     $JumlahAnggota = mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM anggota WHERE status='Aktif'"));
     $JumlahAnggotaFormat = "" . number_format($JumlahAnggota,0,',','.');
@@ -17,14 +20,44 @@
     $JumlahPinjaman = "" . number_format($JumlahPinjaman,0,',','.');
     include "_Page/Dashboard/ProsesHitungSimpanPinjam.php";
 ?>
+<div class="pagetitle">
+    <h1>
+        <a href="">
+            <i class="bi bi-grid"></i> Dashboard
+        </a>
+    </h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active">Dashboard</li>
+        </ol>
+    </nav>
+</div>
 <section class="section dashboard">
     <div class="row">
         <div class="col-lg-12">
             <div class="row">
-                <div class="col-xxl-3 col-md-6">
+                <div class="col-xxl-3 col-md-6 col-6">
                     <div class="card info-card sales-card">
                         <div class="card-body">
-                            <h5 class="card-title">Anggota Aktif</h5>
+                            <h5 class="card-title">Barang</h5>
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-box"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <?php
+                                        echo '  <span class="text-muted small pt-1 fw-bold">'.$JumlahBarang.'</span><br>';
+                                        echo '  <span class="text-muted small pt-2 ps-1">Item</span>';
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-3 col-md-6 col-6">
+                    <div class="card info-card sales-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Anggota</h5>
                             <div class="d-flex align-items-center">
                                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                     <i class="bi bi-people"></i>
@@ -39,10 +72,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xxl-3 col-md-6">
+                <div class="col-xxl-3 col-md-6 col-6">
                     <div class="card info-card revenue-card">
                         <div class="card-body">
-                            <h5 class="card-title">Simpanan Netto</h5>
+                            <h5 class="card-title">Simpanan</h5>
                             <div class="d-flex align-items-center">
                                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                     <i class="bi bi-cash-coin"></i>
@@ -57,10 +90,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xxl-3 col-md-6">
+                <div class="col-xxl-3 col-md-6 col-6">
                     <div class="card info-card customers-card">
                         <div class="card-body">
-                            <h5 class="card-title">Pinjaman Total</h5>
+                            <h5 class="card-title">Pinjaman</h5>
                             <div class="d-flex align-items-center">
                                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                     <i class="bi bi-bank"></i>
@@ -75,10 +108,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xxl-3 col-md-6">
+                <div class="col-xxl-3 col-md-6 col-6">
                     <div class="card info-card blue-card">
                         <div class="card-body">
-                            <h5 class="card-title">Angsuran Masuk</h5>
+                            <h5 class="card-title">Angsuran</h5>
                             <div class="d-flex align-items-center">
                                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                     <i class="bi bi-bank"></i>

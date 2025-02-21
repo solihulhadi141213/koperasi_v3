@@ -6,7 +6,7 @@
         //Index Halaman
         $page_arry=[
             "AksesFitur"        =>  "_Page/AksesFitur/AksesFitur.php",
-            "AksesEntitas"      =>  "_Page/Akses/Akses.php",
+            "AksesEntitas"      =>  "_Page/AksesEntitas/AksesEntitas.php",
             "Akses"             =>  "_Page/Akses/Akses.php",
             "Anggota"           =>  "_Page/Anggota/Anggota.php",
             "AnggotaKeluarMasuk"=>  "_Page/AnggotaKeluarMasuk/AnggotaKeluarMasuk.php",

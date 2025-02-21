@@ -1,3 +1,16 @@
+<div class="pagetitle">
+    <h1>
+        <a href="">
+            <i class="bi bi-emoji-angry"></i> Error
+        </a>
+    </h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
+            <li class="breadcrumb-item active">No Access</li>
+        </ol>
+    </nav>
+</div>
 <section class="section dashboard">
     <div class="row">
         <div class="col-md-12 text-center">

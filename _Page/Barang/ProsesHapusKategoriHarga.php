@@ -1,27 +1,61 @@
 <?php
-    //Connection
+    //Koneksi
     include "../../_Config/Connection.php";
+    include "../../_Config/GlobalFunction.php";
     include "../../_Config/Session.php";
-    if(empty($_POST['id_barang_harga'])){
-        echo '<span class="text-danger">ID Satuan Baraang Tidak Boleh Kosong</span>';
+
+    //Time Zone
+    date_default_timezone_set('Asia/Jakarta');
+
+    //Time Now Tmp
+    $now=date('Y-m-d H:i:s');
+
+    // Inisialisasi respons default
+    $response = [
+        "status" => "Error",
+        "message" => "Belum ada proses yang dilakukan pada sistem."
+    ];
+
+    if(empty($SessionIdAkses)){
+        $response = [
+            "status" => "Error",
+            "message" => "Sesi Akses Sudah Berakhir, Silahkan Login Ulang"
+        ];
     }else{
-        $id_barang_harga=$_POST['id_barang_harga'];
-        $QryHarga = mysqli_query($Conn,"SELECT * FROM barang_harga WHERE id_barang_harga='$id_barang_harga'")or die(mysqli_error($Conn));
-        $DataHarga = mysqli_fetch_array($QryHarga);
-        $id_barang= $DataHarga['id_barang'];
-        $QryBarang = mysqli_query($Conn,"SELECT * FROM barang WHERE id_barang='$id_barang'")or die(mysqli_error($Conn));
-        $DataBarang = mysqli_fetch_array($QryBarang);
-        $nama_barang= $DataBarang['nama_barang'];
-        //Proses hapus data
-        $HapusKategoriHarga= mysqli_query($Conn, "DELETE FROM barang_harga WHERE id_barang_harga='$id_barang_harga'") or die(mysqli_error($Conn));
-        if($HapusKategoriHarga) {
-            $KategoriLog="Barang";
-            $KeteranganLog="Hapus multi harga untuk $nama_barang";
-            include "../../_Config/InputLog.php";
-            $_SESSION ["NotifikasiSwal"]="Hapus Kategori Harga Berhasil";
-            echo '<span class="text-success" id="NotifikasiHapusKategoriHargaBerhasil">Success</span>';
+        if(empty($_POST['id_barang_kategori_harga'])){
+            $response = [
+                "status" => "Error",
+                "message" => "ID Kategori Harga Tidak Boleh Kosong!"
+            ];
         }else{
-            echo '<span class="text-danger">Hapus Kategori Harga gagal</span>';
+            $id_barang_kategori_harga=$_POST['id_barang_kategori_harga'];
+            $id_barang_kategori_harga=validateAndSanitizeInput($_POST['id_barang_kategori_harga']);
+            //Hapus Akses Berdasarkan id_obat_kategori_harga
+            $hapus_kategori_harga = mysqli_query($Conn, "DELETE FROM barang_kategori_harga WHERE id_barang_kategori_harga='$id_barang_kategori_harga'") or die(mysqli_error($Conn));
+            if ($hapus_kategori_harga) {
+                $kategori_log="Barang";
+                $deskripsi_log="Hapus Kategori Harga";
+                $InputLog=addLog($Conn,$SessionIdAkses,$now,$kategori_log,$deskripsi_log);
+                if($InputLog=="Success"){
+                    $response = [
+                        "status" => "Success",
+                        "message" => "Hapus Kategori Harga Berhasil!"
+                    ];
+                }else{
+                    $response = [
+                        "status" => "Error",
+                        "message" => "Terjadi kesalahan pada saat akan menyimpan log aktivitas"
+                    ];
+                }
+            }else{
+                $response = [
+                    "status" => "Error",
+                    "message" => "Terjadi kesalahan pada saat akan menghapus data dari database"
+                ];
+            }
         }
     }
+    // Output response sebagai JSON
+    // header('Content-Type: application/json');
+    echo json_encode($response);
 ?>

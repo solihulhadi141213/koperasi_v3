@@ -3,9 +3,10 @@
     <head>
         <?php
             //Koneksi
+            session_start();
             include "_Config/Connection.php";
             include "_Config/SettingGeneral.php";
-            include "_Partial/JsPlugin.php";
+            include "_Partial/Head.php";
         ?>
     </head>
     <body>
@@ -15,19 +16,13 @@
                     <div class="container">
                         <div class="row justify-content-center">
                             <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
-                                <div class="row">
-                                    <div class="col-md-12 text-center">
-                                        <img src="assets/img/<?php echo $logo;?>" alt="" width="100px">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12 text-center">
-                                        <div class="d-flex justify-content-center py-4">
-                                            <a href="" class="logo d-flex align-items-center w-auto">
-                                                <span class="d-none d-lg-block text-white"><?php echo $title_page;?></span>
-                                            </a>
-                                        </div>
-                                    </div>
+                                <img src="assets/img/<?php echo $logo;?>" alt="<?php echo $title_page;?>" width="100px">
+                                <div class="d-flex justify-content-center py-2">
+                                    <p>
+                                        <a href="" class="logo d-flex align-items-center w-auto">
+                                            <span class="d-none d-lg-block text-light"><?php echo $title_page;?></span>
+                                        </a>
+                                    </p>
                                 </div>
                                 <div class="card mb-3">
                                     <?php
@@ -58,7 +53,6 @@
             </div>
     </main>
         <?php
-            include "_Partial/BackToTop.php";
             include "_Partial/FooterJs.php";
         ?>
         <script>

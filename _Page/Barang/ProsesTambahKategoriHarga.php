@@ -1,58 +1,102 @@
 <?php
-    //Koneksi
+    // Koneksi
     include "../../_Config/Connection.php";
+    include "../../_Config/GlobalFunction.php";
     include "../../_Config/Session.php";
-    //Tangkap variabel
-    if(empty($_POST['id_barang'])){
-        echo '<span class="text-danger">ID Barang Tidak Boleh Kosong!</span>';
-    }else{
-        if(empty($_POST['kategori_harga'])){
-            $kategori_harga="0";
-        }else{
-            $kategori_harga=$_POST['kategori_harga'];
-        }
-        if(empty($_POST['harga_multi'])){
-            echo '<span class="text-danger">Harga Tidak Boleh Kosong!</span>';
-        }else{
-            if(empty($_POST['id_barang_satuan'])){
-                $id_barang_satuan_detail=0;
-            }else{
-                $id_barang_satuan_detail=$_POST['id_barang_satuan'];
+
+    // Time Zone
+    date_default_timezone_set('Asia/Jakarta');
+
+    // Time Now Tmp
+    $now = date('Y-m-d H:i:s');
+
+    // Inisialisasi respons default
+    $response = [
+        "status" => "Error",
+        "message" => "Belum ada proses yang dilakukan pada sistem."
+    ];
+
+    // Validasi sesi login
+    if (empty($SessionIdAkses)) {
+        $response = [
+            "status" => "Error",
+            "message" => "Sesi Akses Sudah Berakhir, Silahkan Login Ulang"
+        ];
+    } else {
+        // Validasi Data Tidak Boleh Kosong
+        $requiredFields = [
+            'kategori_harga' => "Nama Kategori Harga Tidak Boleh Kosong!",
+            'keterangan' => "Setidaknya anda harus menjelaskan sedikit tentang harga tersebut!"
+        ];
+
+        foreach ($requiredFields as $field => $errorMessage) {
+            if (empty($_POST[$field])) {
+                $response = [
+                    "status" => "Error",
+                    "message" => $errorMessage
+                ];
+                echo json_encode($response);
+                exit;
             }
-            $id_barang=$_POST['id_barang'];
-            $harga_multi=$_POST['harga_multi'];
-            $kategori_harga=$_POST['kategori_harga'];
-            //Validasi duplikasi data
-            $ValidasiDuplikatHarga=mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM barang_harga WHERE id_barang='$id_barang' AND kategori_harga='$kategori_harga' AND id_barang_satuan='$id_barang_satuan_detail'"));
-            if(!empty($ValidasiDuplikatHarga)){
-                echo '<span class="text-danger">Data Sudah Ada!</span>';
-            }else{
-                //Simpan data
-                $EnterMultiHarga="INSERT INTO barang_harga (
-                    id_barang,
-                    id_barang_satuan,
-                    kategori_harga,
-                    harga
-                ) VALUES (
-                    '$id_barang',
-                    '$id_barang_satuan_detail',
-                    '$kategori_harga',
-                    '$harga_multi'
-                )";
-                $InputMultiHarga=mysqli_query($Conn, $EnterMultiHarga);
-                if($InputMultiHarga){
-                    $QryBarang = mysqli_query($Conn,"SELECT * FROM barang WHERE id_barang='$id_barang'")or die(mysqli_error($Conn));
-                    $DataBarang = mysqli_fetch_array($QryBarang);
-                    $nama_barang= $DataBarang['nama_barang'];
-                    $KategoriLog="Barang";
-                    $KeteranganLog="Tambah multi harga untuk $nama_barang";
-                    include "../../_Config/InputLog.php";
-                    $_SESSION ["NotifikasiSwal"]="Tambah Harga Berhasil";
-                    echo '<small class="text-success" id="NotifikasiTambahKategoriHargaBerhasil">Success</small>';
-                }else{
-                    echo '<span class="text-danger">Terjadi kesalahan pada saat menyimpan data satuan!</span>';
+        }
+        // Buat Variabel
+        $kategori_harga = validateAndSanitizeInput($_POST['kategori_harga']);
+        $keterangan = validateAndSanitizeInput($_POST['keterangan']);
+        // Validasi jumlah karakter
+        if (strlen($kategori_harga) > 30) {
+            $response = [
+                "status" => "Error",
+                "message" => "Kategori Harga Tidak Boleh Lebih Dari 30 Karakter"
+            ];
+        } elseif (strlen($keterangan) > 250) {
+            $response = [
+                "status" => "Error",
+                "message" => "Keterangan Tidak Boleh Lebih Dari 250 Karakter"
+            ];
+        } else {
+
+            //Update Ke Database
+            $query = "INSERT INTO barang_kategori_harga (
+                kategori_harga, 
+                keterangan
+            ) VALUES (?, ?)";
+            $stmt = $Conn->prepare($query);
+            if ($stmt) {
+                $stmt->bind_param(
+                    "ss",
+                    $kategori_harga,
+                    $keterangan
+                );
+                if ($stmt->execute()) {
+                    $kategori_log="Barang";
+                    $deskripsi_log="Tambah Kategori Harga";
+                    $InputLog=addLog($Conn,$SessionIdAkses,$now,$kategori_log,$deskripsi_log);
+                    if($InputLog=="Success"){
+                        $response = [
+                            "status" => "Success",
+                            "message" => "Tambah Kategori Harga Baru Berhasil!"
+                        ];
+                    }else{
+                        $response = [
+                            "status" => "Error",
+                            "message" => "Terjadi kesalahan pada saat menyimpan log aktivitas"
+                        ];
+                    }
+                } else {
+                    $response = [
+                        "status" => "Error",
+                        "message" => "Terjadi kesalahan pada saat input ke database"
+                    ];
                 }
+            } else {
+                $response = [
+                    "status" => "Error",
+                    "message" => "Terjadi kesalahan pada saat mempersiapkan statement database"
+                ];
             }
         }
     }
+
+    // Output response
+    echo json_encode($response);
 ?>

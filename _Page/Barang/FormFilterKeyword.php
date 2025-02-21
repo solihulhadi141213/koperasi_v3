@@ -1,8 +1,8 @@
 <?php
     include "../../_Config/Connection.php";
-    include "../../_Config/Session.php";
-    if(!empty($_POST['KeywordBy'])){
-        $KeywordBy=$_POST['KeywordBy'];
+    
+    if(!empty($_POST['keyword_by'])){
+        $KeywordBy=$_POST['keyword_by'];
         if($KeywordBy=="kode_barang"){
             echo '<label for="keyword">Kata Kunci</label>';
             echo ' <input type="text" name="keyword" id="keyword" class="form-control">';
@@ -48,7 +48,7 @@
             }
         }
     }else{
-        echo '<label for="keyword">Kata Kunci2</label>';
+        echo '<label for="keyword">Kata Kunci</label>';
         echo ' <input type="text" name="keyword" id="keyword" class="form-control">';
     }
 ?>

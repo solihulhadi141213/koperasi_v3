@@ -9,7 +9,7 @@ $(document).ready(function () {
         // Konfigurasi grafik
         var options = {
             chart: {
-                type: 'line',
+                type: 'bar',
                 height: 400
             },
             series: [

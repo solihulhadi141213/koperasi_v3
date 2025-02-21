@@ -1,18 +1,19 @@
-<div class="modal fade" id="ModalFilterBarang" tabindex="-1">
+<div class="modal fade" id="ModalFilter" tabindex="-1">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
-            <form action="javascript:void(0);" id="ProsesFilterBarang">
-                <div class="modal-header bg-info">
-                    <h5 class="modal-title text-light"><i class="bi bi-funnel"></i> Filter Barang</h5>
+            <form action="javascript:void(0);" id="ProsesFilter">
+                <input type="hidden" name="page" id="page" value="1">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark"><i class="bi bi-funnel"></i> Filter Data</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6 mt-3">
-                            <label for="batas">Data</label>
+                            <label for="batas">Data/Limit</label>
                             <select name="batas" id="batas" class="form-control">
                                 <option value="5">5</option>
-                                <option value="10">10</option>
+                                <option selected value="10">10</option>
                                 <option value="25">25</option>
                                 <option value="50">50</option>
                                 <option value="100">100</option>
@@ -38,7 +39,7 @@
                             <label for="ShortBy">Tipe Urutan</label>
                             <select name="ShortBy" id="ShortBy" class="form-control">
                                 <option value="ASC">A To Z</option>
-                                <option value="DESC">Z To A</option>
+                                <option selected value="DESC">Z To A</option>
                             </select>
                         </div>
                         <div class="col-md-6 mt-3">
@@ -61,7 +62,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer bg-info">
+                <div class="modal-footer">
                     <button type="submit" class="btn btn-success btn-rounded">
                         <i class="bi bi-save"></i> Filter
                     </button>
@@ -73,35 +74,188 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="ModalBarangHarga" tabindex="-1">
+
+<div class="modal fade" id="ModalKategoriHarga" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-dark">
+                    <i class="bi bi-tag"></i> Kategori Multi Harga
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 text-end">
+                        <button type="submit" class="btn btn-md btn-outline-primary" title="Tambah Kategori Multi Harga" data-bs-toggle="modal" data-bs-target="#ModalTambahKategoriHarga">
+                            <i class="bi bi-plus"></i> Tambah Kategori Harga
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 mt-3">
+                        <div class="table table-responsive">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th><b>No</b></th>
+                                        <th><b>Kategori Harga</b></th>
+                                        <th><b>Item Barang</b></th>
+                                        <th><b>Opsi</b></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="TabelKategoriHarga">
+                                    <tr>
+                                        <td colspan="4" class="text-center text-danger">Tidak Ada Data Kategori Multi Harga Yang Ditampilkan</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle"></i> Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="ModalTambahKategoriHarga" tabindex="-1">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
-            <form action="javascript:void(0);" id="ProsesTambahKategoriHargaBarang">
-                <div class="modal-header bg-info">
-                    <h5 class="modal-title text-light"><i class="bi bi-coin"></i> Kategori Harga</h5>
+            <form action="javascript:void(0);" id="ProsesTambahKategoriHarga">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark"><i class="bi bi-plus"></i> Tambah Kategori Harga</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-10 mt-3">
-                            <input type="text" class="form-control" id="kategori" name="kategori">
-                            <small for="kategori" id="NotifikasiTambahKategoriHargaBarang">Kategori</small>
-                        </div>
-                        <div class="col-md-2 mt-3">
-                            <button type="submit" class="btn btn-md btn-success w-100" title="Tambah Kategori">
-                                <i class="bi bi-plus"></i>
-                            </button>
+                    <div class="row mb-2">
+                        <div class="col-md-12">
+                            <label for="nama_kategori_harga">Kategori Harga</label>
+                            <input type="text" name="kategori_harga" id="nama_kategori_harga" class="form-control">
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12 mt-3" id="TampilkanListKategori">
-                            <!-- Menampilkan List Kategori -->
+                    <div class="row mb-2">
+                        <div class="col-md-12">
+                            <label for="keterangan_kategori_harga">Keterangan</label>
+                            <textarea name="keterangan" id="keterangan_kategori_harga" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-12" id="NotifikasiTambahKategoriHarga">
+                            <!-- Notifikasi Tambah Kategori Harga Akan Muncul Disini -->
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer bg-info">
-                    <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
-                        <i class="bi bi-x-circle"></i> Tutup
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-rounded" id="ButtonTambahKategoriHarga">
+                        <i class="bi bi-save"></i> Simpan
+                    </button>
+                    <button type="button" class="btn btn-dark btn-rounded" data-bs-toggle="modal" data-bs-target="#ModalKategoriHarga">
+                        <i class="bi bi-chevron-left"></i> Kembali
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="ModalEditKategoriHarga" tabindex="-1">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <form action="javascript:void(0);" id="ProsesEditKategoriHarga">
+                <input type="hidden" name="id_barang_kategori_harga" id="put_id_barang_kategori_harga_edit">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark"><i class="bi bi-plus"></i> Edit Kategori Harga</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="FormEditKategoriHarga">
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <label for="nama_kategori_harga_edit">Kategori Harga</label>
+                                <input type="text" name="kategori_harga" id="nama_kategori_harga_edit" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <label for="keterangan_kategori_harga_edit">Keterangan</label>
+                                <textarea name="keterangan" id="keterangan_kategori_harga_edit" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-12" id="NotifikasiEditKategoriHarga">
+                            <!-- Notifikasi Edit Kategori Harga Akan Muncul Disini -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-rounded" id="ButtonEditKategoriHarga">
+                        <i class="bi bi-save"></i> Simpan
+                    </button>
+                    <button type="button" class="btn btn-dark btn-rounded" data-bs-toggle="modal" data-bs-target="#ModalKategoriHarga">
+                        <i class="bi bi-chevron-left"></i> Kembali
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="ModalHapusKategoriHarga" tabindex="-1">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <form action="javascript:void(0);" id="ProsesHapusKategoriHarga">
+                <input type="hidden" name="id_barang_kategori_harga" id="put_id_barang_kategori_harga_hapus">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark"><i class="bi bi-trash"></i> Hapus Kategori Harga</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="FormHapusKategoriHarga">
+                        <div class="row mb-2">
+                            <div class="col-4">
+                                <small>Kategori Harga</small>
+                            </div>
+                            <div class="col-8">
+                                <small><code class="text text-grayish" id="put_kategori_harga"></code></small>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4">
+                                <small>Keterangan</small>
+                            </div>
+                            <div class="col-8">
+                                <small><code class="text text-grayish" id="put_keterangan"></code></small>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4">
+                                <small>Jumlah Item</small>
+                            </div>
+                            <div class="col-8">
+                                <small><code class="text text-grayish" id="put_jumlah_item"></code></small>
+                            </div>
+                        </div>
+                        <div class="row mb-2 mt-4">
+                            <div class="col-12 text-center">
+                                <small>Apakah anda yakin akan menghapus data tersebut?</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-12" id="NotifikasiHapusKategoriHarga">
+                            <!-- Notifikasi Edit Kategori Harga Akan Muncul Disini -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-rounded" id="ButtonHapusKategoriHarga">
+                        <i class="bi bi-check"></i> Ya, Hapus
+                    </button>
+                    <button type="button" class="btn btn-dark btn-rounded" data-bs-toggle="modal" data-bs-target="#ModalKategoriHarga">
+                        <i class="bi bi-chevron-left"></i> Kembali
                     </button>
                 </div>
             </form>
@@ -111,16 +265,133 @@
 <div class="modal fade" id="ModalTambahBarang" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form action="javascript:void(0);" id="ProsesTambahBarang">
-                <div class="modal-header bg-primary">
-                    <h5 class="modal-title text-light"><i class="bi bi-person-plus"></i> Tambah Barang</h5>
+            <form action="javascript:void(0);" id="ProsesTambahBarang" autocomplete="false">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark">
+                        <i class="bi bi-plus"></i> Tambah Barang
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" id="FormTambahBarang">
-                    
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="kode">
+                                Kode Barang
+                                <a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Apabila anda mengosongkan form ini maka sistem akan membuatkan 10 digit kode unik secara otomatis">
+                                    <i class="bi bi-question-circle"></i>
+                                </a>
+                            </label>
+                        </div>
+                        <div class="col-8">
+                            <input type="text" class="form-control" name="kode" id="kode" maxlength="36">
+                            <small class="text-muted">
+                                *Diisi jika barang tersebut memiliki kode standar yang ditetapkan.
+                            </small>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="nama">Nama/Merek Barang</label>
+                        </div>
+                        <div class="col-8">
+                            <input type="text" class="form-control" name="nama" id="nama" maxlength="100">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="kategori">Kategori</label>
+                        </div>
+                        <div class="col-8">
+                            <input type="text" class="form-control" name="kategori" id="kategori" list="list_kategori" maxlength="30">
+                            <datalist id="list_kategori">
+                                <!-- List Kategori -->
+                            </datalist>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="satuan">Satuan</label>
+                        </div>
+                        <div class="col-8">
+                            <input type="text" class="form-control" name="satuan" id="satuan" list="list_satuan" maxlength="30">
+                            <datalist id="list_satuan">
+                                <!-- List Satuan -->
+                            </datalist>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="isi">Isi/Kemasan</label>
+                        </div>
+                        <div class="col-8">
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <small>.00</small>
+                                </span>
+                                <input type="text" class="form-control" name="isi" id="isi" maxlength="15" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" value="1.00">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="stok">Stok Awal</label>
+                        </div>
+                        <div class="col-8">
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <small>.00</small>
+                                </span>
+                                <input type="text" class="form-control" name="stok" id="stok" maxlength="15" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="stok_min">Stok Minimum</label>
+                        </div>
+                        <div class="col-8">
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <small>.00</small>
+                                </span>
+                                <input type="text" class="form-control" name="stok_min" id="stok_min" maxlength="15" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+                            </div>
+                            <small class="text-muted">
+                                *Stok minimum untuk pemberitahuan
+                            </small>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="harga">Harga Beli</label>
+                        </div>
+                        <div class="col-8">
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <small>Rp</small>
+                                </span>
+                                <input type="text" class="form-control form-money" name="harga" id="harga" maxlength="15" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row border-1 border-top mb-3">
+                        <div class="col-12 mt-3">
+                            <b>Kategori Multi Harga</b>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-12" id="form_multi_harga">
+                            <!-- Form Multi Harga Akan Muncul Disini -->
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-12" id="NotifikasiTambahBarang">
+                            <!-- Notifikasi Tambah Obat Akan Muncul Disini -->
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-footer bg-primary">
-                    <button type="submit" class="btn btn-success btn-rounded">
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-rounded" id="ButtonTambahBarang">
                         <i class="bi bi-save"></i> Simpan
                     </button>
                     <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
@@ -131,15 +402,91 @@
         </div>
     </div>
 </div>
+
 <div class="modal fade" id="ModalDetailBarang" tabindex="-1">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
-            <div class="modal-header bg-info">
-                <h5 class="modal-title text-light"><i class="bi bi-box"></i> Detail Barang</h5>
+            <div class="modal-header">
+                <h5 class="modal-title text-dark"><i class="bi bi-info-circle"></i> Detail Barang</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div id="FormDetailBarang">
-                
+            <div class="modal-body" id="form_detail_barang">
+                <div class="row mb-2">
+                    <div class="col-12">
+                        <b># Informasi Barang</b>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4">
+                        <small>Kode Barang</small>
+                    </div>
+                    <div class="col-8">
+                        <small class="kode_barang"></small>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4">
+                        <small>Nama/Merek</small>
+                    </div>
+                    <div class="col-8">
+                        <small class="nama_barang"></small>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4">
+                        <small>Kategori</small>
+                    </div>
+                    <div class="col-8">
+                        <small class="kategori_barang"></small>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4">
+                        <small>Isi/Satuan</small>
+                    </div>
+                    <div class="col-8">
+                        <small class="satuan_barang"></small>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4">
+                        <small>Stok Aktual</small>
+                    </div>
+                    <div class="col-8">
+                        <small class="stok_barang"></small>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4">
+                        <small>Stok Minimum</small>
+                    </div>
+                    <div class="col-8">
+                        <small class="stok_minimum"></small>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4">
+                        <small>Harga Beli</small>
+                    </div>
+                    <div class="col-8">
+                        <small class="harga_beli"></small>
+                    </div>
+                </div>
+                <div class="row mb-2 mt-2 border-1 border-top">
+                    <div class="col-12 mt-3">
+                        <b># Informasi Multi Harga</b>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-12" id="informasi_multi_harga">
+                        <!-- Informasi Multi Harga Disini -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle"></i> Tutup
+                </button>
             </div>
         </div>
     </div>
@@ -278,29 +625,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="ModalTambahKategoriHarga" tabindex="-1">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <form action="javascript:void(0);" id="ProsesTambahKategoriHarga">
-                <div class="modal-header bg-primary">
-                    <h5 class="modal-title text-light"><i class="bi bi-person-plus"></i> Tambah Kategori Harga</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" id="FormTambahKategoriHarga">
-                    
-                </div>
-                <div class="modal-footer bg-primary">
-                    <button type="submit" class="btn btn-success btn-rounded">
-                        <i class="bi bi-save"></i> Simpan
-                    </button>
-                    <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
-                        <i class="bi bi-x-circle"></i> Tutup
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+
 <div class="modal fade" id="ModalEditKategoriHarga" tabindex="-1">
     <div class="modal-dialog modal-md">
         <div class="modal-content">

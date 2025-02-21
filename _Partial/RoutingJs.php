@@ -1,7 +1,8 @@
 <?php 
+    $date_version=date('YmdHis');
     if(empty($_GET['Page'])){
         //Dafault Javascript Diarahkan Ke Dashboard
-        echo '<script type="text/javascript" src="_Page/Dashboard/Dashboard.js"></script>';
+        echo '<script type="text/javascript" src="_Page/Dashboard/Dashboard.js?V='.$date_version.'"></script>';
     }else{
         $Page=$_GET['Page'];
         // Routing Javascript Berdasarkan Halaman
@@ -20,6 +21,7 @@
             "Pinjaman"                  => "_Page/Pinjaman/Pinjaman.js",
             "Tagihan"                   => "_Page/Tagihan/Tagihan.js",
             "RekapPinjaman"             => "_Page/RekapPinjaman/RekapPinjaman.js",
+            "Barang"                    => "_Page/Barang/Barang.js",
             "JenisTransaksi"            => "_Page/JenisTransaksi/JenisTransaksi.js",
             "Transaksi"                 => "_Page/Transaksi/Transaksi.js",
             "RekapTransaksi"            => "_Page/RekapTransaksi/RekapTransaksi.js",
@@ -46,11 +48,9 @@
 
         // Cek apakah halaman ada dalam daftar dan sertakan file JS yang sesuai
         if (!empty($_GET['Page']) && isset($scripts[$_GET['Page']])) {
-            echo '<script type="text/javascript" src="' . $scripts[$_GET['Page']] . '"></script>';
+            echo '<script type="text/javascript" src="' . $scripts[$_GET['Page']] . '?V='.$date_version.'"></script>';
         }
     }
     //default Login
-    echo '<script type="text/javascript" src="_Page/Pendaftaran/Pendaftaran.js"></script>';
-    echo '<script type="text/javascript" src="_Page/Login/Login.js"></script>';
-    echo '<script type="text/javascript" src="_Page/ResetPassword/ResetPassword.js"></script>';
+    echo '<script type="text/javascript" src="_Page/Login/Login.js?V='.$date_version.'"></script>';
 ?>
