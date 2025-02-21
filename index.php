@@ -6,7 +6,7 @@
         header("Location:Login.php");
     }else{
         //Apabila Login Berrhasil
-        include "_Partial/FungsiAkses.php";
+        include "_Config/FungsiAkses.php";
         include "_Config/SettingGeneral.php";
         include "_Config/Notifikasi.php";
 ?>

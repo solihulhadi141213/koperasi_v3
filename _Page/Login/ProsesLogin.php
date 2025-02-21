@@ -34,8 +34,8 @@
             $stmt = $Conn->prepare("SELECT * FROM akses WHERE email_akses = ? AND password = ?");
             $stmt->bind_param("ss", $email, $passwordMd5);
         } else {
-            $stmt = $Conn->prepare("SELECT * FROM akses_anggota WHERE email = ? AND password = ?");
-            $stmt->bind_param("ss", $email, $passwordMd5);
+            $stmt = $Conn->prepare("SELECT * FROM anggota WHERE email = ? AND password = ?");
+            $stmt->bind_param("ss", $email, $password);
         }
 
         if ($stmt === false) {
@@ -47,7 +47,7 @@
         $DataAkses = $result->fetch_assoc();
 
         if ($DataAkses) {
-            $id_akses = $mode_akses == "Pengurus" ? $DataAkses["id_akses"] : $DataAkses["id_akses_anggota"];
+            $id_akses = $mode_akses == "Pengurus" ? $DataAkses["id_akses"] : $DataAkses["id_anggota"];
 
             // Delete old login tokens
             $deleteTokenStmt = $Conn->prepare("DELETE FROM akses_login WHERE id_akses = ? AND kategori = ?");
