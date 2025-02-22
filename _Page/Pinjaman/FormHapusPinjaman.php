@@ -20,33 +20,54 @@
             echo '</div>';
         }else{
             $id_pinjaman=$_POST['id_pinjaman'];
+            
             //Buka Detail Pinjaman
-            $id_anggota=GetDetailData($Conn,'pinjaman','id_pinjaman',$id_pinjaman,'id_anggota');
-            $uuid_pinjaman=GetDetailData($Conn,'pinjaman','id_pinjaman',$id_pinjaman,'uuid_pinjaman');
-            $nip=GetDetailData($Conn,'pinjaman','id_pinjaman',$id_pinjaman,'nip');
-            $nama=GetDetailData($Conn,'pinjaman','id_pinjaman',$id_pinjaman,'nama');
-            $lembaga=GetDetailData($Conn,'pinjaman','id_pinjaman',$id_pinjaman,'lembaga');
-            $ranking=GetDetailData($Conn,'pinjaman','id_pinjaman',$id_pinjaman,'ranking');
-            $tanggal=GetDetailData($Conn,'pinjaman','id_pinjaman',$id_pinjaman,'tanggal');
-            $jatuh_tempo=GetDetailData($Conn,'pinjaman','id_pinjaman',$id_pinjaman,'jatuh_tempo');
-            $denda=GetDetailData($Conn,'pinjaman','id_pinjaman',$id_pinjaman,'denda');
-            $sistem_denda=GetDetailData($Conn,'pinjaman','id_pinjaman',$id_pinjaman,'sistem_denda');
-            $jumlah_pinjaman=GetDetailData($Conn,'pinjaman','id_pinjaman',$id_pinjaman,'jumlah_pinjaman');
-            $persen_jasa=GetDetailData($Conn,'pinjaman','id_pinjaman',$id_pinjaman,'persen_jasa');
-            $rp_jasa=GetDetailData($Conn,'pinjaman','id_pinjaman',$id_pinjaman,'rp_jasa');
-            $angsuran_pokok=GetDetailData($Conn,'pinjaman','id_pinjaman',$id_pinjaman,'angsuran_pokok');
-            $angsuran_total=GetDetailData($Conn,'pinjaman','id_pinjaman',$id_pinjaman,'angsuran_total');
-            $periode_angsuran=GetDetailData($Conn,'pinjaman','id_pinjaman',$id_pinjaman,'periode_angsuran');
-            $status=GetDetailData($Conn,'pinjaman','id_pinjaman',$id_pinjaman,'status');
+            $sql = "SELECT * FROM pinjaman WHERE id_pinjaman = ?";
+            $stmt = $Conn->prepare($sql);
+            $id = 1;
+            $stmt->bind_param("i", $id_pinjaman);
+            
+            // Eksekusi statement
+            $stmt->execute();
+            
+            // Ambil hasil query
+            $result = $stmt->get_result();
+            $DataPinjaman = $result->fetch_assoc();
+            
+            // Simpan hasil ke variabel
+            $id_anggota = $DataPinjaman['id_setting_general'] ?? 0;
+            $uuid_pinjaman = $DataPinjaman['uuid_pinjaman'] ?? null;
+            $nip = $DataPinjaman['nip'] ?? null;
+            $nama = $DataPinjaman['nama'] ?? null;
+            $lembaga = $DataPinjaman['lembaga'] ?? null;
+            $ranking = $DataPinjaman['ranking'] ?? 0;
+            $tanggal = $DataPinjaman['tanggal'] ?? null;
+            $jatuh_tempo = $DataPinjaman['jatuh_tempo'] ?? null;
+            $denda = $DataPinjaman['denda'] ?? 0;
+            $sistem_denda = $DataPinjaman['sistem_denda'] ?? null;
+            $jumlah_pinjaman = $DataPinjaman['jumlah_pinjaman'] ?? 0;
+            $persen_jasa = $DataPinjaman['persen_jasa'] ?? 0;
+            $persen_jasa = $DataPinjaman['persen_jasa'] ?? 0;
+            $rp_jasa = $DataPinjaman['rp_jasa'] ?? 0;
+            $angsuran_pokok = $DataPinjaman['angsuran_pokok'] ?? 0;
+            $angsuran_total = $DataPinjaman['angsuran_total'] ?? 0;
+            $periode_angsuran = $DataPinjaman['periode_angsuran'] ?? 0;
+            $status = $DataPinjaman['status'] ?? null;
+
+            // Tutup statement
+            $stmt->close();
+
             //Format tanggal
             $strtotime=strtotime($tanggal);
             $TanggalFormat=date('d/m/Y',$strtotime);
+
             //Format Rupiah
             $denda_format = "Rp " . number_format($denda,0,',','.');
             $jumlah_pinjaman_format = "Rp " . number_format($jumlah_pinjaman,0,',','.');
             $rp_jasa_format = "Rp " . number_format($rp_jasa,0,',','.');
             $angsuran_pokok_format = "Rp " . number_format($angsuran_pokok,0,',','.');
             $angsuran_total_format = "Rp " . number_format($angsuran_total,0,',','.');
+            
             //Cek Apakah Sudah Sinkron Dengan Jurnal
             $JumlahJurnal = mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM jurnal WHERE kategori='Pinjaman' AND uuid='$uuid_pinjaman'"));
             if(empty($JumlahJurnal)){
