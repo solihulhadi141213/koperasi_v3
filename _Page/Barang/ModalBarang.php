@@ -404,97 +404,120 @@
 </div>
 
 <div class="modal fade" id="ModalDetailBarang" tabindex="-1">
-    <div class="modal-dialog modal-md">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title text-dark"><i class="bi bi-info-circle"></i> Detail Barang</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div  id="form_detail_barang">
-                    <div class="row mb-2">
-                        <div class="col-12">
-                            <b># Informasi Barang</b>
-                        </div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-4">
-                            <small>Kode Barang</small>
-                        </div>
-                        <div class="col-8">
-                            <small class="kode_barang"></small>
-                        </div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-4">
-                            <small>Nama/Merek</small>
-                        </div>
-                        <div class="col-8">
-                            <small class="nama_barang"></small>
-                        </div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-4">
-                            <small>Kategori</small>
-                        </div>
-                        <div class="col-8">
-                            <small class="kategori_barang"></small>
-                        </div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-4">
-                            <small>Isi/Satuan</small>
-                        </div>
-                        <div class="col-8">
-                            <small class="satuan_barang"></small>
-                        </div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-4">
-                            <small>Stok Aktual</small>
-                        </div>
-                        <div class="col-8">
-                            <small class="stok_barang"></small>
-                        </div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-4">
-                            <small>Stok Minimum</small>
-                        </div>
-                        <div class="col-8">
-                            <small class="stok_minimum"></small>
-                        </div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-4">
-                            <small>Harga Beli</small>
-                        </div>
-                        <div class="col-8">
-                            <small class="harga_beli"></small>
-                        </div>
-                    </div>
-                    <div class="row mb-2 mt-2 border-1 border-top">
-                        <div class="col-12 mt-3">
-                            <b># Informasi Multi Harga</b>
-                        </div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-12" id="informasi_multi_harga">
-                            <!-- Informasi Multi Harga Disini -->
-                        </div>
-                    </div>
+            <form action="index.php" method="GET">
+                <input type="hidden" name="id" id="put_id_barang_detail">
+                <input type="hidden" name="Page" value="Barang">
+                <input type="hidden" name="Sub" value="DetailBarang">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark"><i class="bi bi-info-circle"></i> Detail Barang</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="row">
-                    <div class="col-md-12" id="NotifikasiDetailBarang">
+                <div class="modal-body">
+                    <div  id="form_detail_barang">
+                        <div class="row mb-2">
+                            <div class="col-12">
+                                <b># Informasi Barang</b>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4">
+                                <small>Kode Barang</small>
+                            </div>
+                            <div class="col-8">
+                                <small class="kode_barang"></small>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4">
+                                <small>Nama/Merek</small>
+                            </div>
+                            <div class="col-8">
+                                <small class="nama_barang"></small>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4">
+                                <small>Kategori</small>
+                            </div>
+                            <div class="col-8">
+                                <small class="kategori_barang"></small>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4">
+                                <small>Isi/Satuan</small>
+                            </div>
+                            <div class="col-8">
+                                <small class="satuan_barang"></small>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4">
+                                <small>Stok Aktual</small>
+                            </div>
+                            <div class="col-8">
+                                <small class="stok_barang"></small>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4">
+                                <small>Stok Minimum</small>
+                            </div>
+                            <div class="col-8">
+                                <small class="stok_minimum"></small>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4">
+                                <small>Harga Beli</small>
+                            </div>
+                            <div class="col-8">
+                                <small class="harga_beli"></small>
+                            </div>
+                        </div>
+                        <div class="row mb-2 mt-2 border-1 border-top">
+                            <div class="col-12 mt-3">
+                                <b># Informasi Multi Harga</b>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-12" id="informasi_multi_harga">
+                                <!-- Informasi Multi Harga Disini -->
+                            </div>
+                        </div>
+                        <div class="row mb-4 mt-2 border-1 border-top">
+                            <div class="col-10 mt-3">
+                                <b># Informasi Multi Satuan</b>
+                            </div>
+                            <div class="col-2 mt-3 text-center">
+                                <button type="button" class="btn btn-sm btn-floating btn-outline-primary" data-bs-toggle="modal" data-bs-target="#ModalTambahSatuan"  title="Tambah Multi satuan">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row mb-3 mt-4">
+                            <div class="col-12" id="informasi_multi_satuan">
+                                <!-- Informasi Multi Harga Disini -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12" id="NotifikasiDetailBarang">
 
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
-                    <i class="bi bi-x-circle"></i> Tutup
-                </button>
-            </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-info btn-rounded">
+                        <i class="bi bi-three-dots"></i> Selengkapnya
+                    </button>
+                    <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Tutup
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -674,19 +697,42 @@
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <form action="javascript:void(0);" id="ProsesTambahSatuan">
-                <div class="modal-header bg-primary">
-                    <h5 class="modal-title text-light"><i class="bi bi-person-plus"></i> Tambah Satuan</h5>
+                <input type="hidden" name="id_barang" id="put_id_barang_tambah_satuan">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark"><i class="bi bi-plus"></i> Tambah Multi Satuan</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" id="FormTambahSatuan">
-                    
+                <div class="modal-body">
+                    <div id="FormDetailBarangSatuan">
+                        <!-- Detail Barang Ditampilkan Disini -->
+                    </div>
+                    <div class="row mb-3 border-1 border-top">
+                        <div class="col-md-12 mt-3">
+                            <label for="satuan_multi">Nama Satuan</label>
+                            <input type="text" name="satuan_multi" id="satuan_multi" class="form-control" list="ListSatuanMulti">
+                            <datalist id="ListSatuanMulti">
+                                <!-- List Satuan Multi Disini -->
+                            </datalist>
+                        </div>
+                    </div>
+                    <div class="row-3">
+                        <div class="col-md-12">
+                            <label for="konversi_satuan_multi">Isi/Satuan</label>
+                            <input type="number" name="konversi" id="konversi_satuan_multi" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row-3">
+                        <div class="col-md-12" id="NotifikasiTambahSatuan">
+                            <!-- Notifikasi Tambah Satuan Multi -->
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-footer bg-primary">
-                    <button type="submit" class="btn btn-success btn-rounded">
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-rounded" id="ButtonTambahSatuan">
                         <i class="bi bi-save"></i> Simpan
                     </button>
-                    <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
-                        <i class="bi bi-x-circle"></i> Tutup
+                    <button type="button" class="btn btn-dark btn-rounded kembali_ke_detail_barang" data-bs-toggle="modal" data-bs-target="#ModalDetailBarang" data-id="">
+                        <i class="bi bi-chevron-left"></i> Kembali
                     </button>
                 </div>
             </form>
@@ -697,43 +743,71 @@
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <form action="javascript:void(0);" id="ProsesEditSatuan">
-                <div class="modal-header bg-primary">
-                    <h5 class="modal-title text-light"><i class="bi bi-pencil-square"></i> Edit Satuan</h5>
+                <input type="hidden" name="id_barang_satuan" id="put_id_barang_satuan_edit">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark"><i class="bi bi-pencil-square"></i> Edit Multi Satuan</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" id="FormEditSatuan">
-                    
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="satuan_multi_edit">Nama Satuan</label>
+                            <input type="text" name="satuan_multi" id="satuan_multi_edit" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="konversi_satuan_multi_edit">Isi/Satuan</label>
+                            <input type="number" name="konversi" id="konversi_satuan_multi_edit" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-12" id="NotifikasiEditSatuan">
+                            <!-- Notifikasi Tambah Satuan Multi -->
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-footer bg-primary">
-                    <button type="submit" class="btn btn-success btn-rounded">
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-rounded" id="ButtonEditSatuan">
                         <i class="bi bi-save"></i> Simpan
                     </button>
-                    <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
-                        <i class="bi bi-x-circle"></i> Tutup
+                    <button type="button" class="btn btn-dark btn-rounded kembali_ke_detail_barang" data-bs-toggle="modal" data-bs-target="#ModalDetailBarang" data-id="">
+                        <i class="bi bi-chevron-left"></i> Kembali
                     </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-<div class="modal fade" id="ModalDeleteSatuan" tabindex="-1">
-    <div class="modal-dialog modal-sm">
+<div class="modal fade" id="ModalHapusSatuanMulti" tabindex="-1">
+    <div class="modal-dialog modal-md">
         <div class="modal-content">
-            <div class="modal-header bg-danger">
-                <h5 class="modal-title text-light"><i class="bi bi-trash"></i> Hapus Satuan</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" id="FormHapusSatuan">
-                
-            </div>
-            <div class="modal-footer bg-danger">
-                <button type="button" class="btn btn-success btn-rounded" id="KonfirmasiHapusSatuan">
-                    <i class="bi bi-check"></i> Ya
-                </button>
-                <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
-                    <i class="bi bi-x-circle"></i> Tidak
-                </button>
-            </div>
+            <form action="javascript:void(0);" id="ProsesHapusSatuanMulti">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark"><i class="bi bi-trash"></i> Hapus Multi Satuan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-2">
+                        <div class="col-md-12"  id="FormHapusSatuanMulti">
+                            <!-- Form Hapus Satuan -->
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-12"  id="NotifikasiHapusSatuanMulti">
+                            <!-- Form Hapus Satuan -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success btn-rounded" id="ButtonHapusSatuanMulti">
+                        <i class="bi bi-check"></i> Ya, Hapus
+                    </button>
+                    <button type="button" class="btn btn-dark btn-rounded kembali_ke_detail_barang" data-bs-toggle="modal" data-bs-target="#ModalDetailBarang" data-id="">
+                        <i class="bi bi-x-circle"></i> Tidak
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

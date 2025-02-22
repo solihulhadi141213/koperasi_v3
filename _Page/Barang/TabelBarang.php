@@ -106,7 +106,7 @@
                         <td><small>'.$no.'</small></td>
                         <td><small>'.$kode_barang.'</small></td>
                         <td>
-                            <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#ModalDetailBarang" data-id="'.$id_barang.'">
+                            <a href="javascript:void(0);" class="ModalDetailBarang" data-id="'.$id_barang.'">
                                 <small>'.$nama_barang.'</small>
                             </a>
                         </td>
@@ -120,11 +120,6 @@
                             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" style="">
                                 <li class="dropdown-header text-start">
                                     <h6>Option</h6>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalDetailBarang" data-id="'.$id_barang.'">
-                                        <i class="bi bi-info-circle"></i> Detail Barang
-                                    </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalEditBarang" data-id="'.$id_barang.'">
