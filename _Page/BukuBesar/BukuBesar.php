@@ -5,15 +5,30 @@
         include "_Page/Error/NoAccess.php";
     }else{
 ?>
+    <div class="pagetitle">
+        <h1>
+            <a href="">
+                <i class="bi bi-graph-down-arrow"></i> Buku Besar</a>
+            </a>
+        </h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
+                <li class="breadcrumb-item active"> Buku Besar</li>
+            </ol>
+        </nav>
+    </div>
     <section class="section dashboard">
         <div class="row">
             <div class="col-md-12">
                 <?php
-                    echo '<div class="alert alert-info alert-dismissible fade show" role="alert">';
-                    echo '  Berikut ini adalah halaman laporan buku besar.';
-                    echo '  Laporan ini menampilkan akumulasi transaksi saldo berdasarkan jurnal pada masing-masing akun.';
-                    echo '  Untuk menampilkan laporan, pilih akun keuangan dan periode transaksi yang diinginkan.';
-                    echo '  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                    echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">';
+                    echo '  <small>';
+                    echo '      Berikut ini adalah halaman laporan buku besar.';
+                    echo '      Laporan ini menampilkan akumulasi transaksi saldo berdasarkan jurnal pada masing-masing akun.';
+                    echo '      Untuk menampilkan laporan, pilih akun keuangan dan periode transaksi yang diinginkan.';
+                    echo '      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                    echo '  </small>';
                     echo '</div>';
                 ?>
             </div>
@@ -26,35 +41,34 @@
                             <div class="row">
                                 <div class="col-md-4 mt-3">
                                     <select name="id_perkiraan" id="id_perkiraan" class="form-control">
-                                        <option value="">Pilih</option>
-                                            <?php
-                                                echo '<option value="">Pilih</option>';
-                                                // Query untuk mengambil akun level 1 (group utama)
-                                                $QryGroupUtama = mysqli_query($Conn, "SELECT * FROM akun_perkiraan WHERE level='1' ORDER BY nama");
-                                                while ($GroupUtama = mysqli_fetch_array($QryGroupUtama)) {
-                                                    $id_perkiraan_utama = $GroupUtama['id_perkiraan'];
-                                                    $kode_utama = $GroupUtama['kode'];
-                                                    $nama_utama = $GroupUtama['nama'];
-                                                    $saldo_normal_utama = $GroupUtama['saldo_normal'];
-                                                    // Tampilkan group utama
-                                                    echo '<optgroup label="'.$nama_utama.' ('.$saldo_normal_utama.')">';
-                                                    // Query untuk mengambil anak group dari group utama berdasarkan kode
-                                                    $QryAnakGroup = mysqli_query($Conn, "SELECT * FROM akun_perkiraan WHERE kode LIKE '$kode_utama%' AND level != '1' ORDER BY nama");
-                                                    while ($AnakGroup = mysqli_fetch_array($QryAnakGroup)) {
-                                                        $id_perkiraan_anak = $AnakGroup['id_perkiraan'];
-                                                        $nama_anak = $AnakGroup['nama'];
-                                                        $saldo_normal_anak = $AnakGroup['saldo_normal'];
-                                                        $kode = $AnakGroup['kode'];
-                                                        $level = $AnakGroup['level'];
-                                                        $LevelTerbawah = mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM akun_perkiraan WHERE kd$level='$kode'"));
-                                                        // Tampilkan anak group
-                                                        if($LevelTerbawah=="1"){
-                                                            echo '<option value="'.$id_perkiraan_anak.'">'.$nama_anak.' ('.$saldo_normal_anak.')</option>';
-                                                        }
+                                        <?php
+                                            echo '<option value="">Pilih</option>';
+                                            // Query untuk mengambil akun level 1 (group utama)
+                                            $QryGroupUtama = mysqli_query($Conn, "SELECT * FROM akun_perkiraan WHERE level='1' ORDER BY nama");
+                                            while ($GroupUtama = mysqli_fetch_array($QryGroupUtama)) {
+                                                $id_perkiraan_utama = $GroupUtama['id_perkiraan'];
+                                                $kode_utama = $GroupUtama['kode'];
+                                                $nama_utama = $GroupUtama['nama'];
+                                                $saldo_normal_utama = $GroupUtama['saldo_normal'];
+                                                // Tampilkan group utama
+                                                echo '<optgroup label="'.$nama_utama.' ('.$saldo_normal_utama.')">';
+                                                // Query untuk mengambil anak group dari group utama berdasarkan kode
+                                                $QryAnakGroup = mysqli_query($Conn, "SELECT * FROM akun_perkiraan WHERE kode LIKE '$kode_utama%' AND level != '1' ORDER BY nama");
+                                                while ($AnakGroup = mysqli_fetch_array($QryAnakGroup)) {
+                                                    $id_perkiraan_anak = $AnakGroup['id_perkiraan'];
+                                                    $nama_anak = $AnakGroup['nama'];
+                                                    $saldo_normal_anak = $AnakGroup['saldo_normal'];
+                                                    $kode = $AnakGroup['kode'];
+                                                    $level = $AnakGroup['level'];
+                                                    $LevelTerbawah = mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM akun_perkiraan WHERE kd$level='$kode'"));
+                                                    // Tampilkan anak group
+                                                    if($LevelTerbawah=="1"){
+                                                        echo '<option value="'.$id_perkiraan_anak.'">'.$nama_anak.' ('.$saldo_normal_anak.')</option>';
                                                     }
-                                                    echo '</optgroup>';
                                                 }
-                                            ?>
+                                                echo '</optgroup>';
+                                            }
+                                        ?>
                                     </select>
                                     <small>Akun Perkiraan</small>
                                 </div>

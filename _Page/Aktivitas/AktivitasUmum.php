@@ -6,15 +6,30 @@
         $mode=$_GET['mode'];
     }
 ?>
+<div class="pagetitle">
+    <h1>
+        <a href="">
+            <i class="bi bi-circle"></i> Log Aktivitas</a>
+        </a>
+    </h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
+            <li class="breadcrumb-item active"> Log Aktivitas</li>
+        </ol>
+    </nav>
+</div>
 <section class="section dashboard">
     <div class="row">
         <div class="col-md-12">
             <?php
-                echo '<div class="alert alert-info alert-dismissible fade show" role="alert">';
-                echo '  Berikut ini adalah halaman data log aktivitas.';
-                echo '  Fitur ini digunakan untuk mempermudah anda dalam melakukan monitoring aktivitas user.';
-                echo '  Tampilkan data menggunakan mode grafik atau tabel sesuai keinginan anda.';
-                echo '  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">';
+                echo '  <small>';
+                echo '      Berikut ini adalah halaman data log aktivitas.';
+                echo '      Fitur ini digunakan untuk mempermudah anda dalam melakukan monitoring aktivitas user.';
+                echo '      Tampilkan data menggunakan mode grafik atau tabel sesuai keinginan anda.';
+                echo '      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                echo '  </small>';
                 echo '</div>';
             ?>
         </div>

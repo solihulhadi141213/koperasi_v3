@@ -5,15 +5,30 @@
         include "_Page/Error/NoAccess.php";
     }else{
 ?>
+    <div class="pagetitle">
+        <h1>
+            <a href="">
+                <i class="bi bi-wallet"></i> Log Simpanan</a>
+            </a>
+        </h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
+                <li class="breadcrumb-item active"> Log Simpanan</li>
+            </ol>
+        </nav>
+    </div>
     <section class="section dashboard">
         <div class="row">
             <div class="col-md-12">
                 <?php
-                    echo '<div class="alert alert-info alert-dismissible fade show" role="alert">';
-                    echo '  Berikut ini adalah halaman log simpanan anggota yang menampilkan semua jenis simpanan secara parsial. ';
-                    echo '  Halaman ini menampilkan semua riwayat simpanan anggota secara spesifik dan anda bisa menambahkan data simpanan non rutin pada halaman ini.';
-                    echo '  Gunakan tombol <b>Filter</b> untuk mempermudah melakukan pencarian data.';
-                    echo '  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                    echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">';
+                    echo '  <small>';
+                    echo '      Berikut ini adalah halaman log simpanan anggota yang menampilkan semua jenis simpanan secara parsial. ';
+                    echo '      Halaman ini menampilkan semua riwayat simpanan anggota secara spesifik dan anda bisa menambahkan data simpanan non rutin pada halaman ini.';
+                    echo '      Gunakan tombol <b>Filter</b> untuk mempermudah melakukan pencarian data.';
+                    echo '      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                    echo '  </small>';
                     echo '</div>';
                 ?>
             </div>

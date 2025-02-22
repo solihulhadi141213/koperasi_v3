@@ -5,11 +5,24 @@
         include "_Page/Error/NoAccess.php";
     }else{
 ?>
+    <div class="pagetitle">
+        <h1>
+            <a href="">
+                <i class="bi bi-table"></i> Rekap Pinjaman</a>
+            </a>
+        </h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
+                <li class="breadcrumb-item active"> Rekap Pinjaman</li>
+            </ol>
+        </nav>
+    </div>
     <section class="section dashboard">
         <div class="row">
             <div class="col-md-12">
                 <?php
-                    echo '<div class="alert alert-info alert-dismissible fade show" role="alert">';
+                    echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">';
                     echo '  Berikut ini halaman rekapitulasi pinjaman anggota.';
                     echo '  Gunakan "Filter" untuk menentukan periode tahun data.';
                     echo '  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';

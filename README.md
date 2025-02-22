@@ -23,10 +23,21 @@ Aplikasi Koperasi V 3.0.0 adalah sebuah aplikasi open source yang dirancang untu
 13. Profil Pengguna
 
 ## Instalasi
-Persyaratan Sistem
+### Persyaratan Sistem
 - PHP 7.4 atau lebih baru
 - MySQL 5.7 / MariaDB 10.3 atau lebih baru
 - Web Server : Wampserver, Xampp
+### Tahapan Instalasi
+- Instal webserver (Xampp, Wamp) terlebih dulu kemudian jalankan.
+- Simpan folder aplikasi pada directory htdoc (untuk pengguna xampp) atau www (untuk pengguna wamp).
+- Masuk ke database dengan cara phpmyadmin dengan cara ketik localhost/phpmyadmin
+- Buat database baru dengan nama apapun (Misalnya : koperasi_v3)
+- Import database aplikasi (database standar aplikasi ini disimpan pada folder db).
+- Atur variabel koneksi database aplikasi pada file _Config/Connection.php
+- Ubah nama database sesuai nama database yang tadi di buat (Misalnya : koperasi_v3).
+- Buka aplikasi dengan cara ketik localhost/{nama_folder_aplikasi}
+- Lakukan login untuk pertama kali dengan memasukan email : dhiforester@gmail.com dan password : dhiforester
+
 
 
 

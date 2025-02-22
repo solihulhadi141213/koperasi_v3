@@ -114,14 +114,14 @@
     });
 </script>
 <div class="row">
-    <div class="col-md-4">
+    <!-- <div class="col-md-4">
         <small class="credit">
             Halaman : <code class="text-grayish"><?php echo "$page/$JmlHalaman"; ?></code>
         </small><br>
         <small class="credit">
             Jumlah Data : <code class="text-grayish"><?php echo "$jml_data"; ?></code>
         </small>
-    </div>
+    </div> -->
     <!-- <div class="col-md-4">
         <small class="credit">
             Order By : <code class="text-grayish"><?php echo "$OrderBy"; ?></code>

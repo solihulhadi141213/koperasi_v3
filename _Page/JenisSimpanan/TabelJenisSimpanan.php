@@ -8,18 +8,18 @@
 ?>
 <?php
     if(empty($SessionIdAkses)){
-        echo '<div class="row">';
-        echo '  <div class="col-md-12 mb-3 text-center">';
-        echo '      <small class="text-danger">Sesi Akses Sudah Berakhir, Silahkan Login Ulang</small>';
-        echo '  </div>';
-        echo '</div>';
+        echo '
+            <tr>
+                <td colspan="7" class="text-center text-danger">Sesi Akses Sudah Berakhir, Silahkan Login Ulang!</td>
+            </tr>
+        ';
     }else{
         if(empty($jml_data)){
-            echo '<div class="row">';
-            echo '  <div class="col col-md-12 text-center text-danger">';
-            echo '      Tidak Ada Data Jenis Simapanan Yang Dapat Ditampilkan';
-            echo '  </div>';
-            echo '</div>';
+            echo '
+                <tr>
+                    <td colspan="7" class="text-center text-danger">Tidak Ada Data Jenis Simapanan Yang Dapat Ditampilkan. Silahkan tambah jenis simpanan terlebih dulu!</td>
+                </tr>
+            ';
         }else{
             $no = 1;
             $query = mysqli_query($Conn, "SELECT*FROM simpanan_jenis ORDER BY id_simpanan_jenis ASC");
@@ -35,82 +35,46 @@
                 $nama_perkiraan_kredit=GetDetailData($Conn,'akun_perkiraan','id_perkiraan',$id_perkiraan_kredit,'nama');
                 //Label Rutin
                 if(empty($rutin)){
-                    $LabelRutin='<span class="text text-danger">Tidak</span>';
+                    $LabelRutin='<span class="text text-danger">Sukarela</span>';
                 }else{
-                    $LabelRutin='<span class="text text-success">Ya</span>';
+                    $LabelRutin='<span class="text text-success">Rutin/Wajib</span>';
                 }
                 $NominalRp = "Rp " . number_format($nominal,0,',','.');
-
-?>
-            <div class="row mb-3 border-1 border-bottom">
-                <div class="col-md-12">
-                    <b><?php echo "$no. $nama_simpanan"; ?></b>
-                </div>
-                <div class="col-md-4">
-                    <ul>
-                        <li>
-                            <small class="credit">
-                                ID Simpanan : <code class="text text-grayish"><?php echo $id_simpanan_jenis; ?></code>
-                            </small>
-                        </li>
-                        <li>
-                            <small class="credit">
-                                Simpanan Wajib : <code class="text text-grayish"><?php echo $LabelRutin; ?></code>
-                            </small>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    <ul>
-                        <li>
-                            <small class="credit">
-                                Akun Debet : <code class="text text-grayish"><?php echo $nama_perkiraan_debet; ?></code>
-                            </small>
-                        </li>
-                        <li>
-                            <small class="credit">
-                                Akun Kredit : <code class="text text-grayish"><?php echo $nama_perkiraan_kredit; ?></code>
-                            </small>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-md-3">
-                    <ul>
-                        <li>
-                            <small class="credit">
-                                Nominal : <code class="text text-grayish"><?php echo $NominalRp; ?></code>
-                            </small>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-md-1 text-center">
-                    <a class="btn btn-sm btn-outline-dark btn-rounded mb-3" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-three-dots"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" style="">
-                        <li class="dropdown-header text-start">
-                            <h6>Option</h6>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalDetailJenisSimpanan" data-id="<?php echo "$id_simpanan_jenis"; ?>">
-                                <i class="bi bi-info-circle"></i> Detail
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalEditJenisSimpanan" data-id="<?php echo "$id_simpanan_jenis"; ?>">
-                                <i class="bi bi-pencil"></i> Edit
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalHapusJenisSimpanan" data-id="<?php echo "$id_simpanan_jenis"; ?>">
-                                <i class="bi bi-x"></i> Hapus
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-<?php
+                echo '
+                    <tr>
+                        <td><small>'.$no.'</small></td>
+                        <td><small>'.$nama_simpanan.'</small></td>
+                        <td><small>'.$LabelRutin.'</small></td>
+                        <td><small>'.$nama_perkiraan_debet.'</small></td>
+                        <td><small>'.$nama_perkiraan_kredit.'</small></td>
+                        <td><small>'.$NominalRp.'</small></td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-sm btn-outline-dark btn-floating" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-three-dots"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" style="">
+                                <li class="dropdown-header text-start">
+                                    <h6>Option</h6>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalDetailJenisSimpanan" data-id="'.$id_simpanan_jenis.'">
+                                        <i class="bi bi-info-circle"></i> Detail
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalEditJenisSimpanan" data-id="'.$id_simpanan_jenis.'">
+                                        <i class="bi bi-pencil"></i> Edit
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalHapusJenisSimpanan" data-id="'.$id_simpanan_jenis.'">
+                                        <i class="bi bi-x"></i> Hapus
+                                    </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                ';
                 $no++;
             }
         }

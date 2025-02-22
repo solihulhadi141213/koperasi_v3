@@ -31,15 +31,29 @@
     $JumlahSimpananBersih=$JumlahSimpananKotor-$JumlahPenarikan;
     $JumlahSimpananBersihFormat = "" . number_format($JumlahSimpananBersih,0,',','.');
 ?>
+<div class="pagetitle">
+    <h1>
+        <a href="">
+            <i class="bi bi-grid"></i> Dashboard
+        </a>
+    </h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active">Dashboard</li>
+        </ol>
+    </nav>
+</div>
 <section class="section dashboard">
     <div class="row">
         <div class="col-md-12">
             <?php
-                echo '<div class="alert alert-info alert-dismissible fade show" role="alert">';
-                echo '  Selamat Datang Di Halaman Utama <b>'.$title_page.'</b><br> ';
-                echo '  Pada halaman ini anda bisa melihat semua riwayat transaksi anda.<br>';
-                echo '  Hubungi pengurus/admin apabila terdapat kesalahan pada pencatatan transaksi untuk dapat segera diperbaiki.';
-                echo '  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">';
+                echo '  <small>';
+                echo '      Selamat Datang Di Halaman Utama <b>'.$title_page.'</b><br> ';
+                echo '      Pada halaman ini anda bisa melihat semua riwayat transaksi anda.';
+                echo '      Hubungi pengurus/admin apabila terdapat kesalahan pada pencatatan transaksi untuk dapat segera diperbaiki.';
+                echo '      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                echo '  </small>';
                 echo '</div>';
             ?>
         </div>

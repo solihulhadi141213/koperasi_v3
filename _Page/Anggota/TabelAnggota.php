@@ -107,7 +107,7 @@
         })
     });
 </script>
-<div class="row">
+<!-- <div class="row">
     <div class="col-md-4">
         <small class="credit">
             Halaman : <code class="text-grayish"><?php echo "$page/$JmlHalaman"; ?></code>
@@ -116,7 +116,7 @@
             Jumlah Data : <code class="text-grayish"><?php echo "$jml_data"; ?></code>
         </small>
     </div>
-</div>
+</div> -->
 <div class="row mb-3">
     <div class="table table-responsive">
         <table class="table table-bordered table-hover">

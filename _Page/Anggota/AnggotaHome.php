@@ -5,15 +5,30 @@
         include "_Page/Error/NoAccess.php";
     }else{
 ?>
+    <div class="pagetitle">
+        <h1>
+            <a href="">
+                <i class="bi bi-people"></i> Anggota Koperasi</a>
+            </a>
+        </h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
+                <li class="breadcrumb-item active">Anggota Koperasi</li>
+            </ol>
+        </nav>
+    </div>
     <section class="section dashboard">
         <div class="row">
             <div class="col-md-12">
                 <?php
-                    echo '<div class="alert alert-info alert-dismissible fade show" role="alert">';
-                    echo '  Berikut ini adalah halaman pengelolaan data anggota.<br>';
-                    echo '  Anda bisa menambahkan data anggota baru, merubah informasi identitas, melihat detail informasi anggota, dan melihat riwayat transaksi anggota.<br>';
-                    echo '  Untuk melihat data keluar masuk anggota, silahkan lihat opsi lanjutan dan tampilkan rekapitulasi data keluar masuk anggota.';
-                    echo '  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                    echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">';
+                    echo '  <small>';
+                    echo '      Berikut ini adalah halaman pengelolaan data anggota. ';
+                    echo '      Anda bisa menambahkan data anggota baru, merubah informasi identitas, melihat detail informasi anggota, dan melihat riwayat transaksi anggota.';
+                    echo '      Apabila anda sudah memiliki data anggota dalam bentuk excel, silahkan gunakan fitur import pada tombol opsi lanjutan.';
+                    echo '      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                    echo '  </small>';
                     echo '</div>';
                 ?>
             </div>

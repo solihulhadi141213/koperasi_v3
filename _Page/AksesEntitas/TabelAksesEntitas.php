@@ -113,7 +113,7 @@
         })
     });
 </script>
-<div class="row mb-3">
+<!-- <div class="row mb-3">
     <div class="col-md-4">
         <small class="credit">
             Halaman : <code class="text-grayish"><?php echo "$page/$JmlHalaman"; ?></code>
@@ -122,7 +122,7 @@
             Row : <code class="text-grayish"><?php echo "$jml_data Record"; ?></code>
         </small>
     </div>
-</div>
+</div> -->
 <div class="row mb-3">
     <div class="table table-responsive">
         <table class="table table-bordered table-hover">

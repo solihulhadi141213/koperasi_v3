@@ -23,7 +23,7 @@
             <div class="col-md-12">
                 <?php
                     echo '
-                        <div class="alert alert-info alert-dismissible fade show" role="alert">
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
                             <small>
                                 Berikut ini adalah halaman pengelolaan data fitur aplikasi yang digunakan oleh pengembang untuk memetakan ijin akses setiap pengguna pada halaman dan modul aplikasi. 
                                 Penting untuk diketahui bahwa mengubah data pada halaman ini, akan merubah aturan khusus pada fitur yang digunakan. 

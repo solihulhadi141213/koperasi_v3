@@ -4,14 +4,30 @@
     $SessionWaktuDaftarDatetime=date('d/m/Y H:i T',$strtotime1);
     $SessionWaktuUpdateDatetime=date('d/m/Y H:i T',$strtotime2);
 ?>
+<div class="pagetitle">
+    <h1>
+        <a href="">
+            <i class="bi bi-person-circle"></i> Profil Saya</a>
+        </a>
+    </h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
+            <li class="breadcrumb-item active"> Profil Saya</li>
+        </ol>
+    </nav>
+</div>
 <section class="section dashboard">
     <div class="row mb-3">
         <div class="col-md-12">
             <?php
-                echo '<div class="alert alert-info alert-dismissible fade show" role="alert">';
-                echo '  Berikut ini adalah halaman profil yang digunakan untuk mengelola informasi akses anda.<br>';
-                echo '  Pada halaman ini anda bisa melakukan perubahan data akses (Nama, Email, Password dan Foto Profile).<br>';
-                echo '  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">';
+                echo '  <small>';
+                echo '      Berikut ini adalah halaman profil yang digunakan untuk mengelola informasi akses anda.';
+                echo '      Pada halaman ini anda bisa melakukan perubahan data akses (Nama, Email, Password dan Foto Profile).';
+                echo '      Pada bagian kolom izin akses menunjukan informasi fitur apa saja yang bisa anda gunakan pada aplikasi ini. ';
+                echo '      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                echo '  </small>';
                 echo '</div>';
             ?>
         </div>

@@ -8,7 +8,7 @@
     <div class="pagetitle">
         <h1>
             <a href="">
-                <i class="bi bi-app"></i> Entitas Pengurus</a>
+                <i class="bi bi-layers"></i> Entitas Pengurus</a>
             </a>
         </h1>
         <nav>
@@ -22,10 +22,12 @@
         <div class="row">
             <div class="col-md-12">
                 <?php
-                    echo '<div class="alert alert-info alert-dismissible fade show" role="alert">';
-                    echo '  Pada halaman ini, memungkinkan anda untuk membagi pengguna menjadi beberapa bagian entitas yang memiliki hak akses berbeda-beda satu dengan yang lainnya.';
-                    echo '  Dengan menggunakan AksesEntitas ini, dapat mempermudah anda dalam memonitoring pengguna apikasi yang dibagi dalam beberapa kelompok.';
-                    echo '  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                    echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">';
+                    echo '  <small>';
+                    echo '      Fitur ini memungkinkan anda untuk membagi pengguna menjadi beberapa bagian entitas yang memiliki hak akses berbeda-beda satu dengan yang lainnya.';
+                    echo '      Dengan menggunakan AksesEntitas ini, dapat mempermudah anda dalam memonitoring pengguna apikasi yang dibagi dalam beberapa kelompok.';
+                    echo '      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                    echo '  </small>';
                     echo '</div>';
                 ?>
             </div>

@@ -5,15 +5,30 @@
         include "_Page/Error/NoAccess.php";
     }else{
 ?>
+    <div class="pagetitle">
+        <h1>
+            <a href="">
+                <i class="bi bi-cart-check"></i> Jenis Transaksi</a>
+            </a>
+        </h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
+                <li class="breadcrumb-item active"> Jenis Transaksi</li>
+            </ol>
+        </nav>
+    </div>
     <section class="section dashboard">
         <div class="row">
             <div class="col-md-12">
                 <?php
-                    echo '<div class="alert alert-info alert-dismissible fade show" role="alert">';
-                    echo '  Berikut ini adalah halaman pengelolaan data jenis transaksi.<br>';
-                    echo '  Fitur ini berfungsi untuk menyimpan pengaturan transaksi berdasarkan jenis transaksi yang mungkin dilakukan.<br>';
-                    echo '  Jenis transaksi juga merepresentasikan alur pembukuan pada jurnal akuntansi sehingga bisa dilakukan lebih cepat dan ringkas.';
-                    echo '  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                    echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">';
+                    echo '  <small>';
+                    echo '      Berikut ini adalah halaman pengelolaan data jenis transaksi.';
+                    echo '      Fitur ini berfungsi untuk menyimpan pengaturan transaksi berdasarkan jenis transaksi yang mungkin dilakukan.';
+                    echo '      Jenis transaksi juga merepresentasikan alur pembukuan pada jurnal akuntansi sehingga bisa dilakukan lebih cepat dan ringkas.';
+                    echo '      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                    echo '  </small>';
                     echo '</div>';
                 ?>
             </div>

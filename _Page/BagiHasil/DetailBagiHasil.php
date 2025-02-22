@@ -1,14 +1,29 @@
+<div class="pagetitle">
+    <h1>
+        <a href="">
+            <i class="bi bi-calculator"></i> Bagi Hasil</a>
+        </a>
+    </h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
+            <li class="breadcrumb-item active"> Bagi Hasil</li>
+        </ol>
+    </nav>
+</div>
 <?php
     if(empty($_GET['id'])){
         echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">';
         echo '  Tidak ada ID Sesi Bagi Hasil Yang Ditampilkan.';
         echo '</div>';
     }else{
-        echo '<div class="alert alert-info alert-dismissible fade show" role="alert">';
-        echo '  Berikut ini adalah detail informasi bagi hasil (SHU) yang sudah anda buat.<br>';
-        echo '  Pada halaman ini anda bisa melihat uraian lengkap pembagian hasil (SHU) untuk masing-masing anggota.<br>';
-        echo '  Jangan lupa juga untuk melengkapi informasi jurnal keuangan untuk mencatat transaksi pada neraca saldo.<br>';
-        echo '  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">';
+        echo '  <small>';
+        echo '      Berikut ini adalah detail informasi bagi hasil (SHU) yang sudah anda buat.';
+        echo '      Pada halaman ini anda bisa melihat uraian lengkap pembagian hasil (SHU) untuk masing-masing anggota.';
+        echo '      Jangan lupa juga untuk melengkapi informasi jurnal keuangan untuk mencatat transaksi pada neraca saldo.';
+        echo '      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+        echo '  </small>';
         echo '</div>';
         $id_shu_session=$_GET['id'];
         //Buka Data Bagi Hasil

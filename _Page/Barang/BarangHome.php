@@ -23,7 +23,7 @@
             <div class="col-md-12">
                 <?php
                     echo '
-                        <div class="alert alert-info alert-dismissible fade show" role="alert">
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
                             <small>
                                 Berikut ini adalah halaman kelola data barang. Anda bisa menambahkan data barang baru, kelola stok, 
                                 kelola informasi satuan, multi harga dan multi stok. Anda juga bisa memanfaatkan fitur database untuk 

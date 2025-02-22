@@ -5,16 +5,31 @@
         include "_Page/Error/NoAccess.php";
     }else{
 ?>
+    <div class="pagetitle">
+        <h1>
+            <a href="">
+                <i class="bi bi-exclamation-diamond"></i> Tagihan Pinjaman</a>
+            </a>
+        </h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
+                <li class="breadcrumb-item active"> Tagihan Pinjaman</li>
+            </ol>
+        </nav>
+    </div>
     <section class="section dashboard">
         <div class="row">
             <div class="col-md-12">
                 <?php
-                    echo '<div class="alert alert-info alert-dismissible fade show" role="alert">';
-                    echo '  Berikut ini halaman data tagihan pinjaman anggota.';
-                    echo '  Data yang ditampilkan adalah data pinjaman yang masih berjalan.';
-                    echo '  Sistem akan melakukan filter dan perhitungan jumlah angsuran yang belum dibayar.';
-                    echo '  Lihat masing-masing detail data untukk mengetahui rincian tunggakan.';
-                    echo '  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                    echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">';
+                    echo '  <small>';
+                    echo '      Berikut ini halaman data tagihan pinjaman anggota.';
+                    echo '      Data yang ditampilkan adalah data pinjaman yang masih berjalan.';
+                    echo '      Sistem akan melakukan filter dan perhitungan jumlah angsuran yang belum dibayar.';
+                    echo '      Lihat masing-masing detail data untukk mengetahui rincian tunggakan.';
+                    echo '      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                    echo '  </small>';
                     echo '</div>';
                 ?>
             </div>

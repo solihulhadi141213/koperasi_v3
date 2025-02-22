@@ -34,14 +34,28 @@
             $JumlahJurnal = mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM jurnal WHERE kategori='Transaksi' AND uuid='$uuid_transaksi'"));
             echo '<input type="hidden" name="id_transaksi" id="get_id_transaksi" value="'.$id_transaksi.'">';
     ?>
-        
+        <div class="pagetitle">
+            <h1>
+                <a href="">
+                    <i class="bi bi-cart-check"></i> Data Transaksi</a>
+                </a>
+            </h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
+                    <li class="breadcrumb-item active"> Data Transaksi</li>
+                </ol>
+            </nav>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <?php
-                    echo '<div class="alert alert-info alert-dismissible fade show" role="alert">';
-                    echo '  Berikut ini halaman detail informasi transaksi.';
-                    echo '  Halaman ini berfungsi untuk menampilkan uraian/rincian transaksi dan jurnal keuangan yang terhubung dengan transaksi tersebut';
-                    echo '  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                    echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">';
+                    echo '  <small>';
+                    echo '      Berikut ini halaman detail informasi transaksi.';
+                    echo '      Halaman ini berfungsi untuk menampilkan uraian/rincian transaksi dan jurnal keuangan yang terhubung dengan transaksi tersebut';
+                    echo '      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                    echo '  </small>';
                     echo '</div>';
                 ?>
             </div>

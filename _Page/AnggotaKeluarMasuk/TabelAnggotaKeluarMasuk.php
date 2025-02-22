@@ -27,7 +27,7 @@
             $month=$_POST['bulan'];
         }
 ?>
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-md-12">
             <small>
                 <ul>
@@ -43,7 +43,7 @@
                 </ul>
             </small>
         </div>
-    </div>
+    </div> -->
     <div class="row mb-3">
         <div class="col-md-12">
             <div class="table-responsive">
