@@ -138,7 +138,14 @@
                     if ($stmt->execute()) {
                         //Jika Berhasil Lanjutkan Input Multi Harga
                         $id_barang=GetDetailData($Conn,'barang','kode_barang',$kode,'id_barang');
-                        $jumlah_data_multi=count($_POST['harga_multi']);
+                        if(empty($_POST['harga_multi'])){
+                            $jumlah_data_multi=0;
+                        }else{
+                            $jumlah_data_multi=count($_POST['harga_multi']);
+                        }
+                        $jumlah_berhasil=0;
+
+                        //Buka Kategori Harga
                         $stmt = $Conn->prepare("SELECT * FROM barang_kategori_harga");
                         $stmt->execute();
                         $result = $stmt->get_result();

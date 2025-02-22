@@ -149,8 +149,8 @@
 
 <script>
     //Creat Javascript Variabel
-    var page_count="<?php echo $JmlHalaman; ?>";
-    var curent_page="<?php echo $page; ?>";
+    var page_count=<?php echo $JmlHalaman; ?>;
+    var curent_page=<?php echo $page; ?>;
     
     //Put Into Pagging Element
     $('#page_info').html('Page '+curent_page+' Of '+page_count+'');

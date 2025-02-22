@@ -62,6 +62,9 @@
             $harga_beli=$Data['harga_beli'];
             $stok_barang=$Data['stok_barang'];
             $stok_minimum=$Data['stok_minimum'];
+            //Lakukan pembulatan
+            $harga_beli = (float) $harga_beli; // Konversi ke float
+            $harga_beli = ($harga_beli == floor($harga_beli)) ? (int)$harga_beli : $harga_beli;
             //Format Harga RP
             $harga_beli_format = "Rp " . number_format($harga_beli,0,',','.');
             //Hitung Jumlah Item
@@ -98,7 +101,7 @@
             while ($row = $result->fetch_assoc()) {
                 // Format harga agar lebih rapi
                 $harga_multi = $row['harga'];
-                $harga_multi_format = number_format($row['harga'], 2, ',', '.');
+                $harga_multi_format = number_format($row['harga'], 0, ',', '.');
 
                 // Masukkan ke dalam array multi_harga
                 $multi_harga[] = [

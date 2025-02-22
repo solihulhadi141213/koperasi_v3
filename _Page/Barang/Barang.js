@@ -520,7 +520,6 @@ $(document).ready(function() {
     //Modal Detail Barang
     $('#ModalDetailBarang').on('show.bs.modal', function (e) {
         var id_barang= $(e.relatedTarget).data('id');
-        $('#FormDetailBarang').html("Loading...");
         $.ajax({
             type 	    : 'POST',
             url 	    : '_Page/Barang/detail_barang.php',
@@ -528,6 +527,13 @@ $(document).ready(function() {
             dataType    : "json",
             success     : function(response){
                 if(response.status=="Success"){
+                    //Sembunyikan Notifikasi Detail Barang
+                    $("#NotifikasiDetailBarang").hide();
+
+                    //Munculkan Form Detail
+                    $("#form_detail_barang").show();
+
+                    //Buka Data
                     var data = response.dataset;
                     var multi_harga = response.multi_harga || [];
 
@@ -545,23 +551,331 @@ $(document).ready(function() {
 
                     // Looping multi_harga dan tambahkan ke tampilan
                     $.each(multi_harga, function (index, item) {
-                        var hargaFormatted = item.harga_format.replace(",", "."); // Sesuaikan pemisah desimal
                         var row = `<div class="row mb-2">
                                     <div class="col-4"><small>${item.kategori_harga}</small></div>
-                                    <div class="col-8"><small><code class="text-grayish">Rp ${hargaFormatted}</code></small></div>
+                                    <div class="col-8"><small><code class="text-grayish">Rp ${item.harga_format}</code></small></div>
                                 </div>`;
                         $("#informasi_multi_harga").append(row);
                     });
                 }else{
-                    $('#form_detail_barang').html(
+                    //Munculkan Notifikasi Detail Barang
+                    $("#NotifikasiDetailBarang").show();
+                        
+                    //Sembunyikan Form Detail
+                    $("#form_detail_barang").hide();
+
+                    //Tempelkan Notifikasi
+                    $('#NotifikasiDetailBarang').html(
                         `<div class="alert alert-danger" role="alert">${response.message}</div>`
                     );
                 }
             },
             error: function () {
-                $('#form_detail_barang').html(
+                //Munculkan Notifikasi Detail Barang
+                $("#NotifikasiDetailBarang").show();
+                    
+                //Sembunyikan Form Detail
+                $("#form_detail_barang").hide();
+                
+                //Tempelkan Notifikasi
+                $('#NotifikasiDetailBarang').html(
                     '<div class="alert alert-danger" role="alert">Terjadi kesalahan pada sistem. Silakan coba lagi.</div>'
                 );
+            },
+        });
+    });
+
+    //Modal Edit Barang
+    $('#ModalEditBarang').on('show.bs.modal', function (e) {
+        var id_barang= $(e.relatedTarget).data('id');
+        //Kosongkan Notifikasi
+        $('#NotifikasiEditBarang').html("");
+        $.ajax({
+            type 	    : 'POST',
+            url 	    : '_Page/Barang/detail_barang.php',
+            data        : {id_barang: id_barang},
+            dataType    : "json",
+            success     : function(response){
+                if(response.status=="Success"){
+
+                    //Kosongkan Notifikasi
+                    $('#NotifikasiEditBarang').html("");
+                        
+                    //Munculkan Form
+                    $("#form_edit_barang").show();
+
+                    var data = response.dataset;
+                    var multi_harga = response.multi_harga || [];
+
+                    // Tempelkan Data ke Elemen yang Sesuai Form
+                    $('#put_id_barang_edit').val(`${id_barang}`);
+                    $('#kode_edit').val(`${data.kode_barang}`);
+                    $('#nama_edit').val(`${data.nama_barang}`);
+                    $('#kategori_edit').val(`${data.kategori_barang}`);
+                    $('#satuan_edit').val(`${data.satuan_barang}`);
+                    $('#isi_edit').val(`${data.konversi}`);
+                    $('#stok_edit').val(`${data.stok_barang}`);
+                    $('#stok_min_edit').val(`${data.stok_minimum}`);
+                    $('#harga_edit').val(`${data.harga_beli}`);
+
+                    // Menampilkan list_kategori_edit
+                    $.ajax({
+                        type    : 'POST',
+                        url     : '_Page/Barang/list_kategori.php',
+                        success: function(data) {
+                            $('#list_kategori_edit').html(data);
+                        }
+                    });
+
+                    // Menampilkan list_satuan_edit
+                    $.ajax({
+                        type    : 'POST',
+                        url     : '_Page/Barang/list_satuan.php',
+                        success: function(data) {
+                            $('#list_satuan_edit').html(data);
+                        }
+                    });
+
+                    // Menampilkan form multi harga
+                    $.ajax({
+                        type    : 'POST',
+                        url     : '_Page/Barang/form_multi_harga_edit.php',
+                        data    : {id_barang: id_barang},
+                        success: function(data) {
+                            $('#form_multi_harga_edit').html(data);
+
+                            // Setelah form multi harga dimuat, inisialisasi input form-money
+                            initializeMoneyInputs();  // Memastikan elemen baru diformat
+                        }
+                    });
+
+                    // Inisialisasi elemen form-money untuk input yang sudah ada
+                    initializeMoneyInputs();
+                }else{
+                    //Sembunyikan Form
+                    $("#form_edit_barang").hide();
+
+                    //Tempelkan Notifikasi
+                    $('#NotifikasiEditBarang').html(
+                        `<div class="alert alert-danger" role="alert">${response.message}</div>`
+                    );
+                }
+            },
+            error: function () {
+
+                //Sembunyikan Form
+                $("#form_edit_barang").hide();
+                
+                //Tempelkan Notifikasi
+                $('#NotifikasiEditBarang').html(
+                    '<div class="alert alert-danger" role="alert">Terjadi kesalahan pada sistem. Silakan coba lagi.</div>'
+                );
+            },
+        });
+    });
+
+    //Proses Edit Barang
+    $("#ProsesEditBarang").on("submit", function (e) {
+        e.preventDefault();
+        // Tombol loading
+        let $FormElement = $("#ProsesEditBarang");
+        let $ModalElement = $("#ModalEditBarang");
+        let $Notifikasi = $("#NotifikasiEditBarang");
+        let $ButtonProses = $("#ButtonEditBarang");
+        let ButtonElement = '<i class="bi bi-save"></i> Simpan';
+        $ButtonProses.html('Loading..');
+        $ButtonProses.prop("disabled", true);
+
+        // Ambil data form
+        let formData = new FormData(this);
+
+        // Kirim data ke server
+        $.ajax({
+            url         : "_Page/Barang/ProsesEditBarang.php",
+            type        : "POST",
+            data        : formData,
+            contentType : false,
+            processData : false,
+            dataType    : "json",
+            success: function (response) {
+                //Apabila Proses Berhasil
+                if (response.status === "Success") {
+                    
+                    //reset form
+                    $FormElement[0].reset();
+
+                    //Tampilkan Ulang Data Tanpa Reset
+                    ShowData();
+                    
+                    // Tampilkan swal notifikasi
+                    Swal.fire(
+                        'Success!',
+                        'Edit Barang Berhasil!',
+                        'success'
+                    )
+
+                    // Reset tombol
+                    $ButtonProses.html(ButtonElement);
+                    $ButtonProses.prop("disabled", false);
+
+                    //Kosongkan Notifikasi
+                    $Notifikasi.html('');
+
+                    //Tutup Modal
+                    $ModalElement.modal('hide');
+                } else {
+                    // Tampilkan pesan error
+                    $Notifikasi.html(
+                        `<div class="alert alert-danger" role="alert">${response.message}</div>`
+                    );
+                    $ButtonProses.html(ButtonElement).prop("disabled", false);
+                }
+            },
+            error: function () {
+                $Notifikasi.html(
+                    '<div class="alert alert-danger" role="alert">Terjadi kesalahan pada sistem. Silakan coba lagi.</div>'
+                );
+                $ButtonProses.html(ButtonElement).prop("disabled", false);
+            },
+        });
+    });
+
+    //Modal Hapus Barang
+    $('#ModalHapusBarang').on('show.bs.modal', function (e) {
+        var id_barang= $(e.relatedTarget).data('id');
+        //Kosongkan Notifikasi
+        $('#NotifikasiHapusBarang').html("");
+        $.ajax({
+            type 	    : 'POST',
+            url 	    : '_Page/Barang/detail_barang.php',
+            data        : {id_barang: id_barang},
+            dataType    : "json",
+            success     : function(response){
+                if(response.status=="Success"){
+
+                    //Kosongkan Notifikasi
+                    $('#NotifikasiHapusBarang').html("");
+
+                    var data = response.dataset;
+                    var nama_barang=data.nama_barang;
+                    var kode_barang=data.kode_barang;
+                    var kategori_barang=data.kategori_barang;
+                    var satuan_barang=data.satuan_barang;
+                    //Tempelkan Ke Form
+                    $('#FormHapusBarang').html(`
+                        <input type="hidden" name="id_barang" value="${id_barang}">
+                        <div class="row mb-2">
+                            <div class="col-4"><small>Kode Barang</small></div>
+                            <div class="col-8">
+                                <small><code class="text text-grayish">${kode_barang}</code></small>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><small>Nama/Merek</small></div>
+                            <div class="col-8">
+                                <small><code class="text text-grayish">${nama_barang}</code></small>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><small>Kategori</small></div>
+                            <div class="col-8">
+                                <small><code class="text text-grayish">${kategori_barang}</code></small>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><small>Satuan</small></div>
+                            <div class="col-8">
+                                <small><code class="text text-grayish">${satuan_barang}</code></small>
+                            </div>
+                        </div>
+                        <div class="row mb-2 mt-3">
+                            <div class="col-12">Apakah anda yakin akan menghapus data barang tersebut?</div>
+                        </div>
+                    `);
+                    //Enable tombol
+                    $('#ButtonHapusBarang').prop("disabled", false);
+                }else{
+                    //Tempelkan Notifikasi
+                    $('#NotifikasiHapusBarang').html(
+                        `<div class="alert alert-danger" role="alert">${response.message}</div>`
+                    );
+                    //Disable tombol
+                    $('#ButtonHapusBarang').prop("disabled", true);
+                }
+            },
+            error: function () {
+                //Tempelkan Notifikasi
+                $('#NotifikasiHapusBarang').html(
+                    '<div class="alert alert-danger" role="alert">Terjadi kesalahan pada sistem. Silakan coba lagi.</div>'
+                );
+                //Disable tombol
+                $('#ButtonHapusBarang').prop("disabled", true);
+            },
+        });
+    });
+
+    //Proses Hapus Barang
+    $("#ProsesHapusBarang").on("submit", function (e) {
+        e.preventDefault();
+        // Tombol loading
+        let $FormElement = $("#ProsesHapusBarang");
+        let $ModalElement = $("#ModalHapusBarang");
+        let $Notifikasi = $("#NotifikasiHapusBarang");
+        let $ButtonProses = $("#ButtonHapusBarang");
+        let ButtonElement = '<i class="bi bi-check"></i> Ya, Hapus';
+        $ButtonProses.html('Loading..');
+        $ButtonProses.prop("disabled", true);
+
+        // Ambil data form
+        let formData = new FormData(this);
+
+        // Kirim data ke server
+        $.ajax({
+            url         : "_Page/Barang/ProsesHapusBarang.php",
+            type        : "POST",
+            data        : formData,
+            contentType : false,
+            processData : false,
+            dataType    : "json",
+            success: function (response) {
+                //Apabila Proses Berhasil
+                if (response.status === "Success") {
+                    
+                    //reset form
+                    $FormElement[0].reset();
+
+                    //Tampilkan Ulang Data Tanpa Reset
+                    ShowData();
+                    
+                    // Tampilkan swal notifikasi
+                    Swal.fire(
+                        'Success!',
+                        'Hapus Barang Berhasil!',
+                        'success'
+                    )
+
+                    // Reset tombol
+                    $ButtonProses.html(ButtonElement);
+                    $ButtonProses.prop("disabled", false);
+
+                    //Kosongkan Notifikasi
+                    $Notifikasi.html('');
+
+                    //Tutup Modal
+                    $ModalElement.modal('hide');
+                } else {
+                    // Tampilkan pesan error
+                    $Notifikasi.html(
+                        `<div class="alert alert-danger" role="alert">${response.message}</div>`
+                    );
+                    $ButtonProses.html(ButtonElement).prop("disabled", false);
+                }
+            },
+            error: function () {
+                $Notifikasi.html(
+                    '<div class="alert alert-danger" role="alert">Terjadi kesalahan pada sistem. Silakan coba lagi.</div>'
+                );
+                $ButtonProses.html(ButtonElement).prop("disabled", false);
             },
         });
     });
@@ -569,226 +883,6 @@ $(document).ready(function() {
 });
 
 
-
-
-
-
-
-//Detail Barang
-$('#ModalDetailBarang').on('show.bs.modal', function (e) {
-    var id_barang= $(e.relatedTarget).data('id');
-    $('#FormDetailBarang').html("Loading...");
-    $.ajax({
-        type 	    : 'POST',
-        url 	    : '_Page/Barang/FormDetailBarang.php',
-        data        : {id_barang: id_barang},
-        success     : function(data){
-            $('#FormDetailBarang').html(data);
-        }
-    });
-});
-//Edit Barang
-$('#ModalEditBarang').on('show.bs.modal', function (e) {
-    var GetData = $(e.relatedTarget).data('id');
-    var pecah = GetData.split(",");
-    var id_barang = pecah[0];
-    var keyword = pecah[1];
-    var batas = pecah[2];
-    var ShortBy = pecah[3];
-    var OrderBy = pecah[4];
-    var page = pecah[5];
-    var posisi = pecah[6];
-    var keyword_by = pecah[7];
-    $('#FormEditBarang').html("Loading...");
-    $.ajax({
-        type 	    : 'POST',
-        url 	    : '_Page/Barang/FormEditBarang.php',
-        data        : {id_barang: id_barang},
-        success     : function(data){
-            $('#FormEditBarang').html(data);
-            //menambahkan field
-            $('#ButtonTambahKategoriHargaEdit').click(function(){
-                var form = $('#ProsesEditBarang')[0];
-                var data = new FormData(form);
-                $.ajax({
-                    type 	    : 'POST',
-                    url 	    : '_Page/Barang/ListKategoriHarga.php',
-                    data 	    :  data,
-                    cache       : false,
-                    processData : false,
-                    contentType : false,
-                    enctype     : 'multipart/form-data',
-                    success     : function(data){
-                        $('#ListKategoriHargaEdit').html(data);
-                    }
-                });
-            });
-            $('#HapusKategoriHargaEdit').click(function(){
-                var form = $('#ProsesEditBarang')[0];
-                var data = new FormData(form);
-                $.ajax({
-                    type 	    : 'POST',
-                    url 	    : '_Page/Barang/ListKategoriHargaHapus.php',
-                    data 	    :  data,
-                    cache       : false,
-                    processData : false,
-                    contentType : false,
-                    enctype     : 'multipart/form-data',
-                    success     : function(data){
-                        $('#ListKategoriHargaEdit').html(data);
-                    }
-                });
-            });
-            //Proses Edit Barang
-            $('#ProsesEditBarang').submit(function(){
-                $('#NotifikasiEditBarang').html('<div class="spinner-border text-secondary" role="status"><span class="sr-only"></span></div>');
-                var form = $('#ProsesEditBarang')[0];
-                var data = new FormData(form);
-                $.ajax({
-                    type 	    : 'POST',
-                    url 	    : '_Page/Barang/ProsesEditBarang.php',
-                    data 	    :  data,
-                    cache       : false,
-                    processData : false,
-                    contentType : false,
-                    enctype     : 'multipart/form-data',
-                    success     : function(data){
-                        $('#NotifikasiEditBarang').html(data);
-                        var NotifikasiEditBarangBerhasil=$('#NotifikasiEditBarangBerhasil').html();
-                        if(NotifikasiEditBarangBerhasil=="Success"){
-                            $('#ModalEditBarang').modal('toggle');
-                            $('#MenampilkanTabelBarang').html('Loading...');
-                            $.ajax({
-                                type 	    : 'POST',
-                                url 	    : '_Page/Barang/TabelBarang.php',
-                                data 	    :  {keyword: keyword, batas: batas, ShortBy: ShortBy, OrderBy: OrderBy, page: page, posisi: posisi, keyword_by: keyword_by},
-                                success     : function(data){
-                                    $('#MenampilkanTabelBarang').html(data);
-                                    swal("Good Job!", "Edit Barang Berhasil!", "success");
-                                }
-                            });
-                        }
-                    }
-                });
-            });
-        }
-    });
-});
-//Edit Barang
-$('#ModalEditBarang2').on('show.bs.modal', function (e) {
-    var id_barang = $(e.relatedTarget).data('id');
-    $('#FormEditBarang2').html("Loading...");
-    $.ajax({
-        type 	    : 'POST',
-        url 	    : '_Page/Barang/FormEditBarang.php',
-        data        : {id_barang: id_barang},
-        success     : function(data){
-            $('#FormEditBarang2').html(data);
-            //menambahkan field
-            $('#ButtonTambahKategoriHargaEdit').click(function(){
-                var form = $('#ProsesEditBarang2')[0];
-                var data = new FormData(form);
-                $.ajax({
-                    type 	    : 'POST',
-                    url 	    : '_Page/Barang/ListKategoriHarga.php',
-                    data 	    :  data,
-                    cache       : false,
-                    processData : false,
-                    contentType : false,
-                    enctype     : 'multipart/form-data',
-                    success     : function(data){
-                        $('#ListKategoriHargaEdit').html(data);
-                    }
-                });
-            });
-            $('#HapusKategoriHargaEdit').click(function(){
-                var form = $('#ProsesEditBarang2')[0];
-                var data = new FormData(form);
-                $.ajax({
-                    type 	    : 'POST',
-                    url 	    : '_Page/Barang/ListKategoriHargaHapus.php',
-                    data 	    :  data,
-                    cache       : false,
-                    processData : false,
-                    contentType : false,
-                    enctype     : 'multipart/form-data',
-                    success     : function(data){
-                        $('#ListKategoriHargaEdit').html(data);
-                    }
-                });
-            });
-            //Proses Edit Barang
-            $('#ProsesEditBarang2').submit(function(){
-                $('#NotifikasiEditBarang').html('<div class="spinner-border text-secondary" role="status"><span class="sr-only"></span></div>');
-                var form = $('#ProsesEditBarang2')[0];
-                var data = new FormData(form);
-                $.ajax({
-                    type 	    : 'POST',
-                    url 	    : '_Page/Barang/ProsesEditBarang.php',
-                    data 	    :  data,
-                    cache       : false,
-                    processData : false,
-                    contentType : false,
-                    enctype     : 'multipart/form-data',
-                    success     : function(data){
-                        $('#NotifikasiEditBarang').html(data);
-                        var NotifikasiEditBarangBerhasil=$('#NotifikasiEditBarangBerhasil').html();
-                        if(NotifikasiEditBarangBerhasil=="Success"){
-                            location.reload();
-                        }
-                    }
-                });
-            });
-        }
-    });
-});
-//Hapus Barang
-$('#ModalDeleteBarang').on('show.bs.modal', function (e) {
-    var GetData = $(e.relatedTarget).data('id');
-    var pecah = GetData.split(",");
-    var id_barang = pecah[0];
-    var keyword = pecah[1];
-    var batas = pecah[2];
-    var ShortBy = pecah[3];
-    var OrderBy = pecah[4];
-    var page = pecah[5];
-    var posisi = pecah[6];
-    var keyword_by = pecah[7];
-    $('#FormDeleteBarang').html("Loading...");
-    $.ajax({
-        type 	    : 'POST',
-        url 	    : '_Page/Barang/FormDeleteBarang.php',
-        data        : {id_barang: id_barang},
-        success     : function(data){
-            $('#FormDeleteBarang').html(data);
-            //Konfirmasi Hapus Barang
-            $('#KonfirmasiHapusBarang').click(function(){
-                $('#NotifikasiHapusBarang').html('<div class="spinner-border text-secondary" role="status"><span class="sr-only"></span></div>');
-                $.ajax({
-                    type 	    : 'POST',
-                    url 	    : '_Page/Barang/ProsesHapusBarang.php',
-                    data        : {id_barang: id_barang},
-                    success     : function(data){
-                        $('#NotifikasiHapusBarang').html(data);
-                        var NotifikasiHapusBarangBerhasil=$('#NotifikasiHapusBarangBerhasil').html();
-                        if(NotifikasiHapusBarangBerhasil=="Success"){
-                            $.ajax({
-                                type 	    : 'POST',
-                                url 	    : '_Page/Barang/TabelBarang.php',
-                                data 	    :  {keyword: keyword, batas: batas, ShortBy: ShortBy, OrderBy: OrderBy, page: page, posisi: posisi, keyword_by: keyword_by},
-                                success     : function(data){
-                                    $('#MenampilkanTabelBarang').html(data);
-                                    $('#ModalDeleteBarang').modal('hide');
-                                    swal("Good Job!", "Hapus Barang Berhasil!", "success");
-                                }
-                            });
-                        }
-                    }
-                });
-            });
-        }
-    });
-});
 
 //Tambah satuan
 $('#ModalTambahSatuan').on('show.bs.modal', function (e) {
@@ -1063,28 +1157,8 @@ $('#ProsesImportDataBarang').submit(function(){
         }
     });
 });
-var ProsesCariRiwayatTransaksi = $('#ProsesCariRiwayatTransaksi').serialize();
-$('#TampilkanRiwayatTransaksi').html('Loading...');
-$.ajax({
-    type 	    : 'POST',
-    url 	    : '_Page/Barang/TabelRiwayatTransaksi.php',
-    data 	    :  ProsesCariRiwayatTransaksi,
-    success     : function(data){
-        $('#TampilkanRiwayatTransaksi').html(data);
-    }
-});
-$('#ProsesCariRiwayatTransaksi').submit(function(){
-    var ProsesCariRiwayatTransaksi = $('#ProsesCariRiwayatTransaksi').serialize();
-    $('#TampilkanRiwayatTransaksi').html('Loading...');
-    $.ajax({
-        type 	    : 'POST',
-        url 	    : '_Page/Barang/TabelRiwayatTransaksi.php',
-        data 	    :  ProsesCariRiwayatTransaksi,
-        success     : function(data){
-            $('#TampilkanRiwayatTransaksi').html(data);
-        }
-    });
-});
+
+
 //Hapus Satuan Barang
 $('#ModalExportRiwayatTransaksi').on('show.bs.modal', function (e) {
     var ProsesCariRiwayatTransaksi = $('#ProsesCariRiwayatTransaksi').serialize();

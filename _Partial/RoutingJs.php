@@ -51,6 +51,4 @@
             echo '<script type="text/javascript" src="' . $scripts[$_GET['Page']] . '?V='.$date_version.'"></script>';
         }
     }
-    //default Login
-    echo '<script type="text/javascript" src="_Page/Login/Login.js?V='.$date_version.'"></script>';
 ?>

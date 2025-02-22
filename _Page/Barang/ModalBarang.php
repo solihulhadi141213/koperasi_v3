@@ -265,7 +265,7 @@
 <div class="modal fade" id="ModalTambahBarang" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form action="javascript:void(0);" id="ProsesTambahBarang" autocomplete="false">
+            <form action="javascript:void(0);" id="ProsesTambahBarang" autocomplete="off">
                 <div class="modal-header">
                     <h5 class="modal-title text-dark">
                         <i class="bi bi-plus"></i> Tambah Barang
@@ -410,76 +410,83 @@
                 <h5 class="modal-title text-dark"><i class="bi bi-info-circle"></i> Detail Barang</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" id="form_detail_barang">
-                <div class="row mb-2">
-                    <div class="col-12">
-                        <b># Informasi Barang</b>
+            <div class="modal-body">
+                <div  id="form_detail_barang">
+                    <div class="row mb-2">
+                        <div class="col-12">
+                            <b># Informasi Barang</b>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4">
+                            <small>Kode Barang</small>
+                        </div>
+                        <div class="col-8">
+                            <small class="kode_barang"></small>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4">
+                            <small>Nama/Merek</small>
+                        </div>
+                        <div class="col-8">
+                            <small class="nama_barang"></small>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4">
+                            <small>Kategori</small>
+                        </div>
+                        <div class="col-8">
+                            <small class="kategori_barang"></small>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4">
+                            <small>Isi/Satuan</small>
+                        </div>
+                        <div class="col-8">
+                            <small class="satuan_barang"></small>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4">
+                            <small>Stok Aktual</small>
+                        </div>
+                        <div class="col-8">
+                            <small class="stok_barang"></small>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4">
+                            <small>Stok Minimum</small>
+                        </div>
+                        <div class="col-8">
+                            <small class="stok_minimum"></small>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4">
+                            <small>Harga Beli</small>
+                        </div>
+                        <div class="col-8">
+                            <small class="harga_beli"></small>
+                        </div>
+                    </div>
+                    <div class="row mb-2 mt-2 border-1 border-top">
+                        <div class="col-12 mt-3">
+                            <b># Informasi Multi Harga</b>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-12" id="informasi_multi_harga">
+                            <!-- Informasi Multi Harga Disini -->
+                        </div>
                     </div>
                 </div>
-                <div class="row mb-2">
-                    <div class="col-4">
-                        <small>Kode Barang</small>
-                    </div>
-                    <div class="col-8">
-                        <small class="kode_barang"></small>
-                    </div>
-                </div>
-                <div class="row mb-2">
-                    <div class="col-4">
-                        <small>Nama/Merek</small>
-                    </div>
-                    <div class="col-8">
-                        <small class="nama_barang"></small>
-                    </div>
-                </div>
-                <div class="row mb-2">
-                    <div class="col-4">
-                        <small>Kategori</small>
-                    </div>
-                    <div class="col-8">
-                        <small class="kategori_barang"></small>
-                    </div>
-                </div>
-                <div class="row mb-2">
-                    <div class="col-4">
-                        <small>Isi/Satuan</small>
-                    </div>
-                    <div class="col-8">
-                        <small class="satuan_barang"></small>
-                    </div>
-                </div>
-                <div class="row mb-2">
-                    <div class="col-4">
-                        <small>Stok Aktual</small>
-                    </div>
-                    <div class="col-8">
-                        <small class="stok_barang"></small>
-                    </div>
-                </div>
-                <div class="row mb-2">
-                    <div class="col-4">
-                        <small>Stok Minimum</small>
-                    </div>
-                    <div class="col-8">
-                        <small class="stok_minimum"></small>
-                    </div>
-                </div>
-                <div class="row mb-2">
-                    <div class="col-4">
-                        <small>Harga Beli</small>
-                    </div>
-                    <div class="col-8">
-                        <small class="harga_beli"></small>
-                    </div>
-                </div>
-                <div class="row mb-2 mt-2 border-1 border-top">
-                    <div class="col-12 mt-3">
-                        <b># Informasi Multi Harga</b>
-                    </div>
-                </div>
-                <div class="row mb-2">
-                    <div class="col-12" id="informasi_multi_harga">
-                        <!-- Informasi Multi Harga Disini -->
+                <div class="row">
+                    <div class="col-md-12" id="NotifikasiDetailBarang">
+
                     </div>
                 </div>
             </div>
@@ -491,19 +498,135 @@
         </div>
     </div>
 </div>
+
 <div class="modal fade" id="ModalEditBarang" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form action="javascript:void(0);" id="ProsesEditBarang">
-                <div class="modal-header bg-primary">
-                    <h5 class="modal-title text-light"><i class="bi bi-pencil-square"></i> Edit Barang</h5>
+            <form action="javascript:void(0);" id="ProsesEditBarang" autocomplete="off">
+                <input type="hidden" name="id_barang" id="put_id_barang_edit">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark">
+                        <i class="bi bi-pencil"></i> Edit Barang
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" id="FormEditBarang">
-                    
+                <div class="modal-body">
+                    <div id="form_edit_barang">
+                        <div class="row mb-3">
+                            <div class="col-4">
+                                <label for="kode_edit">Kode Barang</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" name="kode" id="kode_edit" maxlength="36">
+                                <small class="text-muted">
+                                    *Diisi jika barang tersebut memiliki kode standar yang ditetapkan.
+                                </small>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-4">
+                                <label for="nama_edit">Nama/Merek Barang</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" name="nama" id="nama_edit" maxlength="100">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-4">
+                                <label for="kategori_edit">Kategori</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" name="kategori" id="kategori_edit" list="list_kategori_edit" maxlength="30">
+                                <datalist id="list_kategori_edit">
+                                    <!-- List Kategori -->
+                                </datalist>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-4">
+                                <label for="satuan_edit">Satuan</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" name="satuan" id="satuan_edit" list="list_satuan_edit" maxlength="30">
+                                <datalist id="list_satuan_edit">
+                                    <!-- List Satuan -->
+                                </datalist>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-4">
+                                <label for="isi_edit">Isi/Kemasan</label>
+                            </div>
+                            <div class="col-8">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <small>.00</small>
+                                    </span>
+                                    <input type="text" class="form-control" name="isi" id="isi_edit" maxlength="15" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" value="1.00">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-4">
+                                <label for="stok_edit">Stok Awal</label>
+                            </div>
+                            <div class="col-8">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <small>.00</small>
+                                    </span>
+                                    <input type="text" class="form-control" name="stok" id="stok_edit" maxlength="15" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-4">
+                                <label for="stok_min_edit">Stok Minimum</label>
+                            </div>
+                            <div class="col-8">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <small>.00</small>
+                                    </span>
+                                    <input type="text" class="form-control" name="stok_min" id="stok_min_edit" maxlength="15" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+                                </div>
+                                <small class="text-muted">
+                                    *Stok minimum untuk pemberitahuan
+                                </small>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-4">
+                                <label for="harga_edit">Harga Beli</label>
+                            </div>
+                            <div class="col-8">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <small>Rp</small>
+                                    </span>
+                                    <input type="text" class="form-control form-money" name="harga" id="harga_edit" maxlength="15" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row border-1 border-top mb-3">
+                            <div class="col-12 mt-3">
+                                <b>Kategori Multi Harga</b>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-12" id="form_multi_harga_edit">
+                                <!-- Form Multi Harga Akan Muncul Disini -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-12" id="NotifikasiEditBarang">
+                            <!-- Notifikasi Tambah Obat Akan Muncul Disini -->
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-footer bg-primary">
-                    <button type="submit" class="btn btn-success btn-rounded">
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-rounded" id="ButtonEditBarang">
                         <i class="bi bi-save"></i> Simpan
                     </button>
                     <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
@@ -514,50 +637,39 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="ModalDeleteBarang" tabindex="-1">
-    <div class="modal-dialog modal-sm">
+<div class="modal fade" id="ModalHapusBarang" tabindex="-1">
+    <div class="modal-dialog modal-md">
         <div class="modal-content">
-            <div class="modal-header bg-danger">
-                <h5 class="modal-title text-light"><i class="bi bi-trash"></i> Delete Barang</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" id="FormDeleteBarang">
-                
-            </div>
-            <div class="modal-footer bg-danger">
-                <button type="button" class="btn btn-success btn-rounded" id="KonfirmasiHapusBarang">
-                    <i class="bi bi-check"></i> Ya
-                </button>
-                <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
-                    <i class="bi bi-x-circle"></i> Tidak
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="ModalEditBarang2" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form action="javascript:void(0);" id="ProsesEditBarang2">
-                <div class="modal-header bg-primary">
-                    <h5 class="modal-title text-light"><i class="bi bi-pencil-square"></i> Edit Barang</h5>
+            <form action="javascript:void(0);" id="ProsesHapusBarang">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark"><i class="bi bi-trash"></i> Hapus Barang</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" id="FormEditBarang2">
-                    
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12"  id="FormHapusBarang">
+                            <!-- Form Hapus Barang Disini -->
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12"  id="NotifikasiHapusBarang">
+                            <!-- Notifikasi Hapus Barang Disini -->
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-footer bg-primary">
-                    <button type="submit" class="btn btn-success btn-rounded">
-                        <i class="bi bi-save"></i> Simpan
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success btn-rounded" id="ButtonHapusBarang">
+                        <i class="bi bi-check"></i> Ya, Hapus
                     </button>
                     <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
-                        <i class="bi bi-x-circle"></i> Tutup
+                        <i class="bi bi-x-circle"></i> Tidak
                     </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
 <div class="modal fade" id="ModalTambahSatuan" tabindex="-1">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
