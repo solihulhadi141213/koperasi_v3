@@ -19,6 +19,7 @@
             "JenisTransaksi"    =>  "_Page/JenisTransaksi/JenisTransaksi.php",
             "Transaksi"         =>  "_Page/Transaksi/Transaksi.php",
             "RekapTransaksi"    =>  "_Page/RekapTransaksi/RekapTransaksi.php",
+            "TransaksiJualBeli" =>  "_Page/TransaksiJualBeli/Transaksi.php",
             "Version"           =>  "_Page/Version/Version.php",
             "SettingGeneral"    =>  "_Page/SettingGeneral/SettingGeneral.php",
             "EntitasAkses"      =>  "_Page/EntitasAkses/EntitasAkses.php",

@@ -1,6 +1,7 @@
 <?php
     //Connection
     include "../../_Config/Connection.php";
+    include "../../_Config/GlobalFunction.php";
     include "../../_Config/Session.php";
     if(empty($_POST['id_supplier'])){
         echo '<span class="text-danger">ID Supplier Tidak Boleh Kosong!</span>';
@@ -10,11 +11,15 @@
         $HapusSupplier = mysqli_query($Conn, "DELETE FROM supplier WHERE id_supplier='$id_supplier'") or die(mysqli_error($Conn));
         if($HapusSupplier){
             $KategoriLog="Supplier";
-            $KeteranganLog="Hapus Supplier $id_supplier";
-            include "../../_Config/InputLog.php";
-            echo '<span class="text-success" id="NotifikasiHapusSupplierBerhasil">Success</span>';
+            $KeteranganLog="Hapus Supplier $nama_supplier";
+            $InputLog=addLog($Conn,$SessionIdAkses,$now,$kategori_log,$deskripsi_log);
+            if($InputLog=="Success"){
+                echo '<div class="alert alert-success" id="NotifikasiHapusSupplierBerhasil">Success</div>';
+            }else{
+                echo '<div class="alert alert-danger">Terjadi kesalahan pada saat menyimpan log</div>';
+            }
         }else{
-            echo '<span class="text-danger">Hapus Data Supplier Tidak Boleh Kosong</span>';
+            echo '<span class="text-danger">Hapus Supplier Gagal</span>';
         }
     }
 ?>

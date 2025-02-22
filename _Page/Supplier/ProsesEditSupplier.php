@@ -1,13 +1,14 @@
 <?php
     //Koneksi
     include "../../_Config/Connection.php";
+    include "../../_Config/GlobalFunction.php";
     include "../../_Config/Session.php";
     //Get Data
     if(empty($_POST['id_supplier'])){
-        echo '<span class="text-danger">ID Supplier Tidak Boleh Kosong!</span>';
+        echo '<div class="alert alert-danger">ID Supplier Tidak Boleh Kosong!</div>';
     }else{
         if(empty($_POST['nama_supplier'])){
-            echo '<span class="text-danger">Nama Supplier Tidak Boleh Kosong!</span>';
+            echo '<div class="alert alert-danger">Nama Supplier Tidak Boleh Kosong!</div>';
         }else{
             $nama_supplier=$_POST['nama_supplier'];
             if(empty($_POST['email_supplier'])){
@@ -32,7 +33,7 @@
                 $alamat_supplier=$_POST['alamat_supplier'];
             }
             if(!empty($ValidasiarakterKontak)){
-                echo '<small class="text-danger">'.$ValidasiarakterKontak.'</small>';
+                echo '<div class="alert alert-danger">'.$ValidasiarakterKontak.'</div>';
             }else{
                 //Buat Variabel
                 $id_supplier=$_POST['id_supplier'];
@@ -46,10 +47,15 @@
                 if($UpdateSupplier){
                     $KategoriLog="Supplier";
                     $KeteranganLog="Edit Supplier $nama_supplier";
-                    include "../../_Config/InputLog.php";
-                    echo '<small class="text-success" id="NotifikasiEditSupplierBerhasil">Success</small>';
+                    $InputLog=addLog($Conn,$SessionIdAkses,$now,$kategori_log,$deskripsi_log);
+                    if($InputLog=="Success"){
+                        echo '<div class="alert alert-success" id="NotifikasiEditSupplierBerhasil">Success</div>';
+                    }else{
+                        echo '<div class="alert alert-danger">Terjadi kesalahan pada saat menyimpan log</div>';
+                    }
+                    
                 }else{
-                    echo '<small class="text-danger">Terjadi kesalahan pada saat menyimpan data</small>';
+                    echo '<div class="alert alert-danger">Terjadi kesalahan pada saat menyimpan data</div>';
                 }
             }
         }

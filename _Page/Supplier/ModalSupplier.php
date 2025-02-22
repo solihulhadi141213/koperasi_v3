@@ -1,18 +1,19 @@
-<div class="modal fade" id="ModalFilterSupplier" tabindex="-1">
+<div class="modal fade" id="ModalFilter" tabindex="-1">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
-            <form action="javascript:void(0);" id="ProsesFilterSupplier">
-                <div class="modal-header bg-info">
-                    <h5 class="modal-title text-light"><i class="bi bi-funnel"></i> Filter Supplier</h5>
+            <form action="javascript:void(0);" id="ProsesFilter">
+                <input type="hidden" name="page" id="page" value="1">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark"><i class="bi bi-funnel"></i> Filter Supplier</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-6 mt-3">
-                            <label for="batas">Data</label>
+                        <div class="col-md-6 mb-3">
+                            <label for="batas">Limit/Batas</label>
                             <select name="batas" id="batas" class="form-control">
                                 <option value="5">5</option>
-                                <option value="10">10</option>
+                                <option selected value="10">10</option>
                                 <option value="25">25</option>
                                 <option value="50">50</option>
                                 <option value="100">100</option>
@@ -20,7 +21,7 @@
                                 <option value="500">500</option>
                             </select>
                         </div>
-                        <div class="col-md-6 mt-3">
+                        <div class="col-md-6 mb-3">
                             <label for="OrderBy">Mode Urutan</label>
                             <select name="OrderBy" id="OrderBy" class="form-control">
                                 <option value="">Pilih..</option>
@@ -31,14 +32,14 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6 mt-3">
+                        <div class="col-md-6 mb-3">
                             <label for="ShortBy">Tipe Urutan</label>
                             <select name="ShortBy" id="ShortBy" class="form-control">
-                                <option value="ASC">A To Z</option>
                                 <option value="DESC">Z To A</option>
+                                <option value="ASC">A To Z</option>
                             </select>
                         </div>
-                        <div class="col-md-6 mt-3">
+                        <div class="col-md-6 mb-3">
                             <label for="keyword_by">Pencarian</label>
                             <select name="keyword_by" id="keyword_by" class="form-control">
                                 <option value="">Pilih..</option>
@@ -48,14 +49,14 @@
                             </select>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12 mt-3" id="FormFilterKeyword">
+                    <div class="row mb-3">
+                        <div class="col-md-12 mb-3" id="FormFilterKeyword">
                             <label for="keyword">Kata Kunci</label>
                             <input type="text" name="keyword" id="keyword" class="form-control">
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer bg-info">
+                <div class="modal-footer">
                     <button type="submit" class="btn btn-success btn-rounded">
                         <i class="bi bi-save"></i> Filter
                     </button>
@@ -71,15 +72,43 @@
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <form action="javascript:void(0);" id="ProsesTambahSupplier">
-                <div class="modal-header bg-primary">
-                    <h5 class="modal-title text-light"><i class="bi bi-person-plus"></i> Tambah Supplier</h5>
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark"><i class="bi bi-plus"></i> Tambah Supplier</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" id="FormTambahSupplier">
-                    
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="nama_supplier">Nama Supplier</label>
+                            <input type="text" name="nama_supplier" id="nama_supplier" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="email_supplier">Email</label>
+                            <input type="email" name="email_supplier" id="email_supplier" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="kontak_supplier">Kontak</label>
+                            <input type="text" name="kontak_supplier" id="kontak_supplier" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="alamat_supplier">Alamat</label>
+                            <input type="text" name="alamat_supplier" id="alamat_supplier" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12" id="NotifikasiTambahSupplier">
+                            
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-footer bg-primary">
-                    <button type="submit" class="btn btn-success btn-rounded">
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-rounded">
                         <i class="bi bi-save"></i> Simpan
                     </button>
                     <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
@@ -93,13 +122,23 @@
 <div class="modal fade" id="ModalDetailSupplier" tabindex="-1">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
-            <div class="modal-header bg-info">
-                <h5 class="modal-title text-light"><i class="bi bi-truck"></i> Detail Supplier</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div id="FormDetailSupplier">
-                
-            </div>
+            <form action="index.php" method="GET">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark"><i class="bi bi-info-circle"></i> Detail Supplier</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="FormDetailSupplier">
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-info btn-rounded">
+                        <i class="bi bi-three-dots"></i> Selengkapnya
+                    </button>
+                    <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Tutup
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -107,15 +146,24 @@
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <form action="javascript:void(0);" id="ProsesEditSupplier">
-                <div class="modal-header bg-primary">
-                    <h5 class="modal-title text-light"><i class="bi bi-pencil-square"></i> Edit Supplier</h5>
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark"><i class="bi bi-pencil-square"></i> Edit Supplier</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" id="FormEditSupplier">
-                    
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12" id="FormEditSupplier">
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12" id="NotifikasiEditSupplier">
+
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-footer bg-primary">
-                    <button type="submit" class="btn btn-success btn-rounded">
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-rounded">
                         <i class="bi bi-save"></i> Simpan
                     </button>
                     <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
@@ -126,24 +174,35 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="ModalDeleteSupplier" tabindex="-1">
-    <div class="modal-dialog modal-sm">
+<div class="modal fade" id="ModalHapusSupplier" tabindex="-1">
+    <div class="modal-dialog modal-md">
         <div class="modal-content">
-            <div class="modal-header bg-danger">
-                <h5 class="modal-title text-light"><i class="bi bi-trash"></i> Delete Supplier</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" id="FormDeleteSupplier">
-                
-            </div>
-            <div class="modal-footer bg-danger">
-                <button type="button" class="btn btn-success btn-rounded" id="KonfirmasiHapusSupplier">
-                    <i class="bi bi-check"></i> Ya
-                </button>
-                <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
-                    <i class="bi bi-x-circle"></i> Tidak
-                </button>
-            </div>
+            <form action="javascript:void(0);" id="ProsesHapusSupplier">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark"><i class="bi bi-trash"></i> Hapus Supplier</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12" id="FormHapusSupplier">
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12" id="NotifikasiHapusSupplier">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success btn-rounded">
+                        <i class="bi bi-check"></i> Ya, Hapus
+                    </button>
+                    <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Tidak
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

@@ -2,6 +2,7 @@
     //Koneksi
     date_default_timezone_set('Asia/Jakarta');
     include "../../_Config/Connection.php";
+    include "../../_Config/GlobalFunction.php";
     include "../../_Config/Session.php";
     //Tangkap id_mitra
     if(empty($_POST['id_supplier'])){
@@ -29,11 +30,13 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6 mb-3">
+        <div class="col-md-12 mb-3">
             <label for="email_supplier">Email</label>
             <input type="email" name="email_supplier" id="email_supplier" class="form-control" value="<?php echo $email_supplier;?>">
         </div>
-        <div class="col-md-6 mb-3">
+    </div>
+    <div class="row">
+        <div class="col-md-12 mb-3">
             <label for="kontak_supplier">Kontak</label>
             <input type="text" name="kontak_supplier" id="kontak_supplier" class="form-control" value="<?php echo $kontak_supplier;?>">
         </div>
@@ -42,11 +45,6 @@
         <div class="col-md-12 mb-3">
             <label for="alamat_supplier">Alamat</label>
             <input type="text" name="alamat_supplier" id="alamat_supplier" class="form-control" value="<?php echo $alamat_supplier;?>">
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12" id="NotifikasiEditSupplier">
-            <span class="text-primary">Pastikan bahwa informasi supplier yang anda masukan sudah benar</span>
         </div>
     </div>
 <?php } ?>

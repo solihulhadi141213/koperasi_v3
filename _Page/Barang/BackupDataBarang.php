@@ -105,9 +105,10 @@
                         if(!empty($JmlKategori)){
                             $QryKategori = mysqli_query($Conn, "SELECT*FROM barang_kategori_harga");
                             while ($DataKategori = mysqli_fetch_array($QryKategori)) {
+                                $id_barang_kategori_harga= $DataKategori['id_barang_kategori_harga'];
                                 $KategoriHarga= $DataKategori['kategori_harga'];
                                 //Buka data multi harga
-                                $QryHargaMulti = mysqli_query($Conn,"SELECT * FROM barang_harga WHERE id_barang='$id_barang' AND id_barang_satuan='0' AND kategori_harga='$KategoriHarga'")or die(mysqli_error($Conn));
+                                $QryHargaMulti = mysqli_query($Conn,"SELECT * FROM barang_harga WHERE id_barang='$id_barang' AND id_barang_kategori_harga='$id_barang_kategori_harga'")or die(mysqli_error($Conn));
                                 $DataHargaMulti= mysqli_fetch_array($QryHargaMulti);
                                 $HargaMulti= $DataHargaMulti['harga'];
                                 echo '<td align="left">';

@@ -45,6 +45,20 @@
             $kontak_supplier= $DataSupplier['kontak_supplier'];
         }
 ?>
+<div class="pagetitle">
+    <h1>
+        <a href="">
+            <i class="bi bi-truck"></i> Supplier</a>
+        </a>
+    </h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="index.php?Page=Supplier">Supplier</a></li>
+            <li class="breadcrumb-item active">Detail Supplier</li>
+        </ol>
+    </nav>
+</div>
 <section class="section dashboard">
     <div class="row">
         <div class="col-lg-12 mb-3">

@@ -282,28 +282,27 @@
                                                                 $Col=1;
                                                                 $QryKategori = mysqli_query($Conn, "SELECT*FROM barang_kategori_harga");
                                                                 while ($DataKategori = mysqli_fetch_array($QryKategori)) {
+                                                                    $id_barang_kategori_harga= $DataKategori['id_barang_kategori_harga'];
                                                                     $KategoriHarga= $DataKategori['kategori_harga'];
                                                                     $ColData=6+$Col;
                                                                     $harga_multi=isset($Row[$ColData]) ? $Row[$ColData] : '';
-                                                                    $ValidasiDuplikatHarga=mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM barang_harga WHERE id_barang='$id_barang' AND kategori_harga='$KategoriHarga'"));
+                                                                    $ValidasiDuplikatHarga=mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM barang_harga WHERE id_barang='$id_barang' AND id_barang_kategori_harga='$id_barang_kategori_harga'"));
                                                                     if(empty($ValidasiDuplikatHarga)){
                                                                         //Simpan Harga
                                                                         $EntriHargaBarang="INSERT INTO barang_harga (
                                                                             id_barang,
-                                                                            id_barang_satuan,
-                                                                            kategori_harga,
+                                                                            id_barang_kategori_harga,
                                                                             harga
                                                                         ) VALUES (
                                                                             '$id_barang',
-                                                                            '0',
-                                                                            '$KategoriHarga',
+                                                                            '$id_barang_kategori_harga',
                                                                             '$harga_multi'
                                                                         )";
                                                                         $InputHargaBarang=mysqli_query($Conn, $EntriHargaBarang);
                                                                     }else{
                                                                         $UpdateHargaBarang = mysqli_query($Conn,"UPDATE barang_harga SET 
                                                                             harga='$harga_multi'
-                                                                        WHERE id_barang='$id_barang' AND kategori_harga='$KategoriHarga'") or die(mysqli_error($Conn)); 
+                                                                        WHERE id_barang='$id_barang' AND id_barang_kategori_harga='$id_barang_kategori_harga'") or die(mysqli_error($Conn)); 
                                                                     }
                                                                     echo '<td align="left">';
                                                                     echo '  '.$harga_multi.'';
@@ -364,28 +363,27 @@
                                                                 $Col=1;
                                                                 $QryKategori = mysqli_query($Conn, "SELECT*FROM barang_kategori_harga");
                                                                 while ($DataKategori = mysqli_fetch_array($QryKategori)) {
+                                                                    $id_barang_kategori_harga= $DataKategori['id_barang_kategori_harga'];
                                                                     $KategoriHarga= $DataKategori['kategori_harga'];
                                                                     $ColData=6+$Col;
                                                                     $harga_multi=isset($Row[$ColData]) ? $Row[$ColData] : '';
-                                                                    $ValidasiDuplikatHarga=mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM barang_harga WHERE id_barang='$id_barang' AND kategori_harga='$KategoriHarga'"));
+                                                                    $ValidasiDuplikatHarga=mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM barang_harga WHERE id_barang='$id_barang' AND id_barang_kategori_harga='$id_barang_kategori_harga'"));
                                                                     if(empty($ValidasiDuplikatHarga)){
                                                                         //Simpan Harga
                                                                         $EntriHargaBarang="INSERT INTO barang_harga (
                                                                             id_barang,
-                                                                            id_barang_satuan,
-                                                                            kategori_harga,
+                                                                            id_barang_kategori_harga,
                                                                             harga
                                                                         ) VALUES (
                                                                             '$id_barang',
-                                                                            '0',
-                                                                            '$KategoriHarga',
+                                                                            '$id_barang_kategori_harga',
                                                                             '$harga_multi'
                                                                         )";
                                                                         $InputHargaBarang=mysqli_query($Conn, $EntriHargaBarang);
                                                                     }else{
                                                                         $UpdateHargaBarang = mysqli_query($Conn,"UPDATE barang_harga SET 
                                                                             harga='$harga_multi'
-                                                                        WHERE id_barang='$id_barang' AND kategori_harga='$KategoriHarga'") or die(mysqli_error($Conn)); 
+                                                                        WHERE id_barang='$id_barang' AND id_barang_kategori_harga='$id_barang_kategori_harga'") or die(mysqli_error($Conn)); 
                                                                     }
                                                                     echo '<td align="left">';
                                                                     echo '  '.$harga_multi.'';

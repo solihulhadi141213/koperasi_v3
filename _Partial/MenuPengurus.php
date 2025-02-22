@@ -135,11 +135,11 @@
             </ul>
         </li>
         <li class="nav-item">
-            <a class="nav-link <?php if($PageMenu=="JenisTransaksi"||$PageMenu=="RekapTransaksi"||$PageMenu=="Transaksi"){echo "";}else{echo "collapsed";} ?>" data-bs-target="#transaksi-nav" data-bs-toggle="collapse" href="javascript:void(0);">
+            <a class="nav-link <?php if($PageMenu=="JenisTransaksi"||$PageMenu=="RekapTransaksi"||$PageMenu=="Transaksi"||$PageMenu=="TransaksiJualBeli"){echo "";}else{echo "collapsed";} ?>" data-bs-target="#transaksi-nav" data-bs-toggle="collapse" href="javascript:void(0);">
                 <i class="bi bi-cash-coin"></i>
                 <span>Transaksi Lain</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="transaksi-nav" class="nav-content collapse <?php if($PageMenu=="JenisTransaksi"||$PageMenu=="RekapTransaksi"||$PageMenu=="Transaksi"){echo "show";} ?>" data-bs-parent="#sidebar-nav">
+            <ul id="transaksi-nav" class="nav-content collapse <?php if($PageMenu=="JenisTransaksi"||$PageMenu=="RekapTransaksi"||$PageMenu=="Transaksi"||$PageMenu=="TransaksiJualBeli"){echo "show";} ?>" data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="index.php?Page=JenisTransaksi" class="<?php if($PageMenu=="JenisTransaksi"){echo "active";} ?>">
                         <i class="bi bi-circle"></i><span>Jenis Transaksi</span>
@@ -153,6 +153,11 @@
                 <li>
                     <a href="index.php?Page=RekapTransaksi" class="<?php if($PageMenu=="RekapTransaksi"){echo "active";} ?>">
                         <i class="bi bi-circle"></i><span>Rekap Transaksi</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="index.php?Page=TransaksiJualBeli" class="<?php if($PageMenu=="TransaksiJualBeli"){echo "active";} ?>">
+                        <i class="bi bi-circle"></i><span>Transaksi Jual-Beli</span>
                     </a>
                 </li>
             </ul>
