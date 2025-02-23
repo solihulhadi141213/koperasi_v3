@@ -18,6 +18,23 @@
     $SumPinjaman = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(jumlah_pinjaman) AS jumlah_pinjaman FROM pinjaman"));
     $JumlahPinjaman = $SumPinjaman['jumlah_pinjaman'];
     $JumlahPinjaman = "" . number_format($JumlahPinjaman,0,',','.');
+
+    //Jumlah Penjualan
+    $SumPenjualan = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(total) AS jumlah_penjualan FROM transaksi_jual_beli WHERE kategori='Penjualan'"));
+    $JumlahPenjualan = $SumPenjualan['jumlah_penjualan'];
+    $JumlahPenjualan = "" . number_format($JumlahPenjualan,0,',','.');
+
+    //Jumlah Pembelian
+    $SumPembelian = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(total) AS jumlah_pembelian FROM transaksi_jual_beli WHERE kategori='Pembelian'"));
+    $JumlahPembelian = $SumPembelian['jumlah_pembelian'];
+    $JumlahPembelian = "" . number_format($JumlahPembelian,0,',','.');
+
+    //Jumlah Shu
+    $SumShu = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(shu) AS jumlah_shu FROM shu_rincian"));
+    $JumlahShu = $SumShu['jumlah_shu'];
+    $JumlahShu = "" . number_format($JumlahShu,0,',','.');
+
+    //Untuk Menampilkan grafik maka dibuat dulu file json
     include "_Page/Dashboard/ProsesHitungSimpanPinjam.php";
 ?>
 <div class="pagetitle">
@@ -119,6 +136,60 @@
                                 <div class="ps-3">
                                     <?php
                                         echo '  <span class="text-muted small pt-1 fw-bold">'.$JumlahPinjaman.'</span><br>';
+                                        echo '  <span class="text-muted small pt-2 ps-1">Rp/IDR</span>';
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-3 col-md-6 col-6">
+                    <div class="card info-card purple-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Penjualan</h5>
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-cart-dash"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <?php
+                                        echo '  <span class="text-muted small pt-1 fw-bold">'.$JumlahPenjualan.'</span><br>';
+                                        echo '  <span class="text-muted small pt-2 ps-1">Rp/IDR</span>';
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-3 col-md-6 col-6">
+                    <div class="card info-card customers-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Pembelian</h5>
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-cart-plus"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <?php
+                                        echo '  <span class="text-muted small pt-1 fw-bold">'.$JumlahPembelian.'</span><br>';
+                                        echo '  <span class="text-muted small pt-2 ps-1">Rp/IDR</span>';
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-3 col-md-6 col-6">
+                    <div class="card info-card revenue-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Bagi Hasil</h5>
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-calculator"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <?php
+                                        echo '  <span class="text-muted small pt-1 fw-bold">'.$JumlahShu.'</span><br>';
                                         echo '  <span class="text-muted small pt-2 ps-1">Rp/IDR</span>';
                                     ?>
                                 </div>
