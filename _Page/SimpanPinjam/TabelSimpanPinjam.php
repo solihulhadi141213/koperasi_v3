@@ -24,38 +24,69 @@
                 echo '  Periode Tahun Laporan Tidak Boleh Kosong!';
                 echo '</div>';
             }else{
-                if(empty($_POST['bulan'])){
+                if(empty($_POST['periode'])){
                     echo '<div class="alert alert-danger text-center" role="alert">';
                     echo ' <b>Maaf!!</b><br>';
-                    echo '  Periode Bulan Laporan Tidak Boleh Kosong!';
+                    echo '  Tipe Periode Laporan Tidak Boleh Kosong!';
                     echo '</div>';
                 }else{
+
                     $lembaga=$_POST['lembaga'];
                     $tahun=$_POST['tahun'];
-                    $bulan=$_POST['bulan'];
-                    //Bersihkan Variabel
-                    $lembaga=validateAndSanitizeInput($lembaga);
-                    $tahun=validateAndSanitizeInput($tahun);
-                    $bulan=validateAndSanitizeInput($bulan);
-                    $keyword="$tahun-$bulan";
-                    //Nama Bulan
-                    $NamaBulan=getNamaBulan($bulan);
-                    //Hitung Jumlah Simpanan
-                    $JumlahJenisSimpanan = mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM simpanan_jenis"));
-                    $TotalJumlahKolom=2+$JumlahJenisSimpanan+3;
+                    $periode=$_POST['periode'];
+                    $bulan=0;
+                    //Apabila Periode Bulan Maka Data Bulan tidak boleh kosong
+                    if($periode=="Bulan"){
+                        if(empty($_POST['bulan'])){
+                            $validasi_kelengkapan="Periode Bulan Tidak Boleh Kosong!";
+                        }else{
+                            $bulan=$_POST['bulan'];
+                            $NamaBulan=getNamaBulan($bulan);
+                            $validasi_kelengkapan="Valid";
+                        }
+                    }else{
+                        $validasi_kelengkapan="Valid";
+                    }
+                    if($validasi_kelengkapan!=="Valid"){
+                        echo '<div class="alert alert-danger text-center" role="alert">';
+                        echo ' <b>Maaf!!</b><br>';
+                        echo "$validasi_kelengkapan";
+                        echo '</div>';
+                    }else{
+                        //Bersihkan Variabel
+                        $lembaga=validateAndSanitizeInput($lembaga);
+                        $tahun=validateAndSanitizeInput($tahun);
+
+                        //Buat Keyword Berdasarkan Periode
+                        if($periode=="Tahun"){
+                            $keyword="$tahun";
+                        }else{
+                            $keyword="$tahun-$bulan";
+                        }
+                        
+                        //Hitung Jumlah Simpanan
+                        $JumlahJenisSimpanan = mysqli_num_rows(mysqli_query($Conn, "SELECT id_simpanan_jenis FROM simpanan_jenis"));
+                        $TotalJumlahKolom=2+$JumlahJenisSimpanan+3;
 ?>
                     <div class="row mb-4">
                         <div class="col-md-12 text-center">
                             <?php
-                                echo '<b>LAPORAN SIMPAN PINJAM</b><br>';
-                                echo '<b>Lembaga : '.$lembaga.'</b><br>';
-                                echo '<span>Periode '.$NamaBulan.' '.$tahun.'</span><br>';
+                                if($periode=="Tahun"){
+                                    echo '<b>LAPORAN SIMPAN PINJAM</b><br>';
+                                    echo '<b>Lembaga : '.$lembaga.'</b><br>';
+                                    echo '<span>Periode Tahun '.$tahun.'</span><br>';
+                                }else{
+                                    echo '<b>LAPORAN SIMPAN PINJAM</b><br>';
+                                    echo '<b>Lembaga : '.$lembaga.'</b><br>';
+                                    echo '<span>Periode Bulan '.$NamaBulan.' '.$tahun.'</span><br>';
+                                }
+                                
                             ?>
                         </div>
                     </div>
                     <div class="row mb-4">
                         <div class="col-md-12 text-center">
-                            <a href="_Page/SimpanPinjam/ProsesCetakSimpanPinjam.php?lembaga=<?php echo $lembaga; ?>&bulan=<?php echo $bulan; ?>&tahun=<?php echo $tahun; ?>" target="_blank" class="btn btn-sm btn-outline-grayish btn-rounded">
+                            <a href="_Page/SimpanPinjam/ProsesCetakSimpanPinjam.php?lembaga=<?php echo $lembaga; ?>&periode=<?php echo $periode; ?>&bulan=<?php echo $bulan; ?>&tahun=<?php echo $tahun; ?>" target="_blank" class="btn btn-sm btn-outline-grayish btn-rounded">
                                 <i class="bi bi-printer"></i> Cetak Simpan-Pinjam
                             </a>
                         </div>
@@ -197,6 +228,7 @@
                         </div>
                     </div>
 <?php 
+                    }
                 }
             } 
         } 

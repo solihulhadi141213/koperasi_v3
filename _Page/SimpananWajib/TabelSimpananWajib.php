@@ -68,7 +68,7 @@
                 $nama_simpanan=GetDetailData($Conn,'simpanan_jenis','id_simpanan_jenis',$id_simpanan_jenis,'nama_simpanan');
             }else{
                 $id_simpanan_jenis="";
-                $nama_simpanan="Akumulasi";
+                $nama_simpanan="Semua Jenis Simpanan";
             }
             //Keyword_by
             if(!empty($_POST['keyword_by'])){
@@ -167,23 +167,19 @@
             });
         </script>
         <div class="row">
-            <div class="col-md-3">
+            <!-- <div class="col-md-3">
                 <small class="credit">
                     Halaman : <code class="text-grayish"><?php echo "$page/$JmlHalaman"; ?></code>
                 </small><br>
                 <small class="credit">
                     Jumlah Data : <code class="text-grayish"><?php echo "$jml_data"; ?></code>
                 </small>
-            </div>
-            <div class="col-md-3">
-                <small class="credit">
-                    Simpanan : <code class="text-grayish"><?php echo "$nama_simpanan"; ?></code>
-                </small><br>
+            </div> -->
+            <div class="col-md-12 mb-3 text-center">
+                <b class="text text-decoration-underline"><?php echo "$nama_simpanan"; ?></b><br>
                 <small class="credit">
                     Periode : <code class="text-grayish"><?php echo "$mode_periode"; ?></code>
-                </small>
-            </div>
-            <div class="col-md-3">
+                </small>//
                 <small class="credit">
                     Tahun : 
                     <code class="text-grayish">
@@ -195,7 +191,7 @@
                             }
                         ?>
                     </code>
-                </small><br>
+                </small>//
                 <small class="credit">
                     Semester : 
                     <code class="text-grayish">

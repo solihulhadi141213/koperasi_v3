@@ -201,7 +201,7 @@
                                             $JumlahAnggotaProses=$JumlahAnggotaProses+$JumlahAnggotaProses2;
                                         }
                                         if($JumlahAnggotaProses==$JumlahAnggota){
-                                            $uuid=GenerateToken(36);
+                                            $uuid=generateRandomString(36);
                                             //Input Data Session SHU
                                             $EntrySession="INSERT INTO shu_session (
                                                 uuid_shu_session,

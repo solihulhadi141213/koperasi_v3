@@ -39,7 +39,7 @@
                     <div class="card-header">
                         <form action="javascript:void(0);" id="ProsesSimpanPinjam">
                             <div class="row">
-                                <div class="col-md-4 mt-3">
+                                <div class="col-md-3 mt-3">
                                     <select name="lembaga" id="lembaga" class="form-control">
                                             <?php
                                                 echo '<option value="">Pilih</option>';
@@ -54,11 +54,20 @@
                                     <small>Lembaga</small>
                                 </div>
                                 <div class="col-md-3 mt-3">
+                                    <select name="periode" id="periode_form" class="form-control">
+                                        <option value="">Pilih</option>
+                                        <option value="Bulan">Bulan</option>
+                                        <option value="Tahun">Tahun</option>
+                                    </select>
+                                    <small>Periode</small>
+                                </div>
+                                <div class="col-md-2 mt-3">
                                     <input type="text" name="tahun" id="tahun" class="form-control" value="<?php echo date('Y'); ?>" onkeypress="return hanyaAngka(event)" maxlength="4">
                                     <small>Periode Tahun</small>
                                 </div>
-                                <div class="col-md-3 mt-3">
+                                <div class="col-md-2 mt-3">
                                     <select name="bulan" id="bulan" class="form-control">
+                                        <option value="">Pilih</option>
                                         <?php
                                             // Array nama bulan
                                             $namaBulan = [

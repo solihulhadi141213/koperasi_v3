@@ -6,6 +6,37 @@ function hanyaAngka(evt) {
     }
     return true;
 }
+function PeriodeChange() {
+    var periode=$('#periode_form').val();
+    if(periode=="Tahun"){
+        //Apabila Periode Tahun
+        $('#bulan').val("");
+        $('#tahun').prop('disabled', false);
+        $('#bulan').prop('disabled', true);
+    }else{
+        if(periode=="Bulan"){
+            //Apabila Periode Tahun
+            $('#bulan').val("");
+            $('#tahun').prop('disabled', false);
+            $('#bulan').prop('disabled', false);
+        }else{
+            //Apabila Periode Tahun
+            $('#bulan').val("");
+            $('#tahun').prop('disabled', true);
+            $('#bulan').prop('disabled', true);
+        }
+    }
+}
+
+//Inisiasi Periode Pertama Kali
+PeriodeChange();
+
+//Ketika Periode Diubah
+$('#periode_form').change(function(){
+    PeriodeChange();
+});
+
+//Proses Tampilkan Data
 $('#ProsesSimpanPinjam').submit(function(){
     var ProsesSimpanPinjam = $('#ProsesSimpanPinjam').serialize();
     $('#MenampilkanTabelSimpanPinjam').html('Loading...');

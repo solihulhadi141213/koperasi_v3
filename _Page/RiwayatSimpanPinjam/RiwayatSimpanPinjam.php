@@ -58,6 +58,15 @@
                                             echo '  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
                                             echo '</div>';
                                         }else{
+                                            echo '
+                                                <div class="row mb-2">
+                                                    <div class="col-md-12 text-end">
+                                                        <a href="_Page/RiwayatSimpanPinjam/ProsesExportSimpanan.php" class="btn btn-outline-grayish">
+                                                            <i class="bi bi-printer"></i> Export Excel
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            ';
                                             echo '<div class="table table-responsive">';
                                             echo '  <table class="table table-bordered table-hover">';
                                             echo '      <thead>';
@@ -119,6 +128,15 @@
                                             echo '  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
                                             echo '</div>';
                                         }else{
+                                            echo '
+                                                <div class="row mb-2">
+                                                    <div class="col-md-12 text-end">
+                                                        <a href="_Page/RiwayatSimpanPinjam/ProsesExportPinjaman.php" class="btn btn-outline-grayish">
+                                                            <i class="bi bi-printer"></i> Export Excel
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            ';
                                             echo '<div class="table table-responsive">';
                                             echo '  <table class="table table-bordered table-hover">';
                                             echo '      <thead>';
