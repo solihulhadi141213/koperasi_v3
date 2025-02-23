@@ -1,126 +1,92 @@
-<?php 
+<?php
+    include '../../vendor/autoload.php';
+    if (!class_exists('PhpOffice\PhpSpreadsheet\Spreadsheet')) {
+        die('Autoloader tidak berfungsi dengan benar. Kelas PhpOffice\PhpSpreadsheet\Spreadsheet tidak ditemukan.');
+    }
+
+    use PhpOffice\PhpSpreadsheet\Spreadsheet;
+    use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+    use PhpOffice\PhpSpreadsheet\Cell\DataType;
+    use PhpOffice\PhpSpreadsheet\Style\Alignment;
+    use PhpOffice\PhpSpreadsheet\Style\Fill;
+
+    // Koneksi ke database
+    include "../../_Config/Connection.php";
+
+    //Validasi id_stock_opename
     if(empty($_POST['id_stok_opename'])){
-        echo 'ID Stock Opename Tidak Boleh Kosong!.';
-    }else{
-        if(empty($_POST['format'])){
-            echo 'Format Data Tidak Boleh Kosong!.';
-        }else{
-            $id_stok_opename=$_POST['id_stok_opename'];
-            $format=$_POST['format'];
-            if($format=="Excel"){
-                header("Content-type: application/vnd-ms-excel");
-                header("Content-Disposition: attachment; filename=StockOpename$id_stok_opename.xls");
-            }
-            //koneksi
-            include "../../_Config/Connection.php";
-?> 
-<html>
-    <head>
-            <style type="text/css">
-                @page {
-                    margin-top: 1cm;
-                    margin-bottom: 1cm;
-                    margin-left: 1cm;
-                    margin-right: 1cm;
-                }
-                body {
-                    background-color: #FFF;
-                    font-family: arial;
-                }
-                table{
-                    border-collapse: collapse;
-                    margin-top:10px;
-                }
-                table tr td {
-                    border: 1px solid #666;
-                    font-size:11px;
-                    color:#333;
-                    border-spacing: 0px;
-                    padding: 4px;
-                }
-            </style>
-    </head>
-    <body>
-        <table width="100%">
-            <tr>
-                <td align="center">
-                    <b>No</b>
-                </td>
-                <td align="center">
-                    <b>ID Barang</b>
-                </td>
-                <td align="center">
-                    <b>Nama Barang</b>
-                </td>
-                <td align="center">
-                    <b>Satuan</b>
-                </td>
-                <td align="center">
-                    <b>Harga Beli</b>
-                </td>
-                <td align="center">
-                    <b>Stok Awal</b>
-                </td>
-                <td align="center">
-                    <b>Stok Akhir</b>
-                </td>
-                <td align="center">
-                    <b>Selisih</b>
-                </td>
-                <td align="center">
-                    <b>Jumlah</b>
-                </td>
-            </tr>
-            <?php
-                $no = 1;
-                //KONDISI PENGATURAN MASING FILTER
-                $query = mysqli_query($Conn, "SELECT*FROM stok_opename_barang WHERE id_stok_opename='$id_stok_opename' ORDER BY nama_barang ASC");
-                while ($data = mysqli_fetch_array($query)) {
-                    $id_barang= $data['id_barang'];
-                    $nama_barang= $data['nama_barang'];
-                    $satuan= $data['satuan'];
-                    $harga= $data['harga'];
-                    $stok_awal= $data['stok_awal'];
-                    $stok_akhir= $data['stok_akhir'];
-                    $stok_gap= $data['stok_gap'];
-                    $jumlah= $data['jumlah'];
-                    $harga_beli_rp = "" . number_format($harga,0,',','.');
-                    $JumlahRp = "" . number_format($jumlah,0,',','.');
-            ?>
-                    <tr>
-                        <td align="center">
-                            <?php echo "$no" ?>
-                        </td>
-                        <td align="left">
-                            <?php echo "$id_barang" ?>
-                        </td>
-                        <td align="left">
-                            <?php echo "$nama_barang" ?>
-                        </td>
-                        <td align="left">
-                            <?php echo "$satuan" ?>
-                        </td>
-                        <td align="left">
-                            <?php echo "$harga_beli_rp" ?>
-                        </td>
-                        <td align="left">
-                            <?php echo "$stok_awal" ?>
-                        </td>
-                        <td align="left">
-                            <?php echo "$stok_akhir" ?>
-                        </td>
-                        <td align="left">
-                            <?php echo "$stok_gap" ?>
-                        </td>
-                        <td align="left">
-                            <?php echo "$JumlahRp" ?>
-                        </td>
-                    </tr>
-            <?php
-                    $no++; 
-                }
-            ?>
-        </table>
-    </body>
-</html>
-<?php }} ?>
+        echo "ID Sesi Stock Opename Tidak Boleh Kosong";
+        exit;
+    }
+    $id_stok_opename=$_POST['id_stok_opename'];
+    // Cek jumlah data
+    $Jumlah = mysqli_num_rows(mysqli_query($Conn, "SELECT id_stok_opename FROM stok_opename WHERE id_stok_opename='$id_stok_opename'"));
+    if ($Jumlah == 0) {
+        echo "Data Sesi Stock Opename Tidak Valid";
+        exit;
+    }
+
+    //Buka Data Sesi
+    $QryStockOpename = mysqli_query($Conn,"SELECT * FROM stok_opename WHERE id_stok_opename='$id_stok_opename'")or die(mysqli_error($Conn));
+    $DataStockOpename = mysqli_fetch_array($QryStockOpename);
+    $tanggal= $DataStockOpename['tanggal'];
+
+    // Membuat objek Spreadsheet
+    $spreadsheet = new Spreadsheet();
+    $sheet = $spreadsheet->getActiveSheet();
+
+    // Menulis judul
+    $headers = ['No', 'Tanggal', 'Kode', 'Nama Barang', 'Stok Awal', 'Stok Akhir', 'Selisih', 'Harga', 'Jumlah'];
+    $columnIndex = 'A';
+    foreach ($headers as $header) {
+        $sheet->setCellValue($columnIndex . '1', $header);
+        $columnIndex++;
+    }
+
+    // Mengatur gaya baris judul
+    $sheet->getStyle('A1:I1')->getFont()->setBold(true);
+    $sheet->getStyle('A1:I1')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
+    // Query untuk mendapatkan data dengan JOIN agar lebih efisien
+    $query = "SELECT sob.id_stok_opename_barang, sob.id_stok_opename, sob.id_barang, sob.stok_awal, sob.stok_akhir, sob.stok_gap, sob.harga_beli, sob.jumlah,
+                    b.kode_barang, b.nama_barang, b.satuan_barang
+            FROM stok_opename_barang AS sob
+            JOIN barang AS b ON sob.id_barang = b.id_barang WHERE sob.id_stok_opename='$id_stok_opename'
+            ORDER BY sob.id_barang ASC";
+
+    $result = mysqli_query($Conn, $query);
+
+
+
+    // Mengisi data ke dalam Spreadsheet
+    $no = 1;
+    $row = 2; // Mulai dari baris ke-2
+    while ($data = mysqli_fetch_assoc($result)) {
+        $sheet->setCellValueExplicit('A' . $row, $no, DataType::TYPE_STRING);
+        $sheet->setCellValueExplicit('B' . $row, $tanggal, DataType::TYPE_STRING);
+        $sheet->setCellValueExplicit('C' . $row, $data['kode_barang'], DataType::TYPE_STRING);
+        $sheet->setCellValueExplicit('D' . $row, $data['nama_barang'], DataType::TYPE_STRING);
+        $sheet->setCellValueExplicit('E' . $row, $data['stok_awal'], DataType::TYPE_STRING);
+        $sheet->setCellValueExplicit('F' . $row, $data['stok_akhir'], DataType::TYPE_STRING);
+        $sheet->setCellValueExplicit('G' . $row, $data['stok_gap'], DataType::TYPE_STRING);
+        $sheet->setCellValueExplicit('H' . $row, $data['harga_beli'], DataType::TYPE_STRING);
+        $sheet->setCellValueExplicit('I' . $row, $data['jumlah'], DataType::TYPE_STRING);
+
+        $row++;
+        $no++;
+    }
+
+    // Menyesuaikan lebar kolom otomatis
+    foreach (range('A', 'I') as $columnID) {
+        $sheet->getColumnDimension($columnID)->setAutoSize(true);
+    }
+
+    // Membuat file Excel dan mengirim ke output
+    $filename = 'stock_opename.xlsx';
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    header('Content-Disposition: attachment;filename="' . $filename . '"');
+    header('Cache-Control: max-age=0');
+
+    $writer = new Xlsx($spreadsheet);
+    $writer->save('php://output');
+?>

@@ -119,7 +119,7 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col col-md-4">
-                            <label for="lembaga">Lembaga</label>
+                            <label for="lembaga">Divisi/Unit Kerja</label>
                         </div>
                         <div class="col-md-8">
                             <input type="text" name="lembaga" id="lembaga" class="form-control" list="list_lembaga">

@@ -19,6 +19,7 @@
             "RekapPinjaman"         => "_Page/RekapPinjaman/ModalRekapPinjaman.php",
             "Barang"                => "_Page/Barang/ModalBarang.php",
             "BarangExpired"         => "_Page/BarangExpired/ModalBarangExpired.php",
+            "StockOpename"          => "_Page/StockOpename/ModalStockOpename.php",
             "Supplier"              => "_Page/Supplier/ModalSupplier.php",
             "JenisTransaksi"        => "_Page/JenisTransaksi/ModalJenisTransaksi.php",
             "Transaksi"             => "_Page/Transaksi/ModalTransaksi.php",

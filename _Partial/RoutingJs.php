@@ -23,6 +23,7 @@
             "RekapPinjaman"             => "_Page/RekapPinjaman/RekapPinjaman.js",
             "Barang"                    => "_Page/Barang/Barang.js",
             "BarangExpired"             => "_Page/BarangExpired/BarangExpired.js",
+            "StockOpename"              => "_Page/StockOpename/StockOpename.js",
             "Supplier"                  => "_Page/Supplier/Supplier.js",
             "JenisTransaksi"            => "_Page/JenisTransaksi/JenisTransaksi.js",
             "Transaksi"                 => "_Page/Transaksi/Transaksi.js",

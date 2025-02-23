@@ -126,7 +126,7 @@
                     <td align="center"><b>Anggota</b></td>
                     <td align="center"><b>Tanggal</b></td>
                     <td align="center"><b>Email & Kontak</b></td>
-                    <td align="center"><b>Lembaga & Ranking</b></td>
+                    <td align="center"><b>Divisi & Ranking</b></td>
                     <td align="center"><b>Akses & Status</b></td>
                     <td align="center"><b>Opsi</b></td>
                 </tr>
@@ -228,7 +228,7 @@
                                 <td align="left">
                                     <small class="credit">
                                         <?php
-                                            echo '<code class="text text-dark">Lembaga : </code>';
+                                            echo '<code class="text text-dark">Divisi : </code>';
                                             echo '<code class="text text-grayish">'.$lembaga.'</code><br>';
                                             echo '<code class="text text-dark">Ranking : </code>';
                                             echo '<code class="text text-grayish">'.$ranking.'</code><br>';

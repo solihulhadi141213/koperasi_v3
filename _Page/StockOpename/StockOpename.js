@@ -1,431 +1,374 @@
-$('#MenampilkanTabelStockOpename').html("Loading...");
-$('#MenampilkanTabelStockOpename').load("_Page/StockOpename/TabelStockOpename.php");
-$('#batas').change(function(){
-    var ProsesBatas = $('#ProsesBatas').serialize();
-    $('#MenampilkanTabelStockOpename').html('Loading...');
+//Fungsi Menampilkan Tabel Sesi
+function ShowSesi() {
+    var ProsesFilterSesi = $('#ProsesFilterSesi').serialize();
     $.ajax({
-        type 	    : 'POST',
-        url 	    : '_Page/StockOpename/TabelStockOpename.php',
-        data 	    :  ProsesBatas,
-        success     : function(data){
-            $('#MenampilkanTabelStockOpename').html(data);
+        type    : 'POST',
+        url     : '_Page/StockOpename/TabelSesi.php',
+        data    : ProsesFilterSesi,
+        success: function(data) {
+            $('#TabelSesi').html(data);
         }
     });
-});
-$('#ProsesBatas').submit(function(){
-    var ProsesBatas = $('#ProsesBatas').serialize();
-    $('#MenampilkanTabelStockOpename').html('Loading...');
+}
+
+//Fungsi Menampilkan Detail Sesi
+function ShowDetailSesi(id_stok_opename) {
     $.ajax({
-        type 	    : 'POST',
-        url 	    : '_Page/StockOpename/TabelStockOpename.php',
-        data 	    :  ProsesBatas,
-        success     : function(data){
-            $('#MenampilkanTabelStockOpename').html(data);
+        type    : 'POST',
+        url     : '_Page/StockOpename/DetailSesi.php',
+        data    : {id_stok_opename: id_stok_opename},
+        success: function(data) {
+            $('#put_detail_sesi').html(data);
         }
     });
-});
-$('#keyword_by').change(function(){
-    var KeywordBy = $('#keyword_by').val();
-    $('#FormFilterKeyword').html('Loading...');
+}
+
+//Fungsi Menampilkan Barang
+function ShowBarang() {
+    var ProsesFilterBarang = $('#ProsesFilterBarang').serialize();
     $.ajax({
-        type 	    : 'POST',
-        url 	    : '_Page/StockOpename/FormFilterKeyword.php',
-        data 	    :  {KeywordBy: KeywordBy},
-        success     : function(data){
-            $('#FormFilterKeyword').html(data);
+        type    : 'POST',
+        url     : '_Page/StockOpename/TabelBarang.php',
+        data    : ProsesFilterBarang,
+        success: function(data) {
+            $('#TabelBarang').html(data);
         }
     });
-});
-$('#ProsesFilterStockOpename').submit(function(){
-    var ProsesFilterStockOpename = $('#ProsesFilterStockOpename').serialize();
-    $('#MenampilkanTabelStockOpename').html('Loading...');
-    $.ajax({
-        type 	    : 'POST',
-        url 	    : '_Page/StockOpename/TabelStockOpename.php',
-        data 	    :  ProsesFilterStockOpename,
-        success     : function(data){
-            $('#MenampilkanTabelStockOpename').html(data);
-            $('#ModalFilterStockOpename').modal('hide');
-        }
+}
+function formatRupiah(angka) {
+    return 'Rp ' + parseFloat(angka).toLocaleString('id-ID', { minimumFractionDigits: 0 });
+}
+// Fungsi untuk memproses input pada elemen dengan class form-money
+function processInput(event) {
+    let input = event.target;
+    let originalValue = input.value;
+
+    // Hilangkan titik dari nilai asli untuk penghitungan
+    let rawValue = originalValue.replace(/\./g, "");
+
+    // Format nilai input
+    let formattedValue = formatMoney(rawValue);
+
+    // Update nilai input dengan nilai yang telah diformat
+    input.value = formattedValue;
+}
+// Fungsi untuk memformat angka menjadi format ribuan
+function formatMoney(value) {
+    if (!value) return ""; // Jika kosong, kembalikan string kosong
+    // Hilangkan karakter selain angka
+    value = value.toString().replace(/[^0-9]/g, "");
+    // Tambahkan pemisah ribuan (titik)
+    return value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
+// Fungsi untuk menginisialisasi elemen form-money
+function initializeMoneyInputs() {
+    const moneyInputs = document.querySelectorAll(".form-money");
+    moneyInputs.forEach(function (input) {
+        // Format nilai awal jika sudah ada
+        input.value = formatMoney(input.value);
+
+        // Pastikan input diformat dengan benar
+        input.removeEventListener("input", processInput); // Menghapus event listener sebelumnya
+        input.addEventListener("input", processInput);
     });
-});
-//Modal Tambah Stock Opename
-$('#ModalTambahStockOpename').on('show.bs.modal', function (e) {
-    $('#FormTambahStockOpename').html("Loading...");
-    $.ajax({
-        type 	    : 'POST',
-        url 	    : '_Page/StockOpename/FormTambahStockOpename.php',
-        success     : function(data){
-            $('#FormTambahStockOpename').html(data);
-            $('#ProsesTambahStockOpename').submit(function(){
-                var ProsesTambahStockOpename = $('#ProsesTambahStockOpename').serialize();
-                $('#NotifikasiTambahSesiStockOpename').html('Loading...');
-                $.ajax({
-                    type 	    : 'POST',
-                    url 	    : '_Page/StockOpename/ProsesTambahStockOpename.php',
-                    data 	    :  ProsesTambahStockOpename,
-                    success     : function(data){
-                        $('#NotifikasiTambahSesiStockOpename').html(data);
-                        var NotifikasiTambahSesiStockOpenameBerhasil=$('#NotifikasiTambahSesiStockOpenameBerhasil').html();
-                        if(NotifikasiTambahSesiStockOpenameBerhasil=="Success"){
-                            location.reload();
-                        }
-                    }
-                });
-            });
-        }
+}
+$(document).ready(function() {
+    //Menampilkan Sesi Pertama Kali
+    ShowSesi();
+
+    //Ketika keyword By Diubah
+    $('#keyword_by_sesi').change(function(){
+        var keyword_by_sesi = $('#keyword_by_sesi').val();
+        $.ajax({
+            type 	    : 'POST',
+            url 	    : '_Page/StockOpename/FormFilterKeywordSesi.php',
+            data 	    :  {keyword_by: keyword_by_sesi},
+            success     : function(data){
+                $('#FormFilterKeywordSesi').html(data);
+            }
+        });
     });
-});
-//Modal Edit Stock Opename
-$('#ModalEditStockOpename').on('show.bs.modal', function (e) {
-    var GetData = $(e.relatedTarget).data('id');
-    var pecah = GetData.split(",");
-    var id_stok_opename = pecah[0];
-    var keyword = pecah[1];
-    var batas = pecah[2];
-    var ShortBy = pecah[3];
-    var OrderBy = pecah[4];
-    var page = pecah[5];
-    var posisi = pecah[6];
-    var keyword_by = pecah[7];
-    $('#FormEditStockOpename').html("Loading...");
-    $.ajax({
-        type 	    : 'POST',
-        url 	    : '_Page/StockOpename/FormEditStockOpename.php',
-        data        : {id_stok_opename: id_stok_opename},
-        success     : function(data){
-            $('#FormEditStockOpename').html(data);
-            //Proses Edit Stock Opename
-            $('#ProsesEditStockOpename').submit(function(){
-                $('#NotifikasiEditStockOpename').html('<div class="spinner-border text-secondary" role="status"><span class="sr-only"></span></div>');
-                var form = $('#ProsesEditStockOpename')[0];
-                var data = new FormData(form);
-                $.ajax({
-                    type 	    : 'POST',
-                    url 	    : '_Page/StockOpename/ProsesEditStockOpename.php',
-                    data 	    :  data,
-                    cache       : false,
-                    processData : false,
-                    contentType : false,
-                    enctype     : 'multipart/form-data',
-                    success     : function(data){
-                        $('#NotifikasiEditStockOpename').html(data);
-                        var NotifikasiEditStockOpenameBerhasil=$('#NotifikasiEditStockOpenameBerhasil').html();
-                        if(NotifikasiEditStockOpenameBerhasil=="Success"){
-                            $('#ModalEditStockOpename').modal('toggle');
-                            $('#MenampilkanTabelStockOpename').html('Loading...');
-                            $.ajax({
-                                type 	    : 'POST',
-                                url 	    : '_Page/StockOpename/TabelStockOpename.php',
-                                data 	    :  {keyword: keyword, batas: batas, ShortBy: ShortBy, OrderBy: OrderBy, page: page, posisi: posisi, keyword_by: keyword_by},
-                                success     : function(data){
-                                    $('#MenampilkanTabelStockOpename').html(data);
-                                    swal("Good Job!", "Edit Stock Opename Berhasil!", "success");
-                                }
-                            });
-                        }
-                    }
-                });
-            });
-        }
+
+    //Submit Filter Sesi
+    $('#ProsesFilterSesi').submit(function(){
+        ShowSesi();
+        $('#ModalFilterSesi').modal('hide');
     });
-});
-//Modal Delete Stock Opename
-$('#ModalDeleteStockOpename').on('show.bs.modal', function (e) {
-    var GetData = $(e.relatedTarget).data('id');
-    var pecah = GetData.split(",");
-    var id_stok_opename = pecah[0];
-    var keyword = pecah[1];
-    var batas = pecah[2];
-    var ShortBy = pecah[3];
-    var OrderBy = pecah[4];
-    var page = pecah[5];
-    var posisi = pecah[6];
-    var keyword_by = pecah[7];
-    $('#FormDeleteStockOpename').html("Loading...");
-    $.ajax({
-        type 	    : 'POST',
-        url 	    : '_Page/StockOpename/FormDeleteStockOpename.php',
-        data        : {id_stok_opename: id_stok_opename},
-        success     : function(data){
-            $('#FormDeleteStockOpename').html(data);
-            //Proses Hapus Stock Opename
-            $('#KonfirmasiHapusStockOpename').click(function(){
-                $('#NotifikasiHapusStockOpename').html('<div class="spinner-border text-secondary" role="status"><span class="sr-only"></span></div>');
-                $.ajax({
-                    type 	    : 'POST',
-                    url 	    : '_Page/StockOpename/ProsesDeleteStockOpename.php',
-                    data        : {id_stok_opename: id_stok_opename},
-                    success     : function(data){
-                        $('#NotifikasiHapusStockOpename').html(data);
-                        var NotifikasiHapusStockOpenameBerhasil=$('#NotifikasiHapusStockOpenameBerhasil').html();
-                        if(NotifikasiHapusStockOpenameBerhasil=="Success"){
-                            $('#ModalDeleteStockOpename').modal('toggle');
-                            $('#MenampilkanTabelStockOpename').html('Loading...');
-                            $.ajax({
-                                type 	    : 'POST',
-                                url 	    : '_Page/StockOpename/TabelStockOpename.php',
-                                data 	    :  {keyword: keyword, batas: batas, ShortBy: ShortBy, OrderBy: OrderBy, page: page, posisi: posisi, keyword_by: keyword_by},
-                                success     : function(data){
-                                    $('#MenampilkanTabelStockOpename').html(data);
-                                    swal("Good Job!", "Hapus Stock Opename Berhasil!", "success");
-                                }
-                            });
-                        }
-                    }
-                });
-            });
-        }
+    
+    //Pagging Sesi
+    $(document).on('click', '#next_button', function() {
+        var page_now = parseInt($('#page').val(), 10); // Pastikan nilai diambil sebagai angka
+        var next_page = page_now + 1;
+        $('#page').val(next_page);
+        ShowSesi(0);
     });
-});
-//Modal Detail Stock Opename
-$('#ModalDetailStockOpename').on('show.bs.modal', function (e) {
-    var id_stok_opename = $(e.relatedTarget).data('id');
-    $('#FormDetailStockOpename').html("Loading...");
-    $.ajax({
-        type 	    : 'POST',
-        url 	    : '_Page/StockOpename/FormDetailStockOpename.php',
-        data        : {id_stok_opename: id_stok_opename},
-        success     : function(data){
-            $('#FormDetailStockOpename').html(data);
-        }
+    $(document).on('click', '#prev_button', function() {
+        var page_now = parseInt($('#page').val(), 10); // Pastikan nilai diambil sebagai angka
+        var next_page = page_now - 1;
+        $('#page').val(next_page);
+        ShowSesi(0);
     });
-});
-//Uraian SO
-var ProsesBatasUraian = $('#ProsesBatasUraian').serialize();
-$('#MenampilkanTabelStockOpenameBarang').html('Loading...');
-$.ajax({
-    type 	    : 'POST',
-    url 	    : '_Page/StockOpename/TabelStockOpenameBarang.php',
-    data 	    :  ProsesBatasUraian,
-    success     : function(data){
-        $('#MenampilkanTabelStockOpenameBarang').html(data);
+
+    //Proses Tambah Sesi
+    $('#ProsesTambahSesi').submit(function(){
+        var ProsesTambahSesi = $('#ProsesTambahSesi').serialize();
+        $('#NotifikasiTambahSesi').html('Loading...');
+        $.ajax({
+            type 	    : 'POST',
+            url 	    : '_Page/StockOpename/ProsesTambahSesi.php',
+            data 	    :  ProsesTambahSesi,
+            success     : function(data){
+                $('#NotifikasiTambahSesi').html(data);
+                var NotifikasiTambahSesiBerhasil=$('#NotifikasiTambahSesiBerhasil').html();
+                if(NotifikasiTambahSesiBerhasil=="Success"){
+                    //Bersihkan Notifikasi
+                    $('#NotifikasiTambahSesi').html("");
+
+                    //tutup modal
+                    $('#ModalTambahSesi').modal('hide');
+
+                    //Reset halaman
+                    $('#page').val(1);
+
+                    //Reset Form
+                    $('#ProsesTambahSesi')[0].reset();
+
+                    //Tampilkan Data
+                    ShowSesi();
+
+                    //Tampilkan Swal
+                    Swal.fire(
+                        'Success!',
+                        'Tambah Sesi Stock Opename Berhasil!',
+                        'success'
+                    )
+                }
+            }
+        });
+    });
+
+    //Modal Edit Sesi
+    $('#ModalEditSesi').on('show.bs.modal', function (e) {
+        var id_stok_opename = $(e.relatedTarget).data('id');
+        var tanggal = $(e.relatedTarget).data('tanggal');
+        var status = $(e.relatedTarget).data('status');
+        //Kosongkan Notifikasi
+        $('#NotifikasiEditSesi').html("");
+
+        //Tempelkan Data
+        $('#put_id_stok_opename_edit').val(id_stok_opename);
+        $('#tanggal_edit').val(tanggal);
+        $('#status_edit').val(status);
+    });
+
+    //Proses Edit Sesi
+    $('#ProsesEditSesi').submit(function(){
+        var ProsesEditSesi = $('#ProsesEditSesi').serialize();
+        $('#NotifikasiEditSesi').html('Loading...');
+        $.ajax({
+            type 	    : 'POST',
+            url 	    : '_Page/StockOpename/ProsesEditSesi.php',
+            data 	    :  ProsesEditSesi,
+            success     : function(data){
+                $('#NotifikasiEditSesi').html(data);
+                var NotifikasiEditSesiBerhasil=$('#NotifikasiEditSesiBerhasil').html();
+                if(NotifikasiEditSesiBerhasil=="Success"){
+                    //Bersihkan Notifikasi
+                    $('#NotifikasiEditSesi').html("");
+
+                    //tutup modal
+                    $('#ModalEditSesi').modal('hide');
+
+                    //Reset Form
+                    $('#ProsesEditSesi')[0].reset();
+
+                    //Tampilkan Data
+                    ShowSesi();
+
+                    //Tampilkan Swal
+                    Swal.fire(
+                        'Success!',
+                        'Edit Sesi Stock Opename Berhasil!',
+                        'success'
+                    )
+                }
+            }
+        });
+    });
+
+    //Modal Hapus Sesi
+    $('#ModalHapusSesi').on('show.bs.modal', function (e) {
+        var id_stok_opename = $(e.relatedTarget).data('id');
+        var tanggal = $(e.relatedTarget).data('tanggal');
+        var status = $(e.relatedTarget).data('status');
+        if(status===1){
+            var label_status='<span class="badge badge-success">Selesai</span>';
+        }else{
+            var label_status='<span class="badge badge-warning">Dalam Pengerjaan</span>';
+        }
+        //Kosongkan Notifikasi
+        $('#NotifikasiHapusSesi').html("");
+
+        //Tempelkan Data
+        $('#put_id_stok_opename_hapus').val(id_stok_opename);
+        $('#FormHapusSesi').html(`
+            <div class="row mb-3">
+                <div class="col-4"><small>Tanggal Sesi</small></div>
+                <div class="col-8"><small class="text text-grayish">${tanggal}</small></div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-4"><small>Status Sesi</small></div>
+                <div class="col-8"><small class="text text-grayish">${label_status}</small></div>
+            </div>
+            <div class="row mb-2 mt-2">
+                <div class="col-12"><small>Apakah anda yakin akan menghapus data tersebut?</small></div>
+            </div>
+        `);
+        
+    });
+
+    //Proses Hapus Sesi
+    $('#ProsesHapusSesi').submit(function(){
+        var ProsesHapusSesi = $('#ProsesHapusSesi').serialize();
+        $('#NotifikasiHapusSesi').html('Loading...');
+        $.ajax({
+            type 	    : 'POST',
+            url 	    : '_Page/StockOpename/ProsesHapusSesi.php',
+            data 	    :  ProsesHapusSesi,
+            success     : function(data){
+                $('#NotifikasiHapusSesi').html(data);
+                var NotifikasiHapusSesiBerhasil=$('#NotifikasiHapusSesiBerhasil').html();
+                if(NotifikasiHapusSesiBerhasil=="Success"){
+                    //Bersihkan Notifikasi
+                    $('#NotifikasiHapusSesi').html("");
+
+                    //tutup modal
+                    $('#ModalHapusSesi').modal('hide');
+
+                    //Reset Form
+                    $('#ProsesHapusSesi')[0].reset();
+
+                    //Tampilkan Data
+                    ShowSesi();
+
+                    //Tampilkan Swal
+                    Swal.fire(
+                        'Success!',
+                        'Hapus Sesi Stock Opename Berhasil!',
+                        'success'
+                    )
+                }
+            }
+        });
+    });
+
+    //Tangkap Nilai put_id_stok_opename
+    var put_id_stok_opename=$('#put_id_stok_opename').val();
+    if(put_id_stok_opename!==""){
+        //Tampilkan Detail Sesi
+        ShowDetailSesi(put_id_stok_opename);
+
+        //Tempelkan put_id_stok_opename Ke form filter barang
+        $('#put_id_stok_opename_filter_barang').val(put_id_stok_opename);
+
+        //Atur Nomor Halaman Pertama Kali
+        $('#page_barang').val(1);
+
+        //Tampilkan Data Barang
+        ShowBarang();
     }
-});
-$('#ProsesBatasUraian').submit(function(){
-    var ProsesBatasUraian = $('#ProsesBatasUraian').serialize();
-    $('#MenampilkanTabelStockOpenameBarang').html('Loading...');
-    $.ajax({
-        type 	    : 'POST',
-        url 	    : '_Page/StockOpename/TabelStockOpenameBarang.php',
-        data 	    :  ProsesBatasUraian,
-        success     : function(data){
-            $('#MenampilkanTabelStockOpenameBarang').html(data);
-        }
+
+    //Pagging Barang
+    $(document).on('click', '#next_button_barang', function() {
+        var page_now_barang = parseInt($('#page_barang').val(), 10); // Pastikan nilai diambil sebagai angka
+        var next_page_barang = page_now_barang + 1;
+        $('#page_barang').val(next_page_barang);
+        ShowBarang();
     });
-});
-$('#BatasUraian').change(function(){
-    var ProsesBatasUraian = $('#ProsesBatasUraian').serialize();
-    $('#MenampilkanTabelStockOpenameBarang').html('Loading...');
-    $.ajax({
-        type 	    : 'POST',
-        url 	    : '_Page/StockOpename/TabelStockOpenameBarang.php',
-        data 	    :  ProsesBatasUraian,
-        success     : function(data){
-            $('#MenampilkanTabelStockOpenameBarang').html(data);
-        }
+    $(document).on('click', '#prev_button_barang', function() {
+        var page_now_barang = parseInt($('#page_barang').val(), 10); // Pastikan nilai diambil sebagai angka
+        var next_page_barang = page_now_barang - 1;
+        $('#page_barang').val(next_page_barang);
+        ShowBarang();
     });
-});
-//Modal Pilih Barang
-$('#ModalPilihBarang').on('show.bs.modal', function (e) {
-    var id_stok_opename = $(e.relatedTarget).data('id');
-    $('#FormPilihBarang').html("Loading...");
-    $.ajax({
-        type 	    : 'POST',
-        url 	    : '_Page/StockOpename/FormPilihBarang.php',
-        data        : {id_stok_opename: id_stok_opename},
-        success     : function(data){
-            $('#FormPilihBarang').html(data);
-        }
+
+    //Submit Filter Barang
+    $('#ProsesFilterBarang').submit(function(){
+        //Kembalikan ke halaman 1
+        $('#page_barang').val(1);
+        ShowBarang();
+        //Tutup Modal
+        $('#ModalFilterBarang').modal('hide');
     });
-});
-//Modal Tambah Stock Opename Barang
-$('#ModalTambahStockOpenameBarang').on('show.bs.modal', function (e) {
-    var GetData = $(e.relatedTarget).data('id');
-    var pecah = GetData.split(",");
-    var id_barang = pecah[0];
-    var id_stok_opename = pecah[1];
-    $('#FormTambahStockOpenameBarang').html("Loading...");
-    $.ajax({
-        type 	    : 'POST',
-        url 	    : '_Page/StockOpename/FormTambahStockOpenameBarang.php',
-        data        : {id_stok_opename: id_stok_opename, id_barang: id_barang},
-        success     : function(data){
-            $('#FormTambahStockOpenameBarang').html(data);
-            $( '.format_uang' ).mask('000.000.000.000', {reverse: true});
-            $('#ProsesTambahStockOpenameBarang').submit(function(){
-                var ProsesTambahStockOpenameBarang = $('#ProsesTambahStockOpenameBarang').serialize();
-                $('#NotifikasiTambahSesiStockOpenameBarang').html('Loading...');
-                $.ajax({
-                    type 	    : 'POST',
-                    url 	    : '_Page/StockOpename/ProsesTambahStockOpenameBarang.php',
-                    data 	    :  ProsesTambahStockOpenameBarang,
-                    success     : function(data){
-                        $('#NotifikasiTambahSesiStockOpenameBarang').html(data);
-                        var NotifikasiTambahSesiStockOpenameBarangBerhasil=$('#NotifikasiTambahSesiStockOpenameBarangBerhasil').html();
-                        if(NotifikasiTambahSesiStockOpenameBarangBerhasil=="Success"){
-                            location.reload();
-                        }
-                    }
-                });
-            });
-        }
+
+    //Modal Stock Opename
+    $('#ModalStockOpename').on('show.bs.modal', function (e) {
+        var id_barang = $(e.relatedTarget).data('id');
+        var id_stok_opename = $(e.relatedTarget).data('id_sesi');
+        var id_stok_opename_barang = $(e.relatedTarget).data('id_so');
+        
+        //Kosongkan Notifikasi
+        $('#NotifikasiStockOpename').html("");
+
+        //Loading
+        $('#FormStockOpename').html("Loading...");
+        
+        //Buka Form
+        $.ajax({
+            type 	    : 'POST',
+            url 	    : '_Page/StockOpename/FormStockOpename.php',
+            data 	    :  {id_barang: id_barang, id_stok_opename: id_stok_opename, id_stok_opename_barang: id_stok_opename_barang},
+            success     : function(data){
+                $('#FormStockOpename').html(data);
+            }
+        });
     });
-});
-//Modal Edit Stock Opename Barang
-$('#ModalEditStockOpenameBarang').on('show.bs.modal', function (e) {
-    var GetData = $(e.relatedTarget).data('id');
-    var pecah = GetData.split(",");
-    var id_stok_opename_barang = pecah[0];
-    var id_stok_opename = pecah[1];
-    var keyword = pecah[2];
-    var batas = pecah[3];
-    var ShortBy = pecah[4];
-    var OrderBy = pecah[5];
-    var page = pecah[6];
-    $('#FormEditStockOpenameBarang').html("Loading...");
-    $.ajax({
-        type 	    : 'POST',
-        url 	    : '_Page/StockOpename/FormEditStockOpenameBarang.php',
-        data        : {id_stok_opename_barang: id_stok_opename_barang, id_stok_opename: id_stok_opename},
-        success     : function(data){
-            $('#FormEditStockOpenameBarang').html(data);
-            //Proses Edit Stock Opename Barang
-            $('#ProsesEditStockOpenameBarang').submit(function(){
-                $('#NotifikasiEditStockOpenameBarang').html('<div class="spinner-border text-secondary" role="status"><span class="sr-only"></span></div>');
-                var form = $('#ProsesEditStockOpenameBarang')[0];
-                var data = new FormData(form);
-                $.ajax({
-                    type 	    : 'POST',
-                    url 	    : '_Page/StockOpename/ProsesEditStockOpenameBarang.php',
-                    data 	    :  data,
-                    cache       : false,
-                    processData : false,
-                    contentType : false,
-                    enctype     : 'multipart/form-data',
-                    success     : function(data){
-                        $('#NotifikasiEditStockOpenameBarang').html(data);
-                        var NotifikasiEditStockOpenameBarangBerhasil=$('#NotifikasiEditStockOpenameBarangBerhasil').html();
-                        if(NotifikasiEditStockOpenameBarangBerhasil=="Success"){
-                            $('#ModalEditStockOpenameBarang').modal('toggle');
-                            $('#MenampilkanTabelStockOpenameBarang').html('Loading...');
-                            $.ajax({
-                                type 	    : 'POST',
-                                url 	    : '_Page/StockOpename/TabelStockOpenameBarang.php',
-                                data 	    :  {id_stok_opename: id_stok_opename, KeywordStockOpenameBarang: keyword, BatasUraian: batas, ShortBy: ShortBy, OrderBy: OrderBy, page: page},
-                                success     : function(data){
-                                    $('#MenampilkanTabelStockOpenameBarang').html(data);
-                                    swal("Good Job!", "Edit Stock Opename Berhasil!", "success");
-                                }
-                            });
-                        }
-                    }
-                });
-            });
-        }
+
+    //Proses Simpan Stock Opename
+    $('#ProsesStockOpename').submit(function(){
+        var ProsesStockOpename = $('#ProsesStockOpename').serialize();
+        $('#NotifikasiStockOpename').html('Loading...');
+        $.ajax({
+            type 	    : 'POST',
+            url 	    : '_Page/StockOpename/ProsesStockOpename.php',
+            data 	    :  ProsesStockOpename,
+            success     : function(data){
+                $('#NotifikasiStockOpename').html(data);
+                var NotifikasiStockOpenameBerhasil=$('#NotifikasiStockOpenameBerhasil').html();
+                if(NotifikasiStockOpenameBerhasil=="Success"){
+                    //Bersihkan Notifikasi
+                    $('#NotifikasiStockOpename').html("");
+
+                    //tutup modal
+                    $('#ModalStockOpename').modal('hide');
+
+                    //Tampilkan Data
+                    ShowBarang();
+
+                    //Tampilkan Swal
+                    Swal.fire(
+                        'Success!',
+                        'Atur Stock Opename Berhasil!',
+                        'success'
+                    )
+                }
+            }
+        });
     });
-});
-//Modal Delete Stock Opename Barang
-$('#ModalDeleteStockOpenameBarang').on('show.bs.modal', function (e) {
-    var GetData = $(e.relatedTarget).data('id');
-    var pecah = GetData.split(",");
-    var id_stok_opename_barang = pecah[0];
-    var id_stok_opename = pecah[1];
-    var keyword = pecah[2];
-    var batas = pecah[3];
-    var ShortBy = pecah[4];
-    var OrderBy = pecah[5];
-    var page = pecah[6];
-    $('#FormDeleteStockOpenameBarang').html("Loading...");
-    $.ajax({
-        type 	    : 'POST',
-        url 	    : '_Page/StockOpename/FormDeleteStockOpenameBarang.php',
-        data        : {id_stok_opename_barang: id_stok_opename_barang},
-        success     : function(data){
-            $('#FormDeleteStockOpenameBarang').html(data);
-            //Proses Hapus Stock Opename
-            $('#KonfirmasiHapusStockOpenameBarang').click(function(){
-                $('#NotifikasiHapusStockOpenameBarang').html('<div class="spinner-border text-secondary" role="status"><span class="sr-only"></span></div>');
-                $.ajax({
-                    type 	    : 'POST',
-                    url 	    : '_Page/StockOpename/ProsesDeleteStockOpenameBarang.php',
-                    data        : {id_stok_opename_barang: id_stok_opename_barang},
-                    success     : function(data){
-                        $('#NotifikasiHapusStockOpenameBarang').html(data);
-                        var NotifikasiHapusStockOpenameBarangBerhasasil=$('#NotifikasiHapusStockOpenameBarangBerhasasil').html();
-                        if(NotifikasiHapusStockOpenameBarangBerhasasil=="Success"){
-                            $('#ModalDeleteStockOpenameBarang').modal('toggle');
-                            $('#MenampilkanTabelStockOpenameBarang').html('Loading...');
-                            $.ajax({
-                                type 	    : 'POST',
-                                url 	    : '_Page/StockOpename/TabelStockOpenameBarang.php',
-                                data 	    :  {id_stok_opename: id_stok_opename, KeywordStockOpenameBarang: keyword, BatasUraian: batas, ShortBy: ShortBy, OrderBy: OrderBy, page: page},
-                                success     : function(data){
-                                    $('#MenampilkanTabelStockOpenameBarang').html(data);
-                                    swal("Good Job!", "Hapus Stock Opename Berhasil!", "success");
-                                }
-                            });
-                        }
-                    }
-                });
-            });
-        }
+
+    //Modal Export Stock Opename
+    $('#ModalExportStockOpenameBarang').on('show.bs.modal', function (e) {
+        var id_stok_opename = $(e.relatedTarget).data('id');
+        //Buka Form
+        $.ajax({
+            type 	    : 'POST',
+            url 	    : '_Page/StockOpename/FormExportStockOpenameBarang.php',
+            data 	    :  {id_stok_opename: id_stok_opename},
+            success     : function(data){
+                $('#FormExportStockOpenameBarang').html(data);
+            }
+        });
     });
-});
-//Modal Detal Stock Opename Barang
-$('#ModalDetailStockOpenameBarang').on('show.bs.modal', function (e) {
-    var id_stok_opename_barang = $(e.relatedTarget).data('id');
-    $('#FormDetailStockOpenameBarang').html("Loading...");
-    $.ajax({
-        type 	    : 'POST',
-        url 	    : '_Page/StockOpename/FormDetailStockOpenameBarang.php',
-        data        : {id_stok_opename_barang: id_stok_opename_barang},
-        success     : function(data){
-            $('#FormDetailStockOpenameBarang').html(data);
-        }
-    });
-});
-//Modal Import Stock Opename
-$('#ModalImportStockOpename').on('show.bs.modal', function (e) {
-    var id_stok_opename = $(e.relatedTarget).data('id');
-    $('#FormImportStockOpename').html("Loading...");
-    $.ajax({
-        type 	    : 'POST',
-        url 	    : '_Page/StockOpename/FormImportStockOpename.php',
-        data        : {id_stok_opename: id_stok_opename},
-        success     : function(data){
-            $('#FormImportStockOpename').html(data);
-            //Proses Import Stock Opename
-            $('#ProsesImportStockOpename').submit(function(){
-                $('#NotifikasiImportStockOpename').html('<tr><td colspan="6" class="text-center text-danger">Loading...</td></tr>');
-                var form = $('#ProsesImportStockOpename')[0];
-                var data = new FormData(form);
-                $.ajax({
-                    type 	    : 'POST',
-                    url 	    : '_Page/StockOpename/ProsesImportStockOpename.php',
-                    data 	    :  data,
-                    cache       : false,
-                    processData : false,
-                    contentType : false,
-                    enctype     : 'multipart/form-data',
-                    success     : function(data){
-                        $('#NotifikasiImportStockOpename').html(data);
-                    }
-                });
-            });
-        }
-    });
-});
-//Modal Export Stock Opename
-$('#ModalExportStockOpename').on('show.bs.modal', function (e) {
-    var id_stok_opename = $(e.relatedTarget).data('id');
-    $('#FormExportStockOpename').html("Loading...");
-    $.ajax({
-        type 	    : 'POST',
-        url 	    : '_Page/StockOpename/FormExportStockOpename.php',
-        data        : {id_stok_opename: id_stok_opename},
-        success     : function(data){
-            $('#FormExportStockOpename').html(data);
-        }
-    });
+
 });

@@ -134,6 +134,14 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-3">
+                                    <label for="author">Author Aplikasi</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" name="author" id="author" class="form-control" value="<?php echo "$AuthorAplikasi"; ?>">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-3">
                                 </div>
                                 <div class="col-md-9 text-right" id="NotifikasiSimpanSettingGeneral">
                                     <small class="text-dark">Pastikan pengaturan yang anda gunakan sudah sesuai.</small>
