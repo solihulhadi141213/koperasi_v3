@@ -1,32 +1,32 @@
 [
     {
         "x": "January",
-        "ySimpanan": "7400000",
+        "ySimpanan": "7800000",
         "yPinjaman": "10000000"
     },
     {
         "x": "February",
-        "ySimpanan": "5500000",
+        "ySimpanan": "5900000",
         "yPinjaman": "13000000"
     },
     {
         "x": "March",
-        "ySimpanan": "2800000",
+        "ySimpanan": "2200000",
         "yPinjaman": 0
     },
     {
         "x": "April",
-        "ySimpanan": "2800000",
+        "ySimpanan": "2200000",
         "yPinjaman": 0
     },
     {
         "x": "May",
-        "ySimpanan": "2800000",
+        "ySimpanan": "2200000",
         "yPinjaman": 0
     },
     {
         "x": "June",
-        "ySimpanan": "2800000",
+        "ySimpanan": "2200000",
         "yPinjaman": 0
     },
     {

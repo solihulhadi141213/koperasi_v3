@@ -35,7 +35,7 @@ Aplikasi Koperasi V 3.0.0 adalah sebuah aplikasi open source yang dirancang untu
 ### Tahapan Instalasi
 - Instal webserver (Xampp, Wamp) terlebih dulu kemudian jalankan.
 - Simpan folder aplikasi pada directory htdoc (untuk pengguna xampp) atau www (untuk pengguna wamp).
-- Masuk ke database dengan cara phpmyadmin dengan cara ketik localhost/phpmyadmin
+- Masuk ke database mnggunakan phpmyadmin dengan cara ketik localhost/phpmyadmin
 - Buat database baru dengan nama apapun (Misalnya : koperasi_v3)
 - Import database aplikasi (database standar aplikasi ini disimpan pada folder db).
 - Atur variabel koneksi database aplikasi pada file _Config/Connection.php

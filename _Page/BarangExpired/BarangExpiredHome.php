@@ -53,21 +53,63 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalDatabaseBarang">
-                                        <i class="bi bi-cloud-arrow-down"></i> Export/Import
+                                    <a class="dropdown-item" href="_Page/BarangExpired/ProsesExport.php">
+                                        <i class="bi bi-download"></i> Export
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalImport">
+                                        <i class="bi bi-upload"></i> Import
                                     </a>
                                 </li>
                             </ul>
                         </div>
                         <div class="col-6 col-md-2 mb-2">
                             <button type="button" class="btn btn-md btn-primary btn-block btn-rounded" data-bs-toggle="modal" data-bs-target="#ModalPilihBarang" title="Tambah Data Expired Barang">
-                                <i class="bi bi-calendar-plus"></i> Tambah
+                                <i class="bi bi-plus"></i> Tambah
                             </button>
                         </div>
                     </div>
                 </div>
-                <div id="MenampilkanTabelBarangExpired">
-
+                <div class="card-body">
+                    <div class="table table-responsive">
+                        <table class="table table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th><b>No</b></th>
+                                    <th><b>Batch</b></th>
+                                    <th><b>Nama/Merek</b></th>
+                                    <th><b>Expire</b></th>
+                                    <th><b>Reminder</b></th>
+                                    <th><b>QTY</b></th>
+                                    <th><b>Status</b></th>
+                                    <th><b>Opsi</b></th>
+                                </tr>
+                            </thead>
+                            <tbody id="TabelBarangExpired">
+                                <tr>
+                                    <td colspan="8" class="text-center text-danger">Tidak Ada Data Yang Ditampilkan</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-6">
+                            <small id="page_info">
+                                Page 1 Of 100
+                            </small>
+                        </div>
+                        <div class="col-6 text-end">
+                            <button type="button" class="btn btn-sm btn-outline-info btn-floating" id="prev_button">
+                                <i class="bi bi-chevron-left"></i>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-info btn-floating" id="next_button">
+                                <i class="bi bi-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

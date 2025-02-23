@@ -1,59 +1,27 @@
 <?php
     include "../../_Config/Connection.php";
-    include "../../_Config/Session.php";
-    if(!empty($_POST['KeywordBy'])){
-        $KeywordBy=$_POST['KeywordBy'];
-        if($KeywordBy=="kode_barang"){
-            echo '<label for="FilterKeyword">Kata Kunci</label>';
-            echo ' <input type="text" name="FilterKeyword" id="FilterKeyword" class="form-control">';
+    if(!empty($_POST['keyword_by'])){
+        $keyword_by=$_POST['keyword_by'];
+        if($keyword_by=="expired_date"||$keyword_by=="reminder_date"){
+            echo '<label for="keyword">Kata Kunci</label>';
+            echo ' <input type="date" name="keyword" id="keyword" class="form-control">';
         }else{
-            if($KeywordBy=="nama_barang"){
-                echo '<label for="FilterKeyword">Kata Kunci</label>';
-                echo ' <input type="text" name="FilterKeyword" id="FilterKeyword" class="form-control">';
-            }else{
-                if($KeywordBy=="satuan"){
-                    echo '<label for="FilterKeyword">Kata Kunci</label>';
-                    echo '<select name="FilterKeyword" id="FilterKeyword" class="form-control">';
-                    $query = mysqli_query($Conn, "SELECT DISTINCT satuan FROM barang_bacth ORDER BY satuan ASC");
-                    while ($data = mysqli_fetch_array($query)) {
-                        $satuan= $data['satuan'];
-                        echo '  <option value="'.$satuan.'">'.$satuan.'</option>';
-                    }
-                    echo '</select>';
-                }else{
-                    if($KeywordBy=="no_batch"){
-                        echo '<label for="FilterKeyword">Kata Kunci</label>';
-                        echo ' <input type="text" name="FilterKeyword" id="FilterKeyword" class="form-control">';
-                    }else{
-                        if($KeywordBy=="expired_date"){
-                            echo '<label for="FilterKeyword">Kata Kunci</label>';
-                            echo ' <input type="date" name="FilterKeyword" id="FilterKeyword" class="form-control">';
-                        }else{
-                            if($KeywordBy=="status"){
-                                echo '<label for="FilterKeyword">Kata Kunci</label>';
-                                echo '<select name="FilterKeyword" id="FilterKeyword" class="form-control">';
-                                $query = mysqli_query($Conn, "SELECT DISTINCT status FROM barang_bacth ORDER BY status ASC");
-                                while ($data = mysqli_fetch_array($query)) {
-                                    $status= $data['status'];
-                                    echo '  <option value="'.$status.'">'.$status.'</option>';
-                                }
-                                echo '</select>';
-                            }else{
-                                if($KeywordBy=="reminder_date"){
-                                    echo '<label for="FilterKeyword">Kata Kunci</label>';
-                                    echo ' <input type="date" name="FilterKeyword" id="FilterKeyword" class="form-control">';
-                                }else{
-                                    echo '<label for="FilterKeyword">Kata Kunci</label>';
-                                    echo ' <input type="text" name="FilterKeyword" id="FilterKeyword" class="form-control">';
-                                }
-                            }
-                        }
-                    }
+            if($keyword_by=="status"){
+                echo '<label for="keyword">Kata Kunci</label>';
+                echo '<select name="keyword" id="keyword" class="form-control">';
+                $query = mysqli_query($Conn, "SELECT DISTINCT status FROM barang_bacth ORDER BY status ASC");
+                while ($data = mysqli_fetch_array($query)) {
+                    $status= $data['status'];
+                    echo '  <option value="'.$status.'">'.$status.'</option>';
                 }
+                echo '</select>';
+            }else{
+                echo '<label for="keyword">Kata Kunci</label>';
+                echo ' <input type="text" name="keyword" id="keyword" class="form-control">';
             }
         }
     }else{
-        echo '<label for="FilterKeyword">Kata Kunci</label>';
-        echo ' <input type="text" name="FilterKeyword" id="FilterKeyword" class="form-control">';
+        echo '<label for="keyword">Kata Kunci</label>';
+        echo ' <input type="text" name="keyword" id="keyword" class="form-control">';
     }
 ?>

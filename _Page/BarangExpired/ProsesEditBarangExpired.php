@@ -1,7 +1,15 @@
 <?php
     //Koneksi
     include "../../_Config/Connection.php";
+    include "../../_Config/GlobalFunction.php";
     include "../../_Config/Session.php";
+
+    // Time Zone
+    date_default_timezone_set('Asia/Jakarta');
+
+    // Time Now Tmp
+    $now = date('Y-m-d H:i:s');
+
     //Tangkap variabel
     if(empty($_POST['id_barang_bacth'])){
         echo '<span class="text-danger">ID Barang Tidak Boleh Kosong!</span>';
@@ -18,48 +26,41 @@
                     if(empty($_POST['qty_batch'])){
                         echo '<span class="text-danger">Jumlah Tidak Boleh Kosong!</span>';
                     }else{
-                        $id_barang_bacth=$_POST['id_barang_bacth'];
-                        //Buka id_barang
-                        $QryBatch= mysqli_query($Conn,"SELECT * FROM barang_bacth WHERE id_barang_bacth='$id_barang_bacth'")or die(mysqli_error($Conn));
-                        $DataBatch= mysqli_fetch_array($QryBatch);
-                        $id_barang= $DataBatch['id_barang'];
-                        if(empty($_POST['id_barang_satuan'])){
-                            $id_barang_satuan=0;
-                            //Buka satuan barang
-                            $QryBarang = mysqli_query($Conn,"SELECT * FROM barang WHERE id_barang='$id_barang'")or die(mysqli_error($Conn));
-                            $DataBarang = mysqli_fetch_array($QryBarang);
-                            $satuan_barang= $DataBarang['satuan_barang'];
-                        }else{
-                            $id_barang_satuan=$_POST['id_barang_satuan'];
-                            //Buka satuan multi
-                            $QryBarang = mysqli_query($Conn,"SELECT * FROM barang_satuan WHERE id_barang_satuan='$id_barang_satuan'")or die(mysqli_error($Conn));
-                            $DataBarang = mysqli_fetch_array($QryBarang);
-                            $satuan_barang= $DataBarang['satuan_multi'];
-                        }
                         if(empty($_POST['status'])){
-                            $status="";
+                            echo '<span class="text-danger">Status Tidak Boleh Kosong!</span>';
                         }else{
-                            $status=$_POST['status'];
-                        }
-                        
-                        $expired_date=$_POST['expired_date'];
-                        $reminder_date=$_POST['reminder_date'];
-                        $qty_batch=$_POST['qty_batch'];
-                        $no_batch=$_POST['no_batch'];
-                        //Simpan data
-                        $UpdateExpiredDate = mysqli_query($Conn,"UPDATE barang_bacth SET 
-                            id_barang_satuan='$id_barang_satuan',
-                            satuan='$satuan_barang',
-                            expired_date='$expired_date',
-                            reminder_date='$reminder_date',
-                            qty_batch='$qty_batch',
-                            no_batch='$no_batch',
-                            status='$status'
-                        WHERE id_barang_bacth='$id_barang_bacth'") or die(mysqli_error($Conn)); 
-                        if($UpdateExpiredDate){
-                            echo '<small class="text-success" id="NotifikasiEditExpiredDateBerhasil">Success</small>';
-                        }else{
-                            echo '<span class="text-danger">Terjadi kesalahan pada saat menyimpan data expired date!</span>';
+                            $id_barang_bacth=validateAndSanitizeInput($_POST['id_barang_bacth']);
+                            $no_batch=validateAndSanitizeInput($_POST['no_batch']);
+                            $expired_date=validateAndSanitizeInput($_POST['expired_date']);
+                            $reminder_date=validateAndSanitizeInput($_POST['reminder_date']);
+                            $qty_batch=validateAndSanitizeInput($_POST['qty_batch']);
+                            $status=validateAndSanitizeInput($_POST['status']);
+                            if(strlen($no_batch)>20){
+                                echo '<span class="text-danger">Nomor Batch Maksimal 20 Digit!</span>';
+                            }else{
+                                //Simpan data
+                                $UpdateExpiredDate = mysqli_query($Conn,"UPDATE barang_bacth SET 
+                                    expired_date='$expired_date',
+                                    reminder_date='$reminder_date',
+                                    qty_batch='$qty_batch',
+                                    no_batch='$no_batch',
+                                    status='$status'
+                                WHERE id_barang_bacth='$id_barang_bacth'") or die(mysqli_error($Conn)); 
+                                if($UpdateExpiredDate){
+                                    //Simpan LOG
+                                    $kategori_log="Barang";
+                                    $deskripsi_log="Edit Barang Batch & Expired";
+                                    $InputLog=addLog($Conn,$SessionIdAkses,$now,$kategori_log,$deskripsi_log);
+                                    if($InputLog=="Success"){
+                                        echo '<small class="text-success" id="NotifikasiEditExpiredDateBerhasil">Success</small>';
+                                    }else{
+                                        echo '<span class="text-danger">Terjadi kesalahan pada saat menyimpan log!</span>';
+                                    }
+                                    
+                                }else{
+                                    echo '<span class="text-danger">Terjadi kesalahan pada saat menyimpan data expired date!</span>';
+                                }
+                            }
                         }
                     }
                 }
