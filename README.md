@@ -1,5 +1,6 @@
 # Aplikasi Koperasi V 3.0.0
 Aplikasi Koperasi V 3.0.0 adalah sebuah aplikasi open source yang dirancang untuk membantu pengelolaan koperasi secara digital. Aplikasi ini dibangun menggunakan teknologi modern seperti PHP, MySQL, jQuery, dan Bootstrap 4 untuk memberikan pengalaman pengguna yang responsif dan mudah digunakan. Aplikasi ini cocok digunakan oleh koperasi simpan pinjam, koperasi serba usaha, atau koperasi konsumen yang membutuhkan sistem pengelolaan terintegrasi.
+![Logo](./assets/img/screenshot/dashboard.png)
 
 ## Fitur Aplikasi
 1. **Akses**    
@@ -10,6 +11,10 @@ Aplikasi Koperasi V 3.0.0 adalah sebuah aplikasi open source yang dirancang untu
     - Akses/Pengguna : 
     Berfungsi mengelola semua data akses pengguna pada level (Pengurus)
 2. Anggota
+   - Anggota : 
+   Berfungsi untuk mengelola semua data anggota, input data anggota, ubah dan hapus. Terdapat filter untuk pencarian, import untuk memasukan data dari excel dan export ke data excel.
+   - Keluar & Masuk
+   - Rekap Anggota
 3. Simpanan Anggota
 4. Pinjaman Anggota
 5. Barang/Inventory
