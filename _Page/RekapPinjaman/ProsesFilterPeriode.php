@@ -159,7 +159,7 @@
                         </tr>
                         <tr>
                             <td align="center"><b>No</b></td>
-                            <td align="center"><b>Lembaga</b></td>
+                            <td align="center"><b>Divisi/Unit</b></td>
                             <td align="center"><b>Anggota/Nasabah</b></td>
                             <td align="center"><b>Rp Pinjaman</b></td>
                             <td align="center"><b>Rp Angsuran Masuk</b></td>

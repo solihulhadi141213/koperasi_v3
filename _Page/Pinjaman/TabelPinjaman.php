@@ -125,7 +125,7 @@
                             <td align="center"><b>No</b></td>
                             <td align="center"><b>Tanggal Pinjaman</b></td>
                             <td align="center"><b>Nama & NIP</b></td>
-                            <td align="center"><b>Lembaga & Ranking</b></td>
+                            <td align="center"><b>Divisi/Unit & Ranking</b></td>
                             <td align="center"><b>Rp Pinjaman</b></td>
                             <td align="center"><b>Angsuran Masuk</b></td>
                             <td align="center"><b>Status</b></td>

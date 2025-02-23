@@ -51,7 +51,7 @@
                                                 }
                                             ?>
                                     </select>
-                                    <small>Lembaga</small>
+                                    <small>Divisi/Unit</small>
                                 </div>
                                 <div class="col-md-3 mt-3">
                                     <select name="periode" id="periode_form" class="form-control">

@@ -45,7 +45,7 @@
                 $sheet->setCellValue('B1', 'Tanggal');
                 $sheet->setCellValue('C1', 'NIP');
                 $sheet->setCellValue('D1', 'Nama Anggota');
-                $sheet->setCellValue('E1', 'Lembaga');
+                $sheet->setCellValue('E1', 'Divisi/Unit');
                 $sheet->setCellValue('F1', 'Ranking');
                 $sheet->setCellValue('G1', 'Kategori Simpanan');
                 $sheet->setCellValue('H1', 'Keterangan');

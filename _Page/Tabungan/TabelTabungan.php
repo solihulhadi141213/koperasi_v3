@@ -125,7 +125,7 @@
                             <td align="center"><b>No</b></td>
                             <td align="center"><b>Tanggal</b></td>
                             <td align="center"><b>Nama & NIP</b></td>
-                            <td align="center"><b>Lembaga & Ranking</b></td>
+                            <td align="center"><b>Divisi & Ranking</b></td>
                             <td align="center"><b>Kategori</b></td>
                             <td align="center"><b>Nominal</b></td>
                             <td align="center"><b>Opsi</b></td>

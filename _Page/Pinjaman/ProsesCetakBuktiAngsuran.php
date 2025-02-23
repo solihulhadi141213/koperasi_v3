@@ -186,7 +186,7 @@
                     <td><small><?php echo "$nama"; ?></small></td>
                 </tr>
                 <tr>
-                    <td><small><b>Lembaga</b></small></td>
+                    <td><small><b>Divisi/Unit</b></small></td>
                     <td><small><b>:</b></small></td>
                     <td><small><?php echo "$lembaga"; ?></small></td>
                 </tr>

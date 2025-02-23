@@ -30,7 +30,7 @@
                                 <option value="nama">Nama Anggota</option>
                                 <option value="email">Email</option>
                                 <option value="kontak">Kontak</option>
-                                <option value="lembaga">Lembaga</option>
+                                <option value="lembaga">Divisi/Unit</option>
                                 <option value="ranking">Ranking</option>
                                 <option value="status">Status</option>
                             </select>
@@ -54,7 +54,7 @@
                                 <option value="nama">Nama Anggota</option>
                                 <option value="email">Email</option>
                                 <option value="kontak">Kontak</option>
-                                <option value="lembaga">Lembaga</option>
+                                <option value="lembaga">Divisi/Unit</option>
                                 <option value="ranking">Ranking</option>
                                 <option value="status">Status</option>
                             </select>
@@ -254,7 +254,7 @@
     </div>
 </div>
 <div class="modal fade" id="ModalDetailAnggota" tabindex="-1">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title text-dark">

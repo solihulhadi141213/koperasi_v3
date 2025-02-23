@@ -61,10 +61,10 @@
             $TanggalMasuk=date('d/m/Y', $strtotime1);
 ?>
     <div class="row mb-3">
-        <div class="col-md-4 text-center mb-4">
+        <div class="col-md-12 text-center mb-4">
             <img src="<?php echo $base_url; ?>/assets/img/Anggota/<?php echo $foto; ?>" alt="" width="50%" class="rounded-circle">
         </div>
-        <div class="col-md-8 mb-4">
+        <div class="col-md-12 mb-4">
             <div class="row mb-3">
                 <div class="col col-md-4">Nomor Induk</div>
                 <div class="col col-md-8">

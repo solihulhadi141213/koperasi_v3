@@ -89,7 +89,7 @@
                 </div>
             </div>
             <div class="row mb-3">
-                <div class="col-md-4">Lembaga</div>
+                <div class="col-md-4">Divisi/Unit</div>
                 <div class="col-md-8">
                     <code class="text text-grayish"><?php echo "$lembaga"; ?></code>
                 </div>

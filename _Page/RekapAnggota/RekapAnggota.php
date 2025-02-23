@@ -38,7 +38,7 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-md-10">
-                                <b class="card-title">Rekap Berdasarkan Lembaga</b>
+                                <b class="card-title"># Rekapitulasi Jumlah Anggota</b>
                             </div>
                             <div class="col-md-2 mb-3">
                                 <a class="btn btn-md btn-outline-dark btn-rounded btn-block" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#ModalFilter">

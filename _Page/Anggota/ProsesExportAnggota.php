@@ -27,7 +27,7 @@
         $sheet->setCellValue('D1', 'Email');
         $sheet->setCellValue('E1', 'Password');
         $sheet->setCellValue('F1', 'Kontak');
-        $sheet->setCellValue('G1', 'Lembaga');
+        $sheet->setCellValue('G1', 'Divisi/Unit');
         $sheet->setCellValue('H1', 'Ranking');
         $sheet->setCellValue('I1', 'status');
         $sheet->setCellValue('J1', 'Tanggal Masuk');

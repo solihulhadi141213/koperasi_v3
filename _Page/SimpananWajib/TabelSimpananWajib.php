@@ -213,7 +213,7 @@
                         <tr>
                             <td align="center"><b>No</b></td>
                             <td align="center"><b>Anggota</b></td>
-                            <td align="center"><b>Lembaga/Ranking </b></td>
+                            <td align="center"><b>Divisi/Ranking </b></td>
                             <?php
                                 //Looping Berdasarkan Mode
                                 if($mode_periode=="Bulanan"){

@@ -88,7 +88,7 @@
                             <b>Anggota</b>
                         </th>
                         <th class="text-center">
-                            <b>Lembaga</b>
+                            <b>Divisi/Unit</b>
                         </th>
                         <th class="text-center">
                             <b>Status</b>

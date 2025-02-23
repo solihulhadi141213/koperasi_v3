@@ -155,7 +155,7 @@
                         <table class="data" width="100%">
                             <tr>
                                 <td align="center" valign="middle"><b>No</b></td>
-                                <td align="center" valign="middle"><b>Lembaga</b></td>
+                                <td align="center" valign="middle"><b>Divisi/Unit</b></td>
                                 <td align="center" valign="middle"><b>Anggota Masuk</b></td>
                                 <td align="center" valign="middle"><b>Anggota Keluar</b></td>
                                 <td align="center" valign="middle"><b>Anggota Aktif</b></td>

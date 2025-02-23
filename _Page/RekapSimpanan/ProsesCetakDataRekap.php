@@ -157,7 +157,7 @@
                         <table class="data" width="100%">
                             <tr>
                                 <td align="center" rowspan="2" valign="middle"><b>No</b></td>
-                                <td align="center" rowspan="2" valign="middle"><b>Lembaga</b></td>
+                                <td align="center" rowspan="2" valign="middle"><b>Divisi/Unit</b></td>
                                 <td align="center" colspan="<?php echo $JumlahSimpanan; ?>"><b>Simpanan</b></td>
                                 <td align="center" rowspan="2" valign="middle"><b>Jumlah</b></td>
                                 <td align="center" rowspan="2" valign="middle"><b>Penarikan</b></td>

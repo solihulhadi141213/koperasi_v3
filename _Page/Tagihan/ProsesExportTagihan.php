@@ -28,7 +28,7 @@
                 'A1' => 'No',
                 'B1' => 'NIP',
                 'C1' => 'Nama Anggota',
-                'D1' => 'Lembaga',
+                'D1' => 'Divisi/Unit',
                 'E1' => 'Ranking',
                 'F1' => 'Tanggal',
                 'G1' => 'Jatuh Tempo',

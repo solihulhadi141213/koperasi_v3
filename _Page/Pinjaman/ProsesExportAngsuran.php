@@ -37,7 +37,7 @@ if(empty($_POST['id_pinjaman'])){
             'A1' => 'No',
             'B1' => 'NIP',
             'C1' => 'Nama Anggota',
-            'D1' => 'Lembaga',
+            'D1' => 'Divisi/Unit',
             'E1' => 'Ranking',
             'F1' => 'Tanggal Tempo',
             'G1' => 'Tanggal Bayar',

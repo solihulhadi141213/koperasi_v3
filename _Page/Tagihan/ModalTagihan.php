@@ -32,7 +32,7 @@
                                 <option value="">Pilih</option>
                                 <option value="nip">NIP</option>
                                 <option value="nama">Nama Anggota</option>
-                                <option value="lembaga">Lembaga</option>
+                                <option value="lembaga">Divisi/Unit</option>
                                 <option value="ranking">Ranking</option>
                                 <option value="tanggal">Tanggal</option>
                                 <option value="jumlah_pinjaman">Jumlah Pinjaman</option>
@@ -55,7 +55,7 @@
                                 <option value="">Pilih</option>
                                 <option value="nip">NIP</option>
                                 <option value="nama">Nama Anggota</option>
-                                <option value="lembaga">Lembaga</option>
+                                <option value="lembaga">Divisi/Unit</option>
                                 <option value="ranking">Ranking</option>
                                 <option value="tanggal">Tanggal</option>
                                 <option value="jumlah_pinjaman">Jumlah Pinjaman</option>
