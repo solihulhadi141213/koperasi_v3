@@ -146,6 +146,19 @@ $(document).ready(function() {
         });
     });
 
+    //Modal Detail Barang Expired
+    $('#ModalDetail').on('show.bs.modal', function (e) {
+        var id_barang_bacth = $(e.relatedTarget).data('id');
+        $('#FormDetail').html("Loading...");
+        $.ajax({
+            type 	    : 'POST',
+            url 	    : '_Page/BarangExpired/FormDetail.php',
+            data        : {id_barang_bacth: id_barang_bacth},
+            success     : function(data){
+                $('#FormDetail').html(data);
+            }
+        });
+    });
     //Modal Edit Barang Expired
     $('#ModalEdit').on('show.bs.modal', function (e) {
         var id_barang_bacth = $(e.relatedTarget).data('id');

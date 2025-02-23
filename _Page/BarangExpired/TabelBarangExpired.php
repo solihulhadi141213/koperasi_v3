@@ -119,7 +119,7 @@ if (empty($SessionIdAkses)) {
                 <tr>
                     <td><small>' . $no . '</small></td>
                     <td>
-                        <a href="javascript:void(0);" class="ModalDetail" data-id="' . $id_barang_bacth . '">
+                        <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#ModalDetail" data-id="' . $id_barang_bacth . '">
                             <small>' . $no_batch . '</small>
                         </a>
                     </td>
