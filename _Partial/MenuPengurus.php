@@ -137,17 +137,17 @@
         <li class="nav-item">
             <a class="nav-link <?php if($PageMenu=="JenisTransaksi"||$PageMenu=="RekapTransaksi"||$PageMenu=="Transaksi"||$PageMenu=="TransaksiJualBeli"){echo "";}else{echo "collapsed";} ?>" data-bs-target="#transaksi-nav" data-bs-toggle="collapse" href="javascript:void(0);">
                 <i class="bi bi-cash-coin"></i>
-                <span>Transaksi Lain</span><i class="bi bi-chevron-down ms-auto"></i>
+                <span>Transaksi Operasional</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="transaksi-nav" class="nav-content collapse <?php if($PageMenu=="JenisTransaksi"||$PageMenu=="RekapTransaksi"||$PageMenu=="Transaksi"||$PageMenu=="TransaksiJualBeli"){echo "show";} ?>" data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="index.php?Page=JenisTransaksi" class="<?php if($PageMenu=="JenisTransaksi"){echo "active";} ?>">
-                        <i class="bi bi-circle"></i><span>Jenis Transaksi</span>
+                        <i class="bi bi-circle"></i><span>Kategori Operasional</span>
                     </a>
                 </li>
                 <li>
                     <a href="index.php?Page=Transaksi" class="<?php if($PageMenu=="Transaksi"){echo "active";} ?>">
-                        <i class="bi bi-circle"></i><span>Data Transaksi</span>
+                        <i class="bi bi-circle"></i><span>Transaksi Operasional</span>
                     </a>
                 </li>
                 <li>
@@ -155,19 +155,37 @@
                         <i class="bi bi-circle"></i><span>Rekap Transaksi</span>
                     </a>
                 </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link <?php if($PageMenu=="Penjualan"||$PageMenu=="Pembelian"||$PageMenu=="RekapJualBeli"){echo "";}else{echo "collapsed";} ?>" data-bs-target="#transaksi_jual_beli-nav" data-bs-toggle="collapse" href="javascript:void(0);">
+                <i class="bi bi-cart-check"></i>
+                <span>Transaksi Jual Beli</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="transaksi_jual_beli-nav" class="nav-content collapse <?php if($PageMenu=="Penjualan"||$PageMenu=="Pembelian"||$PageMenu=="RekapJualBeli"){echo "show";} ?>" data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="index.php?Page=TransaksiJualBeli" class="<?php if($PageMenu=="TransaksiJualBeli"){echo "active";} ?>">
-                        <i class="bi bi-circle"></i><span>Transaksi Jual-Beli</span>
+                    <a href="index.php?Page=Penjualan" class="<?php if($PageMenu=="Penjualan"){echo "active";} ?>">
+                        <i class="bi bi-circle"></i><span>Transaksi Penjualan</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="index.php?Page=Pembelian" class="<?php if($PageMenu=="Pembelian"){echo "active";} ?>">
+                        <i class="bi bi-circle"></i><span>Transaksi Pembelian</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="index.php?Page=RekapJualBeli" class="<?php if($PageMenu=="RekapJualBeli"){echo "active";} ?>">
+                        <i class="bi bi-circle"></i><span>Rekap Jual/Beli</span>
                     </a>
                 </li>
             </ul>
         </li>
         <li class="nav-item">
-            <a class="nav-link <?php if($PageMenu=="Transaksi"||$PageMenu=="Pembayaran"||$PageMenu=="AkunPerkiraan"||$PageMenu=="Jurnal"||$PageMenu=="BagiHasil"){echo "";}else{echo "collapsed";} ?>" data-bs-target="#keuangan-nav" data-bs-toggle="collapse" href="javascript:void(0);">
+            <a class="nav-link <?php if($PageMenu=="Pembayaran"||$PageMenu=="AkunPerkiraan"||$PageMenu=="Jurnal"||$PageMenu=="BagiHasil"){echo "";}else{echo "collapsed";} ?>" data-bs-target="#keuangan-nav" data-bs-toggle="collapse" href="javascript:void(0);">
                 <i class="bi bi-gem"></i>
                 <span>Keuangan</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="keuangan-nav" class="nav-content collapse <?php if($PageMenu=="Transaksi"||$PageMenu=="Pembayaran"||$PageMenu=="AkunPerkiraan"||$PageMenu=="Jurnal"||$PageMenu=="BagiHasil"){echo "show";} ?>" data-bs-parent="#sidebar-nav">
+            <ul id="keuangan-nav" class="nav-content collapse <?php if($PageMenu=="Pembayaran"||$PageMenu=="AkunPerkiraan"||$PageMenu=="Jurnal"||$PageMenu=="BagiHasil"){echo "show";} ?>" data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="index.php?Page=BagiHasil" class="<?php if($PageMenu=="BagiHasil"){echo "active";} ?>">
                         <i class="bi bi-circle"></i><span>Bagi Hasil (SHU)</span>

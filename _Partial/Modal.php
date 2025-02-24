@@ -24,6 +24,8 @@
             "JenisTransaksi"        => "_Page/JenisTransaksi/ModalJenisTransaksi.php",
             "Transaksi"             => "_Page/Transaksi/ModalTransaksi.php",
             "RekapTransaksi"        => "_Page/RekapTransaksi/ModalRekapTransaksi.php",
+            "Penjualan"             => "_Page/Penjualan/ModalPenjualan.php",
+            "Pembelian"             => "_Page/Pembelian/ModalPembelian.php",
             "TransaksiJualBeli"     => "_Page/TransaksiJualBeli/ModalTransaksi.php",
             "SettingGeneral"        => "_Page/SettingGeneral/ModalSettingGeneral.php",
             "Tabungan"              => "_Page/Tabungan/ModalTabungan.php",

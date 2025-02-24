@@ -13,9 +13,15 @@ Aplikasi Koperasi V 3.0.0 adalah sebuah aplikasi open source yang dirancang untu
 2. Anggota
    - Anggota : 
    Berfungsi untuk mengelola semua data anggota, input data anggota, ubah dan hapus. Terdapat filter untuk pencarian, import untuk memasukan data dari excel dan export ke data excel.
-   - Keluar & Masuk
-   - Rekap Anggota
+   - Keluar & Masuk : 
+   Menampilkan rekapitulasi data keluar-masuk anggota berdasarkan periode waktu tertentu.
+   - Rekap Anggota : 
+   Menampilkan rekapitulasi jumlah anggota keluar dan masuk berdasarkan divisi/unit kerja (untuk koperasi karyawan)
 3. Simpanan Anggota
+   - Jenis Simpanan
+   - Simpanan Wajib
+   - Log Simpanan
+   - Rekap Simpanan
 4. Pinjaman Anggota
 5. Barang/Inventory
 6. Transaksi Jual/Beli
