@@ -565,4 +565,9 @@
         // Mengembalikan nama bulan berdasarkan angka
         return $namaBulan[$angkaBulan] ?? 'Bulan tidak valid';
     }
+    function pembulatan_nilai($nilai){
+        $nilai = (float) $nilai;
+        $nilai = ($nilai == floor($nilai)) ? (int)$nilai : $nilai;
+        return $nilai;
+    }
 ?>

@@ -142,17 +142,13 @@ function DetailBarangOnPage(id_barang) {
                 var multi_harga = response.multi_harga || [];
 
                 // Siapkan HTML untuk multi_harga
-                var multiHargaHTML = `
-                    <div class="row mb-3">
-                        <div class="col-12"><b># Informasi Harga</b></div>
-                    </div>
-                `;
+                var multiHargaHTML = ``;
 
                 $.each(multi_harga, function(index, item) {
                     multiHargaHTML += `
                         <div class="row mb-2">
                             <div class="col-6"><small>${item.kategori_harga}</small></div>
-                            <div class="col-6"><small class="text text-grayish">Rp ${item.harga}</small></div>
+                            <div class="col-6"><small class="text text-grayish">Rp ${item.harga_format}</small></div>
                         </div>
                     `;
                 });
@@ -185,14 +181,17 @@ function DetailBarangOnPage(id_barang) {
                                 <div class="col-4"><small>Stok</small></div>
                                 <div class="col-8"><small class="text text-grayish">${data.stok_barang} ${data.satuan_barang}</small></div>
                             </div>
-                            <div class="row mb-3">
-                                <div class="col-4"><small>Harga Beli</small></div>
-                                <div class="col-8"><small class="text text-grayish">${data.harga_beli_format}</small></div>
-                            </div>
                         </div>
 
                         <!-- Kolom Kanan: Multi Harga -->
                         <div class="col-md-6">
+                            <div class="row mb-3">
+                                <div class="col-12"><b># Informasi Harga</b></div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-6"><small>Harga Beli</small></div>
+                                <div class="col-6"><small class="text text-grayish text-decoration-underline">${data.harga_beli_format}</small></div>
+                            </div>
                             ${multiHargaHTML}
                         </div>
                     </div>
@@ -463,6 +462,7 @@ $(document).ready(function() {
             },
         });
     });
+    
     //Modal Hapus Kategori Harga
     $('#ModalHapusKategoriHarga').on('show.bs.modal', function (e) {
         var id_barang_kategori_harga= $(e.relatedTarget).data('id');

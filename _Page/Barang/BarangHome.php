@@ -55,8 +55,13 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalDatabaseBarang">
-                                            <i class="bi bi-cloud-arrow-down"></i> Export/Import
+                                        <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalExportBarang">
+                                            <i class="bi bi-download"></i> Export
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalImportBarang">
+                                            <i class="bi bi-upload"></i> Import
                                         </a>
                                     </li>
                                     <li>

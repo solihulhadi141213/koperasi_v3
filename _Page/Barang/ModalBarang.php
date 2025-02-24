@@ -923,11 +923,13 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="ModalDatabaseBarang" tabindex="-1">
+<div class="modal fade" id="ModalExportBarang" tabindex="-1">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
-            <div class="modal-header bg-warning">
-                <h5 class="modal-title text-light"><i class="bi bi-server"></i> Database</h5>
+            <div class="modal-header">
+                <h5 class="modal-title text-dark">
+                    <i class="bi bi-download"></i> Export Data Barang
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -935,34 +937,21 @@
                     <div class="col-md-12">
                         <ul>
                             <li>
-                                Silahkan download terlebih dulu <i>backup</i> data barang yang sudah ada pada tautan 
-                                <a href="_Page/Barang/BackupDataBarang.php">berikut ini <i class="bi bi-file-earmark-ruled-fill"></i> .</a>
-                                <ul>
-                                    <li>
-                                        Pada kolom ID Barangg, anda bisa mengisi ID baru berformat angka untuk barang baru.
-                                    </li>
-                                    <li>
-                                        Untuk ID brang lama, secara otomatis sistem akan melakukan update/replace pada data id yang sama.
-                                    </li>
-                                    <li>
-                                        Kode Barang Wajib menggunakan format angka
-                                    </li>
-                                    <li>
-                                        Konversi digunakan untuk multi satuan.
-                                    </li>
-                                </ul>
+                                Data barang akan dibuat dalam format <i>Excel</i>.
                             </li>
                             <li>
-                                Persiapkan data barang format excel anda sesuai pada tamplate yang sudah anda download tadi.
+                                Semakin banyak data maka proses membutuhkan waktu lebih lama.
                             </li>
-                            <li>Lanjutkan proses <i>import</i> dengan memilih tombol lanjutkan berikut ini.</li>
+                            <li>
+                                Gunakan tombol <i>Export</i> berikut ini untuk melanjutkan proses.
+                            </li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer bg-warning">
-                <a href="index.php?Page=Barang&Sub=DatabaseBarang" class="btn btn-primary btn-rounded">
-                    <i class="bi bi-arrow-right"></i> Lanjutkan
+            <div class="modal-footer">
+                <a href="_Page/Barang/ProsesExport.php" class="btn btn-primary btn-rounded">
+                    <i class="bi bi-download"></i> Export
                 </a>
                 <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
                     <i class="bi bi-x-circle"></i> Tutup

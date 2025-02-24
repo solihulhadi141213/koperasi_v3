@@ -80,12 +80,66 @@
                         <div class="row">
                             <div class="col-12">
                                 <b class="card-title">
+                                    <i class="bi bi-gift"></i> Promo Diskon
+                                </b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body" id="TabelDiskon">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-12">
+                                <b class="card-title">
                                     <i class="bi bi-calendar-check"></i> Batch & Expired
                                 </b>
                             </div>
                         </div>
                     </div>
                     <div class="card-body" id="TabelExpiredDate">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-12">
+                                <b class="card-title">
+                                    <i class="bi bi-box"></i> Riwayat Stock Opename
+                                </b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body" id="TabelStockopename">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-12">
+                                <b class="card-title">
+                                    <i class="bi bi-cart-check"></i> Riwayat Transaksi
+                                </b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body" id="TabelTransaksiBarang">
 
                     </div>
                 </div>

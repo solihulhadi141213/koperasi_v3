@@ -3,10 +3,10 @@
     include "../../_Config/GlobalFunction.php";
     if(empty($_POST['id_barang'])){
         echo '
-            <div class="row mb-2">
-                <div class="col-12 text-center text-danger">
+            <div class="alert alert-danger text-center">
+                <small>
                     ID Barang Tidak Boleh Kosong!
-                </div>
+                </small>
             </div>
         ';
     }else{
@@ -14,10 +14,10 @@
         $JumlahSatuanMulti = mysqli_num_rows(mysqli_query($Conn, "SELECT id_barang_satuan FROM barang_satuan WHERE id_barang='$id_barang'"));
         if(empty($JumlahSatuanMulti)){
             echo '
-                <div class="row mb-3">
-                    <div class="col-12 mb-3 text-center text-danger">
-                        <small>Belum Ada Data Multi Satuan Pada Item Barang Ini.</small>
-                    </div>
+                <div class="alert alert-warning text-center">
+                    <small>
+                        Belum Ada Data Multi Satuan Pada Item Barang Ini.
+                    </small>
                 </div>
             ';
         }else{
