@@ -188,6 +188,7 @@
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <form action="javascript:void(0);" id="ProsesScanCode">
+                <input type="hidden" name="kategori_transaksi" id="put_kategori_transaksi_scan">
                 <div class="modal-header">
                     <h5 class="modal-title text-dark"><i class="bi bi-qr-code-scan"></i> Scan Code</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -196,20 +197,40 @@
                     <div class="row mb-3">
                         <div class="col-12">
                             <label for="keyword_code">Kode Barang</label>
-                            <input type="text" class="form-control" name="keyword_code" id="keyword_code" placeholder="Kode Barang">
+                            <input type="text" class="form-control form-control-lg" name="keyword_code" id="keyword_code" placeholder="Kode Barang">
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <div class="col-12">
+                        <div class="col-6">
                             <label for="qty_scan_code">QTY</label>
                             <input type="number" min="1" class="form-control" name="qty_scan_code" id="qty_scan_code" value="1">
                         </div>
+                        <div class="col-6">
+                            <label for="id_barang_kategori_harga_scan">Kategori Harga</label>
+                            <select name="id_barang_kategori_harga" id="id_barang_kategori_harga_scan" class="form-control">
+                                <?php
+                                    //Tampilkan Kategori Harga
+                                    $query_kategori_harga = mysqli_query($Conn, "SELECT id_barang_kategori_harga, kategori_harga FROM barang_kategori_harga ORDER BY id_barang_kategori_harga ASC");
+                                    while ($data_kategori_harga = mysqli_fetch_array($query_kategori_harga)) {
+                                        $id_barang_kategori_harga= $data_kategori_harga['id_barang_kategori_harga'];
+                                        $kategori_harga= $data_kategori_harga['kategori_harga'];
+                                        echo '<option value="'.$id_barang_kategori_harga.'">'.$kategori_harga.'</option>';
+                                    }
+                                    echo '<option value="">Harga Jual</option>';
+                                ?>
+                            </select>
+                        </div>
                     </div>
-                    <div class="row mb-3">
+                    <div class="row mb-3 mt-3">
                         <div class="col-md-12" id="preview_hasil_sacan">
                             <div class="alert alert-danger">
                                 <small>Silahkan Scan Kode Barang Terlebih Dulu</small>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12" id="NotifikasiScanCode">
+                            <!-- Notifikasi Scan Code -->
                         </div>
                     </div>
                 </div>
@@ -236,7 +257,7 @@
                 <div class="modal-body">
                     <div class="row mb-3">
                         <div class="col-12" id="FormTambahBarang">
-                            <!-- Form Tambah Barang -->
+                            <!-- Form Tambah Bulk -->
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -246,7 +267,7 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-12" id="NotifikasiTambahBarang">
-                            <!-- Notifikasi Tambah Barang Disini -->
+                            <!-- Notifikasi Tambah Bulk Disini -->
                         </div>
                     </div>
                 </div>
@@ -256,6 +277,110 @@
                     </button>
                     <button type="button" class="btn btn-dark btn-rounded" data-bs-toggle="modal" data-bs-target="#ModalCariBarang">
                         <i class="bi bi-chevron-left"></i> Kembali
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal fade" id="ModalEditBulk" tabindex="-1">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <form action="javascript:void(0);" id="ProsesEditBulk">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark"><i class="bi bi-pencil"></i> Edit Rincian</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-12" id="FormEditBulk">
+                            <!-- Form Edit Rincian Bulk -->
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12" id="NotifikasiEditBulk">
+                            <!-- Notifikasi Edit Bulk Barang Disini -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-md btn-primary btn-rounded">
+                        <i class="bi bi-save"></i> Simpan
+                    </button>
+                    <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Tutup
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal fade" id="ModalHapusBulk" tabindex="-1">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <form action="javascript:void(0);" id="ProsesHapusBulk">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark"><i class="bi bi-trash"></i> Hapus Rincian</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-12" id="FormHapusBulk">
+                            <!-- Form Hapus Rincian Bulk -->
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12" id="NotifikasiHapusBulk">
+                            <!-- Notifikasi Hapus Bulk Disini -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-md btn-success btn-rounded" id="ButtonHapusBulk">
+                        <i class="bi bi-check"></i> Ya, Hapus
+                    </button>
+                    <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Tidak
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal fade" id="ModalResetTransaksi" tabindex="-1">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <form action="javascript:void(0);" id="ProsesResetTransaksi">
+                <input type="hidden" name="kategori_transaksi" id="put_kategori_transaksi_for_reset">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark"><i class="bi bi-repeat"></i> Reset Transaksi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <div class="alert alert-warning">
+                                <b>Keterangan</b>
+                                <p>
+                                    Dengan melakukan reset maka sistem akan menghapus semua rincian barang pada transaksi ini. 
+                                    Pilih tombol reset untuk mulai melakukan reset transaksi.
+                                </p>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12" id="NotifikasiResetTransaksi">
+                            <!-- Notifikasi Reset Transaksi Disini -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-md btn-success btn-rounded" id="ButtonResetTransaksi">
+                        <i class="bi bi-check"></i> Reset
+                    </button>
+                    <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Tutup
                     </button>
                 </div>
             </div>

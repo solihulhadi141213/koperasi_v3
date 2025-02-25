@@ -101,6 +101,31 @@ function HitungSimulasiRincian() {
         }
     });
 }
+function hitungTotal() {
+    let qty = parseFloat($('#qty_edit').val()) || 0;
+    let harga = parseFloat($('#harga_edit').val().replace(/\D/g, '')) || 0;
+    let ppn = parseFloat($('#ppn_edit').val().replace(/\D/g, '')) || 0;
+    let diskon = parseFloat($('#diskon_edit').val().replace(/\D/g, '')) || 0;
+
+    // Hitung Subtotal
+    let subtotal = qty * harga;
+
+    // Hitung PPN (jika ada)
+    let rp_ppn = (ppn / 100) * subtotal;
+
+    // Hitung Diskon (jika ada)
+    let rp_diskon = (diskon / 100) * subtotal;
+
+    // Hitung Total
+    let total = subtotal + rp_ppn - rp_diskon;
+
+    // Format ke Rupiah
+    let total_rp = total.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
+
+    // Tampilkan hasil
+    $('#jumlah_rincian_edit').html(`<h4 class="text text-grayish">${total_rp}</h4>`);
+}
+
 $(document).ready(function() {
     //Menampilkan Data Pertama Kali
     if ($("#TabelPenjualan").length) {
@@ -201,5 +226,317 @@ $(document).ready(function() {
         });
     });
 
+    //Modal Scan Barang
+    $('#ModalScanBarang').on('shown.bs.modal', function () {
+        var kategori_transaksi=$('#get_kategori_transaksi').html();
 
+        //Focus Ke form keyword code
+        $('#keyword_code').focus();
+
+        //Tempelkan kategori_transaksi ke form
+        $('#put_kategori_transaksi_scan').val(kategori_transaksi);
+    });
+
+    // Menampilkan alert success saat input keyword_code mendapatkan fokus
+    $('#keyword_code').on('focus', function(){
+        $('#preview_hasil_sacan').html(`
+            <div class="alert alert-success text-center">
+                <i class="bi bi-check-circle"></i> Siap Scan Kode Barang
+            </div>
+        `);
+    });
+
+    //Proses Scan Barang
+    $('#ProsesScanCode').submit(function(){
+        var ProsesScanCode = $('#ProsesScanCode').serialize();
+        $('#NotifikasiScanCode').html('Loading...');
+        $.ajax({
+            type 	    : 'POST',
+            url 	    : '_Page/Penjualan/ProsesScanCode.php',
+            data 	    :  ProsesScanCode,
+            success     : function(data){
+                $('#NotifikasiScanCode').html(data);
+                var NotifikasiScanCodeBerhasil=$('#NotifikasiScanCodeBerhasil').html();
+                if(NotifikasiScanCodeBerhasil=="Success"){
+                    //Tampilkan Data
+                    var kategori_transaksi=$('#get_kategori_transaksi').html();
+                    ShowDataBulk(kategori_transaksi);
+
+
+                    //Kosongkan kode
+                    $('#keyword_code').val("");
+
+                    //Focus ulang
+                    $('#keyword_code').focus();
+                }
+            }
+        });
+    });
+
+    //Modal Edit Barang Bulk
+    $('#ModalEditBulk').on('show.bs.modal', function (e) {
+        var id_transaksi_bulk= $(e.relatedTarget).data('id');
+        //Tampilkan Form
+        $.ajax({
+            type 	    : 'POST',
+            url 	    : '_Page/Penjualan/FormEditBulk.php',
+            data        : {id_transaksi_bulk: id_transaksi_bulk},
+            success     : function(data) {
+                // Ganti isi tabel dengan data hasil AJAX dengan efek
+                $('#FormEditBulk').fadeOut(200, function() {
+                    $(this).html(data).fadeIn(300);
+                    
+                    //Kosongkan Notifikasi
+                    $('#NotifikasiEditBulk').html("");
+                    initializeMoneyInputs();
+                });
+            }
+        });
+    });
+
+    //Proses Edit Bulk
+    $('#ProsesEditBulk').submit(function(){
+        var ProsesEditBulk = $('#ProsesEditBulk').serialize();
+        $('#NotifikasiEditBulk').html('Loading...');
+        $.ajax({
+            type 	    : 'POST',
+            url 	    : '_Page/Penjualan/ProsesEditBulk.php',
+            data 	    :  ProsesEditBulk,
+            success     : function(data){
+                $('#NotifikasiEditBulk').html(data);
+                var NotifikasiEditBulkBerhasil=$('#NotifikasiEditBulkBerhasil').html();
+                if(NotifikasiEditBulkBerhasil=="Success"){
+                    //Tampilkan Data
+                    var kategori_transaksi=$('#get_kategori_transaksi').html();
+                    ShowDataBulk(kategori_transaksi);
+
+                    // Tampilkan swal notifikasi
+                    Swal.fire(
+                        'Success!',
+                        'Rincian Transaksi Berhasil Diperbaharui!',
+                        'success'
+                    );
+                    //Tutup Modal
+                    $('#ModalEditBulk').modal('hide');
+                }
+            }
+        });
+    });
+
+    //Modal Hapus Barang Bulk
+    $('#ModalHapusBulk').on('show.bs.modal', function (e) {
+        var id_transaksi_bulk= $(e.relatedTarget).data('id');
+
+        //Disable Tombol Pertama Kali
+        $('#ButtonHapusBulk').prop("disabled", true);
+
+        //Tampilkan Form
+        $.ajax({
+            type 	    : 'POST',
+            url 	    : '_Page/Penjualan/detail_bulk.php',
+            data        : {id_transaksi_bulk: id_transaksi_bulk},
+            dataType    : "json",
+            success: function (response) {
+                //Apabila Proses Berhasil
+                if (response.status === "Success") {
+                    
+                    //Kosongkan Notifikasi
+                    $('#NotifikasiHapusBulk').html("");
+
+                    //Tampilkan Form
+                    $('#FormHapusBulk').html(`
+                        <input type="hidden" name="id_transaksi_bulk" value="${id_transaksi_bulk}">
+                        <div class="row mb-2">
+                            <div class="col-4"><small>Nama Barang</small></div>
+                            <div class="col-8"><small class="text text-grayish">${response.dataset.nama_barang}</small></div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><small>QTY/Satuan</small></div>
+                            <div class="col-8"><small class="text text-grayish">${response.dataset.qty} ${response.dataset.satuan}</small></div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><small>Harga</small></div>
+                            <div class="col-8"><small class="text text-grayish">${response.dataset.harga_rp}</small></div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><small>PPN</small></div>
+                            <div class="col-8"><small class="text text-grayish">${response.dataset.ppn_rp}</small></div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><small>Diskon</small></div>
+                            <div class="col-8"><small class="text text-grayish">${response.dataset.diskon_rp}</small></div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><small>Jumlah</small></div>
+                            <div class="col-8"><small class="text text-grayish">${response.dataset.subtotal_rp}</small></div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-12">Apakah Anda Yakin Akan Menghapus Data Tersebut</div>
+                        </div>
+                    `);
+                    
+                    //Hidupkan Tombol
+                    $('#ButtonHapusBulk').prop("disabled", false);
+                } else {
+                    // Tampilkan pesan error
+                    $('#NotifikasiHapusBulk').html(
+                        `<div class="alert alert-danger" role="alert">${response.message}</div>`
+                    );
+
+                    //Disable Tombol
+                    $('#ButtonHapusBulk').prop("disabled", true);
+                }
+            },
+            error: function () {
+                $('#NotifikasiHapusBulk').html(
+                    '<div class="alert alert-danger" role="alert">Terjadi kesalahan pada sistem. Silakan coba lagi.</div>'
+                );
+                //Disable Tombol
+                $('#ButtonHapusBulk').prop("disabled", true);
+            },
+        });
+    });
+
+    //Proses Hapus Bulk
+    $("#ProsesHapusBulk").on("submit", function (e) {
+        e.preventDefault();
+        // Tombol loading
+        let $FormElement = $("#ProsesHapusBulk");
+        let $ModalElement = $("#ModalHapusBulk");
+        let $Notifikasi = $("#NotifikasiHapusBulk");
+        let $ButtonProses = $("#ButtonHapusBulk");
+        let ButtonElement = '<i class="bi bi-check"></i> Ya, Hapus';
+        $ButtonProses.html('Loading..');
+        $ButtonProses.prop("disabled", true);
+
+        // Ambil data form
+        let formData = new FormData(this);
+
+        // Kirim data ke server
+        $.ajax({
+            url         : "_Page/Penjualan/ProsesHapusBulk.php",
+            type        : "POST",
+            data        : formData,
+            contentType : false,
+            processData : false,
+            dataType    : "json",
+            success: function (response) {
+                //Apabila Proses Berhasil
+                if (response.status === "Success") {
+
+                    //Tampilkan Ulang Data
+                    var kategori_transaksi=$('#get_kategori_transaksi').html();
+                    ShowDataBulk(kategori_transaksi);
+                    
+                    // Tampilkan swal notifikasi
+                    Swal.fire(
+                        'Success!',
+                        'Hapus Rincian Barang Berhasil!',
+                        'success'
+                    )
+
+                    // Reset tombol
+                    $ButtonProses.html(ButtonElement);
+                    $ButtonProses.prop("disabled", false);
+
+                    //Kosongkan Notifikasi
+                    $Notifikasi.html('');
+
+                    //Tutup Modal
+                    $ModalElement.modal('hide');
+                } else {
+                    // Tampilkan pesan error
+                    $Notifikasi.html(
+                        `<div class="alert alert-danger" role="alert">${response.message}</div>`
+                    );
+                    $ButtonProses.html(ButtonElement).prop("disabled", false);
+                }
+            },
+            error: function () {
+                $Notifikasi.html(
+                    '<div class="alert alert-danger" role="alert">Terjadi kesalahan pada sistem. Silakan coba lagi.</div>'
+                );
+                $ButtonProses.html(ButtonElement).prop("disabled", false);
+            },
+        });
+    });
+
+    //Modal Reset Transaksi
+    $('#ModalResetTransaksi').on('show.bs.modal', function (e) {
+        //Tangkap Kategori Transaksi
+        var kategori_transaksi=$('#get_kategori_transaksi').html();
+
+        //Kosongkan Notifikasi
+        $('#NotifikasiResetTransaksi').html();
+
+        //Hidupkan Tombol
+        $('#ButtonResetTransaksi').html('<i class="bi bi-check"></i> Reset').prop("disabled", false);
+
+        //tempelkan kategori transaksi
+        $('#put_kategori_transaksi_for_reset').val(kategori_transaksi);
+    });
+
+    //Proses Reset Transaksi
+    $("#ProsesResetTransaksi").on("submit", function (e) {
+        e.preventDefault();
+        // Tombol loading
+        let $FormElement = $("#ProsesResetTransaksi");
+        let $ModalElement = $("#ModalResetTransaksi");
+        let $Notifikasi = $("#NotifikasiResetTransaksi");
+        let $ButtonProses = $("#ButtonResetTransaksi");
+        let ButtonElement = '<i class="bi bi-check"></i> Reset';
+        $ButtonProses.html('Loading..');
+        $ButtonProses.prop("disabled", true);
+
+        // Ambil data form
+        let formData = new FormData(this);
+
+        // Kirim data ke server
+        $.ajax({
+            url         : "_Page/Penjualan/ProsesResetTransaksi.php",
+            type        : "POST",
+            data        : formData,
+            contentType : false,
+            processData : false,
+            dataType    : "json",
+            success: function (response) {
+                //Apabila Proses Berhasil
+                if (response.status === "Success") {
+
+                    //Tampilkan Ulang Data
+                    var kategori_transaksi=$('#get_kategori_transaksi').html();
+                    ShowDataBulk(kategori_transaksi);
+                    
+                    // Tampilkan swal notifikasi
+                    Swal.fire(
+                        'Success!',
+                        'Reset Transaksi Berhasil!',
+                        'success'
+                    )
+
+                    // Reset tombol
+                    $ButtonProses.html(ButtonElement);
+                    $ButtonProses.prop("disabled", false);
+
+                    //Kosongkan Notifikasi
+                    $Notifikasi.html('');
+
+                    //Tutup Modal
+                    $ModalElement.modal('hide');
+                } else {
+                    // Tampilkan pesan error
+                    $Notifikasi.html(
+                        `<div class="alert alert-danger" role="alert">${response.message}</div>`
+                    );
+                    $ButtonProses.html(ButtonElement).prop("disabled", false);
+                }
+            },
+            error: function () {
+                $Notifikasi.html(
+                    '<div class="alert alert-danger" role="alert">Terjadi kesalahan pada sistem. Silakan coba lagi.</div>'
+                );
+                $ButtonProses.html(ButtonElement).prop("disabled", false);
+            },
+        });
+    });
 });

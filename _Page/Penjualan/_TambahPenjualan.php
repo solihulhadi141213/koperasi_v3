@@ -68,18 +68,19 @@
                                             <thead>
                                                 <tr>
                                                     <th><b>No</b></th>
+                                                    <th><b>Kode</b></th>
                                                     <th><b>Nama Barang</b></th>
                                                     <th><b>QTY</b></th>
                                                     <th><b>Harga</b></th>
                                                     <th><b>PPN</b></th>
                                                     <th><b>Diskon</b></th>
-                                                    <th><b>Jumlah</b></th>
+                                                    <th><b>Subtotal</b></th>
                                                     <th><b>Opsi</b></th>
                                                 </tr>
                                             </thead>
                                             <tbody id="TabelPenjualanBulk">
                                                 <tr>
-                                                    <td class="text-center" colspan="8">
+                                                    <td class="text-center" colspan="9">
                                                         <span class="text-danger">Tidak Ada Rincian Transaksi Yang Ditampilkan</span>
                                                     </td>
                                                 </tr>
@@ -88,12 +89,81 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="row mb-3">
+                                        <div class="col-4">
+                                            <label for="tanggal"><small>Tanggal/Jam</small></label>
+                                        </div>
+                                        <div class="col-5">
+                                            <input type="date" name="tanggal" id="tanggal" class="form-control" value="<?php echo date('Y-m-d'); ?>">
+                                        </div>
+                                        <div class="col-3">
+                                            <input type="time" name="jam" class="form-control" value="<?php echo date('H:i:s'); ?>">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-4">
+                                            <label for="status"><small>Status Transaksi</small></label>
+                                        </div>
+                                        <div class="col-8">
+                                            <select name="status" id="status" class="form-control">
+                                                <option value="">Pilih</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-4">
+                                            <label for="id_anggota"><small>Anggota</small></label>
+                                        </div>
+                                        <div class="col-8">
+                                            <select name="id_anggota" id="id_anggota" class="form-control">
+                                                <option value="">Pilih</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-4">
+                                            <label for="cash"><small>Cash (Nominal Uang)</small></label>
+                                        </div>
+                                        <div class="col-8">
+                                            <input type="text" name="cash" id="cash" class="form-control form-control-lg" value="0">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row mb-3">
+                                        <div class="col-6 text-end">
+                                            <h4>TOTAL</h4>
+                                        </div>
+                                        <div class="col-6 text-start">
+                                            <h4>Rp 0</h4>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-6 text-end">
+                                            <h4>KEMBALIAN</h4>
+                                        </div>
+                                        <div class="col-6 text-start">
+                                            <h4>Rp 0</h4>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-6 text-end">
+                                            <h4>STATUS</h4>
+                                        </div>
+                                        <div class="col-6 text-start">
+                                            <h4 class="text text-success">LUNAS</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-footer text-center">
                             <button type="submit" class="btn btn-md btn-primary m-2">
                                 <i class="bi bi-save"></i> Simpan Transaksi
                             </button>
-                            <button type="button" class="btn btn-md btn-warning m-2">
+                            <button type="button" class="btn btn-md btn-warning m-2" data-bs-toggle="modal" data-bs-target="#ModalResetTransaksi">
                                 <i class="bi bi-repeat"></i> Reset Transaksi
                             </button>
                         </div>

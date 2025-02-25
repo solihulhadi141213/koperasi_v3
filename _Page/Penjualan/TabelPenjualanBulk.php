@@ -8,7 +8,7 @@
     if(empty($SessionIdAkses)){
         echo '
             <tr>
-                <td colspan="8" class="text-center text-danger">
+                <td colspan="9" class="text-center text-danger">
                     Sesi Akses Sudah Berakhir! Silahkan Login Ulang
                 </td>
             </tr>
@@ -18,7 +18,7 @@
         if(empty($_POST['kategori_transaksi'])){
             echo '
                 <tr>
-                    <td colspan="8" class="text-center text-danger">
+                    <td colspan="9" class="text-center text-danger">
                         Kategori Transaksi Tidak Boleh Kosong
                     </td>
                 </tr>
@@ -37,6 +37,8 @@
                 ';
             }else{
                 $no = 1;
+                $jumlah_ppn=0;
+                $jumlah_diskon=0;
                 $jumlah_total=0;
                 $query = mysqli_query($Conn, "SELECT*FROM transaksi_bulk WHERE id_akses='$SessionIdAkses' AND kategori='$kategori_transaksi' ORDER BY id_transaksi_bulk DESC");
                 while ($data = mysqli_fetch_array($query)) {
@@ -51,20 +53,32 @@
                     $ppn= $data['ppn'];
                     $diskon= $data['diskon'];
                     $subtotal= $data['subtotal'];
-                    $subtotal_rp = "Rp " . number_format($subtotal,0,',','.');
-                    $harga_rp = "Rp " . number_format($harga,0,',','.');
-                    $jumlah_total=$jumlah_total+$subtotal;
+                    $subtotal_rp = "" . number_format($subtotal,0,',','.');
+                    $harga_rp = "" . number_format($harga,0,',','.');
                     //Pembulatan QTY
                     $qty = (float) $qty; // Konversi ke float
                     $qty = ($qty == floor($qty)) ? (int)$qty : $qty;
+                    //Buka kode barang 
+                    $kode_barang=GetDetailData($Conn, 'barang', 'id_barang', $id_barang, 'kode_barang');
+                    //Pembulatan PPN dan Diskon
+                    $ppn=pembulatan_nilai($ppn);
+                    $diskon=pembulatan_nilai($diskon);
+                    //Format Rupiah PPn dan Diskon
+                    $ppn_rp = "" . number_format($ppn,0,',','.');
+                    $diskon_rp = "" . number_format($diskon,0,',','.');
+                    //Menghitung Jumlah
+                    $jumlah_total=$jumlah_total+$subtotal;
+                    $jumlah_ppn=$jumlah_ppn+$ppn;
+                    $jumlah_diskon=$jumlah_diskon+$diskon;
                     echo '
                         <tr>
                             <td><small>'.$no.'</small></td>
+                            <td><small>'.$kode_barang.'</small></td>
                             <td><small>'.$nama_barang.'</small></td>
                             <td><small>'.$qty.' '.$satuan.'</small></td>
                             <td><small>'.$harga_rp.'</small></td>
-                            <td><small>'.$ppn.'</small></td>
-                            <td><small>'.$diskon.'</small></td>
+                            <td><small>'.$ppn_rp.'</small></td>
+                            <td><small>'.$diskon_rp.'</small></td>
                             <td><small>'.$subtotal_rp.'</small></td>
                             <td>
                                 <button type="button" class="btn btn-sm btn-floating btn-outline-secondary" data-bs-toggle="dropdown" aria-expanded="false">
@@ -91,14 +105,15 @@
                     $no++;
                 }
                 $jumlah_total_rp = "Rp " . number_format($jumlah_total,0,',','.');
+                $jumlah_ppn_rp = "Rp " . number_format($jumlah_ppn,0,',','.');
+                $jumlah_diskon_rp = "Rp " . number_format($jumlah_diskon,0,',','.');
                 echo '
                     <tr>
-                        <td colspan="6" class="text-end">
-                            <h3>SUBTOTAL</h3>
-                        </td>
-                        <td colspan="2">
-                            <h3>'.$jumlah_total_rp.'</h3>
-                        </td>
+                        <td colspan="5" class="text-end"><b>Jumlah</b></td>
+                        <td class="text-start"><b>'.$jumlah_ppn_rp.'</b></td>
+                        <td class="text-start"><b>'.$jumlah_diskon_rp.'</b></td>
+                        <td class="text-start"><b>'.$jumlah_total_rp.'</b></td>
+                        <td></td>
                     </tr>
                 ';
             }
