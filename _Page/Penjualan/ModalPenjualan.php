@@ -8,9 +8,13 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6 mt-3">
-                            <label for="batas">Data/Limit</label>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="batas">
+                                <small>Data/Limit</small>
+                            </label>
+                        </div>
+                        <div class="col-8">
                             <select name="batas" id="batas" class="form-control">
                                 <option value="5">5</option>
                                 <option selected value="10">10</option>
@@ -21,8 +25,14 @@
                                 <option value="500">500</option>
                             </select>
                         </div>
-                        <div class="col-md-6 mt-3">
-                            <label for="OrderBy">Mode Urutan</label>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="OrderBy">
+                                <small>Mode Urutan</small>
+                            </label>
+                        </div>
+                        <div class="col-8">
                             <select name="OrderBy" id="OrderBy" class="form-control">
                                 <option value="">Pilih</option>
                                 <option value="kategori">Kategori</option>
@@ -32,16 +42,26 @@
                             </select>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 mt-3">
-                            <label for="ShortBy">Tipe Urutan</label>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="ShortBy">
+                                <small>Tipe Urutan</small>
+                            </label>
+                        </div>
+                        <div class="col-8">
                             <select name="ShortBy" id="ShortBy" class="form-control">
                                 <option value="ASC">A To Z</option>
                                 <option selected value="DESC">Z To A</option>
                             </select>
                         </div>
-                        <div class="col-md-6 mt-3">
-                            <label for="keyword_by">Pencarian</label>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="keyword_by">
+                                <small>Pencarian</small>
+                            </label>
+                        </div>
+                        <div class="col-8">
                             <select name="keyword_by" id="keyword_by" class="form-control">
                                 <option value="">Pilih</option>
                                 <option value="kategori">Kategori</option>
@@ -51,9 +71,13 @@
                             </select>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12 mt-3" id="FormFilterKeyword">
-                            <label for="keyword">Kata Kunci</label>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="keyword">
+                                <small>Kata Kunci</small>
+                            </label>
+                        </div>
+                        <div class="col-8" id="FormFilterKeyword">
                             <input type="text" name="keyword" id="keyword" class="form-control">
                         </div>
                     </div>
@@ -61,6 +85,61 @@
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success btn-rounded">
                         <i class="bi bi-save"></i> Filter
+                    </button>
+                    <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Tutup
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="ModalExportTransaksi" tabindex="-1">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <form action="javascript:void(0);" id="ProsesFilter">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark"><i class="bi bi-download"></i> Export Transaksi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="mode_data_transaksi">
+                                <small>Mode Data</small>
+                            </label>
+                        </div>
+                        <div class="col-8">
+                            <select name="mode_data" id="mode_data_transaksi" class="form-control">
+                                <option value="Transaksi">Transaksi</option>
+                                <option value="Rincian Transaksi">Rincian</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="format_data_transaksi">
+                                <small>Format Data</small>
+                            </label>
+                        </div>
+                        <div class="col-8">
+                            <select name="format_data" id="format_data_transaksi" class="form-control">
+                                <option value="HTML">HTML</option>
+                                <option value="Excel">Excel</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <div class="alert alert-warning">
+                                <small>Semakin banyak data transaksi yang akan diexport, maka proses sistem membutuhkan waktu lebih lama.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success btn-rounded">
+                        <i class="bi bi-download"></i> Export
                     </button>
                     <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
                         <i class="bi bi-x-circle"></i> Tutup
@@ -347,6 +426,81 @@
         </form>
     </div>
 </div>
+<div class="modal fade" id="ModalPilihAnggota" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-dark">
+                    <i class="bi bi-person"></i> Pilih Anggota
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col col-12 col-md-4 text-end">
+                        <label for="keyword_anggota">
+                            <small>Nama / No.Induk</small>
+                        </label>
+                    </div>
+                    <div class="col col-12 col-md-8">
+                        <form action="javascript:void(0);" id="ProsesCariAnggota">
+                            <input type="hidden" name="page" id="page_anggota">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="keyword" id="keyword_anggota">
+                                <button type="submit" class="btn btn-md btn-primary">
+                                    <i class="bi bi-search"></i> Cari
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row mb-3 border-1 border-top border-bottom">
+                    <div class="col-12 mt-3 mb-3">
+                        <div class="table table-responsive">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th><b>No</b></th>
+                                        <th><b>Anggota</b></th>
+                                        <th><b>No.Induk</b></th>
+                                        <th><b>Opsi</b></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="TabelAnggota">
+                                    <tr>
+                                        <td colspan="4" class="text-center">
+                                            <span>Tidak Ada Data Anggota Yang Ditampilkan</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <small id="page_info_anggota">
+                            Page 1 Of 100
+                        </small>
+                    </div>
+                    <div class="col-6 text-end">
+                        <button type="button" class="btn btn-sm btn-outline-info btn-floating" id="prev_button_anggota">
+                            <i class="bi bi-chevron-left"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-info btn-floating" id="next_button_anggota">
+                            <i class="bi bi-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle"></i> tutup
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="ModalResetTransaksi" tabindex="-1">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
@@ -378,6 +532,58 @@
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-md btn-success btn-rounded" id="ButtonResetTransaksi">
                         <i class="bi bi-check"></i> Reset
+                    </button>
+                    <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Tutup
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal fade" id="ModalDetail" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form action="index.php" method="GET">
+                <input type="hidden" name="Page" value="Penjualan">
+                <input type="hidden" name="Sub" value="DetailPenjualan">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark"><i class="bi bi-info-circle"></i> Detail Transaksi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-12" id="FormDetail">
+                            <!-- Form Detail Transaksi Disini -->
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <div class="table table-responsive">
+                                <table class="table table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th><b>No</b></th>
+                                            <th><b>Barang</b></th>
+                                            <th><b>QTY</b></th>
+                                            <th><b>Harga</b></th>
+                                            <th><b>PPN</b></th>
+                                            <th><b>Diskon</b></th>
+                                            <th><b>Subtotal</b></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="ListDetail">
+                                        <!-- List Detail Transaksi Disini -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-md btn-outline-info btn-rounded" id="ButtonSelengkapnya">
+                        <i class="bi bi-three-dots"></i> Selengkapnya
                     </button>
                     <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
                         <i class="bi bi-x-circle"></i> Tutup

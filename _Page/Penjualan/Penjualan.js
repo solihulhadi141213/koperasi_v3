@@ -13,13 +13,18 @@ function ShowData() {
 }
 //Fungsi Menampilkan Data Rincian Bulk
 function ShowDataBulk(get_kategori_transaksi) {
-    $('#TabelPenjualanBulk').html('<tr><td class="text-center">Loading...</td></tr>');
+    $('#TabelPenjualanBulk')
+        .html('<tr><td colspan="9" class="text-center">Loading...</td></tr>')
+        .fadeIn(200); // Efek memudar saat loading muncul
+
     $.ajax({
-        type    : 'POST',
-        url     : '_Page/Penjualan/TabelPenjualanBulk.php',
-        data    : {kategori_transaksi: get_kategori_transaksi},
+        type: 'POST',
+        url: '_Page/Penjualan/TabelPenjualanBulk.php',
+        data: {kategori_transaksi: get_kategori_transaksi},
         success: function(data) {
-            $('#TabelPenjualanBulk').html(data);
+            $('#TabelPenjualanBulk').fadeOut(200, function() { 
+                $(this).html(data).fadeIn(300); 
+            });
         }
     });
 }
@@ -42,6 +47,19 @@ function ShowDataBarang() {
             $('#TabelBarang').fadeOut(200, function() {
                 $(this).html(data).fadeIn(300);
             });
+        }
+    });
+}
+
+//Fungsi Menampilkan Data Anggota
+function ShowDataAnggota() {
+    var ProsesCariAnggota = $('#ProsesCariAnggota').serialize();
+    $.ajax({
+        type    : 'POST',
+        url     : '_Page/Penjualan/TabelAnggota.php',
+        data    : ProsesCariAnggota,
+        success: function(data) {
+            $('#TabelAnggota').html(data);
         }
     });
 }
@@ -126,12 +144,69 @@ function hitungTotal() {
     $('#jumlah_rincian_edit').html(`<h4 class="text text-grayish">${total_rp}</h4>`);
 }
 
+function HitungRekapTransaksi(total, cash) {
+    // Hapus titik pemisah ribuan dan konversi ke angka
+    var totalNum = parseInt(total.replace(/\./g, ""), 10);
+    var cashNum = parseInt(cash.replace(/\./g, ""), 10);
+
+    // Hitung kembalian
+    var kembalian = cashNum - totalNum;
+    if (kembalian < 0) {
+        kembalian = 0;
+    }
+
+    // Tentukan status pembayaran
+    var status = (cashNum < totalNum) ? "Kredit" : "Lunas";
+
+    // Format kembali ke dalam format ribuan dengan titik
+    var formattedKembalian = kembalian.toLocaleString("id-ID");
+
+    // Tempelkan Data Ke Form
+    $('#put_kembalian_penjualan').val(formattedKembalian);
+    $('#put_status_transaksi_penjualan').val(status);
+
+    // Panggil fungsi untuk memastikan input format uang tetap benar
+    initializeMoneyInputs();
+}
+
+
+
+
+
 $(document).ready(function() {
+
+    //Format Uang Pertama kali
+    initializeMoneyInputs();
+
     //Menampilkan Data Pertama Kali
     if ($("#TabelPenjualan").length) {
         ShowData();
     }
 
+    //Ketika keyword By Diubah
+    $('#keyword_by').change(function(){
+        var keyword_by = $('#keyword_by').val();
+        $.ajax({
+            type 	    : 'POST',
+            url 	    : '_Page/Penjualan/FormFilterKeyword.php',
+            data 	    :  {keyword_by: keyword_by},
+            success     : function(data){
+                $('#FormFilterKeyword').html(data);
+            }
+        });
+    });
+
+    //Submit pencarian/Filter
+    $("#ProsesFilter").on("submit", function (e) {
+        //Reset Halaman
+        $('#page').val(1);
+        
+        //Tampilkan Data
+        ShowData();
+
+        //Tutup Modal
+        $('#ModalFilter').modal('hide');
+    });
     //Ketika kembali
     $(".button_kembali").on("click", function () {
         window.location.href = "index.php?Page=Penjualan";
@@ -461,6 +536,47 @@ $(document).ready(function() {
         });
     });
 
+    //Modal Tampilkan Anggota
+    $('#ModalPilihAnggota').on('show.bs.modal', function (e) {
+        ShowDataAnggota();
+    });
+
+    //Pagging Anggota
+    $(document).on('click', '#next_button_anggota', function() {
+        var page_now = parseInt($('#page').val(), 10); // Pastikan nilai diambil sebagai angka
+        var next_page = page_now + 1;
+        $('#page_anggota').val(next_page);
+        ShowDataAnggota(0);
+    });
+    $(document).on('click', '#prev_button_anggota', function() {
+        var page_now = parseInt($('#page_anggota').val(), 10); // Pastikan nilai diambil sebagai angka
+        var next_page = page_now - 1;
+        $('#page_anggota').val(next_page);
+        ShowDataAnggota(0);
+    });
+
+    //Ketika Submit Filter Anggota
+    $('#ProsesCariAnggota').submit(function(){
+        //Kembalikan ke halaman 1
+        $('#page_anggota').val(1);
+        ShowDataAnggota();
+    });
+
+    //Ketika Salah Satu Data Anggota Di click
+    $(document).on("click", ".pilih_anggota_ke_form_penjualan", function () {
+        var idAnggota = $(this).data("id");
+        var namaAnggota = $(this).data("nama");
+    
+        console.log("ID Anggota:", idAnggota);
+        console.log("Nama Anggota:", namaAnggota);
+
+        // Set nilai select option
+        $("#put_id_anggota_for_add_penjualan").html(`<option value="${idAnggota}">${namaAnggota}</option>`);
+
+        // Tutup modal (jika ada)
+        $("#ModalPilihAnggota").modal("hide");
+    });
+
     //Modal Reset Transaksi
     $('#ModalResetTransaksi').on('show.bs.modal', function (e) {
         //Tangkap Kategori Transaksi
@@ -539,4 +655,200 @@ $(document).ready(function() {
             },
         });
     });
+
+    //Ketika Nominal Cash Di ketik
+    $("#put_cash_penjualan").on("keyup", function () {
+        var put_cash_penjualan=$("#put_cash_penjualan").val();
+        var put_total_penjualan=$("#put_total_penjualan").val();
+        HitungRekapTransaksi(put_total_penjualan, put_cash_penjualan);
+    });
+
+    //Proses Simpan Transaksi Penjualan
+    $("#ProsesSimpanTransaksiPenjualan").on("submit", function (e) {
+        e.preventDefault();
+        // Tombol loading
+        $("#ButtonSimpanTransaksiPenjualan").html('Loading..');
+        $("#ButtonSimpanTransaksiPenjualan").prop("disabled", true);
+        let ButtonElement = '<i class="bi bi-save"></i> Simpan Transaksi';
+        // Ambil data form
+        let formData = new FormData(this);
+
+        // Kirim data ke server
+        $.ajax({
+            url         : "_Page/Penjualan/ProsesSimpanTransaksiPenjualan.php",
+            type        : "POST",
+            data        : formData,
+            contentType : false,
+            processData : false,
+            dataType    : "json",
+            success: function (response) {
+                //Apabila Proses Berhasil
+                if (response.status === "Success") {
+                    var id_transaksi_jual_beli=response.id_transaksi_jual_beli;
+                    window.location.href = 'index.php?Page=Penjualan&Sub=DetailPenjualan&id='+id_transaksi_jual_beli+'';
+                } else {
+                    // Tampilkan pesan error
+                    $("#NotifikasiSimpanTransaksiPenjualan").html(
+                        `<div class="alert alert-danger" role="alert">${response.message}</div>`
+                    );
+                    $("#ButtonSimpanTransaksiPenjualan").html(ButtonElement).prop("disabled", false);
+                }
+            },
+            error: function () {
+                $("#NotifikasiSimpanTransaksiPenjualan").html(
+                    '<div class="alert alert-danger" role="alert">Terjadi kesalahan pada sistem. Silakan coba lagi.</div>'
+                );
+                $("#ButtonSimpanTransaksiPenjualan").html(ButtonElement).prop("disabled", false);
+            },
+        });
+    });
+
+    //Modal Detail
+    $('#ModalDetail').on('show.bs.modal', function (e) {
+        //Tangkap id_transaksi_jual_beli dari modal detail
+        var id_transaksi_jual_beli = $(e.relatedTarget).data('id');
+        
+        //Buka Detail Barang
+        $.ajax({
+            type 	    : 'POST',
+            url 	    : '_Page/Penjualan/detail_penjualan.php',
+            data        : {id_transaksi_jual_beli: id_transaksi_jual_beli},
+            dataType    : "json",
+            success     : function(response){
+                if(response.status=="Success"){
+
+                    var data = response.dataset;
+                    var list_rincian = response.list_rincian;
+                    
+                    //Tempelkan Ke Element
+                    $('#FormDetail').html(`
+                        <input type="hidden" name="id" value="${id_transaksi_jual_beli}">
+                        <div class="row mb-2">
+                            <div class="col-4"><small>Tanggal</small></div>
+                            <div class="col-8">
+                                <small class="text text-grayish">${data.tanggal}</small>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><small>Anggota</small></div>
+                            <div class="col-8">
+                                <small class="text text-grayish">${data.nama_anggota}</small>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><small>Kategori</small></div>
+                            <div class="col-8">
+                                <small class="text text-grayish">${data.kategori}</small>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><small>Subtotal</small></div>
+                            <div class="col-8">
+                                <small class="text text-grayish">${data.subtotal_rp}</small>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><small>PPN</small></div>
+                            <div class="col-8">
+                                <small class="text text-grayish">${data.ppn_rp}</small>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><small>Diskon</small></div>
+                            <div class="col-8">
+                                <small class="text text-grayish">${data.diskon_rp}</small>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><small>Total</small></div>
+                            <div class="col-8">
+                                <small class="text text-grayish">${data.total_rp}</small>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><small>Cash</small></div>
+                            <div class="col-8">
+                                <small class="text text-grayish">${data.cash_rp}</small>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><small>Kembalian</small></div>
+                            <div class="col-8">
+                                <small class="text text-grayish">${data.kembalian_rp}</small>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><small>Status</small></div>
+                            <div class="col-8">
+                                <small class="text text-grayish">${data.status}</small>
+                            </div>
+                        </div>
+                    `);
+                    var rincianList = response.list_rincian;
+                    var html = "";
+
+                    // Inisialisasi total
+                    var totalPpn = 0;
+                    var totalDiskon = 0;
+                    var totalSubtotal = 0;
+
+                    if (rincianList.length > 0) {
+                        $.each(rincianList, function(index, item) {
+                            html += `
+                                <tr>
+                                    <td>${index + 1}</td>
+                                    <td>${item.nama_barang}</td>
+                                    <td>${item.qty}</td>
+                                    <td class="text-end">${item.harga_rp}</td>
+                                    <td class="text-end">${item.ppn_rp}</td>
+                                    <td class="text-end">${item.diskon_rp}</td>
+                                    <td class="text-end">${item.subtotal_rp}</td>
+                                </tr>
+                            `;
+
+                            // Hitung total
+                            totalPpn += parseFloat(item.ppn);
+                            totalDiskon += parseFloat(item.diskon);
+                            totalSubtotal += parseFloat(item.subtotal);
+                        });
+
+                        // Tambahkan baris total di akhir tabel
+                        html += `
+                            <tr class="fw-bold bg-light">
+                                <td colspan="4" class="text-center">Total</td>
+                                <td class="text-end">Rp ${totalPpn.toLocaleString("id-ID")}</td>
+                                <td class="text-end">Rp ${totalDiskon.toLocaleString("id-ID")}</td>
+                                <td class="text-end">Rp ${totalSubtotal.toLocaleString("id-ID")}</td>
+                            </tr>
+                        `;
+                    } else {
+                        html = '<tr><td colspan="7" class="text-center">Tidak ada rincian transaksi</td></tr>';
+                    }
+
+                    // Masukkan ke dalam tabel
+                    $("#ListDetail").html(html);
+
+                    //Enable tombol
+                    $('#ButtonSelengkapnya').prop("disabled", false);
+                }else{
+                    //Tempelkan Notifikasi
+                    $('#FormDetail').html(
+                        `<div class="alert alert-danger" role="alert">${response.message}</div>`
+                    );
+                    //Disable tombol
+                    $('#ButtonSelengkapnya').prop("disabled", true);
+                }
+            },
+            error: function () {
+                //Tempelkan Notifikasi
+                $('#FormDetail').html(
+                    '<div class="alert alert-danger" role="alert">Terjadi kesalahan pada sistem. Silakan coba lagi.</div>'
+                );
+                //Disable tombol
+                $('#ButtonSelengkapnya').prop("disabled", true);
+            },
+        });
+    });
+
+
 });

@@ -5,6 +5,7 @@
     include "../../_Config/Session.php";
 
     $page=1;
+    $jumlah_total_rp="";
     if(empty($SessionIdAkses)){
         echo '
             <tr>
@@ -30,7 +31,7 @@
             if(empty($jml_data)){
                 echo '
                     <tr>
-                        <td colspan="7" class="text-center text-danger">
+                        <td colspan="9" class="text-center text-danger">
                             Tidak Ada Data Rincian Yang Ditampilkan.
                         </td>
                     </tr>
@@ -120,3 +121,14 @@
         }
     }
 ?>
+
+<script>
+    var put_cash_penjualan=$("#put_cash_penjualan").val();
+    var put_total_penjualan="<?php echo $jumlah_total; ?>";
+
+    //Tempelkan Jumlah Total
+    $("#put_total_penjualan").val(put_total_penjualan);
+
+    //Hitung Kembalian
+    HitungRekapTransaksi(put_total_penjualan, put_cash_penjualan);
+</script>

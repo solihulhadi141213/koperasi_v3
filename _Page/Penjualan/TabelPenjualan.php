@@ -63,7 +63,18 @@
             if(empty($keyword)){
                 $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_transaksi_jual_beli FROM transaksi_jual_beli"));
             }else{
-                $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_transaksi_jual_beli FROM transaksi_jual_beli WHERE $keyword_by like '%$keyword%'"));
+                if ($keyword_by == "nama") {
+                    // Jika pencarian berdasarkan nama anggota
+                    $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT tjb.id_transaksi_jual_beli 
+                        FROM transaksi_jual_beli tjb 
+                        LEFT JOIN anggota a ON tjb.id_anggota = a.id_anggota
+                        WHERE a.nama LIKE '%$keyword%'"));
+                } else {
+                    // Jika pencarian berdasarkan kolom lain di transaksi_jual_beli
+                    $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_transaksi_jual_beli 
+                        FROM transaksi_jual_beli 
+                        WHERE $keyword_by LIKE '%$keyword%'"));
+                }
             }
         }
         if(empty($jml_data)){
@@ -87,12 +98,20 @@
                 if(empty($keyword)){
                     $query = mysqli_query($Conn, "SELECT*FROM transaksi_jual_beli ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
                 }else{
-                    $query = mysqli_query($Conn, "SELECT*FROM transaksi_jual_beli WHERE $keyword_by like '%$keyword%' ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
+                    if ($keyword_by == "nama") {
+                        $query = mysqli_query($Conn, "SELECT tjb.*, a.nama 
+                        FROM transaksi_jual_beli tjb 
+                        LEFT JOIN anggota a ON tjb.id_anggota = a.id_anggota
+                        WHERE a.nama LIKE '%$keyword%'  
+                        ORDER BY $OrderBy $ShortBy 
+                        LIMIT $posisi, $batas");
+                    }else{
+                        $query = mysqli_query($Conn, "SELECT*FROM transaksi_jual_beli WHERE $keyword_by LIKE '%$keyword%' ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
+                    }
                 }
             }
             while ($data = mysqli_fetch_array($query)) {
                 $id_transaksi_jual_beli= $data['id_transaksi_jual_beli'];
-                $id_anggota= $data['id_anggota'];
                 $kategori= $data['kategori'];
                 $tanggal= $data['tanggal'];
                 $total= $data['total'];
@@ -100,23 +119,36 @@
                 $total_rp = "Rp " . number_format($total,0,',','.');
                 //Routing Penjualan
                 if($kategori=="Penjualan"){
-                    $label_kategori='<span class="badge badge-success">Penjualan</span>';
+                    $label_kategori='<span class="text text-success">Penjualan</span>';
                 }else{
-                    $label_kategori='<span class="badge badge-warning">'.$kategori.'</span>';
+                    $label_kategori='<span class="text text-warning">'.$kategori.'</span>';
                 }
                 //Buka nama anggota dari tabel anggota
-                $nama_anggota=GetDetailData($Conn, 'anggota', 'id_anggota', $id_anggota, 'nama_anggota');
-
+                if(empty($data['id_anggota'])){
+                    $id_anggota= "";
+                    $nama_anggota="-";
+                }else{
+                    $id_anggota= $data['id_anggota'];
+                    $nama_anggota=GetDetailData($Conn, 'anggota', 'id_anggota', $id_anggota, 'nama');
+                }
+                
                 //Routing status
                 if($status=="Lunas"){
                     $label_status='<span class="badge badge-success">Lunas</span>';
                 }else{
                     $label_status='<span class="badge badge-warning">'.$status.'</span>';
                 }
+                //Format tanggal
+                $strtotime=strtotime($tanggal);
+                $TanggalTransaksi=date('d/m/Y H:i', $strtotime);
                 echo '
                     <tr>
                         <td><small>'.$no.'</small></td>
-                        <td><small>'.$tanggal.'</small></td>
+                        <td>
+                            <a href="javascript:void(0);" class="text text-decoration-underline" data-bs-toggle="modal" data-bs-target="#ModalDetail" data-id="'.$id_transaksi_jual_beli.'">
+                                <small>'.$TanggalTransaksi.'</small>
+                            </a>
+                        </td>
                         <td><small>'.$label_kategori.'</small></td>
                         <td><small>'.$nama_anggota.'</small></td>
                         <td><small>'.$total_rp.'</small></td>
@@ -128,6 +160,11 @@
                             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" style="">
                                 <li class="dropdown-header text-start">
                                     <h6>Option</h6>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalDetail" data-id="'.$id_transaksi_jual_beli.'">
+                                        <i class="bi bi-info-circle"></i> Detail Transaksi
+                                    </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalEdit" data-id="'.$id_transaksi_jual_beli.'">

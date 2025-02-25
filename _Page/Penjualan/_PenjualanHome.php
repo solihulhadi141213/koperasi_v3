@@ -54,7 +54,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalExportPenjualan">
+                                        <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalExportTransaksi">
                                             <i class="bi bi-cloud-arrow-down"></i> Export
                                         </a>
                                     </li>
