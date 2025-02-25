@@ -110,6 +110,75 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="ModalBayarTagihanAngsuran" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form action="javascript:void(0);" id="ProssesBayarTagihanAngsuran">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark">
+                        <i class="bi bi-coin"></i> Bayar Tagihan Angsuran
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-2">
+                        <div class="col col-md-12">
+                            <div class="alert alert-info">
+                                <small>
+                                    <b>Perhatian :</b><br>
+                                    Proses pembayaran pada fitur ini memungkinkan anda mencatat beberapa pembayaran angsuran pinjaman sekaligus (Multiple). 
+                                    Gunakan fitur ini jika proses pencatatan pembayaran dilakukan secara merata (Flat).
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col col-md-12" id="FormBayarTagihanAngsuran">
+                            <!-- Menampilkan List Tagihan Angsuran -->
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col col-md-12" id="NotifikasiBayarTagihanAngsuran">
+                            <!-- Notifikasi Proses Bayar Tagihan Angsuran -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-rounded" id="ButtonBayarTagihanAngsuran">
+                        <i class="bi bi-save"></i> Simpan Pembayaran
+                    </button>
+                    <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Tutup
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="ModalRekapBayarTagihanAngsuran" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-dark">
+                    <i class="bi bi-download"></i> Rekap Proses Bayar Tagihan Angsuran
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-2">
+                    <div class="col col-md-12" id="FormRekapBayarTagihanAngsuran">
+                        <!-- Menampilkan Form Rekap Bayar Tagihan Angsuran -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle"></i> Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="ModalDetailPinjaman" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">

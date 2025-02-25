@@ -76,23 +76,44 @@
             }
         }
 ?>
-            <div class="row mb-3">
-                <div class="col col-md-6">Jumlah Pinjaman</div>
-                <div class="col col-md-6">
+            <div class="row mb-2">
+                <div class="col-12">
+                    <b># Informasi Data</b>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-6"><small>Tipe Data</small></div>
+                <div class="col-6">
+                    <code class="text text-grayish">Excel (.xlsx)</code>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-6"><small>Jumlah Pinjaman</small></div>
+                <div class="col-6">
                     <code class="text text-grayish"><?php echo "$jml_data Record"; ?></code>
                 </div>
             </div>
-            <div class="row mb-3">
-                <div class="col col-md-6">Tunggakan Pinjaman</div>
-                <div class="col col-md-6">
+            <div class="row mb-4">
+                <div class="col-6"><small>Tunggakan Pinjaman</small></div>
+                <div class="col-6">
                     <code class="text text-grayish"><?php echo "$jumlah_nunggak Record"; ?></code>
                 </div>
             </div>
+            <div class="row mb-2">
+                <div class="col col-md-12">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="sertakan_denda" name="sertakan_denda" value="Ya" >
+                        <label class="form-check-label" for="sertakan_denda">
+                            <small>Sertakan kolom denda</small>
+                        </label>
+                    </div>
+                </div>
+            </div>
             <div class="row mb-3">
-                <div class="col col-md-12 text-center">
-                    <code class="text text-primary">
+                <div class="col col-md-12">
+                    <small class="text text-dark">
                         Apakah anda yakin akan mengeksport data tagihan tersebut?
-                    </code>
+                    </small>
                 </div>
             </div>
 <?php

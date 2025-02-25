@@ -56,7 +56,12 @@
                                         </li>
                                         <li>
                                             <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalExportTagihan">
-                                                <i class="bi bi-cloud-arrow-down"></i> Export
+                                                <i class="bi bi-cloud-arrow-down"></i> Export Excel
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalBayarTagihanAngsuran">
+                                                <i class="bi bi-coin"></i> Bayar Tagihan Angsuran
                                             </a>
                                         </li>
                                     </ul>
