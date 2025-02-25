@@ -110,6 +110,19 @@
                             <input type="date" name="periode_export_2" id="periode_export_2" class="form-control">
                         </div>
                     </div>
+                    <div class="row mb-3">
+                        <div class="col col-md-4">
+                            
+                        </div>
+                        <div class="col col-md-8">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="tampilkan_denda" name="tampilkan_denda" value="Ya">
+                                <label class="form-check-label" for="tampilkan_denda">
+                                    <small>Tampilkan Kolom Denda</small>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary btn-rounded">

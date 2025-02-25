@@ -40,12 +40,26 @@
                 $angsuran_pokok=GetDetailData($Conn,'pinjaman','id_pinjaman',$id_pinjaman,'angsuran_pokok');
                 $angsuran_total=GetDetailData($Conn,'pinjaman','id_pinjaman',$id_pinjaman,'angsuran_total');
                 $denda=GetDetailData($Conn,'pinjaman','id_pinjaman',$id_pinjaman,'denda');
+                if(empty($angsuran_pokok)){
+                    $angsuran_pokok=0;
+                }
+                if(empty($angsuran_total)){
+                    $angsuran_total=0;
+                }
+                if(empty($rp_jasa)){
+                    $rp_jasa=0;
+                }
+                if(empty($denda)){
+                    $denda=0;
+                }
                 $sistem_denda=GetDetailData($Conn,'pinjaman','id_pinjaman',$id_pinjaman,'sistem_denda');
                 $tanggal_bayar=date('Y-m-d');
+                $JumlahDenda=0;
                 if($tanggal_bayar<=$tanggal_angsuran){
                     $JumlahDenda=0;
                     $keterlambatan=0;
                 }else{
+                    $keterlambatan=0;
                     try {
                         // Create DateTime objects
                         $date1 = new DateTime($tanggal_angsuran);
@@ -63,11 +77,12 @@
                             }
                         }
                     } catch (Exception $e) {
-                        $keterlambatan=$e->getMessage();
+                        $keterlambatan=0;
                     }
+                    //Menghitung Jumlah Denda
+                    $JumlahDenda=$denda*$keterlambatan;
                 }
-                //Menghitung Jumlah Denda
-                $JumlahDenda=$denda*$keterlambatan;
+                
                 //Format Rupiah
                 $angsuran_pokok_format = "" . number_format($angsuran_pokok,0,',',',');
                 $rp_jasa_format = "" . number_format($rp_jasa,0,',',',');

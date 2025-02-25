@@ -28,6 +28,11 @@
             $periode_export_2 = $_POST['periode_export_2'];
             $periode_export_1 = validateAndSanitizeInput($periode_export_1);
             $periode_export_2 = validateAndSanitizeInput($periode_export_2);
+            if(empty($_POST['tampilkan_denda'])){
+                $tampilkan_denda="";
+            } else {
+                $tampilkan_denda=$_POST['tampilkan_denda'];
+            }
             if($periode_export_1>=$periode_export_2){
                 echo "Periode Awal Tidak Boleh Lebih Besar Sama Dengan Periode Akhir!";
                 exit;
@@ -41,32 +46,57 @@
                     $spreadsheet = new Spreadsheet();
                     $sheet = $spreadsheet->getActiveSheet();
                     // Menulis judul
-                    $headers = [
-                        'A1' => 'No',
-                        'B1' => 'NIP',
-                        'C1' => 'Nama Anggota',
-                        'D1' => 'Divisi/Unit',
-                        'E1' => 'Ranking',
-                        'F1' => 'Tanggal',
-                        'G1' => 'Jatuh Tempo',
-                        'H1' => '% Denda',
-                        'I1' => 'Sistem Denda',
-                        'J1' => 'Rp Pinjaman',
-                        'K1' => '% Jasa',
-                        'L1' => 'Rp Jasa',
-                        'M1' => 'Rp Pokok',
-                        'N1' => 'Rp Angsuran',
-                        'O1' => 'Periode Angsuran',
-                        'P1' => 'Status'
-                    ];
+                    if($tampilkan_denda=="Ya"){
+                        $headers = [
+                            'A1' => 'No',
+                            'B1' => 'NIP',
+                            'C1' => 'Nama Anggota',
+                            'D1' => 'Divisi/Unit',
+                            'E1' => 'Ranking',
+                            'F1' => 'Tanggal',
+                            'G1' => 'Jatuh Tempo',
+                            'H1' => '% Denda',
+                            'I1' => 'Sistem Denda',
+                            'J1' => 'Rp Pinjaman',
+                            'K1' => '% Jasa',
+                            'L1' => 'Rp Jasa',
+                            'M1' => 'Rp Pokok',
+                            'N1' => 'Rp Angsuran',
+                            'O1' => 'Periode Angsuran',
+                            'P1' => 'Status'
+                        ];
+                    }else{
+                        $headers = [
+                            'A1' => 'No',
+                            'B1' => 'NIP',
+                            'C1' => 'Nama Anggota',
+                            'D1' => 'Divisi/Unit',
+                            'E1' => 'Ranking',
+                            'F1' => 'Tanggal',
+                            'G1' => 'Jatuh Tempo',
+                            'H1' => 'Rp Pinjaman',
+                            'I1' => '% Jasa',
+                            'J1' => 'Rp Jasa',
+                            'K1' => 'Rp Pokok',
+                            'L1' => 'Rp Angsuran',
+                            'M1' => 'Periode Angsuran',
+                            'N1' => 'Status'
+                        ];
+                    }
+                    
 
                     foreach ($headers as $cell => $value) {
                         $sheet->setCellValue($cell, $value);
                     }
 
                     // Mengatur gaya baris judul
-                    $sheet->getStyle('A1:P1')->getFont()->setBold(true);
-                    $sheet->getStyle('A1:P1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                    if($tampilkan_denda=="Ya"){
+                        $sheet->getStyle('A1:P1')->getFont()->setBold(true);
+                        $sheet->getStyle('A1:P1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                    }else{
+                        $sheet->getStyle('A1:N1')->getFont()->setBold(true);
+                        $sheet->getStyle('A1:N1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                    }
 
                     // Membuat objek Writer untuk menulis Spreadsheet ke dalam file XLSX
                     $writer = new Xlsx($spreadsheet);
@@ -93,50 +123,93 @@
                         $angsuran_total= $data['angsuran_total'];
                         $periode_angsuran= $data['periode_angsuran'];
                         $status= $data['status'];
-                        // Format tanggal
-                        $tanggal = \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel(new DateTime($tanggal));
-                        // Menampilkan Data
-                        $sheet->setCellValue('A'.$row, $no);
-                        $sheet->setCellValue('B'.$row, $nip);
-                        $sheet->setCellValue('C'.$row, $nama);
-                        $sheet->setCellValue('D'.$row, $lembaga);
-                        $sheet->setCellValue('E'.$row, $ranking);
-                        // Format tanggal di Excel
-                        $sheet->setCellValue('F'.$row, $tanggal);
-                        $sheet->getStyle('F'.$row)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_DATE_DDMMYYYY);
-                        //Lanjutan
-                        $sheet->setCellValue('G'.$row, $jatuh_tempo);
-                        // Format angka di Excel
-                        $sheet->setCellValue('H'.$row, $denda);
-                        $sheet->getStyle('H'.$row)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-                        //Lanjutan
-                        $sheet->setCellValue('I'.$row, $sistem_denda);
-                        // Format angka jumlah_pinjaman di Excel
-                        $sheet->setCellValue('J'.$row, $jumlah_pinjaman);
-                        $sheet->getStyle('J'.$row)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-                        $sheet->setCellValue('K'.$row, $persen_jasa);
-                        $sheet->getStyle('K'.$row)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-                        
-                        $sheet->setCellValue('L'.$row, $rp_jasa);
-                        $sheet->getStyle('L'.$row)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
 
-                        $sheet->setCellValue('M'.$row, $angsuran_pokok);
-                        $sheet->getStyle('M'.$row)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+                        if($tampilkan_denda=="Ya"){
+                            // Format tanggal
+                            $tanggal = \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel(new DateTime($tanggal));
+                            // Menampilkan Data
+                            $sheet->setCellValue('A'.$row, $no);
+                            $sheet->setCellValue('B'.$row, $nip);
+                            $sheet->setCellValue('C'.$row, $nama);
+                            $sheet->setCellValue('D'.$row, $lembaga);
+                            $sheet->setCellValue('E'.$row, $ranking);
+                            // Format tanggal di Excel
+                            $sheet->setCellValue('F'.$row, $tanggal);
+                            $sheet->getStyle('F'.$row)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_DATE_DDMMYYYY);
+                            //Jatuh Tempo
+                            $sheet->setCellValue('G'.$row, $jatuh_tempo);
+                            // Format angka denda di Excel
+                            $sheet->setCellValue('H'.$row, $denda);
+                            $sheet->getStyle('H'.$row)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+                            //Sistem Denda
+                            $sheet->setCellValue('I'.$row, $sistem_denda);
+                            // Format angka jumlah_pinjaman di Excel
+                            $sheet->setCellValue('J'.$row, $jumlah_pinjaman);
+                            $sheet->getStyle('J'.$row)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+                            $sheet->setCellValue('K'.$row, $persen_jasa);
+                            $sheet->getStyle('K'.$row)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+                            
+                            $sheet->setCellValue('L'.$row, $rp_jasa);
+                            $sheet->getStyle('L'.$row)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
 
-                        $sheet->setCellValue('N'.$row, $angsuran_total);
-                        $sheet->getStyle('N'.$row)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+                            $sheet->setCellValue('M'.$row, $angsuran_pokok);
+                            $sheet->getStyle('M'.$row)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
 
-                        $sheet->setCellValue('O'.$row, $periode_angsuran);
-                        $sheet->getStyle('O'.$row)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-                        
-                        $sheet->setCellValue('P'.$row, $status);
+                            $sheet->setCellValue('N'.$row, $angsuran_total);
+                            $sheet->getStyle('N'.$row)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+
+                            $sheet->setCellValue('O'.$row, $periode_angsuran);
+                            $sheet->getStyle('O'.$row)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+                            
+                            $sheet->setCellValue('P'.$row, $status);
+                        }else{
+                            // Format tanggal
+                            $tanggal = \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel(new DateTime($tanggal));
+                            // Menampilkan Data
+                            $sheet->setCellValue('A'.$row, $no);
+                            $sheet->setCellValue('B'.$row, $nip);
+                            $sheet->setCellValue('C'.$row, $nama);
+                            $sheet->setCellValue('D'.$row, $lembaga);
+                            $sheet->setCellValue('E'.$row, $ranking);
+                            // Format tanggal di Excel
+                            $sheet->setCellValue('F'.$row, $tanggal);
+                            $sheet->getStyle('F'.$row)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_DATE_DDMMYYYY);
+                            //Jatuh Tempo
+                            $sheet->setCellValue('G'.$row, $jatuh_tempo);
+                            // Format angka jumlah_pinjaman di Excel
+                            $sheet->setCellValue('H'.$row, $jumlah_pinjaman);
+                            $sheet->getStyle('H'.$row)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+                            $sheet->setCellValue('I'.$row, $persen_jasa);
+                            $sheet->getStyle('I'.$row)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+                            
+                            $sheet->setCellValue('J'.$row, $rp_jasa);
+                            $sheet->getStyle('J'.$row)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+
+                            $sheet->setCellValue('K'.$row, $angsuran_pokok);
+                            $sheet->getStyle('K'.$row)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+
+                            $sheet->setCellValue('L'.$row, $angsuran_total);
+                            $sheet->getStyle('L'.$row)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+
+                            $sheet->setCellValue('M'.$row, $periode_angsuran);
+                            $sheet->getStyle('M'.$row)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+                            
+                            $sheet->setCellValue('N'.$row, $status);
+                        }
+
                         $row++; // Pindah ke baris berikutnya
                         $no++;
                     }
 
                     // Menyesuaikan lebar kolom dengan karakter terpanjang
-                    foreach(range('A', 'P') as $columnID) {
-                        $sheet->getColumnDimension($columnID)->setAutoSize(true);
+                    if($tampilkan_denda=="Ya"){
+                        foreach(range('A', 'P') as $columnID) {
+                            $sheet->getColumnDimension($columnID)->setAutoSize(true);
+                        }
+                    }else{
+                        foreach(range('A', 'N') as $columnID) {
+                            $sheet->getColumnDimension($columnID)->setAutoSize(true);
+                        }
                     }
 
                     $filename = "Pinjaman.xlsx";
