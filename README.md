@@ -4,31 +4,55 @@ Aplikasi Koperasi V 3.0.0 adalah sebuah aplikasi open source yang dirancang untu
 
 ## Fitur Aplikasi
 1. **Akses**    
-    - Fitur Aplikasi : 
+    - Fitur Aplikasi <br>
     Berfungsi mengelola kode otentifikasi pada masing-masing halaman.
-    - Entitas Akses : 
+    - Entitas Akses <br>
     Berfungsi untuk mengelola entitas/level akses (pengurus) sehingga memungkinkan masing-masing mempunyai hak akses yang berbeda sesuai tugasnya.
-    - Akses/Pengguna : 
+    - Akses/Pengguna <br>
     Berfungsi mengelola semua data akses pengguna pada level (Pengurus)
 2. Anggota
-   - Anggota : 
-   Berfungsi untuk mengelola semua data anggota, input data anggota, ubah dan hapus. Terdapat filter untuk pencarian, import untuk memasukan data dari excel dan export ke data excel.
-   - Keluar & Masuk : 
-   Menampilkan rekapitulasi data keluar-masuk anggota berdasarkan periode waktu tertentu.
-   - Rekap Anggota : 
-   Menampilkan rekapitulasi jumlah anggota keluar dan masuk berdasarkan divisi/unit kerja (untuk koperasi karyawan)
+   - Anggota<br> 
+     Berfungsi untuk mengelola semua data anggota, input data anggota, ubah dan hapus. Terdapat filter untuk pencarian, import untuk memasukan data dari excel dan export ke data excel.
+   - Keluar & Masuk <br> 
+     Menampilkan rekapitulasi data keluar-masuk anggota berdasarkan periode waktu tertentu.
+   - Rekap Anggota <br> 
+     Menampilkan rekapitulasi jumlah anggota keluar dan masuk berdasarkan divisi/unit kerja (untuk koperasi karyawan)
 3. Simpanan Anggota
    - Jenis Simpanan
    - Simpanan Wajib
    - Log Simpanan
    - Rekap Simpanan
 4. Pinjaman Anggota
+   - Sesi Pinjaman
+   - Tagihan/Tunggakan
+   - Rekap Pinjaman
 5. Barang/Inventory
-6. Transaksi Jual/Beli
-7. Transaksi Biaya
+   - Master Barang
+   - Batch & Expired
+   - Stock Opename
+   - Supplier
+6. Transaksi Operasional
+   - Kategori Operasional
+   - Transaksi Operasional
+   - Rekap Transaksi
+7. Transaksi Jual/Beli
+   - Transaksi Penjualan
+   - Transaksi Pembelian
+   - Rekap Transaksi
 8. Pembukuan Keuangan
+   - Bagi Hasil (SHU)
+   - Akun Perkiraan
+   - Jurnal Keuangan
 9. Laporan
+   - Simpan Pinjam
+   - Buku Bessar
+   - Neraca Saldo
+   - Laba Rugi
+   - Riwayat Transaksi
 10. Pengaturan Aplikasi
+   - Pengaturan Umum
+   - Auto Jurnal
+   - Email Gateway
 11. Log Aktivitas
 12. Konten Bantuan
 13. Profil Pengguna
