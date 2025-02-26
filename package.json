@@ -4,6 +4,7 @@
     "jquery": "^3.7.1",
     "jspdf": "^3.0.0",
     "mdb-ui-kit": "^8.2.0",
+    "signature_pad": "^5.0.4",
     "sweetalert2": "^11.17.2"
   }
 }
