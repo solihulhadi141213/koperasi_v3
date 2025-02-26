@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "html2canvas": "^1.4.1",
+    "jquery": "^3.7.1",
+    "jspdf": "^3.0.0",
+    "mdb-ui-kit": "^8.2.0",
+    "sweetalert2": "^11.17.2"
+  }
+}

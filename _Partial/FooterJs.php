@@ -15,8 +15,8 @@
 <script src="node_modules\sweetalert2\dist\sweetalert2.all.min.js"></script>
 <script type="text/javascript" src="assets/js/jquery.session.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="node_modules/html2canvas/dist/html2canvas.min.js"></script>
+<script src="node_modules/jspdf/dist/jspdf.umd.min.js"></script>
 
 <!-- Template Main JS File -->
 <script src="assets/js/main.js"></script>
