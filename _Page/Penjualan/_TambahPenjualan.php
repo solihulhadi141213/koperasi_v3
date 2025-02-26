@@ -122,8 +122,8 @@
                                                 <label for="put_id_anggota_for_add_penjualan"><small>Anggota</small></label>
                                             </div>
                                             <div class="col-8">
-                                                <select name="id_anggota" id="put_id_anggota_for_add_penjualan" class="form-control form-control-lg" data-bs-toggle="modal" data-bs-target="#ModalPilihAnggota">
-                                                    <option value="">Pilih</option>
+                                                <select id="put_id_anggota_for_add_penjualan" name="put_id_anggota_for_add_penjualan" class="form-control form-control-lg" data-bs-toggle="modal" data-bs-target="#ModalPilihAnggota">
+                                                    <option value="2">Pilih</option>
                                                 </select>
                                             </div>
                                         </div>

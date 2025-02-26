@@ -49,16 +49,20 @@
         $status = validateAndSanitizeInput($_POST['status']);
 
         //Variabel Lain Yang Tidak Wajib
-        if(empty($_POST['id_anggota'])){
+        if(empty($_POST['put_id_anggota_for_add_penjualan'])){
             $id_anggota=null;
             $validasi_anggota="Valid";
         }else{
-            $id_anggota=validateAndSanitizeInput($_POST['id_anggota']);
-            $id_anggota=mysqli_num_rows(mysqli_query($Conn, "SELECT id_anggota FROM anggota WHERE id_anggota='$id_anggota'"));
-            if(empty($id_anggota)){
-                $validasi_anggota="ID Anggota Tidak Ditemukan!";
+            $id_anggota=$_POST['put_id_anggota_for_add_penjualan'];
+            if($id_anggota=="1"){
+                $validasi_anggota="ID Anggota 1 Terus";
             }else{
-                $validasi_anggota="Valid";
+                $validasi_id_anggota=mysqli_num_rows(mysqli_query($Conn, "SELECT id_anggota FROM anggota WHERE id_anggota='$id_anggota'"));
+                if(empty($validasi_id_anggota)){
+                    $validasi_anggota="ID Anggota Tidak Ditemukan!";
+                }else{
+                    $validasi_anggota="Valid";
+                }
             }
         }
         if(empty($_POST['total'])){

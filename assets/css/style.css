@@ -1334,3 +1334,10 @@ body .title_page_app {
 #FormPreviewSertifikat {
   height: calc(100vh - 120px); /* Sesuaikan dengan tinggi header dan footer modal */
 }
+
+/* Untuk Garis Putus-putus */
+.dashed-underline {
+  border-bottom: 2px dashed #000; /* Warna hitam */
+  display: inline-block; /* Agar hanya sepanjang teks */
+  padding-bottom: 5px; /* Jarak ke teks */
+}

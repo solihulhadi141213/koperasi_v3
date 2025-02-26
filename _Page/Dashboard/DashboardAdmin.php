@@ -14,10 +14,16 @@
     //Jumlah Simpanan Bersih
     $JumlahSimpananBersih=$JumlahSimpananKotor-$JumlahPenarikan;
     $JumlahSimpananBersih = "" . number_format($JumlahSimpananBersih,0,',','.');
+
     //Jumlah Pinjaman
     $SumPinjaman = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(jumlah_pinjaman) AS jumlah_pinjaman FROM pinjaman"));
     $JumlahPinjaman = $SumPinjaman['jumlah_pinjaman'];
     $JumlahPinjaman = "" . number_format($JumlahPinjaman,0,',','.');
+
+    //Jumlah Angsuran
+    $SumAngsuran = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(jumlah) AS jumlah FROM pinjaman_angsuran"));
+    $JumlahAngsuran = $SumAngsuran['jumlah'];
+    $JumlahAngsuran = "" . number_format($JumlahAngsuran,0,',','.');
 
     //Jumlah Penjualan
     $SumPenjualan = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(total) AS jumlah_penjualan FROM transaksi_jual_beli WHERE kategori='Penjualan'"));
@@ -135,7 +141,7 @@
                                 </div>
                                 <div class="ps-3">
                                     <?php
-                                        echo '  <span class="text-muted small pt-1 fw-bold">'.$JumlahPinjaman.'</span><br>';
+                                        echo '  <span class="text-muted small pt-1 fw-bold">'.$JumlahAngsuran.'</span><br>';
                                         echo '  <span class="text-muted small pt-2 ps-1">Rp/IDR</span>';
                                     ?>
                                 </div>

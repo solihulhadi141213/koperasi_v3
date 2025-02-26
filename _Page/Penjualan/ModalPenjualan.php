@@ -97,40 +97,34 @@
 <div class="modal fade" id="ModalExportTransaksi" tabindex="-1">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
-            <form action="javascript:void(0);" id="ProsesFilter">
+            <form action="javascript:void(0);" id="ProsesExportTransaksi">
                 <div class="modal-header">
                     <h5 class="modal-title text-dark"><i class="bi bi-download"></i> Export Transaksi</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row mb-3">
+                        <div class="col-12">
+                            <small>
+                                Pilih mode data transaksi atau rincian sesuai yang anda inginkan.
+                            </small>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
                         <div class="col-4">
-                            <label for="mode_data_transaksi">
+                            <label for="mode_data">
                                 <small>Mode Data</small>
                             </label>
                         </div>
                         <div class="col-8">
-                            <select name="mode_data" id="mode_data_transaksi" class="form-control">
+                            <select name="mode_data" id="mode_data" class="form-control">
                                 <option value="Transaksi">Transaksi</option>
                                 <option value="Rincian Transaksi">Rincian</option>
                             </select>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <div class="col-4">
-                            <label for="format_data_transaksi">
-                                <small>Format Data</small>
-                            </label>
-                        </div>
-                        <div class="col-8">
-                            <select name="format_data" id="format_data_transaksi" class="form-control">
-                                <option value="HTML">HTML</option>
-                                <option value="Excel">Excel</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-12">
+                        <div class="col-md-12" id="NotifikasiExportTransaksi">
                             <div class="alert alert-warning">
                                 <small>Semakin banyak data transaksi yang akan diexport, maka proses sistem membutuhkan waktu lebih lama.</small>
                             </div>
@@ -138,7 +132,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success btn-rounded">
+                    <button type="submit" class="btn btn-success btn-rounded" id="ButtonExportTransaksi">
                         <i class="bi bi-download"></i> Export
                     </button>
                     <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
@@ -584,6 +578,95 @@
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-md btn-outline-info btn-rounded" id="ButtonSelengkapnya">
                         <i class="bi bi-three-dots"></i> Selengkapnya
+                    </button>
+                    <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Tutup
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal fade" id="ModalCetak" tabindex="-1">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <form action="javascript:void(0);" id="ProsesCetak">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark"><i class="bi bi-printer"></i> Cetak Transaksi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-12" id="FormDetailCetak">
+                            
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <small>
+                                Pilih Mode Percetakan Yang Anda Inginkan
+                            </small>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="tipe_cetak" id="tipe_cetak_1" value="PDF">
+                                <label class="form-check-label" for="tipe_cetak_1">
+                                    <small>Format PDF</small>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="tipe_cetak" id="tipe_cetak_2" value="Image">
+                                <label class="form-check-label" for="tipe_cetak_2">
+                                    <small>Format Image</small>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="tipe_cetak" id="tipe_cetak_3" value="Direct">
+                                <label class="form-check-label" for="tipe_cetak_3">
+                                    <small>Direct Print</small>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12" id="NotifikasiCetak">
+                            <!-- Notifikasi Cetak Transaksi Disini -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-md btn-success btn-rounded" id="ButtonCetak">
+                        <i class="bi bi-printer"></i> Cetak
+                    </button>
+                    <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Tutup
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal fade" id="ModalHapus" tabindex="-1">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <form action="javascript:void(0);" id="ProsesHapus">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark"><i class="bi bi-trash"></i> Hapus Transaksi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-12" id="FormHapus">
+                            
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12" id="NotifikasiHapus">
+                            <!-- Notifikasi Reset Transaksi Disini -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-md btn-success btn-rounded" id="ButtonHapus">
+                        <i class="bi bi-check"></i> Ya, Hapus
                     </button>
                     <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
                         <i class="bi bi-x-circle"></i> Tutup

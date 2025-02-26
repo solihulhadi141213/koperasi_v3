@@ -43,7 +43,7 @@
         if(!empty($_POST['OrderBy'])){
             $OrderBy=$_POST['OrderBy'];
         }else{
-            $OrderBy="id_transaksi_jual_beli";
+            $OrderBy="tanggal";
         }
         //Atur Page
         if(!empty($_POST['page'])){
@@ -164,6 +164,11 @@
                                 <li>
                                     <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalDetail" data-id="'.$id_transaksi_jual_beli.'">
                                         <i class="bi bi-info-circle"></i> Detail Transaksi
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalCetak" data-id="'.$id_transaksi_jual_beli.'">
+                                        <i class="bi bi-printer"></i> Cetak
                                     </a>
                                 </li>
                                 <li>

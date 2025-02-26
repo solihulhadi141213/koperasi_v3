@@ -35,8 +35,18 @@
                 $id_transaksi_bulk = $_POST['id_transaksi_bulk'];
                 $qty = isset($_POST['qty']) ? $_POST['qty'] : "0";
                 $harga = isset($_POST['harga']) ? $_POST['harga'] : "0";
-                $ppn = isset($_POST['ppn']) && is_numeric($_POST['ppn']) ? (float)$_POST['ppn'] : 0;
-                $diskon = isset($_POST['diskon']) && is_numeric($_POST['diskon']) ? (float)$_POST['diskon'] : 0;
+                if(empty($_POST['ppn'])){
+                    $ppn=0;
+                }else{
+                    $ppn=$_POST['ppn'];
+                }
+                if(empty($_POST['diskon'])){
+                    $diskon=0;
+                }else{
+                    $diskon=$_POST['diskon'];
+                }
+                $ppn = (int) str_replace(".", "", $ppn);
+                $diskon = (int) str_replace(".", "", $diskon);
                 $harga = (int) str_replace(".", "", $harga);
                 $jumlah=$qty*$harga;
                 $subtotal=$jumlah+$ppn-$diskon;

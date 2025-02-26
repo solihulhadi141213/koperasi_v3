@@ -38,6 +38,9 @@ $(document).ready(function () {
                         return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(value);
                     }
                 }
+            },
+            dataLabels: {
+                enabled: false // Menonaktifkan label nilai pada bar
             }
         };
 
