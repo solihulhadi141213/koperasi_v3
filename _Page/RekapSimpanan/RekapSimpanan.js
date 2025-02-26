@@ -21,6 +21,17 @@ function filterAndLoadTable2() {
         }
     });
 }
+function filterAndLoadTable3() {
+    var ProsesFilterAnggota = $('#ProsesFilterAnggota').serialize();
+    $.ajax({
+        type: 'POST',
+        url: '_Page/RekapSimpanan/TabelRekapSimpananAnggota.php',
+        data: ProsesFilterAnggota,
+        success: function(data) {
+            $('#MenampilkanTabelRekapSimpananAnggota').html(data);
+        }
+    });
+}
 function toggleFields() {
     var periode = $('#periode').val();
     if (periode === 'Semua') {
@@ -47,18 +58,36 @@ function toggleFields2() {
         $('#FormBulanRank').show();
     }
 }
+function toggleFields3() {
+    var periode = $('#periode_anggota').val();
+    if (periode === 'Semua') {
+        $('#FormTahunAnggota').hide();
+        $('#FormBulanAnggota').hide();
+    } else if (periode === 'Tahunan') {
+        $('#FormTahunAnggota').show();
+        $('#FormBulanAnggota').hide();
+    } else if (periode === 'Bulanan') {
+        $('#FormTahunAnggota').show();
+        $('#FormBulanAnggota').show();
+    }
+}
 $(document).ready(function() {
     filterAndLoadTable();
     filterAndLoadTable2();
+    filterAndLoadTable3();
     // Panggil fungsi toggleFields saat halaman dimuat
     toggleFields();
     toggleFields2();
+    toggleFields3();
     // Panggil fungsi toggleFields saat periode diubah
     $('#periode').change(function() {
         toggleFields();
     });
     $('#periode_rank').change(function() {
         toggleFields2();
+    });
+    $('#periode_anggota').change(function() {
+        toggleFields3();
     });
 });
 //Proses Filter Lembaga
@@ -99,6 +128,25 @@ $('#ProsesFilterRank').submit(function(){
         }
     });
 });
+//Proses FilterAnggota
+$('#ProsesFilterAnggota').submit(function(){
+    $('#MenampilkanTabelRekapSimpananAnggota').html('<div class="spinner-border text-secondary" role="status"><span class="sr-only"></span></div>');
+    var form = $('#ProsesFilterRank')[0];
+    var data = new FormData(form);
+    $.ajax({
+        type 	    : 'POST',
+        url 	    : '_Page/RekapSimpanan/TabelRekapSimpananAnggota.php',
+        data 	    :  data,
+        cache       : false,
+        processData : false,
+        contentType : false,
+        enctype     : 'multipart/form-data',
+        success     : function(data){
+            $('#MenampilkanTabelRekapSimpananAnggota').html(data);
+            $('#ModalFilterAnggota').modal('hide');
+        }
+    });
+});
 //Modal Cetak Rekap Simpanan
 $('#ModalCetak').on('show.bs.modal', function (e) {
     var ProsesFilter = $('#ProsesFilter').serialize();
@@ -121,6 +169,19 @@ $('#ModalCetak2').on('show.bs.modal', function (e) {
         data: ProsesFilter,
         success: function(data) {
             $('#FormCetakDataRekap2').html(data);
+        }
+    });
+});
+
+//Modal Cetak Rekap Simpanan Anggota
+$('#ModalCetak3').on('show.bs.modal', function (e) {
+    var ProsesFilter = $('#ProsesFilterAnggota').serialize();
+    $.ajax({
+        type: 'POST',
+        url: '_Page/RekapSimpanan/FormCetakDataRekap3.php',
+        data: ProsesFilter,
+        success: function(data) {
+            $('#FormCetakDataRekap3').html(data);
         }
     });
 });
