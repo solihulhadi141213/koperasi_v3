@@ -644,6 +644,38 @@
         </form>
     </div>
 </div>
+<div class="modal fade" id="ModalEdit" tabindex="-1">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <form action="javascript:void(0);" id="ProsesEdit">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark"><i class="bi bi-pencil"></i> Edit Transaksi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-12" id="FormEdit">
+                            <!-- Form Edit Transaksi Disini -->
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12" id="NotifikasiEdit">
+                            <!-- Notifikasi Edit Transaksi Disini -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-md btn-success btn-rounded" id="ButtonEdit">
+                        <i class="bi bi-save"></i> Simpan
+                    </button>
+                    <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Tutup
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 <div class="modal fade" id="ModalHapus" tabindex="-1">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
@@ -667,6 +699,116 @@
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-md btn-success btn-rounded" id="ButtonHapus">
                         <i class="bi bi-check"></i> Ya, Hapus
+                    </button>
+                    <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Tutup
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalListAnggotaEdit" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-dark">
+                    <i class="bi bi-person"></i> Pilih Anggota
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col col-12 col-md-4 text-end">
+                        <label for="keyword_anggota">
+                            <small>Nama / No.Induk</small>
+                        </label>
+                    </div>
+                    <div class="col col-12 col-md-8">
+                        <form action="javascript:void(0);" id="ProsesCariAnggotaEdit">
+                            <input type="hidden" name="page" id="page_anggota_edit" value="1">
+                            <input type="hidden" name="id_transaksi_jual_beli" id="put_id_transaksi_jual_beli_anggota_edit">
+                            <input type="hidden" name="mode" id="put_mode_edit_anggota">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="keyword" id="keyword_anggota_edit">
+                                <button type="submit" class="btn btn-md btn-primary">
+                                    <i class="bi bi-search"></i> Cari
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row mb-3 border-1 border-top border-bottom">
+                    <div class="col-12 mt-3 mb-3">
+                        <div class="table table-responsive">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th><b>No</b></th>
+                                        <th><b>Anggota</b></th>
+                                        <th><b>No.Induk</b></th>
+                                        <th><b>Opsi</b></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="TabelAnggotaEdit">
+                                    <tr>
+                                        <td colspan="4" class="text-center">
+                                            <span>Tidak Ada Data Anggota Yang Ditampilkan</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <small id="page_info_anggota_edit">
+                            Page 1 Of 100
+                        </small>
+                    </div>
+                    <div class="col-6 text-end">
+                        <button type="button" class="btn btn-sm btn-outline-info btn-floating" id="prev_button_anggota_edit">
+                            <i class="bi bi-chevron-left"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-info btn-floating" id="next_button_anggota_edit">
+                            <i class="bi bi-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle"></i> tutup
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="ModalEditAnggota" tabindex="-1">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <form action="javascript:void(0);" id="ProsesEditAnggota">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark"><i class="bi bi-person"></i> Ganti Informasi Anggota</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-12" id="FormEditAnggota">
+                            <!-- Form Edit Transaksi Disini -->
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12" id="NotifikasiEditAnggota">
+                            <!-- Notifikasi Edit Transaksi Disini -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-md btn-success btn-rounded" id="ButtonEditAnggota">
+                        <i class="bi bi-save"></i> Simpan
                     </button>
                     <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
                         <i class="bi bi-x-circle"></i> Tutup

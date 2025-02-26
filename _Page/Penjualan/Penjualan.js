@@ -64,6 +64,21 @@ function ShowDataAnggota() {
     });
 }
 
+//Fungsi Menampilkan Data Anggota
+function ShowDataAnggotaEdit(id_transaksi_jual_beli,mode) {
+    $('#put_id_transaksi_jual_beli_anggota_edit').val(id_transaksi_jual_beli);
+    $('#put_mode_edit_anggota').val(mode);
+    var ProsesCariAnggotaEdit = $('#ProsesCariAnggotaEdit').serialize();
+    $.ajax({
+        type    : 'POST',
+        url     : '_Page/Penjualan/TabelAnggotaEdit.php',
+        data    : ProsesCariAnggotaEdit,
+        success: function(data) {
+            $('#TabelAnggotaEdit').html(data);
+        }
+    });
+}
+
 //Fungsi Untuk Format Rupiah
 function formatRupiah(angka) {
     return 'Rp ' + parseFloat(angka).toLocaleString('id-ID', { minimumFractionDigits: 0 });
@@ -168,7 +183,153 @@ function HitungRekapTransaksi(total, cash) {
     // Panggil fungsi untuk memastikan input format uang tetap benar
     initializeMoneyInputs();
 }
+function ShowDetailTransaksiInline(id_transaksi_jual_beli) {
+    //Menampilkan detail transaksi inline
+    $.ajax({
+        type 	    : 'POST',
+        url 	    : '_Page/Penjualan/detail_penjualan.php',
+        data        : {id_transaksi_jual_beli: id_transaksi_jual_beli},
+        dataType    : "json",
+        success     : function(response){
+            if(response.status=="Success"){
 
+                var data = response.dataset;
+                var list_rincian = response.list_rincian;
+                
+                //Tempelkan Ke Element
+                $('#form_detail_transaksi_inline').html(`
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row mb-2">
+                                <div class="col-4"><small>Tanggal</small></div>
+                                <div class="col-8">
+                                    <small class="text text-grayish">${data.tanggal}</small>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-4"><small>Anggota</small></div>
+                                <div class="col-8">
+                                    <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#ModalListAnggotaEdit" data-id="${id_transaksi_jual_beli}" data-mode="Detail">
+                                        <small class="text text-primary">${data.nama_anggota}</small>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-4"><small>Kategori</small></div>
+                                <div class="col-8">
+                                    <small class="text text-grayish">${data.kategori}</small>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-4"><small>Status</small></div>
+                                <div class="col-8">
+                                    <small class="text text-grayish">${data.status}</small>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-4"><small>Subtotal</small></div>
+                                <div class="col-8">
+                                    <small class="text text-grayish">${data.subtotal_rp}</small>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-4"><small>PPN</small></div>
+                                <div class="col-8">
+                                    <small class="text text-grayish">${data.ppn_rp}</small>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-4"><small>Diskon</small></div>
+                                <div class="col-8">
+                                    <small class="text text-grayish">${data.diskon_rp}</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row mb-2">
+                                <div class="col-4"><small>Total</small></div>
+                                <div class="col-8">
+                                    <small class="text text-grayish">${data.total_rp}</small>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-4"><small>Cash</small></div>
+                                <div class="col-8">
+                                    <small class="text text-grayish">${data.cash_rp}</small>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-4"><small>Kembalian</small></div>
+                                <div class="col-8">
+                                    <small class="text text-grayish">${data.kembalian_rp}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `);
+                var rincianList = response.list_rincian;
+                var html = "";
+
+                // Inisialisasi total
+                var totalPpn = 0;
+                var totalDiskon = 0;
+                var totalSubtotal = 0;
+
+                if (rincianList.length > 0) {
+                    $.each(rincianList, function(index, item) {
+                        html += `
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>${item.nama_barang}</td>
+                                <td>${item.qty}</td>
+                                <td class="text-left">${item.harga_rp}</td>
+                                <td class="text-left">${item.ppn_rp}</td>
+                                <td class="text-left">${item.diskon_rp}</td>
+                                <td class="text-left">${item.subtotal_rp}</td>
+                            </tr>
+                        `;
+
+                        // Hitung total
+                        totalPpn += parseFloat(item.ppn);
+                        totalDiskon += parseFloat(item.diskon);
+                        totalSubtotal += parseFloat(item.subtotal);
+                    });
+
+                    // Tambahkan baris total di akhir tabel
+                    html += `
+                        <tr class="fw-bold bg-light">
+                            <td colspan="4" class="text-left">Total</td>
+                            <td class="text-left">Rp ${totalPpn.toLocaleString("id-ID")}</td>
+                            <td class="text-left">Rp ${totalDiskon.toLocaleString("id-ID")}</td>
+                            <td class="text-left">Rp ${totalSubtotal.toLocaleString("id-ID")}</td>
+                        </tr>
+                    `;
+                } else {
+                    html = '<tr><td colspan="7" class="text-center">Tidak ada rincian transaksi</td></tr>';
+                }
+
+                // Masukkan ke dalam tabel
+                $("#ListDetailTransaksiInline").html(html);
+
+            }else{
+                //Tempelkan Notifikasi
+                $('#FormDetail').html(
+                    `<div class="alert alert-danger" role="alert">${response.message}</div>`
+                );
+                //Disable tombol
+                $('#ButtonSelengkapnya').prop("disabled", true);
+            }
+        },
+        error: function () {
+            //Tempelkan Notifikasi
+            $('#FormDetail').html(
+                '<div class="alert alert-danger" role="alert">Terjadi kesalahan pada sistem. Silakan coba lagi.</div>'
+            );
+            //Disable tombol
+            $('#ButtonSelengkapnya').prop("disabled", true);
+        },
+    });
+}
 
 
 
@@ -186,144 +347,7 @@ $(document).ready(function() {
     //Detail Transaksi Inline
     if ($("#get_id_transaksi_jual_beli_detail").length) {
         var id_transaksi_jual_beli=$('#get_id_transaksi_jual_beli_detail').html();
-        //Menampilkan detail transaksi inline
-        //Buka Detail Barang
-        $.ajax({
-            type 	    : 'POST',
-            url 	    : '_Page/Penjualan/detail_penjualan.php',
-            data        : {id_transaksi_jual_beli: id_transaksi_jual_beli},
-            dataType    : "json",
-            success     : function(response){
-                if(response.status=="Success"){
-
-                    var data = response.dataset;
-                    var list_rincian = response.list_rincian;
-                    
-                    //Tempelkan Ke Element
-                    $('#form_detail_transaksi_inline').html(`
-                        <div class="row mb-2">
-                            <div class="col-4"><small>Tanggal</small></div>
-                            <div class="col-8">
-                                <small class="text text-grayish">${data.tanggal}</small>
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-4"><small>Anggota</small></div>
-                            <div class="col-8">
-                                <small class="text text-grayish">${data.nama_anggota}</small>
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-4"><small>Kategori</small></div>
-                            <div class="col-8">
-                                <small class="text text-grayish">${data.kategori}</small>
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-4"><small>Subtotal</small></div>
-                            <div class="col-8">
-                                <small class="text text-grayish">${data.subtotal_rp}</small>
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-4"><small>PPN</small></div>
-                            <div class="col-8">
-                                <small class="text text-grayish">${data.ppn_rp}</small>
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-4"><small>Diskon</small></div>
-                            <div class="col-8">
-                                <small class="text text-grayish">${data.diskon_rp}</small>
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-4"><small>Total</small></div>
-                            <div class="col-8">
-                                <small class="text text-grayish">${data.total_rp}</small>
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-4"><small>Cash</small></div>
-                            <div class="col-8">
-                                <small class="text text-grayish">${data.cash_rp}</small>
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-4"><small>Kembalian</small></div>
-                            <div class="col-8">
-                                <small class="text text-grayish">${data.kembalian_rp}</small>
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-4"><small>Status</small></div>
-                            <div class="col-8">
-                                <small class="text text-grayish">${data.status}</small>
-                            </div>
-                        </div>
-                    `);
-                    var rincianList = response.list_rincian;
-                    var html = "";
-
-                    // Inisialisasi total
-                    var totalPpn = 0;
-                    var totalDiskon = 0;
-                    var totalSubtotal = 0;
-
-                    if (rincianList.length > 0) {
-                        $.each(rincianList, function(index, item) {
-                            html += `
-                                <tr>
-                                    <td>${index + 1}</td>
-                                    <td>${item.nama_barang}</td>
-                                    <td>${item.qty}</td>
-                                    <td class="text-left">${item.harga_rp}</td>
-                                    <td class="text-left">${item.ppn_rp}</td>
-                                    <td class="text-left">${item.diskon_rp}</td>
-                                    <td class="text-left">${item.subtotal_rp}</td>
-                                </tr>
-                            `;
-
-                            // Hitung total
-                            totalPpn += parseFloat(item.ppn);
-                            totalDiskon += parseFloat(item.diskon);
-                            totalSubtotal += parseFloat(item.subtotal);
-                        });
-
-                        // Tambahkan baris total di akhir tabel
-                        html += `
-                            <tr class="fw-bold bg-light">
-                                <td colspan="4" class="text-left">Total</td>
-                                <td class="text-left">Rp ${totalPpn.toLocaleString("id-ID")}</td>
-                                <td class="text-left">Rp ${totalDiskon.toLocaleString("id-ID")}</td>
-                                <td class="text-left">Rp ${totalSubtotal.toLocaleString("id-ID")}</td>
-                            </tr>
-                        `;
-                    } else {
-                        html = '<tr><td colspan="7" class="text-center">Tidak ada rincian transaksi</td></tr>';
-                    }
-
-                    // Masukkan ke dalam tabel
-                    $("#ListDetailTransaksiInline").html(html);
-
-                }else{
-                    //Tempelkan Notifikasi
-                    $('#FormDetail').html(
-                        `<div class="alert alert-danger" role="alert">${response.message}</div>`
-                    );
-                    //Disable tombol
-                    $('#ButtonSelengkapnya').prop("disabled", true);
-                }
-            },
-            error: function () {
-                //Tempelkan Notifikasi
-                $('#FormDetail').html(
-                    '<div class="alert alert-danger" role="alert">Terjadi kesalahan pada sistem. Silakan coba lagi.</div>'
-                );
-                //Disable tombol
-                $('#ButtonSelengkapnya').prop("disabled", true);
-            },
-        });
+        ShowDetailTransaksiInline(id_transaksi_jual_beli);
     }
 
     //Ketika keyword By Diubah
@@ -919,7 +943,9 @@ $(document).ready(function() {
                         <div class="row mb-2">
                             <div class="col-4"><small>Anggota</small></div>
                             <div class="col-8">
-                                <small class="text text-grayish">${data.nama_anggota}</small>
+                                <a href="javascriipt:void(0);" data-bs-toggle="modal" data-bs-target="#ModalListAnggotaEdit" data-id="${id_transaksi_jual_beli}" data-mode="List">
+                                    <small class="text text-grayish">${data.nama_anggota}</small>
+                                </a>
                             </div>
                         </div>
                         <div class="row mb-2">
@@ -1037,9 +1063,181 @@ $(document).ready(function() {
         });
     });
 
+    //Modal Edit Transaksi
+    $('#ModalEdit').on('show.bs.modal', function (e) {
+        var id_transaksi_jual_beli= $(e.relatedTarget).data('id');
+        var mode= $(e.relatedTarget).data('mode');
+        $('#ButtonEdit').html('<i class="bi bi-save"></i> Simpan');
+        $('#ButtonEdit').prop("disabled", true);
+        $('#FormEdit').html("Loading...");
+        $('#NotifikasiEdit').html("");
+        $.ajax({
+            type 	    : 'POST',
+            url 	    : '_Page/Penjualan/detail_penjualan.php',
+            data        : {id_transaksi_jual_beli: id_transaksi_jual_beli},
+            dataType    : "json",
+            success     : function(response){
+                if(response.status=="Success"){
+                    var data = response.dataset;
+                    var tanggal_jam=data.tanggal;
+                    var tanggal = tanggal_jam.split(" ")[0];
+                    var jam = tanggal_jam.split(" ")[1];
+                    //Tempelkan Form Dan Kosongkan Notifikasi
+                    $('#FormEdit').html(`
+                        <input type="hidden" name="id_transaksi_jual_beli" value="${id_transaksi_jual_beli}">
+                        <input type="hidden" name="mode" id="put_mode_edit" value="${mode}">
+                        <div class="row mb-3">
+                            <div class="col-4"><small>Tanggal</small></div>
+                            <div class="col-8">
+                                <input type="date" class="form-control" name="tanggal" id="put_tanggal_edit" value="${tanggal}">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-4"><small>Waktu/Jam</small></div>
+                            <div class="col-8">
+                                <input type="time" class="form-control" name="jam" id="put_jam_edit" value="${jam}">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-4"><small>Total</small></div>
+                            <div class="col-8">
+                                <input type="text" readonly class="form-control form-money" name="total" id="put_total_edit" value="${data.total}">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-4"><small>Cash</small></div>
+                            <div class="col-8">
+                                <input type="text" class="form-control form-money" name="cash" id="put_cash_edit" value="${data.cash}">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-4"><small>Kembalian</small></div>
+                            <div class="col-8">
+                                <input type="text" readonly class="form-control form-money" name="kembalian" id="put_kembalian_edit" value="${data.kembalian}">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-4"><small>Status</small></div>
+                            <div class="col-8">
+                                <input type="text" readonly class="form-control" name="status" id="put_status_edit" value="${data.status}">
+                            </div>
+                        </div>
+                    `);
+                    //Enable Button
+                    $('#ButtonEdit').prop("disabled", false);
+
+                    initializeMoneyInputs();
+
+                    //Ketika Nominal Cash Diubah
+                    $("#put_cash_edit").on("keyup", function () {
+                        var put_cash_penjualan=$("#put_cash_edit").val();
+                        var put_total_penjualan=$("#put_total_edit").val();
+                        
+                        // Hapus titik pemisah ribuan dan konversi ke angka
+                        var totalNum = parseInt(put_total_penjualan.replace(/\./g, ""), 10);
+                        var cashNum = parseInt(put_cash_penjualan.replace(/\./g, ""), 10);
+                    
+                        // Hitung kembalian
+                        var kembalian = cashNum - totalNum;
+                        if (kembalian < 0) {
+                            kembalian = 0;
+                        }
+                    
+                        // Tentukan status pembayaran
+                        var status = (cashNum < totalNum) ? "Kredit" : "Lunas";
+                    
+                        // Format kembali ke dalam format ribuan dengan titik
+                        var formattedKembalian = kembalian.toLocaleString("id-ID");
+                    
+                        // Tempelkan Data Ke Form
+                        $('#put_kembalian_edit').val(formattedKembalian);
+                        $('#put_status_edit').val(status);
+                    });
+                }else{
+                    //Tempelkan Form Dan Kosongkan Notifikasi
+                    $('#FormEdit').html(
+                        `<div class="alert alert-danger" role="alert">${response.message}</div>`
+                    );
+                    $('#NotifikasiEdit').html('');
+                    //Disable tombol
+                    $('#ButtonEdit').prop("disabled", true);
+                }
+            },
+            error: function () {
+                //Tempelkan Form Dan Kosongkan Notifikasi
+                $('#FormEdit').html(
+                    '<div class="alert alert-danger" role="alert">Terjadi kesalahan pada sistem. Silakan coba lagi.</div>'
+                );
+                $('#NotifikasiEdit').html('');
+                //Disable tombol
+                $('#ButtonEdit').prop("disabled", true);
+            },
+        });
+    });
+
+    //Proses Edir Transaksi
+    $("#ProsesEdit").on("submit", function (e) {
+        e.preventDefault();
+        // Tombol loading
+        $("#ButtonEdit").html('Loading..');
+        $("#ButtonEdit").prop("disabled", true);
+        let ButtonElement = '<i class="bi bi-save"></i> Simpan';
+        // Ambil data form
+        let formData = new FormData(this);
+
+        // Kirim data ke server
+        $.ajax({
+            url         : "_Page/Penjualan/ProsesEdit.php",
+            type        : "POST",
+            data        : formData,
+            contentType : false,
+            processData : false,
+            dataType    : "json",
+            success: function (response) {
+                //Apabila Proses Berhasil
+                if (response.status === "Success") {
+                    var mode=response.mode;
+                    var id_transaksi_jual_beli=response.id_transaksi_jual_beli;
+                    $("#ButtonEdit").html(ButtonElement).prop("disabled", false);
+                    $('#NotifikasiEdit').html('');
+                    
+                    //Tutup Modal
+                    $('#ModalEdit').modal('hide');
+                    
+                    //Reload Data
+                    if(mode=="List"){
+                        ShowData();
+                    }else{
+                        ShowDetailTransaksiInline(id_transaksi_jual_beli);
+                    }
+                    
+                    //Tampilkan Alert
+                    Swal.fire(
+                        'Success!',
+                        'Edit Transaksi Berhasil!',
+                        'success'
+                    )
+                } else {
+                    // Tampilkan pesan error
+                    $("#NotifikasiEdit").html(
+                        `<div class="alert alert-danger" role="alert">${response.message}</div>`
+                    );
+                    $("#ButtonEdit").html(ButtonElement).prop("disabled", true);
+                }
+            },
+            error: function () {
+                $("#NotifikasiEdit").html(
+                    '<div class="alert alert-danger" role="alert">Terjadi kesalahan pada sistem. Silakan coba lagi.</div>'
+                );
+                $("#ButtonEdit").html(ButtonElement).prop("disabled", true);
+            },
+        });
+    });
+
     //Modal Hapus Transaksi
     $('#ModalHapus').on('show.bs.modal', function (e) {
         var id_transaksi_jual_beli= $(e.relatedTarget).data('id');
+        var mode= $(e.relatedTarget).data('mode');
         $('#ButtonHapus').html('<i class="bi bi-check"></i> Ya, Hapus');
         $('#ButtonHapus').prop("disabled", true);
         $('#FormHapus').html("Loading...");
@@ -1054,6 +1252,7 @@ $(document).ready(function() {
                     //Tempelkan Form Dan Kosongkan Notifikasi
                     $('#FormHapus').html(`
                         <input type="hidden" name="id_transaksi_jual_beli" value="${id_transaksi_jual_beli}">
+                        <input type="hidden" name="mode" value="${mode}">
                         <div class="row mb-2">
                             <div class="col-4"><small>Tanggal</small></div>
                             <div class="col-8">
@@ -1161,21 +1360,26 @@ $(document).ready(function() {
             success: function (response) {
                 //Apabila Proses Berhasil
                 if (response.status === "Success") {
+                    var mode=response.mode;
                     $("#ButtonHapus").html(ButtonElement).prop("disabled", false);
                     $('#NotifikasiHapus').html('');
                     
                     //Tutup Modal
                     $('#ModalHapus').modal('hide');
                     
-                    //Reload Data
-                    ShowData();
-                    
                     //Tampilkan Alert
                     Swal.fire(
                         'Success!',
                         'Hapus Transaksi Berhasil!',
                         'success'
-                    )
+                    );
+
+                    //Reload Data
+                    if(mode=="List"){
+                        ShowData();
+                    }else{
+                        window.location.replace("index.php?Page=Penjualan");
+                    }
                 } else {
                     // Tampilkan pesan error
                     $("#NotifikasiHapus").html(
@@ -1218,38 +1422,181 @@ $(document).ready(function() {
             return;
         }
 
-        if (formatCetak === "PDF") {
-            html2canvas(content, { scale: 2 }).then(canvas => {
-                var imgData = canvas.toDataURL("image/png");
-                var { jsPDF } = window.jspdf;
-                var doc = new jsPDF("p", "mm", "a4");
-                var imgWidth = 190; // Lebar gambar dalam PDF
-                var imgHeight = (canvas.height * imgWidth) / canvas.width;
+        // Tampilkan loading
+        $('#NotifikasiCetak').html('<div class="alert alert-info">Sedang memproses cetak...</div>');
+        $('#ButtonCetak').prop('disabled', true).html('<i class="bi bi-hourglass-split"></i> Memproses...');
 
-                doc.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
-                doc.save("Nota_Transaksi.pdf"); // Simpan sebagai PDF
-            });
-        } else if (formatCetak === "Image") {
-            html2canvas(content, { scale: 2 }).then(canvas => {
-                var imgData = canvas.toDataURL("image/png");
-                var link = document.createElement("a");
-                link.href = imgData;
-                link.download = "Nota_Transaksi.png";
-                link.click();
-            });
-        } else if (formatCetak === "Direct") {
-            var printWindow = window.open("", "", "width=800,height=600");
-            printWindow.document.write('<html><head><title>Cetak Nota</title>');
-            printWindow.document.write('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">');
-            printWindow.document.write('</head><body>');
-            printWindow.document.write(content.innerHTML);
-            printWindow.document.write('</body></html>');
-            printWindow.document.close();
-            printWindow.focus();
-            setTimeout(() => {
-                printWindow.print();
-                printWindow.close();
-            }, 500);
-        }
+        setTimeout(() => {
+            if (formatCetak === "PDF") {
+                html2canvas(content, { scale: 2 }).then(canvas => {
+                    var imgData = canvas.toDataURL("image/png");
+                    var { jsPDF } = window.jspdf;
+                    var doc = new jsPDF("p", "mm", "a4");
+                    var imgWidth = 190;
+                    var imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+                    doc.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
+                    doc.save("Nota_Transaksi.pdf");
+
+                    $('#NotifikasiCetak').html('<div class="alert alert-success">Download PDF berhasil!</div>');
+                    resetButton();
+                }).catch(error => {
+                    $('#NotifikasiCetak').html('<div class="alert alert-danger">Gagal mencetak PDF!</div>');
+                    resetButton();
+                });
+            } else if (formatCetak === "Image") {
+                html2canvas(content, { scale: 2 }).then(canvas => {
+                    var imgData = canvas.toDataURL("image/png");
+                    var link = document.createElement("a");
+                    link.href = imgData;
+                    link.download = "Nota_Transaksi.png";
+                    link.click();
+
+                    $('#NotifikasiCetak').html('<div class="alert alert-success">Download gambar berhasil!</div>');
+                    resetButton();
+                }).catch(error => {
+                    $('#NotifikasiCetak').html('<div class="alert alert-danger">Gagal mencetak gambar!</div>');
+                    resetButton();
+                });
+            } else if (formatCetak === "Direct") {
+                var printWindow = window.open("", "", "width=800,height=600");
+                printWindow.document.write('<html><head><title>Cetak Nota</title>');
+                printWindow.document.write('<link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css">');
+                printWindow.document.write('</head><body>');
+                printWindow.document.write(content.innerHTML);
+                printWindow.document.write('</body></html>');
+                printWindow.document.close();
+                printWindow.focus();
+
+                setTimeout(() => {
+                    printWindow.print();
+                    printWindow.close();
+                    $('#NotifikasiCetak').html('<div class="alert alert-success">Pencetakan berhasil!</div>');
+                    resetButton();
+                }, 1000);
+            }
+        }, 1000);
     });
+
+    function resetButton() {
+        $('#ButtonCetak').prop('disabled', false).html('<i class="bi bi-printer"></i> Cetak');
+    }
+
+    //Modal List Anggota Edit
+    $('#ModalListAnggotaEdit').on('show.bs.modal', function (e) {
+        var id_transaksi_jual_beli= $(e.relatedTarget).data('id');
+        var mode= $(e.relatedTarget).data('mode');
+        ShowDataAnggotaEdit(id_transaksi_jual_beli,mode);
+    });
+
+    //Pagging Anggota
+    $(document).on('click', '#next_button_anggota_edit', function() {
+        var id_transaksi_jual_beli =$('#put_id_transaksi_jual_beli_anggota_edit').val();
+        var mode =$('#put_mode_edit_anggota').val();
+        var page_now = parseInt($('#page_anggota_edit').val(), 10);
+        var next_page = page_now + 1;
+        $('#page_anggota_edit').val(next_page);
+        ShowDataAnggotaEdit(id_transaksi_jual_beli,mode);
+    });
+    $(document).on('click', '#prev_button_anggota_edit', function() {
+        var id_transaksi_jual_beli =$('#put_id_transaksi_jual_beli_anggota_edit').val();
+        var mode =$('#put_mode_edit_anggota').val();
+        var page_now = parseInt($('#page_anggota_edit').val(), 10);
+        var next_page = page_now - 1;
+        $('#page_anggota_edit').val(next_page);
+        ShowDataAnggotaEdit(id_transaksi_jual_beli,mode);
+    });
+
+    //Ketika Submit Filter Anggota
+    $('#ProsesCariAnggotaEdit').submit(function(){
+        var id_transaksi_jual_beli =$('#put_id_transaksi_jual_beli_anggota_edit').val();
+        var mode =$('#put_mode_edit_anggota').val();
+        //Kembalikan ke halaman 1
+        $('#page_anggota_edit').val(1);
+        ShowDataAnggotaEdit(id_transaksi_jual_beli,mode);
+    });
+
+    //Modal Edit Anggota
+    $('#ModalEditAnggota').on('show.bs.modal', function (e) {
+        var id_anggota= $(e.relatedTarget).data('id');
+        var id_transaksi_jual_beli= $(e.relatedTarget).data('transaksi');
+        var mode= $(e.relatedTarget).data('mode');
+        //Kosongkan Notifikasi
+        $('#NotifikasiEditAnggota').html("");
+
+        //Loading Form
+        $('#FormEditAnggota').html("Loading...");
+        //Tampilkan Form
+        $.ajax({
+            type 	    : 'POST',
+            url 	    : '_Page/Penjualan/FormEditAnggota.php',
+            data        : {id_transaksi_jual_beli: id_transaksi_jual_beli, id_anggota: id_anggota, mode: mode},
+            success     : function(data){
+                $('#FormEditAnggota').html(data);
+                $("#ButtonEditAnggota").prop("disabled", false);
+            }
+        });
+    });
+
+    //Proses Edit Anggota
+    $("#ProsesEditAnggota").on("submit", function (e) {
+        e.preventDefault();
+        // Tombol loading
+        $("#ButtonEditAnggota").html('Loading..');
+        $("#ButtonEditAnggota").prop("disabled", true);
+        let ButtonElement = '<i class="bi bi-save"></i> Simpan';
+        // Ambil data form
+        let formData = new FormData(this);
+
+        // Kirim data ke server
+        $.ajax({
+            url         : "_Page/Penjualan/ProsesEditAnggota.php",
+            type        : "POST",
+            data        : formData,
+            contentType : false,
+            processData : false,
+            dataType    : "json",
+            success: function (response) {
+                //Apabila Proses Berhasil
+                if (response.status === "Success") {
+                    var mode=response.mode;
+                    var id_transaksi_jual_beli=response.id_transaksi_jual_beli;
+
+                    $("#ButtonEditAnggota").html(ButtonElement).prop("disabled", false);
+                    $('#NotifikasiEditAnggota').html('');
+                    
+                    //Tutup Modal
+                    $('#ModalEditAnggota').modal('hide');
+                    
+                    //Tampilkan Alert
+                    Swal.fire(
+                        'Success!',
+                        'Edit Anggota Berhasil!',
+                        'success'
+                    );
+
+                    //Reload Data
+                    if(mode=="List"){
+                        ShowData();
+                    }else{
+                        ShowDetailTransaksiInline(id_transaksi_jual_beli);
+                    }
+                } else {
+                    // Tampilkan pesan error
+                    $("#NotifikasiEditAnggota").html(
+                        `<div class="alert alert-danger" role="alert">${response.message}</div>`
+                    );
+                    $("#ButtonEditAnggota").html(ButtonElement).prop("disabled", true);
+                }
+            },
+            error: function () {
+                $("#NotifikasiEditAnggota").html(
+                    '<div class="alert alert-danger" role="alert">Terjadi kesalahan pada sistem. Silakan coba lagi.</div>'
+                );
+                $("#ButtonEditAnggota").html(ButtonElement).prop("disabled", true);
+            },
+        });
+    });
+
+
 });

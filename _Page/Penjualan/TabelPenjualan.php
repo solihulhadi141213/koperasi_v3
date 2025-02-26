@@ -150,7 +150,11 @@
                             </a>
                         </td>
                         <td><small>'.$label_kategori.'</small></td>
-                        <td><small>'.$nama_anggota.'</small></td>
+                        <td>
+                            <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#ModalListAnggotaEdit" data-id="'.$id_transaksi_jual_beli.'" data-mode="List">
+                                <small class="text text-muted">'.$nama_anggota.'</small>
+                            </a>
+                        </td>
                         <td><small>'.$total_rp.'</small></td>
                         <td><small>'.$label_status.'</small></td>
                         <td>
@@ -172,12 +176,17 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalEdit" data-id="'.$id_transaksi_jual_beli.'">
+                                    <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalEdit" data-id="'.$id_transaksi_jual_beli.'" data-mode="List">
                                         <i class="bi bi-pencil"></i> Edit Transaksi
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalHapus" data-id="'.$id_transaksi_jual_beli.'">
+                                    <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalListAnggotaEdit" data-id="'.$id_transaksi_jual_beli.'" data-mode="List">
+                                        <i class="bi bi-person"></i> Ganti Anggota
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalHapus" data-id="'.$id_transaksi_jual_beli.'" data-mode="List">
                                         <i class="bi bi-trash"></i> Hapus Transaksi
                                     </a>
                                 </li>

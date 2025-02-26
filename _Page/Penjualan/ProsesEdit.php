@@ -25,8 +25,11 @@
     } else {
         // Validasi Data Tidak Boleh Kosong
         $requiredFields = [
-            'id_transaksi_jual_beli' => "ID Transaksi Penjualan Tidak Boleh Kosong!",
-            'mode' => "Mode Transaksi Penjualan Tidak Boleh Kosong!",
+            'id_transaksi_jual_beli'    => "ID Transaksi Penjualan Tidak Boleh Kosong!",
+            'mode'                      => "Mode Form Tidak Boleh Kosong!",
+            'tanggal'                   => "Tanggal Transaksi Tidak Boleh Kosong!",
+            'jam'                       => "Jam Transaksi Tidak Boleh Kosong!",
+            'status'                    => "Status Transaksi Tidak Boleh Kosong!"
         ];
 
         foreach ($requiredFields as $field => $errorMessage) {
@@ -42,18 +45,41 @@
         // Buat Variabel
         $id_transaksi_jual_beli = validateAndSanitizeInput($_POST['id_transaksi_jual_beli']);
         $mode = validateAndSanitizeInput($_POST['mode']);
-        
-        //Proses Hapus
-        $Hapus = mysqli_query($Conn, "DELETE FROM transaksi_jual_beli WHERE id_transaksi_jual_beli='$id_transaksi_jual_beli'") or die(mysqli_error($Conn));
-        if ($Hapus) {
+        $tanggal = validateAndSanitizeInput($_POST['tanggal']);
+        $jam = validateAndSanitizeInput($_POST['jam']);
+        $status = validateAndSanitizeInput($_POST['status']);
+        $tanggal="$tanggal $jam";
+
+        //Buat Variabel Data Yang Tidak Wajib
+        if(empty($_POST['cash'])){
+            $cash=0;
+        }else{
+            $cash=$_POST['cash'];
+        }
+        if(empty($_POST['kembalian'])){
+            $kembalian=0;
+        }else{
+            $kembalian=$_POST['kembalian'];
+        }
+        $cash = (int) str_replace(".", "", $cash);
+        $kembalian = (int) str_replace(".", "", $kembalian);
+        //Proses Update
+        $UpdateTransaksi = mysqli_query($Conn,"UPDATE transaksi_jual_beli SET 
+            tanggal='$tanggal',
+            cash='$cash',
+            kembalian='$kembalian',
+            status='$status'
+        WHERE id_transaksi_jual_beli='$id_transaksi_jual_beli'") or die(mysqli_error($Conn)); 
+        if($UpdateTransaksi){
             //Apabila Berhasil Simpan Log
             $kategori_log="Transaksi Penjualan";
-            $deskripsi_log="Hapus Transaksi Penjualan";
+            $deskripsi_log="Edit Transaksi Penjualan";
             $InputLog=addLog($Conn,$SessionIdAkses,$now,$kategori_log,$deskripsi_log);
             if($InputLog=="Success"){
                 $response = [
                     "status" => "Success",
-                    "message" => "Hapus Transaksi Berhasil!",
+                    "message" => "Edit Transaksi Berhasil!",
+                    "id_transaksi_jual_beli" => $id_transaksi_jual_beli,
                     "mode" => $mode,
                 ];
             }else{
@@ -65,7 +91,7 @@
         }else{
             $response = [
                 "status" => "Error",
-                "message" => "Terjadi kesalahan pada saat hapus data"
+                "message" => "Terjadi kesalahan pada saat update data ke database"
             ];
         }
     }

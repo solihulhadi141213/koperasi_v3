@@ -39,33 +39,44 @@
                 exit;
             }
         }
+
         // Buat Variabel
         $id_transaksi_jual_beli = validateAndSanitizeInput($_POST['id_transaksi_jual_beli']);
         $mode = validateAndSanitizeInput($_POST['mode']);
         
-        //Proses Hapus
-        $Hapus = mysqli_query($Conn, "DELETE FROM transaksi_jual_beli WHERE id_transaksi_jual_beli='$id_transaksi_jual_beli'") or die(mysqli_error($Conn));
-        if ($Hapus) {
-            //Apabila Berhasil Simpan Log
-            $kategori_log="Transaksi Penjualan";
-            $deskripsi_log="Hapus Transaksi Penjualan";
-            $InputLog=addLog($Conn,$SessionIdAkses,$now,$kategori_log,$deskripsi_log);
-            if($InputLog=="Success"){
+        // Kondisi jika id_anggota_baru kosong
+        if (empty($_POST['id_anggota_baru'])) {
+            $id_anggota = "NULL"; // Nilai NULL sebagai string
+        } else {
+            $id_anggota = "'" . mysqli_real_escape_string($Conn, $_POST['id_anggota_baru']) . "'"; // Escape input untuk keamanan
+        }
+
+        // Proses Update Transaksi
+        $query = "UPDATE transaksi_jual_beli SET id_anggota = $id_anggota WHERE id_transaksi_jual_beli = '$id_transaksi_jual_beli'";
+        $UpdateTransaksi = mysqli_query($Conn, $query) or die(mysqli_error($Conn)); 
+
+        if ($UpdateTransaksi) {
+            // Apabila Berhasil Simpan Log
+            $kategori_log = "Transaksi Penjualan";
+            $deskripsi_log = "Update Transaksi Penjualan";
+            $InputLog = addLog($Conn, $SessionIdAkses, $now, $kategori_log, $deskripsi_log);
+            if ($InputLog == "Success") {
                 $response = [
                     "status" => "Success",
-                    "message" => "Hapus Transaksi Berhasil!",
+                    "message" => "Update Transaksi Berhasil!",
                     "mode" => $mode,
+                    "id_transaksi_jual_beli" => $id_transaksi_jual_beli,
                 ];
-            }else{
+            } else {
                 $response = [
                     "status" => "Error",
                     "message" => "Terjadi kesalahan pada saat menyimpan log aktivitas"
                 ];
             }
-        }else{
+        } else {
             $response = [
                 "status" => "Error",
-                "message" => "Terjadi kesalahan pada saat hapus data"
+                "message" => "Terjadi kesalahan pada saat update data"
             ];
         }
     }
