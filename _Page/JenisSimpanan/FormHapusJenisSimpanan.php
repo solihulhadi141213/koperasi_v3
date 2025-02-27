@@ -42,6 +42,8 @@
             }else{
                 $LabelKeterangan=$keterangan;
             }
+            //Hitung record simpanan untuk jenis ini
+            $jumlah_simpanan=mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM simpanan WHERE id_simpanan_jenis='$id_simpanan_jenis'"));
 ?>
     <input type="hidden" name="id_simpanan_jenis" value="<?php echo $id_simpanan_jenis; ?>">
     <div class="col-md-12 mb-4">
@@ -73,6 +75,25 @@
             <div class="col col-md-4">Akun Kredit</div>
             <div class="col col-md-8">
                 <code class="text text-grayish"><?php echo $nama_perkiraan_kredit; ?></code>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <?php
+                    if(!empty($jumlah_simpanan)){
+                        echo '
+                            <div class="alert alert-danger text-center">
+                                <h3>Penting!</h3>
+                                <p>
+                                    <small>
+                                        Jenis simpanan ini sudah memiliki record sebanyak '.$jumlah_simpanan.'. 
+                                        Apabila anda menghapus jenis simpanan ini maka record simpanan anggota tersebut akan terhapus.
+                                    </small>
+                                </p>
+                            </div>
+                        ';
+                    }
+                ?>
             </div>
         </div>
         <div class="row mb-3">

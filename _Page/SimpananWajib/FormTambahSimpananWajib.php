@@ -72,7 +72,7 @@
     <div class="row mb-3">
         <div class="col-md-12">
             <?php
-                echo '<div class="alert alert-dark alert-dismissible fade show" role="alert">';
+                echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">';
                 echo '  <code class="text-dark">';
                 echo '      Berikut ini adalah form untuk menambahkan data simpanan wajib semua anggota secara simultan.';
                 echo '      Form ini hanya berlaku untuk anggota yang masih Aktif';
