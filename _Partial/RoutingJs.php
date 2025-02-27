@@ -30,6 +30,7 @@
             "RekapTransaksi"            => "_Page/RekapTransaksi/RekapTransaksi.js",
             "Penjualan"                 => "_Page/Penjualan/Penjualan.js",
             "Pembelian"                 => "_Page/Pembelian/Pembelian.js",
+            "RekapJualBeli"             => "_Page/RekapJualBeli/RekapJualBeli.js",
             "TransaksiJualBeli"         => "_Page/TransaksiJualBeli/Transaksi.js",
             "AkunPerkiraan"             => "_Page/AkunPerkiraan/AkunPerkiraan.js",
             "Jurnal"                    => "_Page/Jurnal/Jurnal.js",
