@@ -1,17 +1,17 @@
 [
     {
         "x": "January",
-        "ySimpanan": "7900000",
+        "ySimpanan": "8000000",
         "yPinjaman": "10000000"
     },
     {
         "x": "February",
-        "ySimpanan": "5900000",
+        "ySimpanan": "6120000",
         "yPinjaman": "23000000"
     },
     {
         "x": "March",
-        "ySimpanan": "4000000",
+        "ySimpanan": "6000000",
         "yPinjaman": 0
     },
     {
@@ -26,7 +26,7 @@
     },
     {
         "x": "June",
-        "ySimpanan": 0,
+        "ySimpanan": "4000000",
         "yPinjaman": 0
     },
     {

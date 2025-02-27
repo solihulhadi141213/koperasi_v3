@@ -240,10 +240,14 @@
                             }
                             echo '</ol>';
                             if($JumlahBerhasil==$JumlahAnggotaAktif){
-                                $KategoriLog="Simpanan Wajib";
-                                $KeteranganLog="Tambah Simpanan Wajib";
-                                include "../../_Config/InputLog.php";
-                                echo '<small class="text-success">Semua Data Simpanan Berhasil Disimpan. Silahkan tutup form ini.</small>';
+                                $kategori_log="Simpanan Wajib";
+                                $deskripsi_log="Tambah Simpanan Wajib";
+                                $InputLog=addLog($Conn,$SessionIdAkses,$now,$kategori_log,$deskripsi_log);
+                                if($InputLog=="Success"){
+                                    echo '<small class="text-success">Semua Data Simpanan Berhasil Disimpan. Silahkan tutup form ini.</small>';
+                                }else{
+                                    echo '<small class="text-danger">Terjadi kesalahan pada saat menyimpan log.</small>';
+                                }
                             }else{
                                 echo '<small class="text-danger">Terjadi kesalahan pada saat menyimpan data.</small>';
                             }

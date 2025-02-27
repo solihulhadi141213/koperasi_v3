@@ -72,7 +72,20 @@
                 $JumlahSimpanan = mysqli_num_rows($queryJenisSimpanan);
 
                 // Ambil semua data simpanan dalam satu query
-                $querySimpanan = mysqli_query($Conn, "
+                if(empty($keyword)){
+                    $querySimpanan = mysqli_query($Conn, "
+                    SELECT 
+                        s.id_anggota,
+                        a.nama AS nama_anggota,
+                        s.kategori,
+                        s.jumlah,
+                        s.tanggal
+                    FROM simpanan s
+                    JOIN anggota a ON s.id_anggota = a.id_anggota
+                    ORDER BY a.nama ASC
+                ");
+                }else{
+                    $querySimpanan = mysqli_query($Conn, "
                     SELECT 
                         s.id_anggota,
                         a.nama AS nama_anggota,
@@ -84,6 +97,7 @@
                     WHERE s.tanggal LIKE '%$keyword%'
                     ORDER BY a.nama ASC
                 ");
+                }
 
                 // Proses data simpanan ke dalam array
                 $dataSimpanan = [];
@@ -107,6 +121,8 @@
                         } else {
                             if ($periode == "Tahunan") {
                                 echo '<span style="text-transform: uppercase;">PERIODE ' . $tahun . '</span>';
+                            }else{
+                                echo '<span style="text-transform: uppercase;">SEMUA PERIODE</span>';
                             }
                         }
                         ?>
@@ -151,6 +167,9 @@
                                     echo '</tr>';
                                 } else {
                                     $no = 1;
+                                    $JumlahTotalSimpanan=0;
+                                    $JumlahTotalPenarikan=0;
+                                    $JumlahTotalSaldo=0;
                                     foreach ($dataSimpanan as $id_anggota => $anggota) {
                                         $nama_anggota = $anggota['nama'];
                                         $simpanan = $anggota['kategori'];
@@ -158,17 +177,8 @@
                                         // Hitung jumlah simpanan, penarikan, dan saldo
                                         $jumlah_simpanan = isset($simpanan['Simpanan']) ? array_sum($simpanan['Simpanan']) : 0;
                                         $jumlah_penarikan = isset($simpanan['Penarikan']) ? array_sum($simpanan['Penarikan']) : 0;
-                                        $saldo = $jumlah_simpanan - $jumlah_penarikan;
 
-                                        // Format angka
-                                        $JumlahSimpananFormat = number_format($jumlah_simpanan, 0, ',', '.');
                                         $JumlahPenarikanFormat = number_format($jumlah_penarikan, 0, ',', '.');
-                                        $SaldoFormat = number_format($saldo, 0, ',', '.');
-
-                                        // Akumulasi total
-                                        $JumlahTotalSimpanan += $jumlah_simpanan;
-                                        $JumlahTotalPenarikan += $jumlah_penarikan;
-                                        $JumlahTotalSaldo += $saldo;
                                 ?>
                                         <tr>
                                             <td align="center"><small class="credit"><?php echo $no; ?></small></td>
@@ -180,56 +190,78 @@
                                                 </small>
                                             </td>
                                             <?php
-                                            mysqli_data_seek($queryJenisSimpanan, 0); // Reset pointer query jenis simpanan
-                                            while ($dataJenis = mysqli_fetch_assoc($queryJenisSimpanan)) {
-                                                $nama_simpanan = $dataJenis['nama_simpanan'];
-                                                $jumlah_simpanan_jenis = isset($simpanan[$nama_simpanan]) ? array_sum($simpanan[$nama_simpanan]) : 0;
-                                                $jumlah_simpanan_jenis_format = number_format($jumlah_simpanan_jenis, 0, ',', '.');
-                                                echo '<td align="right"><small class="credit"><code class="text-dark">' . $jumlah_simpanan_jenis_format . '</code></small></td>';
-                                            }
+                                                $JumlahSimpanan=0;
+                                                mysqli_data_seek($queryJenisSimpanan, 0); // Reset pointer query jenis simpanan
+                                                while ($dataJenis = mysqli_fetch_assoc($queryJenisSimpanan)) {
+                                                    $nama_simpanan = $dataJenis['nama_simpanan'];
+                                                    $jumlah_simpanan_jenis = isset($simpanan[$nama_simpanan]) ? array_sum($simpanan[$nama_simpanan]) : 0;
+                                                    $jumlah_simpanan_jenis_format = number_format($jumlah_simpanan_jenis, 0, ',', '.');
+                                                    
+                                                    //Menghitung jumlah simpanan
+                                                    $JumlahSimpanan = $JumlahSimpanan+$jumlah_simpanan_jenis;
+                                                    $JumlahSimpananFormat = number_format($JumlahSimpanan, 0, ',', '.');
+                                                    
+                                                    echo '<td align="right"><small class="credit"><code class="text-dark">' . $jumlah_simpanan_jenis_format . '</code></small></td>';
+                                                }
                                             ?>
                                             <td align="right">
                                                 <small class="credit">
                                                     <code class="text-dark">
-                                                        <?php echo $JumlahSimpananFormat; ?>
+                                                        <?php 
+                                                            echo $JumlahSimpananFormat; 
+                                                            $JumlahTotalSimpanan=$JumlahTotalSimpanan+$jumlah_simpanan;
+                                                        ?>
                                                     </code>
                                                 </small>
                                             </td>
                                             <td align="right">
                                                 <small class="credit">
                                                     <code class="text-dark">
-                                                        <?php echo $JumlahPenarikanFormat; ?>
+                                                        <?php 
+                                                            echo $JumlahPenarikanFormat; 
+                                                            //Hitung Jumlah Total Penarikan
+                                                            $JumlahTotalPenarikan=$JumlahTotalPenarikan+$jumlah_penarikan;
+                                                        ?>
                                                     </code>
                                                 </small>
                                             </td>
                                             <td align="right">
                                                 <small class="credit">
                                                     <code class="text-dark">
-                                                        <?php echo $SaldoFormat; ?>
+                                                        <?php 
+                                                            $saldo = $JumlahSimpanan - $jumlah_penarikan;
+                                                            $SaldoFormat = number_format($saldo, 0, ',', '.');
+                                                            echo $SaldoFormat; 
+
+                                                            $JumlahTotalSaldo=$JumlahTotalSaldo+$saldo;
+                                                        ?>
                                                     </code>
                                                 </small>
                                             </td>
                                         </tr>
                                 <?php
-                                        $no++;
+                                            $no++;
+                                        }
                                     }
-                                }
                                 ?>
                                 <tr>
                                     <td colspan="2"><b>JUMLAH</b></td>
                                     <?php
-                                    mysqli_data_seek($queryJenisSimpanan, 0); // Reset pointer query jenis simpanan
-                                    while ($dataJenis = mysqli_fetch_assoc($queryJenisSimpanan)) {
-                                        $nama_simpanan = $dataJenis['nama_simpanan'];
-                                        $total_simpanan_jenis = 0;
-                                        foreach ($dataSimpanan as $anggota) {
-                                            if (isset($anggota['kategori'][$nama_simpanan])) {
-                                                $total_simpanan_jenis += array_sum($anggota['kategori'][$nama_simpanan]);
+                                        $JumlahTotalSimpanan=0;
+                                        mysqli_data_seek($queryJenisSimpanan, 0); // Reset pointer query jenis simpanan
+                                        while ($dataJenis = mysqli_fetch_assoc($queryJenisSimpanan)) {
+                                            $nama_simpanan = $dataJenis['nama_simpanan'];
+                                            $total_simpanan_jenis = 0;
+                                            foreach ($dataSimpanan as $anggota) {
+                                                if (isset($anggota['kategori'][$nama_simpanan])) {
+                                                    $total_simpanan_jenis += array_sum($anggota['kategori'][$nama_simpanan]);
+                                                }
                                             }
+                                            $total_simpanan_jenis_format = number_format($total_simpanan_jenis, 0, ',', '.');
+                                            echo '<td align="right"><b>' . $total_simpanan_jenis_format . '</b></td>';
+
+                                            $JumlahTotalSimpanan=$JumlahTotalSimpanan+$total_simpanan_jenis;
                                         }
-                                        $total_simpanan_jenis_format = number_format($total_simpanan_jenis, 0, ',', '.');
-                                        echo '<td align="right"><b>' . $total_simpanan_jenis_format . '</b></td>';
-                                    }
                                     ?>
                                     <td align="right"><b><?php echo number_format($JumlahTotalSimpanan, 0, ',', '.'); ?></b></td>
                                     <td align="right"><b><?php echo number_format($JumlahTotalPenarikan, 0, ',', '.'); ?></b></td>

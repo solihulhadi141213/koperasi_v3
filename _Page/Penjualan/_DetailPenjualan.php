@@ -97,7 +97,7 @@
                                     <b class="card-title"># Rincian Transaksi</b>
                                 </div>
                                 <div class="col-4 mb-2 mt-2 text-end">
-                                    <button type="button" class="btn btn-md btn-floating btn-outline-primary" data-bs-toggle="modal" data-bs-target="#ModalTambahRincian" data-id="<?php echo $id_transaksi_jual_beli; ?>" title="Tambah Rincian Transaksi">
+                                    <button type="button" class="btn btn-md btn-floating btn-outline-primary" data-bs-toggle="modal" data-bs-target="#ModalListBarangEdit" title="Tambah Rincian Transaksi">
                                         <i class="bi bi-plus"></i>
                                     </button>
                                 </div>
@@ -115,6 +115,7 @@
                                             <th><b>PPN</b></th>
                                             <th><b>Diskon</b></th>
                                             <th><b>Subtotal</b></th>
+                                            <th><b>Opsi</b></th>
                                         </tr>
                                     </thead>
                                     <tbody id="ListDetailTransaksiInline">

@@ -50,7 +50,27 @@ function ShowDataBarang() {
         }
     });
 }
+//Fungsi Menampilkan Data Barang Edit
+function ShowDataBarangEdit() {
+    var ProsesCariBarangEdit = $('#ProsesCariBarangEdit').serialize();
+    
+    // Efek fade out sebelum loading
+    $('#TabelBarangEdit').fadeOut(200, function() {
+        $(this).html('<tr><td class="text-center" colspan="5">Loading...</td></tr>').fadeIn(200);
+    });
 
+    $.ajax({
+        type 	    : 'POST',
+        url 	    : '_Page/Penjualan/TabelBarangEdit.php',
+        data        : ProsesCariBarangEdit,
+        success     : function(data) {
+            // Ganti isi tabel dengan data hasil AJAX dengan efek
+            $('#TabelBarangEdit').fadeOut(200, function() {
+                $(this).html(data).fadeIn(300);
+            });
+        }
+    });
+}
 //Fungsi Menampilkan Data Anggota
 function ShowDataAnggota() {
     var ProsesCariAnggota = $('#ProsesCariAnggota').serialize();
@@ -134,6 +154,19 @@ function HitungSimulasiRincian() {
         }
     });
 }
+//Fungsi Menghitung Simulasi Rincian
+function HitungSimulasiRincianEdit() {
+    var ProsesTambahBarangEdit = $('#ProsesTambahBarangEdit').serialize();
+    $.ajax({
+        type 	    : 'POST',
+        url 	    : '_Page/Penjualan/ProsesSimulasiRincianEdit.php',
+        data        : ProsesTambahBarangEdit,
+        success     : function(data) {
+            // Ganti isi tabel dengan data hasil AJAX dengan efek
+            $('#SimulasiRincianEdit').html(data);
+        }
+    });
+}
 function hitungTotal() {
     let qty = parseFloat($('#qty_edit').val()) || 0;
     let harga = parseFloat($('#harga_edit').val().replace(/\D/g, '')) || 0;
@@ -159,6 +192,27 @@ function hitungTotal() {
     $('#jumlah_rincian_edit').html(`<h4 class="text text-grayish">${total_rp}</h4>`);
 }
 
+function hitungTotalEdit() {
+    let qty = parseFloat($('#qty_edit_rincian').val()) || 0;
+    let harga = parseFloat($('#harga_edit_rincian').val().replace(/\D/g, '')) || 0;
+    let ppn = parseFloat($('#ppn_edit_rincian').val().replace(/\D/g, '')) || 0;
+    let diskon = parseFloat($('#diskon_edit_rincian').val().replace(/\D/g, '')) || 0;
+
+    // Hitung Subtotal
+    let subtotal = qty * harga;
+
+    // Hitung PPN (jika ada)
+    let rp_ppn = (ppn / 100) * subtotal;
+
+    // Hitung Diskon (jika ada)
+    let rp_diskon = (diskon / 100) * subtotal;
+
+    // Hitung Total
+    let total = subtotal + rp_ppn - rp_diskon;
+
+    // Tampilkan hasil
+    $('#jumlah_edit_rincian').val(total);
+}
 function HitungRekapTransaksi(total, cash) {
     // Hapus titik pemisah ribuan dan konversi ke angka
     var totalNum = parseInt(total.replace(/\./g, ""), 10);
@@ -195,7 +249,12 @@ function ShowDetailTransaksiInline(id_transaksi_jual_beli) {
 
                 var data = response.dataset;
                 var list_rincian = response.list_rincian;
-                
+                var status = data.status;
+                if(status=="Lunas"){
+                    var LabelStatus='<span class="badge badge-success">Lunas</span>';
+                }else{
+                    var LabelStatus='<span class="badge badge-warning">Kredit</span>';
+                }
                 //Tempelkan Ke Element
                 $('#form_detail_transaksi_inline').html(`
                     <div class="row">
@@ -223,7 +282,7 @@ function ShowDetailTransaksiInline(id_transaksi_jual_beli) {
                             <div class="row mb-2">
                                 <div class="col-4"><small>Status</small></div>
                                 <div class="col-8">
-                                    <small class="text text-grayish">${data.status}</small>
+                                    <small class="text text-grayish">${LabelStatus}</small>
                                 </div>
                             </div>
                             <div class="row mb-2">
@@ -232,6 +291,8 @@ function ShowDetailTransaksiInline(id_transaksi_jual_beli) {
                                     <small class="text text-grayish">${data.subtotal_rp}</small>
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-md-6">
                             <div class="row mb-2">
                                 <div class="col-4"><small>PPN</small></div>
                                 <div class="col-8">
@@ -244,8 +305,6 @@ function ShowDetailTransaksiInline(id_transaksi_jual_beli) {
                                     <small class="text text-grayish">${data.diskon_rp}</small>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
                             <div class="row mb-2">
                                 <div class="col-4"><small>Total</small></div>
                                 <div class="col-8">
@@ -286,6 +345,26 @@ function ShowDetailTransaksiInline(id_transaksi_jual_beli) {
                                 <td class="text-left">${item.ppn_rp}</td>
                                 <td class="text-left">${item.diskon_rp}</td>
                                 <td class="text-left">${item.subtotal_rp}</td>
+                                <td class="text-left">
+                                    <button type="button" class="btn btn-sm btn-floating btn-outline-dark" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-three-dots"></i>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" style="">
+                                        <li class="dropdown-header text-start">
+                                            <h6>Option</h6>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalEditRincian" data-id="${item.id_transaksi_jual_beli_rincian}">
+                                                <i class="bi bi-pencil"></i> Edit Rincian
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalHapusRincian" data-id="${item.id_transaksi_jual_beli_rincian}">
+                                                <i class="bi bi-trash"></i> Hapus Rincian
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </td>
                             </tr>
                         `;
 
@@ -302,10 +381,11 @@ function ShowDetailTransaksiInline(id_transaksi_jual_beli) {
                             <td class="text-left">Rp ${totalPpn.toLocaleString("id-ID")}</td>
                             <td class="text-left">Rp ${totalDiskon.toLocaleString("id-ID")}</td>
                             <td class="text-left">Rp ${totalSubtotal.toLocaleString("id-ID")}</td>
+                            <td class="text-left"></td>
                         </tr>
                     `;
                 } else {
-                    html = '<tr><td colspan="7" class="text-center">Tidak ada rincian transaksi</td></tr>';
+                    html = '<tr><td colspan="8" class="text-center">Tidak ada rincian transaksi</td></tr>';
                 }
 
                 // Masukkan ke dalam tabel
@@ -744,6 +824,87 @@ $(document).ready(function() {
                 );
                 $ButtonProses.html(ButtonElement).prop("disabled", false);
             },
+        });
+    });
+
+    //Modal Cari Barang Edit
+    $('#ModalListBarangEdit').on('show.bs.modal', function (e) {
+        var id_transaksi_jual_beli=$('#get_id_transaksi_jual_beli_detail').html();
+        //Reset Halaman
+        $('#put_page_cari_barang_edit').val(1);
+
+        //Tampilkan Data
+        ShowDataBarangEdit();
+    });
+
+    //Proses Cari Barang
+    $("#ProsesCariBarangEdit").on("submit", function (e) {
+        //Reset Halaman
+        $('#put_page_cari_barang_edit').val(1);
+
+        //Tampilkan Data
+        ShowDataBarangEdit();
+    });
+
+    //Pagging Barang
+    $(document).on('click', '#next_button_barang_edit', function() {
+        var page_now = parseInt($('#put_page_cari_barang_edit').val(), 10); // Pastikan nilai diambil sebagai angka
+        var next_page = page_now + 1;
+        $('#put_page_cari_barang_edit').val(next_page);
+        ShowDataBarangEdit();
+    });
+    $(document).on('click', '#prev_button_barang_edit', function() {
+        var page_now = parseInt($('#put_page_cari_barang_edit').val(), 10); // Pastikan nilai diambil sebagai angka
+        var next_page = page_now - 1;
+        $('#put_page_cari_barang_edit').val(next_page);
+        ShowDataBarangEdit();
+    });
+
+    //Modal Tambah Barang Edit
+    $('#ModalTambahBarangEdit').on('show.bs.modal', function (e) {
+        var id_barang= $(e.relatedTarget).data('id');
+        var id_transaksi_jual_beli=$('#get_id_transaksi_jual_beli_detail').html();
+        //Tampilkan Form
+        $.ajax({
+            type 	    : 'POST',
+            url 	    : '_Page/Penjualan/FormTambahBarangEdit.php',
+            data        : {id_barang: id_barang, id_transaksi_jual_beli: id_transaksi_jual_beli},
+            success     : function(data) {
+                // Ganti isi tabel dengan data hasil AJAX dengan efek
+                $('#FormTambahBarangEdit').fadeOut(200, function() {
+                    $(this).html(data).fadeIn(300);
+                    
+                    //Kosongkan Notifikasi
+                    $('#NotifikasiTambahBarangEdit').html("");
+                    
+                });
+            }
+        });
+    });
+
+    //Proses Tambah Rincian Barang Edit
+    $('#ProsesTambahBarangEdit').submit(function(){
+        var ProsesTambahBarangEdit = $('#ProsesTambahBarangEdit').serialize();
+        $('#NotifikasiTambahBarangEdit').html('Loading...');
+        $.ajax({
+            type 	    : 'POST',
+            url 	    : '_Page/Penjualan/ProsesTambahBarangEdit.php',
+            data 	    :  ProsesTambahBarangEdit,
+            success     : function(data){
+                $('#NotifikasiTambahBarangEdit').html(data);
+                var NotifikasiTambahBarangEditBerhasil=$('#NotifikasiTambahBarangEditBerhasil').html();
+                if(NotifikasiTambahBarangEditBerhasil=="Success"){
+                    //Bersihkan Notifikasi
+                    $('#NotifikasiTambahBarangEdit').html("");
+
+                    //tutup modal
+                    $('#ModalTambahBarangEdit').modal('hide');
+
+                    //Tampilkan Data
+                    var id_transaksi_jual_beli=$('#get_id_transaksi_jual_beli_detail').html();
+                    ShowDetailTransaksiInline(id_transaksi_jual_beli);
+                }
+            }
         });
     });
 
@@ -1594,6 +1755,249 @@ $(document).ready(function() {
                     '<div class="alert alert-danger" role="alert">Terjadi kesalahan pada sistem. Silakan coba lagi.</div>'
                 );
                 $("#ButtonEditAnggota").html(ButtonElement).prop("disabled", true);
+            },
+        });
+    });
+
+    //Modal Edit Rincian Transaksi
+    $('#ModalEditRincian').on('show.bs.modal', function (e) {
+        var id_transaksi_jual_beli_rincian= $(e.relatedTarget).data('id');
+        //Tempelkan Ke form
+        $("#put_id_transaksi_jual_beli_rincian_edit").val(id_transaksi_jual_beli_rincian);
+        
+        // Kirim data ke server
+        $.ajax({
+            url         : "_Page/Penjualan/detail_rincian.php",
+            type        : "POST",
+            data        : {id_transaksi_jual_beli_rincian: id_transaksi_jual_beli_rincian},
+            dataType    : "json",
+            success: function (response) {
+                if(response.status=="Success"){
+                    let dataset=response.dataset;
+                    let nama_barang=dataset.nama_barang;
+                    let satuan=dataset.satuan;
+                    let qty=dataset.qty;
+                    let harga=dataset.harga;
+                    let ppn=dataset.ppn;
+                    let diskon=dataset.diskon;
+                    let subtotal=dataset.subtotal;
+                    //Tempelkan Ke form
+                    $("#put_nama_barang_edit_rincian").html(nama_barang);
+                    $("#put_satuan_edit_rincian").html(satuan);
+                    $("#qty_edit_rincian").val(qty);
+                    $("#harga_edit_rincian").val(harga);
+                    $("#ppn_edit_rincian").val(ppn);
+                    $("#diskon_edit_rincian").val(diskon);
+                    $("#jumlah_edit_rincian").val(subtotal);
+
+                    // Event listener untuk input perubahan
+                    $('#qty_edit_rincian, #harga_edit_rincian, #ppn_edit_rincian, #diskon_edit_rincian').on('input', function(){
+                        hitungTotalEdit();
+                        initializeMoneyInputs();
+                    });
+
+                    // Panggil fungsi pertama kali saat halaman dimuat
+                    hitungTotalEdit();
+                    initializeMoneyInputs();
+
+                    $("#ButtonEditRincian").prop("disabled", false);
+                }else{
+                    // Tampilkan pesan error
+                    $("#NotifikasiEditRincian").html(
+                        `<div class="alert alert-danger" role="alert">${response.message}</div>`
+                    );
+                    $("#ButtonEditRincian").prop("disabled", true);
+                }
+            },
+            error: function () {
+                $("#NotifikasiEditRincian").html(
+                    '<div class="alert alert-danger" role="alert">Terjadi kesalahan pada sistem. Silakan coba lagi.</div>'
+                );
+                $("#ButtonEditRincian").prop("disabled", true);
+            },
+        });
+    });
+
+    //Proses Edit Rincian
+    $("#ProsesEditRincian").on("submit", function (e) {
+        e.preventDefault();
+        // Tombol loading
+        $("#ButtonEditRincian").html('Loading..');
+        $("#ButtonEditRincian").prop("disabled", true);
+        let ButtonElement = '<i class="bi bi-save"></i> Simpan';
+        // Ambil data form
+        let formData = new FormData(this);
+
+        // Kirim data ke server
+        $.ajax({
+            url         : "_Page/Penjualan/ProsesEditRincian.php",
+            type        : "POST",
+            data        : formData,
+            contentType : false,
+            processData : false,
+            dataType    : "json",
+            success: function (response) {
+                //Apabila Proses Berhasil
+                if (response.status === "Success") {
+                    $("#ButtonEditRincian").html(ButtonElement).prop("disabled", false);
+                    $('#NotifikasiEditRincian').html('');
+                    
+                    //Tutup Modal
+                    $('#ModalEditRincian').modal('hide');
+                    
+                    //Tampilkan Alert
+                    Swal.fire(
+                        'Success!',
+                        'Edit Rincian Transaksi Berhasil!',
+                        'success'
+                    );
+                    var id_transaksi_jual_beli=$("#get_id_transaksi_jual_beli_detail").html();
+                    //Reload Data
+                    ShowDetailTransaksiInline(id_transaksi_jual_beli);
+                } else {
+                    // Tampilkan pesan error
+                    $("#NotifikasiEditRincian").html(
+                        `<div class="alert alert-danger" role="alert">${response.message}</div>`
+                    );
+                    $("#ButtonEditRincian").html(ButtonElement).prop("disabled", true);
+                }
+            },
+            error: function () {
+                $("#NotifikasiEditRincian").html(
+                    '<div class="alert alert-danger" role="alert">Terjadi kesalahan pada sistem. Silakan coba lagi.</div>'
+                );
+                $("#ButtonEditRincian").html(ButtonElement).prop("disabled", true);
+            },
+        });
+    });
+
+    //Modal Hapus Rincian Transaksi
+    $('#ModalHapusRincian').on('show.bs.modal', function (e) {
+        var id_transaksi_jual_beli_rincian= $(e.relatedTarget).data('id');
+        //Tempelkan Ke form
+        $("#put_id_transaksi_jual_beli_rincian_hapus").val(id_transaksi_jual_beli_rincian);
+        
+        // Kirim data ke server
+        $.ajax({
+            url         : "_Page/Penjualan/detail_rincian.php",
+            type        : "POST",
+            data        : {id_transaksi_jual_beli_rincian: id_transaksi_jual_beli_rincian},
+            dataType    : "json",
+            success: function (response) {
+                if(response.status=="Success"){
+                    let dataset=response.dataset;
+                    let nama_barang=dataset.nama_barang;
+                    let satuan=dataset.satuan;
+                    let qty=dataset.qty;
+                    let harga_rp=dataset.harga_rp;
+                    let ppn_rp=dataset.ppn_rp;
+                    let diskon_rp=dataset.diskon_rp;
+                    let subtotal_rp=dataset.subtotal_rp;
+
+                    //Tempelkan Pada Form
+                    $("#FormHapusRincian").html(`
+                        <diiv class="row mb-2">
+                            <div class="col-4"><small>Nama Barang</small></div>
+                            <div class="col-8"><small class="text text-muted">${nama_barang}</small></div>
+                        </diiv>
+                        <diiv class="row mb-2">
+                            <div class="col-4"><small>QTY/Satuan</small></div>
+                            <div class="col-8"><small class="text text-muted">${qty} ${satuan}</small></div>
+                        </diiv>
+                        <diiv class="row mb-2">
+                            <div class="col-4"><small>Harga (Rp)</small></div>
+                            <div class="col-8"><small class="text text-muted">${harga_rp}</small></div>
+                        </diiv>
+                        <diiv class="row mb-2">
+                            <div class="col-4"><small>PPN (Rp)</small></div>
+                            <div class="col-8"><small class="text text-muted">${ppn_rp}</small></div>
+                        </diiv>
+                        <diiv class="row mb-2">
+                            <div class="col-4"><small>Diskon (Rp)</small></div>
+                            <div class="col-8"><small class="text text-muted">${diskon_rp}</small></div>
+                        </diiv>
+                        <diiv class="row mb-2">
+                            <div class="col-4"><small>Subtotal (Rp)</small></div>
+                            <div class="col-8"><small class="text text-muted">${subtotal_rp}</small></div>
+                        </diiv>
+                        <diiv class="row mb-2 mt-2">
+                            <div class="col-12">Apakah Anda Yakiin Akan Menghapus Riincian IIni?</div>
+                        </diiv>
+                    `);
+
+                    // Enable Tombol
+                    $("#ButtonHapusRincian").prop("disabled", false);
+                }else{
+                    // Tampilkan pesan error
+                    $("#NotifikasiHapusRincian").html(
+                        `<div class="alert alert-danger" role="alert">${response.message}</div>`
+                    );
+
+                    //Disable Tombol
+                    $("#ButtonHapusRincian").prop("disabled", true);
+                }
+            },
+            error: function () {
+                $("#NotifikasiHapusRincian").html(
+                    '<div class="alert alert-danger" role="alert">Terjadi kesalahan pada sistem. Silakan coba lagi.</div>'
+                );
+
+                //Disable Tombol
+                $("#ButtonHapusRincian").prop("disabled", true);
+            },
+        });
+    });
+
+    //Proses Hapus Rincian
+    $("#ProssesHapusRincian").on("submit", function (e) {
+        e.preventDefault();
+        // Tombol loading
+        $("#ButtonHapusRincian").html('Loading..');
+        $("#ButtonHapusRincian").prop("disabled", true);
+        let ButtonElement = '<i class="bi bi-check"></i> Ya, Hapus';
+        
+        // Ambil data form
+        let formData = new FormData(this);
+
+        // Kirim data ke server
+        $.ajax({
+            url         : "_Page/Penjualan/ProssesHapusRincian.php",
+            type        : "POST",
+            data        : formData,
+            contentType : false,
+            processData : false,
+            dataType    : "json",
+            success: function (response) {
+                //Apabila Proses Berhasil
+                if (response.status === "Success") {
+                    $("#ButtonHapusRincian").html(ButtonElement).prop("disabled", false);
+                    $('#NotifikasiHapusRincian').html('');
+                    
+                    //Tutup Modal
+                    $('#ModalHapusRincian').modal('hide');
+                    
+                    //Tampilkan Alert
+                    Swal.fire(
+                        'Success!',
+                        'Hapus Rincian Transaksi Berhasil!',
+                        'success'
+                    );
+                    var id_transaksi_jual_beli=$("#get_id_transaksi_jual_beli_detail").html();
+                    //Reload Data
+                    ShowDetailTransaksiInline(id_transaksi_jual_beli);
+                } else {
+                    // Tampilkan pesan error
+                    $("#NotifikasiHapusRincian").html(
+                        `<div class="alert alert-danger" role="alert">${response.message}</div>`
+                    );
+                    $("#ButtonHapusRincian").html(ButtonElement).prop("disabled", true);
+                }
+            },
+            error: function () {
+                $("#NotifikasiHapusRincian").html(
+                    '<div class="alert alert-danger" role="alert">Terjadi kesalahan pada sistem. Silakan coba lagi.</div>'
+                );
+                $("#ButtonHapusRincian").html(ButtonElement).prop("disabled", true);
             },
         });
     });

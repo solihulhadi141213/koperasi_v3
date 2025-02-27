@@ -818,3 +818,247 @@
         </form>
     </div>
 </div>
+<div class="modal fade" id="ModalListBarangEdit" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-dark"><i class="bi bi-search"></i> Cari Barang</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <form action="javascript:void(0);" id="ProsesCariBarangEdit">
+                            <input type="hidden" name="page" id="put_page_cari_barang_edit" value="1">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="keyword" id="keyword_barang_edit" placeholder="Nama Barang / Kode">
+                                <button type="submit" class="btn btn-md btn-primary">
+                                    <i class="bi bi-search"></i> Cari
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="table table-responsive">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th><b>No</b></th>
+                                        <th><b>Kode</b></th>
+                                        <th><b>Nama Barang</b></th>
+                                        <th><b>Stok</b></th>
+                                        <th><b>Opsi</b></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="TabelBarangEdit">
+                                    <tr>
+                                        <td colspan="5" class="text-center">
+                                            <small class="text-danger">Tidak Ada Data Yang Ditampilkan</small>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <small id="page_info_barang_edit">
+                            Page 1 Of 100
+                        </small>
+                    </div>
+                    <div class="col-6 text-end">
+                        <button type="button" class="btn btn-sm btn-outline-info btn-floating" id="prev_button_barang_edit">
+                            <i class="bi bi-chevron-left"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-info btn-floating" id="next_button_barang_edit">
+                            <i class="bi bi-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle"></i> Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="ModalTambahBarangEdit" tabindex="-1">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <form action="javascript:void(0);" id="ProsesTambahBarangEdit">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark"><i class="bi bi-plus"></i> Tambah Rincian</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-12" id="FormTambahBarangEdit">
+                            <!-- Form Tambah Bulk -->
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12" id="SimulasiRincianEdit">
+                            <!-- Menampilkan Simulasi Rincian Disini -->
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12" id="NotifikasiTambahBarangEdit">
+                            <!-- Notifikasi Tambah Bulk Disini -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-md btn-primary btn-rounded">
+                        <i class="bi bi-plus"></i> Tambahkan
+                    </button>
+                    <button type="button" class="btn btn-dark btn-rounded" data-bs-toggle="modal" data-bs-target="#ModalListBarangEdit">
+                        <i class="bi bi-chevron-left"></i> Kembali
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalEditRincian" tabindex="-1">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <form action="javascript:void(0);" id="ProsesEditRincian">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark"><i class="bi bi-plus"></i> Edit Rincian Transaksi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <input type="hidden" name="id_transaksi_jual_beli_rincian" id="put_id_transaksi_jual_beli_rincian_edit">
+                            <div class="row mb-3">
+                                <div class="col-4">
+                                    <small>Nama Barang</small>
+                                </div>
+                                <div class="col-8">
+                                    <small class="text text-grayish" id="put_nama_barang_edit_rincian"></small>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-4">
+                                    <label for="qty_edit_rincian">
+                                        <small>QTY/Satuan</small>
+                                    </label>
+                                </div>
+                                <div class="col-8">
+                                    <div class="input-group">
+                                        <span class="input-group-text">.00</span>
+                                        <input type="text" name="qty" id="qty_edit_rincian" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+                                        <span class="input-group-text" id="put_satuan_edit_rincian">
+
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-4">
+                                    <label for="harga_edit_rincian">
+                                        <small>Harga</small>
+                                    </label>
+                                </div>
+                                <div class="col-8">
+                                    <div class="input-group">
+                                        <span class="input-group-text">Rp</span>
+                                        <input type="text" name="harga" id="harga_edit_rincian" class="form-control form-money" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-4">
+                                    <label for="ppn_edit_rincian">
+                                        <small>PPN</small>
+                                    </label>
+                                </div>
+                                <div class="col-8">
+                                    <div class="input-group">
+                                        <span class="input-group-text">Rp</span>
+                                        <input type="text" name="ppn" id="ppn_edit_rincian" class="form-control form-money" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-4">
+                                    <label for="diskon_edit_rincian"><small>Diskon</small></label>
+                                </div>
+                                <div class="col-8">
+                                    <div class="input-group">
+                                        <span class="input-group-text">Rp</span>
+                                        <input type="text" name="diskon" id="diskon_edit_rincian" class="form-control form-money" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-4">
+                                    <label for="jumlah_edit_rincian"><small>Jumlah</small></label>
+                                </div>
+                                <div class="col-8">
+                                    <div class="input-group">
+                                        <span class="input-group-text">Rp</span>
+                                        <input type="text" readonly name="jumlah" id="jumlah_edit_rincian" class="form-control form-money" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12" id="NotifikasiEditRincian">
+                            <!-- Notifikasi Tambah Bulk Disini -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-md btn-primary btn-rounded" id="ButtonEditRincian">
+                        <i class="bi bi-save"></i> Simpan
+                    </button>
+                    <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
+                        <i class="bi bi-x"></i> Tutup
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal fade" id="ModalHapusRincian" tabindex="-1">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <form action="javascript:void(0);" id="ProssesHapusRincian">
+                <input type="hidden" name="id_transaksi_jual_beli_rincian" id="put_id_transaksi_jual_beli_rincian_hapus">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark"><i class="bi bi-trash"></i> Hapus Rincian</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-12" id="FormHapusRincian">
+                            <!-- Form Tambah Bulk -->
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12" id="NotifikasiHapusRincian">
+                            <!-- Notifikasi Tambah Bulk Disini -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-md btn-primary btn-rounded" id="ButtonHapusRincian">
+                        <i class="bi bi-check"></i> Ya, Hapus
+                    </button>
+                    <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
+                        <i class="bi bi-x"></i> Tutup
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

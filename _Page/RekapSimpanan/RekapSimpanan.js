@@ -131,7 +131,7 @@ $('#ProsesFilterRank').submit(function(){
 //Proses FilterAnggota
 $('#ProsesFilterAnggota').submit(function(){
     $('#MenampilkanTabelRekapSimpananAnggota').html('<div class="spinner-border text-secondary" role="status"><span class="sr-only"></span></div>');
-    var form = $('#ProsesFilterRank')[0];
+    var form = $('#ProsesFilterAnggota')[0];
     var data = new FormData(form);
     $.ajax({
         type 	    : 'POST',
