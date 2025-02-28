@@ -8,13 +8,13 @@
     <div class="pagetitle">
         <h1>
             <a href="">
-                <i class="bi bi-cart-plus"></i> Transaksi Pembelian</a>
+                <i class="bi bi-cart-dash"></i> Transaksi Pembelian</a>
             </a>
         </h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
-                <li class="breadcrumb-item active">Penjualan</li>
+                <li class="breadcrumb-item active">Pembelian</li>
             </ol>
         </nav>
     </div>
@@ -25,8 +25,8 @@
                     echo '
                         <div class="alert alert-warning alert-dismissible fade show" role="alert">
                             <small>
-                                Berikut ini adalah halaman untuk mengelola transaksi penjualan. Setiap aktivitas penjualan dicatat pada halaman ini. 
-                                Untuk penjualan terhadap anggota harus dicatat informasi anggotanya sehingga data penjualan terhubung dengan riwayat belanja anggota.
+                                Berikut ini adalah halaman untuk mengelola transaksi Pembelian. Setiap aktivitas Pembelian dicatat pada halaman ini. 
+                                Untuk Pembelian terhadap anggota harus dicatat informasi anggotanya sehingga data Pembelian terhubung dengan riwayat belanja anggota.
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </small>
                         </div>
@@ -61,7 +61,7 @@
                                 </ul>
                             </div>
                             <div class="col-md-2">
-                                <button type="button" class="btn btn-md btn-primary btn-block btn-rounded" data-bs-toggle="modal" data-bs-target="#ModalTambahTransaksiPenjualan" title="Tambah Transaksi Penjualan">
+                                <button type="button" class="btn btn-md btn-primary btn-block btn-rounded" data-bs-toggle="modal" data-bs-target="#ModalTambahTransaksiPembelian" title="Tambah Transaksi Pembelian">
                                     <i class="bi bi-plus-lg"></i> Tambah
                                 </button>
                             </div>
@@ -75,13 +75,13 @@
                                         <th><b>No</b></th>
                                         <th><b>Tanggal</b></th>
                                         <th><b>Kategori</b></th>
-                                        <th><b>Anggota</b></th>
+                                        <th><b>Supplier</b></th>
                                         <th><b>Jumlah</b></th>
                                         <th><b>Status</b></th>
                                         <th><b>Opsi</b></th>
                                     </tr>
                                 </thead>
-                                <tbody id="TabelPenjualan">
+                                <tbody id="TabelPembelian">
                                     <!-- Data Barang Akan Ditampilkan Disini -->
                                     <tr>
                                         <td colspan="7" class="text-center text-danger">

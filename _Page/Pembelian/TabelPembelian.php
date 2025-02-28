@@ -55,24 +55,15 @@
         }
         if(empty($keyword_by)){
             if(empty($keyword)){
-                $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_transaksi_jual_beli FROM transaksi_jual_beli WHERE kategori='Penjualan' OR kategori='Retur Penjualan'"));
+                $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_transaksi_jual_beli FROM transaksi_jual_beli WHERE kategori='Pembelian' OR kategori='Retur Pembelian'"));
             }else{
-                $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_transaksi_jual_beli FROM transaksi_jual_beli WHERE (kategori='Penjualan' OR kategori='Retur Penjualan') AND (tanggal like '%$keyword%' OR status like '%$keyword%')"));
+                $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_transaksi_jual_beli FROM transaksi_jual_beli WHERE (kategori='Pembelian' OR kategori='Retur Pembelian') AND (tanggal like '%$keyword%' OR status like '%$keyword%')"));
             }
         }else{
             if(empty($keyword)){
-                $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_transaksi_jual_beli FROM transaksi_jual_beli WHERE kategori='Penjualan' OR kategori='Retur Penjualan'"));
+                $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_transaksi_jual_beli FROM transaksi_jual_beli WHERE kategori='Pembelian' OR kategori='Retur Pembelian'"));
             }else{
-                if ($keyword_by == "nama") {
-                    // Jika pencarian berdasarkan nama anggota
-                    $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT tjb.id_transaksi_jual_beli 
-                        FROM transaksi_jual_beli tjb 
-                        LEFT JOIN anggota a ON tjb.id_anggota = a.id_anggota
-                        WHERE (tjb.kategori='Penjualan' OR tjb.kategori='Retur Penjualan') AND a.nama LIKE '%$keyword%'"));
-                } else {
-                    // Jika pencarian berdasarkan kolom lain di transaksi_jual_beli
-                    $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_transaksi_jual_beli FROM transaksi_jual_beli WHERE (kategori='Penjualan' OR kategori='Retur Penjualan') AND ($keyword_by LIKE '%$keyword%')"));
-                }
+                $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_transaksi_jual_beli FROM transaksi_jual_beli WHERE (kategori='Pembelian' OR kategori='Retur Pembelian') AND ($keyword_by like '%$keyword%')"));
             }
         }
         if(empty($jml_data)){
@@ -88,24 +79,15 @@
             //KONDISI PENGATURAN MASING FILTER
             if(empty($keyword_by)){
                 if(empty($keyword)){
-                    $query = mysqli_query($Conn, "SELECT*FROM transaksi_jual_beli WHERE kategori='Penjualan' OR kategori='Retur Penjualan' ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
+                    $query = mysqli_query($Conn, "SELECT*FROM transaksi_jual_beli WHERE kategori='Pembelian' OR kategori='Retur Pembelian' ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
                 }else{
-                    $query = mysqli_query($Conn, "SELECT*FROM transaksi_jual_beli WHERE (kategori='Penjualan' OR kategori='Retur Penjualan') AND (kategori like '%$keyword%' OR tanggal like '%$keyword%' OR status like '%$keyword%') ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
+                    $query = mysqli_query($Conn, "SELECT*FROM transaksi_jual_beli WHERE (kategori='Pembelian' OR kategori='Retur Pembelian') AND (tanggal like '%$keyword%' OR status like '%$keyword%') ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
                 }
             }else{
                 if(empty($keyword)){
-                    $query = mysqli_query($Conn, "SELECT*FROM transaksi_jual_beli WHERE kategori='Penjualan' OR kategori='Retur Penjualan' ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
+                    $query = mysqli_query($Conn, "SELECT*FROM transaksi_jual_beli WHERE kategori='Pembelian' OR kategori='Retur Pembelian' ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
                 }else{
-                    if ($keyword_by == "nama") {
-                        $query = mysqli_query($Conn, "SELECT tjb.*, a.nama 
-                        FROM transaksi_jual_beli tjb 
-                        LEFT JOIN anggota a ON tjb.id_anggota = a.id_anggota
-                        WHERE (tjb.kategori='Penjualan' OR tjb.kategori='Retur Penjualan') AND (a.nama LIKE '%$keyword%')  
-                        ORDER BY $OrderBy $ShortBy 
-                        LIMIT $posisi, $batas");
-                    }else{
-                        $query = mysqli_query($Conn, "SELECT*FROM transaksi_jual_beli WHERE (kategori='Penjualan' OR kategori='Retur Penjualan') AND ($keyword_by LIKE '%$keyword%') ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
-                    }
+                    $query = mysqli_query($Conn, "SELECT*FROM transaksi_jual_beli WHERE (kategori='Pembelian' OR kategori='Retur Pembelian') AND ($keyword_by like '%$keyword%') ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
                 }
             }
             while ($data = mysqli_fetch_array($query)) {
@@ -115,19 +97,19 @@
                 $total= $data['total'];
                 $status= $data['status'];
                 $total_rp = "Rp " . number_format($total,0,',','.');
-                //Routing Penjualan
-                if($kategori=="Penjualan"){
-                    $label_kategori='<span class="text text-success">Penjualan</span>';
+                //Routing Kategori
+                if($kategori=="Pembelian"){
+                    $label_kategori='<span class="text text-success">Pembelian</span>';
                 }else{
                     $label_kategori='<span class="text text-warning">'.$kategori.'</span>';
                 }
-                //Buka nama anggota dari tabel anggota
-                if(empty($data['id_anggota'])){
-                    $id_anggota= "";
-                    $nama_anggota="-";
+                //Buka nama supplier dari tabel anggota
+                if(empty($data['id_supplier'])){
+                    $id_supplier= "";
+                    $nama_supplier="-";
                 }else{
-                    $id_anggota= $data['id_anggota'];
-                    $nama_anggota=GetDetailData($Conn, 'anggota', 'id_anggota', $id_anggota, 'nama');
+                    $id_supplier= $data['id_supplier'];
+                    $nama_supplier=GetDetailData($Conn, 'supplier', 'id_supplier', $id_supplier, 'nama_supplier');
                 }
                 
                 //Routing status
@@ -149,8 +131,8 @@
                         </td>
                         <td><small>'.$label_kategori.'</small></td>
                         <td>
-                            <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#ModalListAnggotaEdit" data-id="'.$id_transaksi_jual_beli.'" data-mode="List">
-                                <small class="text text-muted">'.$nama_anggota.'</small>
+                            <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#ModalListSupplierEdit" data-id="'.$id_transaksi_jual_beli.'" data-mode="List">
+                                <small class="text text-muted">'.$nama_supplier.'</small>
                             </a>
                         </td>
                         <td><small>'.$total_rp.'</small></td>
@@ -179,8 +161,8 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalListAnggotaEdit" data-id="'.$id_transaksi_jual_beli.'" data-mode="List">
-                                        <i class="bi bi-person"></i> Ganti Anggota
+                                    <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalListSupplierEdit" data-id="'.$id_transaksi_jual_beli.'" data-mode="List">
+                                        <i class="bi bi-person"></i> Ganti Supplier
                                     </a>
                                 </li>
                                 <li>

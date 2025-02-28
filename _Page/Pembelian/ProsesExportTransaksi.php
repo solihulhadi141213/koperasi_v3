@@ -15,7 +15,7 @@
         echo "Sesi Akses Sudah Berakhir, Silahkan Login Ulang";
         exit;
     }
-    $JumlahData = mysqli_num_rows(mysqli_query($Conn, "SELECT * FROM transaksi_jual_beli WHERE kategori='Penjualan' OR kategori='Retur Penjualan'"));
+    $JumlahData = mysqli_num_rows(mysqli_query($Conn, "SELECT * FROM transaksi_jual_beli WHERE kategori='Pembelian' OR kategori='Retur Pembelian'"));
     if(empty($JumlahData)){
         echo "Belum ada data transaksi";
         exit;
@@ -29,7 +29,7 @@
             'A1' => 'No',
             'B1' => 'Tanggal',
             'C1' => 'Kategori',
-            'D1' => 'Nama Anggota',
+            'D1' => 'Supplier',
             'E1' => 'Subtotal',
             'F1' => 'PPN',
             'G1' => 'Diskon',
@@ -52,7 +52,7 @@
 
         $no = 1;
         $row = 2;
-        $query = mysqli_query($Conn, "SELECT * FROM transaksi_jual_beli WHERE kategori='Penjualan' OR kategori='Retur Penjualan' ORDER BY id_transaksi_jual_beli ASC");
+        $query = mysqli_query($Conn, "SELECT * FROM transaksi_jual_beli WHERE kategori='Pembelian' OR kategori='Retur Pembelian' ORDER BY id_transaksi_jual_beli ASC");
         
         while ($data = mysqli_fetch_array($query)) {
             $id_transaksi_jual_beli= $data['id_transaksi_jual_beli'];
@@ -66,13 +66,13 @@
             $total= $data['total'];
             $status= $data['status'];
             $total_rp = "Rp " . number_format($total,0,',','.');
-            //Buka nama anggota dari tabel anggota
-            if(empty($data['id_anggota'])){
-                $id_anggota= "";
-                $nama_anggota="-";
+            //Buka nama Supplier dari tabel supplier
+            if(empty($data['id_supplier'])){
+                $id_supplier= "";
+                $nama_supplier="-";
             }else{
-                $id_anggota= $data['id_anggota'];
-                $nama_anggota=GetDetailData($Conn, 'anggota', 'id_anggota', $id_anggota, 'nama');
+                $id_supplier= $data['id_supplier'];
+                $nama_supplier=GetDetailData($Conn, 'supplier', 'id_supplier', $id_supplier, 'nama_supplier');
             }
             
             // Format tanggal
@@ -86,7 +86,7 @@
             $sheet->getStyle('B'.$row)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_DATE_DDMMYYYY);
 
             $sheet->setCellValue('C'.$row, $kategori);
-            $sheet->setCellValue('D'.$row, $nama_anggota);
+            $sheet->setCellValue('D'.$row, $nama_supplier);
             
             // Format angka di Excel
             $sheet->setCellValue('E'.$row, $subtotal);
@@ -123,7 +123,7 @@
             $sheet->getColumnDimension($columnID)->setAutoSize(true);
         }
 
-        $filename = "Transaksi-Penjualan.xlsx";
+        $filename = "Transaksi-Pembelian.xlsx";
         
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="'. $filename .'"');

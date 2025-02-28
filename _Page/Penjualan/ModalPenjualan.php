@@ -438,7 +438,7 @@
                     </div>
                     <div class="col col-12 col-md-8">
                         <form action="javascript:void(0);" id="ProsesCariAnggota">
-                            <input type="hidden" name="page" id="page_anggota">
+                            <input type="hidden" name="page" id="page_anggota" value="1">
                             <div class="input-group">
                                 <input type="text" class="form-control" name="keyword" id="keyword_anggota">
                                 <button type="submit" class="btn btn-md btn-primary">

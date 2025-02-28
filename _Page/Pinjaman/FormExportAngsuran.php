@@ -42,6 +42,21 @@
             $strtotime=strtotime($tanggal);
             $TanggalFormat=date('d/m/Y',$strtotime);
             //Format Rupiah
+            if(empty($denda)){
+                $denda=0;
+            }
+            if(empty($jumlah_pinjaman)){
+                $jumlah_pinjaman=0;
+            }
+            if(empty($rp_jasa)){
+                $rp_jasa=0;
+            }
+            if(empty($angsuran_pokok)){
+                $angsuran_pokok=0;
+            }
+            if(empty($angsuran_total)){
+                $angsuran_total=0;
+            }
             $denda_format = "Rp " . number_format($denda,0,',','.');
             $jumlah_pinjaman_format = "Rp " . number_format($jumlah_pinjaman,0,',','.');
             $rp_jasa_format = "Rp " . number_format($rp_jasa,0,',','.');

@@ -915,7 +915,7 @@ $(document).ready(function() {
 
     //Pagging Anggota
     $(document).on('click', '#next_button_anggota', function() {
-        var page_now = parseInt($('#page').val(), 10); // Pastikan nilai diambil sebagai angka
+        var page_now = parseInt($('#page_anggota').val(), 10); // Pastikan nilai diambil sebagai angka
         var next_page = page_now + 1;
         $('#page_anggota').val(next_page);
         ShowDataAnggota(0);
@@ -1921,7 +1921,7 @@ $(document).ready(function() {
                             <div class="col-8"><small class="text text-muted">${subtotal_rp}</small></div>
                         </diiv>
                         <diiv class="row mb-2 mt-2">
-                            <div class="col-12">Apakah Anda Yakiin Akan Menghapus Riincian IIni?</div>
+                            <div class="col-12">Apakah Anda Yakin Akan Menghapus Riincian ini?</div>
                         </diiv>
                     `);
 
