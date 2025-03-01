@@ -316,7 +316,7 @@
                                         <td align="left">
                                             <small class="credit">
                                                 <?php
-                                                    echo '<code class="text text-dark">Lembaga : </code>';
+                                                    echo '<code class="text text-dark">Divisi/Unit : </code>';
                                                     echo '<code class="text text-grayish">'.$lembaga.'</code><br>';
                                                     echo '<code class="text text-dark">Ranking : </code>';
                                                     echo '<code class="text text-grayish">'.$ranking.'</code>';

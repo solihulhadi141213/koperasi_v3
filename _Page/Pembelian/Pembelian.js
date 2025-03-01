@@ -479,15 +479,16 @@ $(document).ready(function() {
         e.preventDefault(); // Mencegah form submit default
     
         var mode_data = $('#mode_data').val();
-    
+        var periode_1 = $('#periode_1').val();
+        var periode_2 = $('#periode_2').val();
         // Loading Tombol
         $('#ButtonExportTransaksi').html('Loading...').prop('disabled', true);
     
         // Tentukan URL berdasarkan mode_data
         var url = (mode_data === "Transaksi") 
-            ? "_Page/Pembelian/ProsesExportTransaksi.php"
-            : "_Page/Pembelian/ProsesExportRincian.php";
-    
+        ? `_Page/Pembelian/ProsesExportTransaksi.php?periode_1=${periode_1}&periode_2=${periode_2}`
+        : `_Page/Pembelian/ProsesExportRincian.php?periode_1=${periode_1}&periode_2=${periode_2}`;
+
         // Buka halaman di tab baru
         window.open(url, "_blank");
     

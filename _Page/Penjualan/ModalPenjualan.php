@@ -112,6 +112,26 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-4">
+                            <label for="periode_1">
+                                <small>Periode Awal</small>
+                            </label>
+                        </div>
+                        <div class="col-8">
+                            <input type="date" name="periode_1" id="periode_1" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="periode_2">
+                                <small>Periode Akhir</small>
+                            </label>
+                        </div>
+                        <div class="col-8">
+                            <input type="date" name="periode_2" id="periode_2" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4">
                             <label for="mode_data">
                                 <small>Mode Data</small>
                             </label>

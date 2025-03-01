@@ -15,7 +15,19 @@
         echo "Sesi Akses Sudah Berakhir, Silahkan Login Ulang";
         exit;
     }
-    $JumlahData = mysqli_num_rows(mysqli_query($Conn, "SELECT * FROM transaksi_jual_beli WHERE kategori='Pembelian' OR kategori='Retur Pembelian'"));
+    if(empty($_GET['periode_1'])){
+        echo "Periode Awal Data Tidak Boleh Kosong!";
+        exit;
+    }
+    if(empty($_GET['periode_2'])){
+        echo "Periode Akhir Data Tidak Boleh Kosong!";
+        exit;
+    }
+    $periode_1=$_GET['periode_1'];
+    $periode_2=$_GET['periode_2'];
+
+    //Hitung Jumlah Data
+    $JumlahData = mysqli_num_rows(mysqli_query($Conn, "SELECT * FROM transaksi_jual_beli WHERE (kategori='Pembelian' OR kategori='Retur Pembelian') AND (tanggal BETWEEN '$periode_1 00:00:00' AND '$periode_2 23:59:59')"));
     if(empty($JumlahData)){
         echo "Belum ada data transaksi";
         exit;
@@ -52,7 +64,7 @@
 
         $no = 1;
         $row = 2;
-        $query = mysqli_query($Conn, "SELECT * FROM transaksi_jual_beli WHERE kategori='Pembelian' OR kategori='Retur Pembelian' ORDER BY id_transaksi_jual_beli ASC");
+        $query = mysqli_query($Conn, "SELECT * FROM transaksi_jual_beli WHERE (kategori='Pembelian' OR kategori='Retur Pembelian') AND (tanggal BETWEEN '$periode_1 00:00:00' AND '$periode_2 23:59:59') ORDER BY id_transaksi_jual_beli ASC");
         
         while ($data = mysqli_fetch_array($query)) {
             $id_transaksi_jual_beli= $data['id_transaksi_jual_beli'];
