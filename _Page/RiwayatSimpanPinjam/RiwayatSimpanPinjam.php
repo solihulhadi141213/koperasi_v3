@@ -87,7 +87,7 @@
                                                 $nip=GetDetailData($Conn,'anggota','id_anggota',$id_anggota,'nip');
                                                 $nama=GetDetailData($Conn,'anggota','id_anggota',$id_anggota,'nama');
                                                 //Jumlah Simpanan
-                                                $SumSimpanan = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(jumlah) AS jumlah FROM simpanan WHERE id_anggota='$id_anggota'"));
+                                                $SumSimpanan = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(jumlah) AS jumlah FROM simpanan WHERE id_anggota='$id_anggota' AND kategori!='Penarikan'"));
                                                 if(empty($SumSimpanan['jumlah'])){
                                                     $JumlahSimpanan =0;
                                                 }else{

@@ -484,10 +484,12 @@
                 $id_autojurnal_penjualan= $DataAutoJurnalPenjualan['id_autojurnal_jual_beli'];
                 $DebetPenjualan= $DataAutoJurnalPenjualan['debet'];
                 $KreditPenjualan= $DataAutoJurnalPenjualan['kredit'];
+                $UtangPiutangPenjualan= $DataAutoJurnalPenjualan['utang_piutang'];
             }else{
                 $id_autojurnal_penjualan="";
                 $DebetPenjualan="";
                 $KreditPenjualan="";
+                $UtangPiutangPenjualan="";
             }
 
             //Pembelian
@@ -497,10 +499,12 @@
                 $id_autojurnal_pembelian= $DataAutoJurnalPembelian['id_autojurnal_jual_beli'];
                 $DebetPembelian= $DataAutoJurnalPembelian['debet'];
                 $KreditPembelian= $DataAutoJurnalPembelian['kredit'];
+                $UtangPiutangPembelian= $DataAutoJurnalPembelian['utang_piutang'];
             }else{
                 $id_autojurnal_pembelian="";
                 $DebetPembelian="";
                 $KreditPembelian="";
+                $UtangPiutangPembelian="";
             }
         ?>
         <div class="row">
@@ -602,6 +606,48 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="row mb-3">
+                                        <div class="col-4">
+                                            <label for="utang_piutang_penjualan">
+                                                <small>Akun Piutang</small>
+                                            </label>
+                                        </div>
+                                        <div class="col-8">
+                                            <select name="utang_piutang_penjualan" id="utang_piutang_penjualan" class="form-control">
+                                                <?php
+                                                    echo '<option value="">Pilih</option>';
+                                                    // Query untuk mengambil akun level 1 (group utama)
+                                                    $QryGroupUtama = mysqli_query($Conn, "SELECT * FROM akun_perkiraan WHERE level='1' ORDER BY nama");
+                                                    while ($GroupUtama = mysqli_fetch_array($QryGroupUtama)) {
+                                                        $id_perkiraan_utama = $GroupUtama['id_perkiraan'];
+                                                        $kode_utama = $GroupUtama['kode'];
+                                                        $nama_utama = $GroupUtama['nama'];
+                                                        $saldo_normal_utama = $GroupUtama['saldo_normal'];
+                                                        // Tampilkan group utama
+                                                        echo '<optgroup label="'.$nama_utama.' ('.$saldo_normal_utama.')">';
+                                                        // Query untuk mengambil anak group dari group utama berdasarkan kode
+                                                        $QryAnakGroup = mysqli_query($Conn, "SELECT * FROM akun_perkiraan WHERE kode LIKE '$kode_utama%' AND level != '1' ORDER BY nama");
+                                                        while ($AnakGroup = mysqli_fetch_array($QryAnakGroup)) {
+                                                            $id_perkiraan = $AnakGroup['id_perkiraan'];
+                                                            $nama_perkiraan = $AnakGroup['nama'];
+                                                            $saldo_normal = $AnakGroup['saldo_normal'];
+                                                            $kode = $AnakGroup['kode'];
+                                                            $level = $AnakGroup['level'];
+                                                            $LevelTerbawah = mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM akun_perkiraan WHERE kd$level='$kode'"));
+                                                            // Tampilkan anak group
+                                                            if($LevelTerbawah=="1"){
+                                                                if($UtangPiutangPenjualan==$id_perkiraan){
+                                                                    echo '<option selected value="'.$id_perkiraan.'">'.$nama_perkiraan.' ('.$saldo_normal.')</option>';
+                                                                }else{
+                                                                    echo '<option value="'.$id_perkiraan.'">'.$nama_perkiraan.' ('.$saldo_normal.')</option>';
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="row mb-3 mt-3">
@@ -682,6 +728,48 @@
                                                             // Tampilkan anak group
                                                             if($LevelTerbawah=="1"){
                                                                 if($KreditPembelian==$id_perkiraan){
+                                                                    echo '<option selected value="'.$id_perkiraan.'">'.$nama_perkiraan.' ('.$saldo_normal.')</option>';
+                                                                }else{
+                                                                    echo '<option value="'.$id_perkiraan.'">'.$nama_perkiraan.' ('.$saldo_normal.')</option>';
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-4">
+                                            <label for="utang_piutang_pembelian">
+                                                <small>Akun Utang</small>
+                                            </label>
+                                        </div>
+                                        <div class="col-8">
+                                            <select name="utang_piutang_pembelian" id="utang_piutang_pembelian" class="form-control">
+                                                <?php
+                                                    echo '<option value="">Pilih</option>';
+                                                    // Query untuk mengambil akun level 1 (group utama)
+                                                    $QryGroupUtama = mysqli_query($Conn, "SELECT * FROM akun_perkiraan WHERE level='1' ORDER BY nama");
+                                                    while ($GroupUtama = mysqli_fetch_array($QryGroupUtama)) {
+                                                        $id_perkiraan_utama = $GroupUtama['id_perkiraan'];
+                                                        $kode_utama = $GroupUtama['kode'];
+                                                        $nama_utama = $GroupUtama['nama'];
+                                                        $saldo_normal_utama = $GroupUtama['saldo_normal'];
+                                                        // Tampilkan group utama
+                                                        echo '<optgroup label="'.$nama_utama.' ('.$saldo_normal_utama.')">';
+                                                        // Query untuk mengambil anak group dari group utama berdasarkan kode
+                                                        $QryAnakGroup = mysqli_query($Conn, "SELECT * FROM akun_perkiraan WHERE kode LIKE '$kode_utama%' AND level != '1' ORDER BY nama");
+                                                        while ($AnakGroup = mysqli_fetch_array($QryAnakGroup)) {
+                                                            $id_perkiraan = $AnakGroup['id_perkiraan'];
+                                                            $nama_perkiraan = $AnakGroup['nama'];
+                                                            $saldo_normal = $AnakGroup['saldo_normal'];
+                                                            $kode = $AnakGroup['kode'];
+                                                            $level = $AnakGroup['level'];
+                                                            $LevelTerbawah = mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM akun_perkiraan WHERE kd$level='$kode'"));
+                                                            // Tampilkan anak group
+                                                            if($LevelTerbawah=="1"){
+                                                                if($UtangPiutangPembelian==$id_perkiraan){
                                                                     echo '<option selected value="'.$id_perkiraan.'">'.$nama_perkiraan.' ('.$saldo_normal.')</option>';
                                                                 }else{
                                                                     echo '<option value="'.$id_perkiraan.'">'.$nama_perkiraan.' ('.$saldo_normal.')</option>';
