@@ -1,331 +1,536 @@
 //Fungsi Untuk Menampilkan Data
-function filterAndLoadTable() {
+function ShowData() {
     var ProsesFilter = $('#ProsesFilter').serialize();
     $.ajax({
         type 	    : 'POST',
-        url 	    : '_Page/Help/TabelHelp.php',
+        url 	    : '_Page/Help/TabelDokumentasi.php',
         data 	    :  ProsesFilter,
         success     : function(data){
-            $('#MenampilkanTabelHelp').html(data);
+            $('#TabelDokumentasi').html(data);
+            $('#ShowData').show();
+            $('#ShowDetail').hide();
+            $('#ShowTambahDokumentasi').hide();
+            $('#ShowEditDokumentasi').hide();
         }
     });
 }
-//Fungsi Untuk Menampilkan Data Bantuan
-function filterAndLoadTableBantuan() {
-    var ProsesFilterBantuan = $('#ProsesFilterBantuan').serialize();
-    $.ajax({
-        type 	    : 'POST',
-        url 	    : '_Page/Help/HelpList.php',
-        data 	    :  ProsesFilterBantuan,
-        success     : function(data){
-            $('#MenampilkanListHelp').html(data);
-        }
-    });
+
+//Fungsi Untuk Menampilkan Halaman Tambah Dokumentasi
+function ShowTambahDokumentasi() {
+    $('#ShowData').hide();
+    $('#ShowDetail').hide();
+    $('#ShowTambahDokumentasi').show();
+    $('#ShowEditDokumentasi').hide();
 }
-//Menampilkan Data Pertama Kali
-$(document).ready(function() {
-    filterAndLoadTable();
-    filterAndLoadTableBantuan();
-});
-//Ketika KeywordBy Diubah
-$('#keyword_by').change(function(){
-    var keyword_by = $('#keyword_by').val();
+
+//Fungsi Untuk Menampilkan Halaman Detail Dokumentasi
+function ShowDetailDokumentasi(id_help) {
+    //Ambil Detail Dokumentasi dengan Ajax
     $.ajax({
         type 	    : 'POST',
-        url 	    : '_Page/Help/FormFilter.php',
-        data 	    :  {keyword_by: keyword_by},
-        success     : function(data){
-            $('#FormFilter').html(data);
-        }
-    });
-});
-//Ketika Filter Di Submit
-$('#ProsesFilter').submit(function(){
-    //Halaman Kembali Default
-    $('#PutPage').val('1');
-    filterAndLoadTable();
-    //Tutup Modal
-    $('#ModalFilter').modal('hide');
-});
-tinymce.init({
-    selector: '#deskripsi',
-    plugins: [
-        'advlist autolink link image lists charmap print preview hr anchor pagebreak',
-        'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
-        'table emoticons template paste help'
-    ],
-    toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | ' +
-        'bullist numlist outdent indent | link image | print preview media fullscreen charmap | ' +
-        'forecolor backcolor emoticons | help',
-    menu: {
-        favs: {title: 'My Favorites', items: 'code visualaid | searchreplace | emoticons'}
-    },
-    menubar: 'favs file edit view insert format tools table help',
-    content_css: 'assets/css/tinymce.css',
-    images_upload_url: '_Page/PostAcceptor/PostAcceptor.php',
-    images_upload_credentials: true,
-    images_reuse_filename: true,
-    image_title: true,
-    automatic_uploads: true,
-    file_picker_types: 'image',
-    file_picker_callback: function (cb, value, meta) {
-        var input = document.createElement('input');
-        input.setAttribute('type', 'file');
-        input.setAttribute('accept', 'image/*');
+        url 	    : '_Page/Help/_detail_dokumentasi.php',
+        data 	    :  {id_help: id_help},
+        dataType    : "json",
+        success     : function(response){
+            if(response.status=="Success"){
+                $('#ShowData').hide();
+                $('#ShowDetail').show();
+                $('#ShowTambahDokumentasi').hide();
+                $('#ShowEditDokumentasi').hide();
 
-        input.onchange = function () {
-            var file = this.files[0];
-
-            var reader = new FileReader();
-            reader.onload = function () {
-                var id = 'blobid' + (new Date()).getTime();
-                var blobCache = tinymce.activeEditor.editorUpload.blobCache;
-                var base64 = reader.result.split(',')[1];
-                var blobInfo = blobCache.create(id, file, base64);
-                blobCache.add(blobInfo);
-
-                cb(blobInfo.blobUri(), { title: file.name });
-            };
-            reader.readAsDataURL(file);
-        };
-
-        input.click();
-    },
-    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-    height: "480"
-});
-
-//Kondisi pada saat halaman edit dibuka
-var description=$("#GetHelDescription").html();
-tinymce.init({
-    selector: '#deskripsi_edit',
-    setup: function (editor) {
-        editor.on('init', function (e) {
-            editor.setContent(description);
-        });
-    },
-    plugins: [
-        'advlist autolink link image lists charmap print preview hr anchor pagebreak',
-        'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
-        'table emoticons template paste help'
-    ],
-    toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | ' +
-    'bullist numlist outdent indent | link image | print preview media fullscreen charmap | ' +
-    'forecolor backcolor emoticons | help',
-    menu: {
-        favs: {title: 'My Favorites', items: 'code visualaid | searchreplace | emoticons'}
-    },
-    menubar: 'favs file edit view insert format tools table help',
-    content_css: 'assets/css/tinymce.css',
-    images_upload_url: '_Page/PostAcceptor/PostAcceptor.php',
-    images_upload_credentials: true,
-    images_reuse_filename: true,
-    image_title: true,
-    /* enable automatic uploads of images represented by blob or data URIs*/
-    automatic_uploads: true,
-    /*
-        URL of our upload handler (for more details check: https://www.tiny.cloud/docs/configure/file-image-upload/#images_upload_url)
-        images_upload_url: 'postAcceptor.php',
-        here we add custom filepicker only to Image dialog
-    */
-    file_picker_types: 'image',
-    /* and here's our custom image picker*/
-    file_picker_callback: function (cb, value, meta) {
-        var input = document.createElement('input');
-        input.setAttribute('type', 'file');
-        input.setAttribute('accept', 'image/*');
-
-        /*
-        Note: In modern browsers input[type="file"] is functional without
-        even adding it to the DOM, but that might not be the case in some older
-        or quirky browsers like IE, so you might want to add it to the DOM
-        just in case, and visually hide it. And do not forget do remove it
-        once you do not need it anymore.
-        */
-
-        input.onchange = function () {
-        var file = this.files[0];
-
-        var reader = new FileReader();
-        reader.onload = function () {
-            /*
-            Note: Now we need to register the blob in TinyMCEs image blob
-            registry. In the next release this part hopefully won't be
-            necessary, as we are looking to handle it internally.
-            */
-            var id = 'blobid' + (new Date()).getTime();
-            var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
-            var base64 = reader.result.split(',')[1];
-            var blobInfo = blobCache.create(id, file, base64);
-            blobCache.add(blobInfo);
-
-            /* call the callback and populate the Title field with the file name */
-            cb(blobInfo.blobUri(), { title: file.name });
-        };
-        reader.readAsDataURL(file);
-        };
-
-        input.click();
-    },
-    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-    height : "480"
-});
-//Proses Simpan Help Documentation
-$('#ClickSimpanHelp').click(function(){
-    $('#NotifikasiTambahHelp').html('Loading..');
-    var judul=$('#judul').val();
-    var kategori=$('#kategori').val();
-    var status=$('#status').val();
-    var deskripsi = tinymce.get("deskripsi").getContent();
-    $.ajax({
-        type    : 'POST',
-        url     : "_Page/Help/ProsesTambahHelp.php",
-        data    : {judul: judul, kategori: kategori, status: status, deskripsi: deskripsi},
-        success: function(data) {
-            $('#NotifikasiTambahHelp').html(data);
-            var NotifikasiTambahHelpBerhasil=$('#NotifikasiTambahHelpBerhasil').html();
-            if(NotifikasiTambahHelpBerhasil=="Success"){
-                window.location.href = "index.php?Page=Help&Sub=HelpData";
-            }
-        }
-    });
-});
-//Modal Detail Buku Merah
-$('#ModalDetail').on('show.bs.modal', function (e) {
-    var id_help = $(e.relatedTarget).data('id');
-    $('#FormDetail').html("Loading...");
-    $.ajax({
-        type 	    : 'POST',
-        url 	    : '_Page/Help/FormDetail.php',
-        data        : {id_help: id_help},
-        success     : function(data){
-            $('#FormDetail').html(data);
-        }
-    });
-});
-//Proses Simpan Help Documentation editor
-$('#ClickSimpanEditHelp').click(function(){
-    $('#NotifikasiEditHelp').html('Loading..');
-    var id_help=$('#id_help').val();
-    var judul=$('#judul').val();
-    var kategori=$('#kategori').val();
-    var status=$('#status').val();
-    var deskripsi = tinymce.get("deskripsi_edit").getContent();
-    $.ajax({
-        type    : 'POST',
-        url     : "_Page/Help/ProsesEditHelp.php",
-        data    : {id_help: id_help, judul: judul, kategori: kategori, status: status, deskripsi: deskripsi},
-        success: function(data) {
-            $('#NotifikasiEditHelp').html(data);
-            var NotifikasiEditHelpBerhasil=$('#NotifikasiEditHelpBerhasil').html();
-            if(NotifikasiEditHelpBerhasil=="Success"){
-                window.location.href = "index.php?Page=Help&Sub=HelpData";
-            }
-        }
-    });
-});
-//Hapus Edit
-$('#ModalEdit').on('show.bs.modal', function (e) {
-    var id_help = $(e.relatedTarget).data('id');
-    $('#FormEdit').html("Loading...");
-    $.ajax({
-        type 	    : 'POST',
-        url 	    : '_Page/Help/FormEdit.php',
-        data        : {id_help: id_help},
-        success     : function(data){
-            $('#FormEdit').html(data);
-        }
-    });
-});
-//Hapus Help
-$('#ModalHapus').on('show.bs.modal', function (e) {
-    var id_help = $(e.relatedTarget).data('id');
-    $('#FormHapus').html("Loading...");
-    $.ajax({
-        type 	    : 'POST',
-        url 	    : '_Page/Help/FormHapus.php',
-        data        : {id_help: id_help},
-        success     : function(data){
-            $('#FormHapus').html(data);
-            $('#NotifikasiHapus').html("");
-        }
-    });
-});
-$('#ProsesHapus').submit(function(){
-    var ProsesHapus = $('#ProsesHapus').serialize();
-    $('#NotifikasiHapus').html('Loading...');
-    $.ajax({
-        type 	    : 'POST',
-        url 	    : '_Page/Help/ProsesHapus.php',
-        data 	    :  ProsesHapus,
-        success     : function(data){
-            $('#NotifikasiHapus').html(data);
-            var NotifikasiHapusBerhasil=$('#NotifikasiHapusBerhasil').html();
-            if(NotifikasiHapusBerhasil=="Success"){
-                $('#NotifikasiHapus').html("");
-                filterAndLoadTable();
-                $('#ModalHapus').modal('hide');
+                //Tempelkan Data Pada Element
+                $('#put_judul_dokumentasi').html(response.dataset.judul);
+                $('#put_kategori_dokumentasi').html(response.dataset.kategori);
+                $('#put_dokumentasi').html(response.dataset.deskripsi);
+                $('#tanggal_dokumentasi').html(response.dataset.datetime_creat);
+                $('#author_dokumentasi').html(response.dataset.author);
+            }else{
                 Swal.fire(
-                    'Success!',
-                    'Hapus Konten Bantuan Berhasil!',
-                    'success'
-                )
+                    'Opss!',
+                    'Terjadi Kesalahan! Pesan : '+response.message+'',
+                    'error'
+                );
             }
-        }
+        },
+        error: function () {
+            Swal.fire(
+                'Opss!',
+                'Terjadi Kesalahan Pada Saat Menampilkan Detail Dokumentasi!',
+                'error'
+            );
+        },
     });
-});
-//Modal Config Help Access
-$('#ModalAksesHelp').on('show.bs.modal', function (e) {
-    var id_help = $(e.relatedTarget).data('id');
-    $('#FormAksesHelp').html("Loading...");
+}
+
+//Fungsi Untuk Menampilkan Halaman Edit Dokumentasi
+function ShowEditDokumentasi(id_help) {
+    // Ambil Detail Dokumentasi dengan Ajax
     $.ajax({
-        type 	    : 'POST',
-        url 	    : '_Page/Help/FormAksesHelp.php',
-        data        : {id_help: id_help},
-        success     : function(data){
-            $('#FormAksesHelp').html(data);
-            $('#ProsesSimpanAksesHelp').submit(function(){
-                var ProsesSimpanAksesHelp = $('#ProsesSimpanAksesHelp').serialize();
-                $('#NotifikasiSimpanAksesHelp').html('Loading...');
-                $.ajax({
-                    type 	    : 'POST',
-                    url 	    : '_Page/Help/ProsesSimpanAksesHelp.php',
-                    data 	    :  ProsesSimpanAksesHelp,
-                    success     : function(data){
-                        $('#NotifikasiSimpanAksesHelp').html(data);
-                        var NotifikasiSimpanAksesHelpBerhasil=$('#NotifikasiSimpanAksesHelpBerhasil').html();
-                        if(NotifikasiSimpanAksesHelpBerhasil=="Success"){
-                            window.location.href = "index.php?Page=Help&Sub=HelpData";
+        type: 'POST',
+        url: '_Page/Help/_detail_dokumentasi.php',
+        data: { id_help: id_help },
+        dataType: "json",
+        success: function (response) {
+            if (response.status === "Success") {
+                $('#ShowData').hide();
+                $('#ShowDetail').hide();
+                $('#ShowTambahDokumentasi').hide();
+                $('#ShowEditDokumentasi').show();
+
+                // Tempelkan Data Pada Element Form
+                $('#put_id_help_edit').val(id_help);
+                $('#judul_edit').val(response.dataset.judul);
+                $('#kategori_edit').val(response.dataset.kategori);
+                $('#author_edit').val(response.dataset.author);
+                $('#tanggal_edit').val(response.dataset.datetime_creat);
+
+                // Pastikan TinyMCE sudah siap sebelum mengatur konten
+                var deskripsi = response.dataset.deskripsi;
+                if (tinymce.get('deskripsi_edit')) {
+                    tinymce.get('deskripsi_edit').setContent(deskripsi);
+                } else {
+                    tinymce.init({
+                        selector: '#deskripsi_edit',
+                        height: 450,
+                        menubar: false,
+                        plugins: [
+                            'advlist autolink lists link image charmap print preview anchor',
+                            'searchreplace visualblocks code fullscreen',
+                            'insertdatetime media table paste code help wordcount',
+                            'codesample emoticons fullscreen image preview',
+                            'code template hr pagebreak nonbreaking'
+                        ],
+                        toolbar: 'undo redo | styleselect | bold italic forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | image codesample emoticons table preview fullscreen',
+                        images_upload_url: 'PostAcceptor.php',
+                        images_upload_handler: function (blobInfo, success, failure) {
+                            var formData = new FormData();
+                            formData.append('file', blobInfo.blob(), blobInfo.filename());
+
+                            $.ajax({
+                                url: '_Page/PostAcceptor/PostAcceptor.php',
+                                type: 'POST',
+                                data: formData,
+                                processData: false,
+                                contentType: false,
+                                success: function (response) {
+                                    var json = JSON.parse(response);
+                                    if (json.location) {
+                                        success(json.location);
+                                    } else {
+                                        failure('Gagal mengunggah gambar.');
+                                    }
+                                },
+                                error: function () {
+                                    failure('Terjadi kesalahan saat mengunggah.');
+                                }
+                            });
+                        },
+                        init_instance_callback: function (editor) {
+                            editor.setContent(deskripsi); // Set konten setelah editor siap
                         }
+                    });
+                }
+            } else {
+                Swal.fire(
+                    'Opss!',
+                    'Terjadi Kesalahan! Pesan: ' + response.message,
+                    'error'
+                );
+            }
+        },
+        error: function () {
+            Swal.fire(
+                'Opss!',
+                'Terjadi Kesalahan Pada Saat Menampilkan Detail Dokumentasi!',
+                'error'
+            );
+        },
+    });
+}
+
+
+
+//Load Element Halaman
+$(document).ready(function() {
+    
+    //Menampilkan Data Pertama Kali
+    ShowData();
+    
+    //Ketika KeywordBy Diubah
+    $('#keyword_by').change(function(){
+        var keyword_by = $('#keyword_by').val();
+        $.ajax({
+            type 	    : 'POST',
+            url 	    : '_Page/Help/FormFilter.php',
+            data 	    :  {keyword_by: keyword_by},
+            success     : function(data){
+                $('#FormFilter').html(data);
+            }
+        });
+    });
+
+    //Ketika Filter Di Submit
+    $('#ProsesFilter').submit(function(){
+        //Halaman Kembali Default
+        $('#PutPage').val('1');
+
+        //Tampilkan Data
+        ShowData();
+
+        //Tutup Modal Filter
+        $('#ModalFilter').modal('hide');
+    });
+
+    //PAGGING
+    $(document).on('click', '#next_button', function() {
+        var page_now = parseInt($('#PutPage').val(), 10); // Pastikan nilai diambil sebagai angka
+        var next_page = page_now + 1;
+        $('#PutPage').val(next_page);
+        ShowData();
+    });
+    $(document).on('click', '#prev_button', function() {
+        var page_now = parseInt($('#PutPage').val(), 10); // Pastikan nilai diambil sebagai angka
+        var next_page = page_now - 1;
+        $('#PutPage').val(next_page);
+        ShowData();
+    });
+    
+    //Ketika tambah_data_dokumentasi di click
+    $('#tambah_data_dokumentasi').click(function(){
+        ShowTambahDokumentasi();
+    });
+
+    //Ketika class detail_dokumentasi di click
+    $(document).on('click', '.detail_dokumentasi', function(e){
+        //Tangkap id_help
+        var id_help = $(this).data('id');
+        ShowDetailDokumentasi(id_help);
+    });
+
+    //Ketika class edit_dokumentasi di click
+    $(document).on('click', '.edit_dokumentasi', function(e){
+        //Tangkap id_help
+        var id_help = $(this).data('id');
+        ShowEditDokumentasi(id_help);
+    });
+    
+    //Tinymace Tambah Dokumentasi
+    tinymce.init({
+        selector: '#deskripsi',
+        height: 450,
+        menubar: false,
+        plugins: [
+            'advlist autolink lists link image charmap print preview anchor',
+            'searchreplace visualblocks code fullscreen',
+            'insertdatetime media table paste code help wordcount',
+            'codesample emoticons fullscreen image preview',
+            'code template hr pagebreak nonbreaking'
+        ],
+        toolbar: 'undo redo | styleselect | bold italic forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | image codesample emoticons table preview fullscreen',
+        
+        images_upload_url: 'PostAcceptor.php', // Endpoint untuk upload gambar
+        images_upload_handler: function (blobInfo, success, failure) {
+            var formData = new FormData();
+            formData.append('file', blobInfo.blob(), blobInfo.filename());
+
+            $.ajax({
+                url: '_Page/PostAcceptor/PostAcceptor.php', // Sesuaikan dengan backend untuk menangani upload
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    var json = JSON.parse(response);
+                    if (json.location) {
+                        success(json.location);
+                    } else {
+                        failure('Gagal mengunggah gambar.');
                     }
-                });
+                },
+                error: function () {
+                    failure('Terjadi kesalahan saat mengunggah.');
+                }
             });
         }
     });
-});
-//Detail Help
-$('#ModalDetailHelp').on('show.bs.modal', function (e) {
-    var id_help = $(e.relatedTarget).data('id');
-    $('#FormDetailHelp').html("Loading...");
-    $.ajax({
-        type 	    : 'POST',
-        url 	    : '_Page/Help/FormDetailHelp.php',
-        data        : {id_help: id_help},
-        success     : function(data){
-            $('#FormDetailHelp').html(data);
-        }
+
+    //Ketika tombol class back_to_data di click
+    $('.back_to_data').click(function(){
+        ShowData();
     });
-});
-//Modal preview
-$('#ModalPreview').on('show.bs.modal', function (e) {
-    var id_help = $(e.relatedTarget).data('id');
-    $('#FormPreview').html("Loading...");
-    $.ajax({
-        type 	    : 'POST',
-        url 	    : '_Page/Help/FormPreview.php',
-        data        : {id_help: id_help},
-        success     : function(data){
-            $('#FormPreview').html(data);
-        }
+
+    // Proses Tambah Dokumentasi
+    $('#ProsesTambahDokumentasi').submit(function (e) {
+        e.preventDefault(); // Mencegah reload halaman saat submit
+
+        // Ambil data dari TinyMCE
+        var deskripsi = tinymce.get('deskripsi').getContent();
+
+        // Ambil semua data dari form
+        var formData = new FormData(this);
+        formData.set('deskripsi', deskripsi); // Gantikan deskripsi textarea dengan isi TinyMCE
+
+        // Disable tombol submit dan tampilkan loading
+        $('#ButtonTambahDokumentasi')
+            .prop('disabled', true)
+            .html('<i class="bi bi-arrow-repeat"></i> Menyimpan...');
+
+        // Hapus notifikasi sebelumnya
+        $('#NotifikasiTambahDokumentasi').html('');
+
+        // Proses AJAX
+        $.ajax({
+            type: 'POST',
+            url: '_Page/Help/ProsesTambahDokumentasi.php',
+            data: formData,
+            dataType: 'json',
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                if (response.status === "Success") {
+                    // Tampilkan notifikasi sukses
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: 'Dokumentasi berhasil ditambahkan.',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+
+                    //Reset Form Filter
+                    $('#ProsesFilter')[0].reset();
+
+                    // Panggil fungsi ShowData()
+                    ShowData();
+
+                    // Reset form setelah sukses
+                    $('#ProsesTambahDokumentasi')[0].reset(); // Kosongkan form
+                    tinymce.get('deskripsi').setContent(''); // Kosongkan TinyMCE
+                } else {
+                    // Tampilkan error pada NotifikasiTambahDokumentasi
+                    $('#NotifikasiTambahDokumentasi').html(
+                        '<div class="alert alert-danger" role="alert">' + response.message + '</div>'
+                    );
+                }
+            },
+            error: function () {
+                $('#NotifikasiTambahDokumentasi').html(
+                    '<div class="alert alert-danger" role="alert">Terjadi kesalahan saat mengirim data.</div>'
+                );
+            },
+            complete: function () {
+                // Aktifkan kembali tombol dan kembalikan teks asli
+                $('#ButtonTambahDokumentasi').prop('disabled', false).html('<i class="bi bi-save"></i> Simpan Dokumentasi');
+            }
+        });
+    });
+
+    //Modal Hapus Dokumentasi
+    $('#ModalHapus').on('show.bs.modal', function (e) {
+        var id_help= $(e.relatedTarget).data('id');
+        $('#ButtonHapus').prop("disabled", true);
+        $.ajax({
+            type 	    : 'POST',
+            url 	    : '_Page/Help/_detail_dokumentasi.php',
+            data        : {id_help: id_help},
+            dataType    : "json",
+            success     : function(response){
+                if (response.status === "Success") {
+                    var judul=response.dataset.judul;
+                    var kategori=response.dataset.kategori;
+                    var deskripsi=response.dataset.deskripsi;
+                    var datetime_creat=response.dataset.datetime_creat;
+                    var author=response.dataset.author;
+                    
+                    //Tempelkan Ke Form
+                    $('#FormHapus').html(`
+                        <input type="hidden" name="id_help" value="${id_help}">
+                        <div class="row mb-2">
+                            <div class="col-4"><small>Judul</small></div>
+                            <div class="col-8"><small class="text-muted">${judul}</small></div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><small>Kategori</small></div>
+                            <div class="col-8"><small class="text-muted">${kategori}</small></div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><small>Tanggal</small></div>
+                            <div class="col-8"><small class="text-muted">${datetime_creat}</small></div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-4"><small>Author</small></div>
+                            <div class="col-8"><small class="text-muted">${author}</small></div>
+                        </div>
+                        <div class="row mb-2 mt-3">
+                            <div class="col-12">
+                                <small>Apakah Anda Yakin Akan Menghapus Data Tersebut?</small>
+                            </div>
+                        </div>
+                    `);
+
+                    //Aktivkan Tombol
+                    $('#ButtonHapus').prop("disabled", false);
+
+                    //Kosongkan Notifikasi
+                    $('#NotifikasiEditKategoriHarga').html("");
+                }else{
+                    //Tampilkan Kesalahan Pada Element Notifikasi
+                    $('#NotifikasiHapus').html(
+                        `<div class="alert alert-danger" role="alert">Terjadi kesalahan pada sistem. Pesan: ${response.message}</div>`
+                    );
+
+                    //Disable Tombol
+                    $('#ButtonHapus').prop("disabled", true);
+
+                    //Kosongkn Form
+                    $('#FormHapus').html("");
+                }
+            },
+            error: function () {
+                //Tampilkan Kesalahan Pada Element Notifikasi
+                $('#NotifikasiHapus').html(
+                    '<div class="alert alert-danger" role="alert">Terjadi kesalahan pada sistem. Silakan coba lagi.</div>'
+                );
+
+                //Disable Tombol
+                $('#ButtonHapus').prop("disabled", true);
+
+                //Kosongkn Form
+                $('#FormHapus').html("");
+            },
+        });
+    });
+
+    //Proses Hapus Dokumentasi
+    $("#ProsesHapus").on("submit", function (e) {
+        e.preventDefault();
+        // Tombol loading
+        let $FormElement = $("#ProsesHapus");
+        let $ModalElement = $("#ModalHapus");
+        let $Notifikasi = $("#NotifikasiHapus");
+        let $ButtonProses = $("#ButtonHapus");
+        let ButtonElement = '<i class="bi bi-check"></i> Ya, Hapus';
+        $ButtonProses.html('Loading..');
+        $ButtonProses.prop("disabled", true);
+    
+        // Ambil data form
+        let formData = new FormData(this);
+    
+        // Kirim data ke server
+        $.ajax({
+            url         : "_Page/Help/ProsesHapus.php",
+            type        : "POST",
+            data        : formData,
+            contentType : false,
+            processData : false,
+            dataType    : "json",
+            success: function (response) {
+                //Apabila Proses Berhasil
+                if (response.status === "Success") {
+                    
+                    //reset form
+                    $FormElement[0].reset();
+
+                    // Tampilkan swal notifikasi
+                    Swal.fire(
+                        'Success!',
+                        'Hapus Dokumentasi Berhasil!',
+                        'success'
+                    )
+    
+                    // Reset tombol
+                    $ButtonProses.html(ButtonElement);
+                    $ButtonProses.prop("disabled", false);
+    
+                    //Kosongkan Notifikasi
+                    $Notifikasi.html('');
+    
+                    //Tutup Modal
+                    $ModalElement.modal('hide');
+
+                    //Tampilkan Data
+                    ShowData();
+
+                } else {
+                    // Tampilkan pesan error
+                    $Notifikasi.html(
+                        `<div class="alert alert-danger" role="alert">${response.message}</div>`
+                    );
+                    $ButtonProses.html(ButtonElement).prop("disabled", false);
+                }
+            },
+            error: function () {
+                $Notifikasi.html(
+                    '<div class="alert alert-danger" role="alert">Terjadi kesalahan pada sistem. Silakan coba lagi.</div>'
+                );
+                $ButtonProses.html(ButtonElement).prop("disabled", false);
+            },
+        });
+    });
+
+    // Proses Edit Dokumentasi
+    $('#ProsesEditDokumentasi').submit(function (e) {
+        e.preventDefault(); // Mencegah reload halaman saat submit
+
+        // Ambil data dari TinyMCE
+        var deskripsi = tinymce.get('deskripsi_edit').getContent();
+
+        // Ambil semua data dari form
+        var formData = new FormData(this);
+        formData.set('deskripsi_edit', deskripsi); // Gantikan deskripsi textarea dengan isi TinyMCE
+
+        // Disable tombol submit dan tampilkan loading
+        $('#ButtonEditDokumentasi')
+            .prop('disabled', true)
+            .html('<i class="bi bi-arrow-repeat"></i> Menyimpan...');
+
+        // Hapus notifikasi sebelumnya
+        $('#NotifikasiEditDokumentasi').html('');
+
+        // Proses AJAX
+        $.ajax({
+            type: 'POST',
+            url: '_Page/Help/ProsesEditDokumentasi.php',
+            data: formData,
+            dataType: 'json',
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                if (response.status === "Success") {
+                    // Tampilkan notifikasi sukses
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: 'Dokumentasi berhasil Disimpan.',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+
+                    //Reset Form Filter
+                    $('#ProsesFilter')[0].reset();
+
+                    // Panggil fungsi ShowData()
+                    ShowData();
+
+                    // Reset form setelah sukses
+                    $('#ProsesEditDokumentasi')[0].reset(); // Kosongkan form
+                    tinymce.get('deskripsi_edit').setContent(''); // Kosongkan TinyMCE
+                } else {
+                    // Tampilkan error pada NotifikasiEditDokumentasi
+                    $('#NotifikasiEditDokumentasi').html(
+                        '<div class="alert alert-danger" role="alert">' + response.message + '</div>'
+                    );
+                }
+            },
+            error: function () {
+                $('#NotifikasiEditDokumentasi').html(
+                    '<div class="alert alert-danger" role="alert">Terjadi kesalahan saat mengirim data.</div>'
+                );
+            },
+            complete: function () {
+                // Aktifkan kembali tombol dan kembalikan teks asli
+                $('#ButtonEditDokumentasi').prop('disabled', false).html('<i class="bi bi-save"></i> Simpan Dokumentasi');
+            }
+        });
     });
 });

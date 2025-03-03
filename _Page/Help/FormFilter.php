@@ -19,20 +19,7 @@
                 }
                 echo '</select>';
             }else{
-                if($keyword_by=="status"){
-                    echo '<select name="keyword" id="keyword" class="form-control">';
-                    echo '  <option value="">Pilih</option>';
-                    $query = mysqli_query($Conn, "SELECT DISTINCT status FROM help ORDER BY status ASC");
-                    while ($data = mysqli_fetch_array($query)) {
-                        if(!empty($data['status'])){
-                            $status= $data['status'];
-                            echo '  <option value="'.$status.'">'.$status.'</option>';
-                        }
-                    }
-                    echo '</select>';
-                }else{
-                    echo '<input type="text" name="keyword" id="keyword" class="form-control">';
-                }
+                echo '<input type="text" name="keyword" id="keyword" class="form-control">';
             }
         }
     }

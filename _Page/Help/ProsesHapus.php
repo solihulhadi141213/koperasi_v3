@@ -6,35 +6,44 @@
     include "../../_Config/GlobalFunction.php";
     include "../../_Config/Session.php";
     $now=date('Y-m-d H:i:s');
+
+    //Validasi Session Akses
     if(empty($SessionIdAkses)){
-        echo '<small class="credit text-danger">Sesi Akses Sudah Berakhir, Silahkan Login Ulang</small>';
+        echo json_encode(['status' => 'Error', 'message' => 'Sesi Akses Sudah Berakhir, Silahkan Login Ulang!']);
     }else{
+
+        //Validasi Tangkap Data 'id_help'
         if(empty($_POST['id_help'])){
-            echo '<small class="credit text-danger">ID bantuan Tidak Boleh Kosong!</small>';
+            echo json_encode(['status' => 'Error', 'message' => 'ID Dokumentasi Tidak Boleh Kosong!']);
         }else{
             $id_help=$_POST['id_help'];
+
             //Bersihkan Variabel
             $id_help=validateAndSanitizeInput($id_help);
+
             //Validasi Keberadaan Data
             $id_help=GetDetailData($Conn,'help','id_help',$id_help,'id_help');
+
             if(empty($id_help)){
-                echo '<small class="credit text-danger">ID Bantuan Yang Anda Gunakan Tidak Valid!</small>';
+                echo json_encode(['status' => 'Error', 'message' => 'ID Dokumentasi Tidak Valid!']);
             }else{
-                //Proses hapus data
+
+                //Proses hapus dokumentasi berdasarkan 'id_help'
                 $query = mysqli_query($Conn, "DELETE FROM help WHERE id_help='$id_help'") or die(mysqli_error($Conn));
                 if ($query) {
+
                     //Apabila Berhasil, Simpan Log
-                    $kategori_log="Bantuan";
-                    $deskripsi_log="Hapus Konten Bantuan";
+                    $kategori_log="Dokumentasi";
+                    $deskripsi_log="Hapus Dokumentasi";
                     $InputLog=addLog($Conn,$SessionIdAkses,$now,$kategori_log,$deskripsi_log);
                     if($InputLog=="Success"){
-                        echo '<small class="credit text-success" id="NotifikasiHapusBerhasil">Success</small>';
+                        echo json_encode(['status' => 'Success']);
                     }else{
-                        echo '<small class="credit text-danger">Terjadi kesalahan pada saat menyimpan Log</small>';
+                        echo json_encode(['status' => 'Error', 'message' => 'Terjadi Kesalahan Pada Saat Menyimpan Log!']);
                     }
                     
                 }else{
-                    echo '<small class="credit text-danger">Clear Data Fail</small>';
+                    echo '<small class="credit text-danger">Hapus Data Dokumentasi Gagal!</small>';
                 }
             }
         }

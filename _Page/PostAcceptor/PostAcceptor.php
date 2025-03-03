@@ -1,31 +1,41 @@
 <?php
-    header('Content-Type: application/json');
-    // Koneksi dan session
+    date_default_timezone_set('Asia/Jakarta');
     include "../../_Config/Connection.php";
-    include "../../_Config/GlobalFunction.php";
     include "../../_Config/SettingGeneral.php";
-
-    // Fungsi untuk membuat nama file acak
-    function generateRandomString($length = 10) {
-        return bin2hex(random_bytes($length));
-    }
-
-    // Memeriksa apakah ada file yang diunggah
     if (isset($_FILES['file'])) {
-        $file = $_FILES['file'];
-        $uploadDir = '../../assets/img/Help/'; // Pastikan path direktori tujuan benar
+        $targetDir = "../../assets/img/Help/"; // Sesuaikan dengan struktur folder
+        
+        // Ambil ekstensi file
+        $fileExtension = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
 
-        // Dapatkan ekstensi file
-        $fileExtension = pathinfo($file['name'], PATHINFO_EXTENSION);
-        // Buat nama file baru yang acak
-        $newFileName = generateRandomString(8) . '.' . $fileExtension;
-        $uploadFile = $uploadDir . $newFileName;
+        // Buat nama file baru dengan random string
+        $randomString = bin2hex(random_bytes(8)); // Random 16 karakter (8 bytes)
+        $fileName = $randomString . '.' . $fileExtension;
+        $targetFile = $targetDir . $fileName;
+        
+        // Cek dan buat folder jika belum ada
+        if (!file_exists($targetDir)) {
+            mkdir($targetDir, 0777, true);
+        }
 
-        // Memindahkan file yang diunggah ke direktori tujuan
-        if (move_uploaded_file($file['tmp_name'], $uploadFile)) {
-            echo json_encode(['location' => $base_url . '/assets/img/Help/' . $newFileName]);
+        // Debugging: Cek apakah file diterima
+        if ($_FILES['file']['error'] !== UPLOAD_ERR_OK) {
+            echo json_encode(['error' => 'Upload Error: ' . $_FILES['file']['error']]);
+            exit;
+        }
+
+        // Debugging: Cek jenis file
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        if (!in_array($_FILES['file']['type'], $allowedTypes)) {
+            echo json_encode(['error' => 'Format file tidak diizinkan']);
+            exit;
+        }
+
+        // Pindahkan file ke folder tujuan
+        if (move_uploaded_file($_FILES['file']['tmp_name'], $targetFile)) {
+            echo json_encode(['location' => "$base_url/assets/img/Help/" . $fileName]); // URL publik
         } else {
-            echo json_encode(['error' => 'Gagal mengunggah file']);
+            echo json_encode(['error' => 'Gagal menyimpan file']);
         }
     } else {
         echo json_encode(['error' => 'Tidak ada file yang diunggah']);
