@@ -5,6 +5,10 @@
     include "../../_Config/GlobalFunction.php";
     include "../../_Config/SettingGeneral.php";
     include "../../_Config/Session.php";
+
+    //Waktu Sekarang
+    $now=date('Y-m-d H:i:s');
+
     //Menangkap Data
     if(empty($SessionIdAkses)){
         echo '<code class="text-danger">Sesi Akses Sudah Berakhir, Silahkan Login Ulang</code>';
@@ -65,10 +69,15 @@
                                 )";
                                 $InputData=mysqli_query($Conn, $EntryData);
                                 if($InputData){
-                                    $KategoriLog="Simpanan";
-                                    $KeteranganLog="Tambah Jurnal Simpanan Berhasil";
-                                    include "../../_Config/InputLog.php";
-                                    echo '<small class="text-success" id="NotifikasiTambahJurnalSimpananBerhasil">Success</small>';
+                                    $kategori_log="Simpanan";
+                                    $deskripsi_log="Tambah Manual Jurnal Simpanan";
+                                    $InputLog=addLog($Conn,$SessionIdAkses,$now,$kategori_log,$deskripsi_log);
+                                    if($InputLog=="Success"){
+                                        echo '<small class="text-success" id="NotifikasiTambahJurnalSimpananBerhasil">Success</small>';
+                                    }else{
+                                        echo '<small class="text-danger">Terjadi kesalahan pada saat menyimpan log</small>';
+                                    }
+                                    
                                 }else{
                                     echo '<span class="text-danger">Terjadi kesalahan pada saat menyimpan data transaksi!</span>';
                                 }

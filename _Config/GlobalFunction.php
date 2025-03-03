@@ -570,4 +570,216 @@
         $nilai = ($nilai == floor($nilai)) ? (int)$nilai : $nilai;
         return $nilai;
     }
+
+    //Fungsi Untuk Melakukan Auto Jurnal Transaksi Jual Beli
+    //$Conn : Variabel Koneksi
+    //$kategori : Kategori Transaksi (Penjuelan, Retur Penjualan, Pembelian dan Retur Ppembelian)
+    function AutoJurnalJualBeli($Conn, $kategori, $tanggal, $id_transaksi_jual_beli, $tagihan, $pembayaran, $status){
+        //Routing Berdasarkan Kategori
+        if($kategori=="Penjualan" || $kategori=="Retur Penjualan"){
+            
+            //Tetapkan Kategori Auto Jurnal Yang Digunakan
+            $kategori_auto_jurnal="Penjualan";
+
+        }else{
+
+            //Tetapkan Kategori Auto Jurnal Yang Digunakan
+            $kategori_auto_jurnal="Pembelian";
+        }
+
+        //Buka Setting Auto Jurnal
+        $Qry = $Conn->prepare("SELECT * FROM setting_autojurnal_jual_beli WHERE kategori = ?");
+        if ($Qry === false) {
+            $validasi_auto_jurnal="Query Preparation Failed: " . $Conn->error;
+        }else{
+            
+            // Bind parameter
+            $Qry->bind_param("s", $kategori_auto_jurnal);
+            
+            // Eksekusi query
+            if (!$Qry->execute()) {
+                $validasi_auto_jurnal="Query Execution Failed: " . $Qry->error;
+            }else{
+                
+                // Mengambil hasil
+                $Result = $Qry->get_result();
+                $Data = $Result->fetch_assoc();
+            
+                // Menutup statement
+                $Qry->close();
+            
+                // Mengembalikan hasil
+                if (empty($Data['id_autojurnal_jual_beli'])) {
+                    //Apabiila Tidak Ada Auto Jurnal Maka Success
+                    $validasi_auto_jurnal="Success";
+                } else {
+                    //Buat Variabel
+                    $id_autojurnal_jual_beli=$Data['id_autojurnal_jual_beli'];
+                    $akun_debet =$Data['debet'];
+                    $akun_kredit =$Data['kredit'];
+                    $akun_utang_piutang =$Data['utang_piutang'];
+
+                    //Buka Akun Debet
+                    $id_akun_debet=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_debet, 'id_perkiraan');
+                    $kode_akun_debet=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_debet, 'kode');
+                    $nama_akun_debet=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_debet, 'nama');
+
+                    //Buka Akun Kredit
+                    $id_akun_kredit=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_kredit, 'id_perkiraan');
+                    $kode_akun_kredit=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_kredit, 'kode');
+                    $nama_akun_kredit=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_kredit, 'nama');
+
+                    //Buka Akun Utang Piutang
+                    $id_akun_utang_piutang=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_utang_piutang, 'id_perkiraan');
+                    $kode_akun_utang_piutang=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_utang_piutang, 'kode');
+                    $nama_akun_utang_piutang=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_utang_piutang, 'nama');
+
+                    //Atur Susunan Variabel Berdasarkan kategori transaksi Retur Penjualan dan Retur Pembelian
+                    if($kategori=="Retur Penjualan" || $kategori=="Retur Pembelian"){
+
+                        // Retur Penjualan dan Retur Pembelian Cash
+                        if($status=="Lunas"){
+                            $kode_perkiraan_1=$kode_akun_kredit;
+                            $nama_perkiraan_1=$nama_akun_kredit;
+                            $nilai_1=$tagihan;
+    
+                            $kode_perkiraan_2=$kode_akun_debet;
+                            $nama_perkiraan_2=$nama_akun_debet;
+                            $nilai_2=$tagihan;
+
+                            $kode_perkiraan_3="";
+                            $nama_perkiraan_3="";
+                            $nilai_3="";
+                        }else{
+                            // Retur Penjualan dan Retur Pembelian Kredit
+                            $kode_perkiraan_1=$kode_akun_kredit;
+                            $nama_perkiraan_1=$nama_akun_kredit;
+                            $nilai_1=$tagihan;
+    
+                            $kode_perkiraan_2=$kode_akun_debet;
+                            $nama_perkiraan_2=$nama_akun_debet;
+                            $nilai_2=$tagihan;
+
+                            $kode_perkiraan_3=$kode_akun_utang_piutang;
+                            $nama_perkiraan_3=$nama_akun_utang_piutang;
+                            $nilai_3="$tagihan-$pembayaran";
+                        }
+                    }else{
+                        //Penjualan dan Pembelian Cash
+                        if($status=="Lunas"){
+                            $kode_perkiraan_1=$kode_akun_debet;
+                            $nama_perkiraan_1=$nama_akun_debet;
+                            $nilai_1=$tagihan;
+    
+                            $kode_perkiraan_2=$kode_akun_kredit;
+                            $nama_perkiraan_2=$nama_akun_kredit;
+                            $nilai_2=$tagihan;
+
+                            $kode_perkiraan_3="";
+                            $nama_perkiraan_3="";
+                            $nilai_3="";
+                        }else{
+                            // Retur Penjualan dan Retur Pembelian Kredit
+                            $kode_perkiraan_1=$kode_akun_debet;
+                            $nama_perkiraan_1=$nama_akun_debet;
+                            $nilai_1=$tagihan;
+    
+                            $kode_perkiraan_2=$kode_akun_kredit;
+                            $nama_perkiraan_2=$nama_akun_kredit;
+                            $nilai_2=$tagihan;
+
+                            $kode_perkiraan_3=$kode_akun_utang_piutang;
+                            $nama_perkiraan_3=$nama_akun_utang_piutang;
+                            $nilai_3="$tagihan-$pembayaran";
+                        }
+                    }
+
+                    //Simpan Jurnal Ke 1
+                    $entry1="INSERT INTO jurnal (
+                        kategori,
+                        uuid,
+                        id_transaksi_jual_beli,
+                        tanggal,
+                        kode_perkiraan,
+                        nama_perkiraan,
+                        d_k,
+                        nilai
+                    ) VALUES (
+                        '$kategori',
+                        '$id_transaksi_jual_beli',
+                        '$id_transaksi_jual_beli',
+                        '$tanggal',
+                        '$kode_perkiraan_1',
+                        '$nama_perkiraan_1',
+                        'D',
+                        '$nilai_1'
+                    )";
+                    $Input1=mysqli_query($Conn, $entry1);
+                    if($Input1){
+                        //Simpan Jurnal Ke 2
+                        $entry2="INSERT INTO jurnal (
+                            kategori,
+                            uuid,
+                            id_transaksi_jual_beli,
+                            tanggal,
+                            kode_perkiraan,
+                            nama_perkiraan,
+                            d_k,
+                            nilai
+                        ) VALUES (
+                            '$kategori',
+                            '$id_transaksi_jual_beli',
+                            '$id_transaksi_jual_beli',
+                            '$tanggal',
+                            '$kode_perkiraan_2',
+                            '$nama_perkiraan_2',
+                            'K',
+                            '$nilai_2'
+                        )";
+                        $Input2=mysqli_query($Conn, $entry2);
+                        if($Input2){
+
+                            //Jika Status Kredit Maka Input Jurnal Ke 3
+                            if($status=="Kredit"){
+
+                                //Simpan Jurnal Ke 3
+                                $entry3="INSERT INTO jurnal (
+                                    kategori,
+                                    uuid,
+                                    id_transaksi_jual_beli,
+                                    tanggal,
+                                    kode_perkiraan,
+                                    nama_perkiraan,
+                                    d_k,
+                                    nilai
+                                ) VALUES (
+                                    '$kategori',
+                                    '$id_transaksi_jual_beli',
+                                    '$id_transaksi_jual_beli',
+                                    '$tanggal',
+                                    '$kode_perkiraan_3',
+                                    '$nama_perkiraan_3',
+                                    'D',
+                                    '$nilai_3'
+                                )";
+                                $Input3=mysqli_query($Conn, $entry3);
+                                if($Input3){
+                                    $validasi_auto_jurnal="Success";
+                                }else{
+                                    $validasi_auto_jurnal="Terjadi Kesalahan Pada Saat Menyimpan Jurnal Ke 3";
+                                }
+                            }else{
+                                $validasi_auto_jurnal="Success";
+                            }
+                        }else{
+                            $validasi_auto_jurnal="Terjadi Kesalahan Pada Saat Menyimpan Jurnal Ke 2";
+                        }
+                    }else{
+                        $validasi_auto_jurnal="Terjadi Kesalahan Pada Saat Menyimpan Jurnal Ke 1 ($kategori, $id_transaksi_jual_beli, $tanggal, $kode_perkiraan_1, $nama_perkiraan_1, $nilai_1)";
+                    }
+                }
+            }
+        }
+        return $validasi_auto_jurnal;
+    }
 ?>

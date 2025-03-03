@@ -261,20 +261,32 @@
                                 "message" => "Ada Beberapa Item Barang Yang Gagal Ditangani"
                             ];
                         }else{
-                            $kategori_log="Transaksi Penjualan";
-                            $deskripsi_log="Tambah Transaksi Penjualan";
-                            $InputLog=addLog($Conn,$SessionIdAkses,$now,$kategori_log,$deskripsi_log);
-                            if($InputLog=="Success"){
-                                $response = [
-                                    "status" => "Success",
-                                    "message" => "Tambah Transaksi Penjualan Berhasil!",
-                                    "id_transaksi_jual_beli" => $id_transaksi_jual_beli,
-                                ];
-                            }else{
+
+                            //Format tanggal
+                            $tanggal_jurnal=date('Y-m-d',strtotime($tanggal));
+                            //Simpan Auto Jurnal
+                            $auto_jurnal=AutoJurnalJualBeli($Conn, $kategori_transaksi, $tanggal_jurnal, $id_transaksi_jual_beli, $total, $cash, $status);
+                            if($auto_jurnal!=="Success"){
                                 $response = [
                                     "status" => "Error",
-                                    "message" => "Terjadi kesalahan pada saat menyimpan log aktivitas"
+                                    "message" => $auto_jurnal
                                 ];
+                            }else{
+                                $kategori_log="Transaksi Penjualan";
+                                $deskripsi_log="Tambah Transaksi Penjualan";
+                                $InputLog=addLog($Conn,$SessionIdAkses,$now,$kategori_log,$deskripsi_log);
+                                if($InputLog=="Success"){
+                                    $response = [
+                                        "status" => "Success",
+                                        "message" => "Tambah Transaksi Penjualan Berhasil!",
+                                        "id_transaksi_jual_beli" => $id_transaksi_jual_beli,
+                                    ];
+                                }else{
+                                    $response = [
+                                        "status" => "Error",
+                                        "message" => "Terjadi kesalahan pada saat menyimpan log aktivitas"
+                                    ];
+                                }
                             }
                         }
                     } else {

@@ -20,10 +20,11 @@
             echo '</div>';
         }else{
             $id_jurnal=$_POST['id_jurnal'];
-            //Bersihkan Variabe;
+
+            //Bersihkan Variabel
             $id_jurnal=validateAndSanitizeInput($id_jurnal);
-            //Buka Detail Simpanan
-            $kategori=GetDetailData($Conn,'jurnal','id_jurnal',$id_jurnal,'kategori');
+
+            //Buka Detail Jurnal
             $uuid=GetDetailData($Conn,'jurnal','id_jurnal',$id_jurnal,'uuid');
             $tanggal=GetDetailData($Conn,'jurnal','id_jurnal',$id_jurnal,'tanggal');
             $kode_perkiraan=GetDetailData($Conn,'jurnal','id_jurnal',$id_jurnal,'kode_perkiraan');
@@ -33,39 +34,6 @@
             $nilai = "" . number_format($nilai,0,',','.');
 ?>
             <input type="hidden" name="id_jurnal" value="<?php echo $id_jurnal; ?>">
-            <div class="row mb-3">
-                <div class="col-md-4">
-                    <label for="kategori_edit">Kategori</label>
-                </div>
-                <div class="col-md-8">
-                    <select name="kategori" id="kategori_edit" class="form-control">
-                        <option <?php if($kategori==""){echo "selected";} ?> value="">Pilih</option>
-                        <option <?php if($kategori=="Simpanan"){echo "selected";} ?> value="Simpanan">Simpanan Anggota</option>
-                        <option <?php if($kategori=="Penarikan"){echo "selected";} ?> value="Penarikan">Penarikan Dana</option>
-                        <option <?php if($kategori=="Pinjaman"){echo "selected";} ?> value="Pinjaman">Pinjaman</option>
-                        <option <?php if($kategori=="Angsuran"){echo "selected";} ?> value="Angsuran">Angsuran</option>
-                        <option <?php if($kategori=="Bagi Hasil"){echo "selected";} ?> value="Bagi Hasil">Bagi Hasil (SHU)</option>
-                        <option <?php if($kategori=="Transaksi"){echo "selected";} ?> value="Transaksi">Transaksi Lainnya</option>
-                        <option <?php if($kategori=="Penjualan"){echo "selected";} ?> value="Penjualan">Penjualan</option>
-                        <option <?php if($kategori=="Retur Penjualan"){echo "selected";} ?> value="Retur Penjualan">Retur Penjualan</option>
-                        <option <?php if($kategori=="Pembelian"){echo "selected";} ?> value="Pembelian">Pembelian</option>
-                        <option <?php if($kategori=="Retur Pembelian"){echo "selected";} ?> value="Retur Pembelian">Retur Pembelian</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-md-4">
-                    <label for="uuid_edit">Referensi (UUID)</label>
-                </div>
-                <div class="col-md-8">
-                    <input type="text" name="uuid" id="uuid_edit" class="form-control" value="<?php echo $uuid; ?>">
-                    <small>
-                        <code class="text text-grayish">
-                            *Isi dengan kode UUID Transaksi 
-                        </code>
-                    </small>
-                </div>
-            </div>
             <div class="row mb-3">
                 <div class="col-md-4">
                     <label for="tanggal_edit">Tanggal</label>
@@ -134,31 +102,9 @@
                     <label for="nominal_edit">Nominal</label>
                 </div>
                 <div class="col-md-8">
-                    <input type="text" required class="form-control format_uang" name="nominal" id="nominal_edit" value="<?php echo $nilai; ?>">
+                    <input type="text" required class="form-control form-money" name="nominal" id="nominal_edit" oninput="this.value = this.value.replace(/[^0-9]/g, '');" value="<?php echo $nilai; ?>">
                 </div>
             </div>
-            <script>
-                // Fungsi untuk memformat angka menjadi format uang dengan titik
-                function formatRibuan(angka) {
-                    return angka.replace(/\D/g, '') // Hapus semua karakter yang bukan angka
-                                .replace(/\B(?=(\d{3})+(?!\d))/g, '.'); // Tambah titik sebagai pemisah ribuan
-                }
-
-                // Event handler untuk memformat input saat diketik
-                $(document).on('input', '#nominal_edit', function() {
-                    let nilai = $(this).val();
-                    $(this).val(formatRibuan(nilai)); // Set nilai input menjadi format uang
-                });
-
-                // Batasi input hanya menerima angka
-                $(document).on('keydown', '#nominal_edit', function(e) {
-                    // Mengizinkan tombol backspace, delete, panah kiri/kanan, dan angka
-                    if (e.key.match(/[0-9]|\./) || e.key === "Backspace" || e.key === "ArrowLeft" || e.key === "ArrowRight" || e.key === "Delete") {
-                        return true;
-                    }
-                    e.preventDefault(); // Mencegah input lain yang bukan angka
-                });
-            </script>
 <?php
         }
     }

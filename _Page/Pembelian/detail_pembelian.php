@@ -97,6 +97,26 @@
                     ];
                 }
 
+                //Ambil Jurnal Transaksi
+                $list_jurnal=[];
+                $stmt2 = $Conn->prepare("SELECT * FROM jurnal WHERE id_transaksi_jual_beli = ? ORDER BY d_k ASC");
+                $stmt2->bind_param("s", $id_transaksi_jual_beli);
+                $stmt2->execute();
+                $result_jurnal = $stmt2->get_result();
+
+                while ($data_jurnal = $result_jurnal->fetch_assoc()) {
+                    $list_jurnal[] = [
+                        "id_jurnal" => $data_jurnal['id_jurnal'],
+                        "id_transaksi_jual_beli" => $data_jurnal['id_transaksi_jual_beli'],
+                        "tanggal" => $data_jurnal['tanggal'],
+                        "kode_perkiraan" => $data_jurnal['kode_perkiraan'],
+                        "nama_perkiraan" => $data_jurnal['nama_perkiraan'],
+                        "d_k" => $data_jurnal['d_k'],
+                        "nilai" => $data_jurnal['nilai'],
+                        "nilai_rp" => "" . number_format($data_jurnal['nilai'], 0, ',', '.')
+                    ];
+                }
+
                 // Data Response
                 $dataset = [
                     "id_supplier" => $id_supplier,
@@ -123,7 +143,8 @@
                     "status" => "Success",
                     "message" => "Data Ditemukan",
                     "dataset" => $dataset,
-                    "list_rincian" => $list_rincian
+                    "list_rincian" => $list_rincian,
+                    "list_jurnal" => $list_jurnal
                 ];
             }
         }

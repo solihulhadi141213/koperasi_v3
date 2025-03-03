@@ -22,19 +22,27 @@
             $id_jurnal=$_POST['id_jurnal'];
             //Bersihkan Variabe;
             $id_jurnal=validateAndSanitizeInput($id_jurnal);
-            //Buka Detail Simpanan
-            $kategori=GetDetailData($Conn,'jurnal','id_jurnal',$id_jurnal,'kategori');
-            $uuid=GetDetailData($Conn,'jurnal','id_jurnal',$id_jurnal,'uuid');
-            $tanggal=GetDetailData($Conn,'jurnal','id_jurnal',$id_jurnal,'tanggal');
-            $kode_perkiraan=GetDetailData($Conn,'jurnal','id_jurnal',$id_jurnal,'kode_perkiraan');
-            $nama_perkiraan=GetDetailData($Conn,'jurnal','id_jurnal',$id_jurnal,'nama_perkiraan');
-            $d_k=GetDetailData($Conn,'jurnal','id_jurnal',$id_jurnal,'d_k');
-            $nilai=GetDetailData($Conn,'jurnal','id_jurnal',$id_jurnal,'nilai');
-            //Format tanggal
-            $strtotime=strtotime($tanggal);
-            $TanggalFormat=date('d/m/Y',$strtotime);
-            //Format Rupiah
-            $nilai = "Rp " . number_format($nilai,0,',','.');
+            //Buka Detail Jumalh
+            $id_jurnal=GetDetailData($Conn,'jurnal','id_jurnal',$id_jurnal,'id_jurnal');
+            if(empty($id_jurnal)){
+                echo '<div class="row">';
+                echo '  <div class="col-md-12 mb-3 text-center">';
+                echo '      <small class="text-danger">Jurnal Yang Anda Pilih Tidak Ditemukan!</small>';
+                echo '  </div>';
+                echo '</div>';
+            }else{
+                $kategori=GetDetailData($Conn,'jurnal','id_jurnal',$id_jurnal,'kategori');
+                $uuid=GetDetailData($Conn,'jurnal','id_jurnal',$id_jurnal,'uuid');
+                $tanggal=GetDetailData($Conn,'jurnal','id_jurnal',$id_jurnal,'tanggal');
+                $kode_perkiraan=GetDetailData($Conn,'jurnal','id_jurnal',$id_jurnal,'kode_perkiraan');
+                $nama_perkiraan=GetDetailData($Conn,'jurnal','id_jurnal',$id_jurnal,'nama_perkiraan');
+                $d_k=GetDetailData($Conn,'jurnal','id_jurnal',$id_jurnal,'d_k');
+                $nilai=GetDetailData($Conn,'jurnal','id_jurnal',$id_jurnal,'nilai');
+                //Format tanggal
+                $strtotime=strtotime($tanggal);
+                $TanggalFormat=date('d/m/Y',$strtotime);
+                //Format Rupiah
+                $nilai = "Rp " . number_format($nilai,0,',','.');
 ?>
             <input type="hidden" name="id_jurnal" value="<?php echo $id_jurnal; ?>">
             <div class="row mb-3">
@@ -79,7 +87,13 @@
                     <code class="text text-grayish"><?php echo $nilai; ?></code>
                 </div>
             </div>
+            <div class="row mb-3 mt-3">
+                <div class="col-md-12">
+                    Apakah Anda Yakin akan Menghapus Jurnal Tersebut?
+                </div>
+            </div>
 <?php
+            }
         }
     }
 ?>

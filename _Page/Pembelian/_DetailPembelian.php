@@ -127,6 +127,42 @@
                     </div>
                 </div>
             </div>
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-8 mb-2 mt-2">
+                                    <b class="card-title"># Jurnal Transaksi</b>
+                                </div>
+                                <div class="col-4 mb-2 mt-2 text-end">
+                                    <button type="button" class="btn btn-md btn-floating btn-outline-primary" data-bs-toggle="modal" data-bs-target="#ModalTambahJurnal" data-id="<?php echo $id_transaksi_jual_beli; ?>" title="Tambah Uraian Jurnal Transaksi">
+                                        <i class="bi bi-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table table-responsive">
+                                <table class="table table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th><b>Kode</b></th>
+                                            <th><b>Akun Perkiraan</b></th>
+                                            <th><b>Debet</b></th>
+                                            <th><b>Kredit</b></th>
+                                            <th><b>Opsi</b></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="ListJurnal">
+                                        <!-- List Jurnal Disini -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 <?php
         }
     }

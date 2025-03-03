@@ -252,10 +252,14 @@
                                             )";
                                             $InputJurnalKredit=mysqli_query($Conn, $EntryJurnalKredit);
                                             if($InputJurnalKredit){
-                                                $KategoriLog="Log Simpanan";
-                                                $KeteranganLog="Tambah Simpanan";
-                                                include "../../_Config/InputLog.php";
-                                                echo '<small class="text-success" id="NotifikkasiTambahSimpananBerhasil">Success</small>';
+                                                $kategori_log="Log Simpanan";
+                                                $deskripsi_log="Tambah Penarikan";
+                                                $InputLog=addLog($Conn,$SessionIdAkses,$now,$kategori_log,$deskripsi_log);
+                                                if($InputLog=="Success"){
+                                                    echo '<small class="text-success" id="NotifikkasiTambahSimpananBerhasil">Success</small>';
+                                                }else{
+                                                    echo '<small class="text-danger">Terjadi kesalahan pada saat menyimpan log</small>';
+                                                }
                                             }else{
                                                 echo '<small class="text-danger">Terjadi kesalahan pada saat menyimpan data pada jurnal kredit</small>';
                                             }

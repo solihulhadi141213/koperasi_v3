@@ -317,7 +317,7 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-12 text-center" id="NotifikasiHapusJurnal">
-                            <small>Apakah anda yakin akan menghapus data ini?</small>
+                            
                         </div>
                     </div>
                 </div>
