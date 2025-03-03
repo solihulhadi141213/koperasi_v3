@@ -1,5 +1,6 @@
 <?php
     include "../../_Config/Connection.php";
+    include "../../_Config/GlobalFunction.php";
     include "../../_Config/Session.php";
     if(empty($_POST['keyword_by'])){
         echo '<input type="text" name="KeywordAktivitasUmum" id="KeywordAktivitasUmum" class="form-control">';

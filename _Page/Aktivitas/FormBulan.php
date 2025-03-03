@@ -1,5 +1,6 @@
 <?php
     include "../../_Config/Connection.php";
+    include "../../_Config/GlobalFunction.php";
     include "../../_Config/Session.php";
     if(empty($_POST['mode_waktu'])){
         echo '<input type="text" readonly name="Bulan" id="Bulan" class="form-control">';
@@ -29,7 +30,7 @@
                 <small>Bulan</small>
 <?php    
             }else{
-                echo '<input type="text" readonly name="Bulan" id="Bulan" class="form-control">';
+                echo '<input type="text" disabled name="Bulan" id="Bulan" class="form-control">';
                 echo '<small>Bulan</small>';
             }
         }

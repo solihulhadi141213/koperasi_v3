@@ -2,7 +2,8 @@
     //koneksi dan session
     ini_set("display_errors","off");
     include "../../_Config/Connection.php";
-    // include "../../_Config/Session.php";
+    include "../../_Config/GlobalFunction.php";
+    include "../../_Config/Session.php";
     //Keyword_by
     if(!empty($_POST['keyword_by'])){
         $keyword_by=$_POST['keyword_by'];
