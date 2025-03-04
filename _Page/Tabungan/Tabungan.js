@@ -43,6 +43,43 @@ function ShowJurnalSimpanan() {
         }
     });
 }
+
+// Fungsi untuk memproses input pada elemen dengan class form-money
+function processInput(event) {
+    let input = event.target;
+    let originalValue = input.value;
+
+    // Hilangkan titik dari nilai asli untuk penghitungan
+    let rawValue = originalValue.replace(/\./g, "");
+
+    // Format nilai input
+    let formattedValue = formatMoney(rawValue);
+
+    // Update nilai input dengan nilai yang telah diformat
+    input.value = formattedValue;
+}
+// Fungsi untuk memformat angka menjadi format ribuan
+function formatMoney(value) {
+    if (!value) return ""; // Jika kosong, kembalikan string kosong
+    // Hilangkan karakter selain angka
+    value = value.toString().replace(/[^0-9]/g, "");
+    // Tambahkan pemisah ribuan (titik)
+    return value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
+// Fungsi untuk menginisialisasi elemen form-money
+function initializeMoneyInputs() {
+    const moneyInputs = document.querySelectorAll(".form-money");
+    moneyInputs.forEach(function (input) {
+        // Format nilai awal jika sudah ada
+        input.value = formatMoney(input.value);
+
+        // Pastikan input diformat dengan benar
+        input.removeEventListener("input", processInput); // Menghapus event listener sebelumnya
+        input.addEventListener("input", processInput);
+    });
+}
+
 $(document).ready(function() {
     filterAndLoadTable();
     ShowDetailSimpanan();
@@ -82,6 +119,33 @@ $('#ModalTambahSimpanan').on('show.bs.modal', function (e) {
         data        : {id_anggota: id_anggota},
         success     : function(data){
             $('#FormTambahSimpanan').html(data);
+            initializeMoneyInputs();
+
+            //Cek kategori_simpanan_penarikan Pertama Kali
+            var id_anggota = $('#put_id_anggota_for_tambah_simpanan').val();
+            var kategori_simpanan_penarikan = $('#kategori_simpanan_penarikan').val();
+            $.ajax({
+                type 	    : 'POST',
+                url 	    : '_Page/Tabungan/FormJenisSimpanan.php',
+                data        : {id_anggota: id_anggota, kategori_simpanan_penarikan: kategori_simpanan_penarikan},
+                success     : function(data){
+                    $('#FormJenisSimpanan').html(data);
+                }
+            });
+
+            //Ketika kategori_simpanan_penarikan change
+            $('#kategori_simpanan_penarikan').change(function(){
+                var id_anggota = $('#put_id_anggota_for_tambah_simpanan').val();
+                var kategori_simpanan_penarikan = $('#kategori_simpanan_penarikan').val();
+                $.ajax({
+                    type 	    : 'POST',
+                    url 	    : '_Page/Tabungan/FormJenisSimpanan.php',
+                    data        : {id_anggota: id_anggota, kategori_simpanan_penarikan: kategori_simpanan_penarikan},
+                    success     : function(data){
+                        $('#FormJenisSimpanan').html(data);
+                    }
+                });
+            });
         }
     });
 });

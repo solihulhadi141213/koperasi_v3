@@ -29,7 +29,7 @@
     </div>
 </div>
 <div class="row mb-3">
-    <div class="col col-md-4"><label for="bulan">Tahun</label></div>
+    <div class="col col-md-4"><label for="bulan">Bulan</label></div>
     <div class="col col-md-8">
         <input type="text" readonly name="bulan" id="bulan" class="form-control" value="<?php echo $bulan; ?>">
     </div>

@@ -87,7 +87,7 @@
         </div>
         <div class="row mb-3">
             <div class="col-md-12 text-center">
-                <button type="button"class="btn btn-sm btn-outline-grayish btn-rounded" data-bs-toggle="modal" data-bs-target="#ModalCetak">
+                <button type="button"class="btn btn-sm btn-outline-secondary btn-rounded" data-bs-toggle="modal" data-bs-target="#ModalCetak">
                     <i class="bi bi-printer"></i> Cetak Data Rekap
                 </button>
             </div>

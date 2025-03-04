@@ -133,7 +133,8 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <div class="col-md-12 text-center" id="NotifikkasiTambahSimpanan">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-8 text-center" id="NotifikkasiTambahSimpanan">
                             <!-- Notifikasi Tambah Simpanan -->
                         </div>
                     </div>

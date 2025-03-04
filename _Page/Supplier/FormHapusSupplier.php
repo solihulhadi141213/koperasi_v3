@@ -17,7 +17,11 @@
         $QrySupplier = mysqli_query($Conn,"SELECT * FROM supplier WHERE id_supplier='$id_supplier'")or die(mysqli_error($Conn));
         $DataSupplier = mysqli_fetch_array($QrySupplier);
         $id_supplier= $DataSupplier['id_supplier'];
-        $nama_supplier= $DataSupplier['nama_supplier'];
+        if(empty($DataSupplier['nama_supplier'])){
+            $nama_supplier='-';
+        }else{
+            $nama_supplier= $DataSupplier['nama_supplier'];
+        }
         if(empty($DataSupplier['alamat_supplier'])){
             $alamat_supplier='-';
         }else{
@@ -35,7 +39,12 @@
         }
         //Hitung volume transaksi
         $Sum = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(total) AS total FROM transaksi_jual_beli WHERE id_supplier='$id_supplier'"));
-        $jumlah_transaksi = $Sum['total'];
+        if(empty($Sum['total'])){
+            $jumlah_transaksi =0;
+        }else{
+            $jumlah_transaksi = $Sum['total'];
+        }
+        
         $VolumeTransaksi = "Rp " . number_format($jumlah_transaksi,0,',','.');
         echo '
             <input type="hidden" name="id_supplier" value="'.$id_supplier.'">

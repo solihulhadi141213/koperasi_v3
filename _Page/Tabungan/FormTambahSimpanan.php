@@ -5,6 +5,7 @@
     include "../../_Config/GlobalFunction.php";
     include "../../_Config/SettingGeneral.php";
     include "../../_Config/Session.php";
+    $now=date('Y-m-d');
     if(empty($SessionIdAkses)){
         echo '<div class="row">';
         echo '  <div class="col-md-12 mb-3 text-center">';
@@ -81,7 +82,7 @@
         <div class="row mb-3">
             <div class="col-md-12">
                 <?php
-                    echo '<div class="alert alert-dark alert-dismissible fade show" role="alert">';
+                    echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">';
                     echo '  Berikut ini adalah form untuk menambahkan data simpanan secara parsial.';
                     echo '  Pastikan anda telah mengisi jumlah simpanan dengan benar.';
                     echo '  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
@@ -89,7 +90,7 @@
                 ?>
             </div>
         </div>
-        <input type="hidden" name="id_anggota" class="form-control" value="<?php echo $id_anggota; ?>">
+        <input type="hidden" name="id_anggota" id="put_id_anggota_for_tambah_simpanan" class="form-control" value="<?php echo $id_anggota; ?>">
         <div class="row mb-3">
             <div class="col-md-4">Nama Anggota</div>
             <div class="col-md-8">
@@ -97,62 +98,39 @@
             </div>
         </div>
         <div class="row mb-3">
-            <div class="col-md-4">NIP</div>
+            <div class="col-md-4">No.Induk</div>
             <div class="col-md-8">
                 <code class="text text-grayish"><?php echo "$nip"; ?></code>
             </div>
         </div>
         <div class="row mb-3">
             <div class="col-md-4">
-                <label for="tanggal_simpanan">Tanggal Simpanan</label>
+                <label for="kategori_simpanan_penarikan">Kategori</label>
             </div>
             <div class="col-md-8">
-                <input type="date" id="tanggal_simpanan" name="tanggal" class="form-control">
+                <select name="kategori_simpanan_penarikan" id="kategori_simpanan_penarikan" class="form-control">
+                    <option value="Simpanan">Simpanan</option>
+                    <option value="Penarikan">Penarikan</option>
+                </select>
             </div>
         </div>
         <div class="row mb-3">
             <div class="col-md-4">
-                <label for="id_simpanan_jenis">Jenis Simpanan</label>
+                <label for="tanggal_simpanan">Tanggal</label>
             </div>
             <div class="col-md-8">
-                <select name="id_simpanan_jenis" id="id_simpanan_jenis" class="form-control">
-                    <option value="">Pilih</option>
-                    <option value="Penarikan">Penarikan</option>
-                    <optgroup label="Simpanan Wajib/Rutin">
-                    <?php
-                        //Menampilkan Simpanan Wajib
-                        $query = mysqli_query($Conn, "SELECT*FROM simpanan_jenis WHERE rutin='1' ORDER BY nama_simpanan ASC");
-                        while ($data = mysqli_fetch_array($query)) {
-                            $id_simpanan_jenis= $data['id_simpanan_jenis'];
-                            $nama_simpanan= $data['nama_simpanan'];
-                            $rutin= $data['rutin'];
-                            $nominal= $data['nominal'];
-                            echo '<option value="'.$id_simpanan_jenis.'" data-id="'.$nominal.'">'.$nama_simpanan.'</option>';
-                        }
-                    ?>
-                    </optgroup>
-                    <optgroup label="Simpanan Sukarela">
-                    <?php
-                        //Menampilkan Simpanan Wajib
-                        $query = mysqli_query($Conn, "SELECT*FROM simpanan_jenis WHERE rutin='0' ORDER BY nama_simpanan ASC");
-                        while ($data = mysqli_fetch_array($query)) {
-                            $id_simpanan_jenis= $data['id_simpanan_jenis'];
-                            $nama_simpanan= $data['nama_simpanan'];
-                            $rutin= $data['rutin'];
-                            $nominal= $data['nominal'];
-                            echo '<option value="'.$id_simpanan_jenis.'" data-id="'.$nominal.'">'.$nama_simpanan.'</option>';
-                        }
-                    ?>
-                    </optgroup>
-                </select>
+                <input type="date" id="tanggal_simpanan" name="tanggal" class="form-control" value="<?php echo $now; ?>">
             </div>
+        </div>
+        <div class="row mb-3" id="FormJenisSimpanan">
+            <!-- Form Jenis Simpanan Ditampilkan Disini -->
         </div>
         <div class="row mb-3">
             <div class="col-md-4">
                 <label for="nominal_simpanan">Nominal (RP)</label>
             </div>
             <div class="col-md-8">
-                <input type="text" id="nominal_simpanan" name="nominal" class="form-control">
+                <input type="text" id="nominal_simpanan" name="nominal" class="form-control form-money">
             </div>
         </div>
         <div class="row mb-3">
@@ -166,12 +144,6 @@
                         Informasi lain terkait simpanan anggtoa jika dibutuhkan
                     </code>
                 </small>
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-md-4"></div>
-            <div class="col-md-8 text-primary">
-                Pastikan parameter yang anda masukan sudah sesuai
             </div>
         </div>
 <?php

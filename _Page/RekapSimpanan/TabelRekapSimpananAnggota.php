@@ -113,7 +113,7 @@
 ?>
                 <div class="row mb-3">
                     <div class="col-md-12 text-center">
-                        REKAP DATA SIMPANAN <span style="text-transform: uppercase;"><?php echo $periode; ?></span><br>
+                        REKAP DATA SIMPANAN <br>
                         <?php
                         if ($periode == "Bulanan") {
                             $nama_bulan = getNamaBulan($bulan);
@@ -130,7 +130,7 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-12 text-center">
-                        <button type="button" class="btn btn-sm btn-outline-grayish btn-rounded" data-bs-toggle="modal" data-bs-target="#ModalCetak3">
+                        <button type="button" class="btn btn-sm btn-outline-secondary btn-rounded" data-bs-toggle="modal" data-bs-target="#ModalCetak3">
                             <i class="bi bi-printer"></i> Cetak Data Rekap
                         </button>
                     </div>
