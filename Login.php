@@ -5,6 +5,7 @@
             //Koneksi
             session_start();
             include "_Config/Connection.php";
+            include "_Config/GlobalFunction.php";
             include "_Config/SettingGeneral.php";
             include "_Partial/Head.php";
         ?>
@@ -31,7 +32,11 @@
                                         }else{
                                             $Page=$_GET['Page'];
                                             if($Page=="LupaPassword"){
-                                                include "_Page/ResetPassword/ResetPassword.php";
+                                                include "_Page/ResetPassword/FormLupaPassword.php";
+                                            }else{
+                                                if($Page=="ResetPassword"){
+                                                    include "_Page/ResetPassword/FormResetPassword.php";
+                                                }
                                             }
                                         }
                                     ?>
@@ -84,6 +89,45 @@
                 });
             });
 
+            //Proses Kirim Tautan Lupa Password
+            $('#ProsesLupaPassword').submit(function(){
+                var ProsesLupaPassword = $('#ProsesLupaPassword').serialize();
+                var Loading='<div class="spinner-border text-info" role="status"><span class="visually-hidden">Loading...</span></div>';
+                $('#NotifikasiLupaPassword').html("Loading...");
+                $.ajax({
+                    type 	    : 'POST',
+                    url 	    : '_Page/ResetPassword/ProsesLupaPassword.php',
+                    data 	    :  ProsesLupaPassword,
+                    success     : function(data){
+                        $('#NotifikasiLupaPassword').html(data);
+                        var NotifikasiLupaPasswordBerhasil=$('#NotifikasiLupaPasswordBerhasil').html();
+                        if(NotifikasiLupaPasswordBerhasil=="Success"){
+                            //Tampilkan Swal Bahwa Proses Berhasil
+                            Swal.fire({
+                                title: 'Berhasil!',
+                                text: 'Kami telah mengirim tautan ke email anda',
+                                icon: 'success',
+                                confirmButtonText: 'Tutup'
+                            }).then((result) => {
+                                if (result.isConfirmed || result.dismiss === Swal.DismissReason.close) {
+                                    window.location.href = 'Login.php';
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+
+            //Kondisi saat tampilkan password
+            $('.form-check-input').click(function(){
+                if($(this).is(':checked')){
+                    $('#PasswordBaru1').attr('type','text');
+                    $('#PasswordBaru2').attr('type','text');
+                }else{
+                    $('#PasswordBaru1').attr('type','password');
+                    $('#PasswordBaru2').attr('type','password');
+                }
+            });
             $('#ProsesResetPassword').submit(function(){
                 var ProsesResetPassword = $('#ProsesResetPassword').serialize();
                 var Loading='<div class="spinner-border text-info" role="status"><span class="visually-hidden">Loading...</span></div>';
@@ -96,34 +140,17 @@
                         $('#NotifikasiResetPassword').html(data);
                         var NotifikasiResetPasswordBerhasil=$('#NotifikasiResetPasswordBerhasil').html();
                         if(NotifikasiResetPasswordBerhasil=="Success"){
-                            window.location.href = "LupaPassword.php?Page=KirimKodeBerhasil";
-                        }
-                    }
-                });
-            });
-            //Kondisi saat tampilkan password
-            $('.form-check-input').click(function(){
-                if($(this).is(':checked')){
-                    $('#PasswordBaru1').attr('type','text');
-                    $('#PasswordBaru2').attr('type','text');
-                }else{
-                    $('#PasswordBaru1').attr('type','password');
-                    $('#PasswordBaru2').attr('type','password');
-                }
-            });
-            $('#ProsesUbahPassword').submit(function(){
-                var ProsesUbahPassword = $('#ProsesUbahPassword').serialize();
-                var Loading='<div class="spinner-border text-info" role="status"><span class="visually-hidden">Loading...</span></div>';
-                $('#NotifikasiUbahPassword').html("Loading...");
-                $.ajax({
-                    type 	    : 'POST',
-                    url 	    : '_Page/ResetPassword/ProsesUbahPassword.php',
-                    data 	    :  ProsesUbahPassword,
-                    success     : function(data){
-                        $('#NotifikasiUbahPassword').html(data);
-                        var NotifikasiUbahPasswordBerhasil=$('#NotifikasiUbahPasswordBerhasil').html();
-                        if(NotifikasiUbahPasswordBerhasil=="Success"){
-                            window.location.href = "LupaPassword.php?Page=Berhasil";
+                            //Tampilkan Swal Bahwa Proses Berhasil
+                            Swal.fire({
+                                title: 'Ubah Password Berhasil',
+                                text: 'Silahkan Login Menggunakan Password Baru Anda',
+                                icon: 'success',
+                                confirmButtonText: 'Tutup'
+                            }).then((result) => {
+                                if (result.isConfirmed || result.dismiss === Swal.DismissReason.close) {
+                                    window.location.href = 'Login.php';
+                                }
+                            });
                         }
                     }
                 });

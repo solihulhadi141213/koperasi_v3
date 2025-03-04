@@ -1,98 +1,158 @@
 <?php
     //Koneksi
     include "../../_Config/Connection.php";
+    include "../../_Config/GlobalFunction.php";
     include "../../_Config/SettingGeneral.php";
     include "../../_Config/SettingEmail.php";
+    
     //Zona Waktu
     date_default_timezone_set("Asia/Jakarta");
+    
     //Tanggal Sekarang
-    $tanggal=date('Y-m-d H:i:s');
-    $tanggal=strtotime($tanggal);
+    $tanggal_sekarang=date('Y-m-d');
+    
     //Menangkap email
     if(empty($_POST['email'])){
-        echo '<small class="text-danger">Maaf!! Email Tidak Boleh Kosong, Silahkan Diisi.</small>';
+        $validasi_data="Email Tidak Boleh Kosong! Silahkan gunakan tautan yang telah kami kirim ke email anda!";
     }else{
-        $email=$_POST['email'];
-        //Cek apakah email tersebut ada?
-        $Qry=mysqli_query($Conn,"SELECT*FROM akses_anggota WHERE email='$email'")or die(mysqli_error($Conn));
-        $DataAkses = mysqli_fetch_array($Qry);
-        if(empty($DataAkses["id_akses_anggota"])){
-            echo '<small class="text-danger">Maaf!! Email Yang Anda Masukan Tidak Terdaftar.</small>';
+
+        //Menangkap token
+        if(empty($_POST['token'])){
+            $validasi_data="Token Tidak Boleh Kosong! Silahkan gunakan tautan yang telah kami kirim ke email anda!";
         }else{
-            $id_akses_anggota=$DataAkses["id_akses_anggota"];
-            $nama_anggota=$DataAkses["nama_anggota"];
-            //Cek apakah akses tersebut sudah mengajukan lupa password sebelumnya?
-            $Qry=mysqli_query($Conn,"SELECT*FROM lupa_password WHERE id_akses_anggota='$id_akses_anggota' AND tanggal_expired>'$tanggal'")or die(mysqli_error($Conn));
-            $DataAkses = mysqli_fetch_array($Qry);
-            if(!empty($DataAkses["id_akses_anggota"])){
-                echo '<small class="text-danger">Permintaan Reset Password Anda Sebelumnya Masih Berlaku, Silahkan Cek Email Anda. Atau anda harus menunggu 24 jam dari sekarang untuk mengjukan lupa password</small>';
+
+            //Menangkap PasswordBaru1
+            if(empty($_POST['PasswordBaru1'])){
+                $validasi_data="Password Baru Tidak Boleh Kosong!";
             }else{
-                //Buat Kode Unik
-                $length=5;
-                $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                $charactersLength = strlen($characters);
-                $randomString = '';
-                for ($i = 0; $i < $length; $i++) {
-                    $randomString .= $characters[Rand(0, $charactersLength - 1)];
-                }
-                $code_unik=md5($randomString);
-                //Menghiutng waktu expired
-                $tanggal_expired=strtotime("+1 days", $tanggal);
-                //Simpan data
-                $entry="INSERT INTO lupa_password (
-                    id_akses_anggota,
-                    tanggal_dibuat,
-                    tanggal_expired,
-                    code_unik
-                ) VALUES (
-                    '$id_akses_anggota',
-                    '$tanggal',
-                    '$tanggal_expired',
-                    '$code_unik'
-                )";
-                $Input=mysqli_query($Conn, $entry);
-                if($Input){
-                    //Mengirim URL ke email
-                    $subjek="Reset Password";
-                    $email_tujuan=$email;
-                    $pesan="
-                        Anda telah mengajukan untuk melakukan reset password. Klik tautan berikut ini untuk melakukan konfirmasi.
-                        <a href='$base_url/LupaPassword.php?Page=UbahPassword&email=$email&token=$randomString'>Reset Password</a>. 
-                        Apabila tautan tidak muncul copi URL beruikut:
-                        $base_url/LupaPassword.php?Page=UbahPassword&email=$email&token=$randomString
-                        
-                    ";
-                    $ch = curl_init();
-                    $headers = array(
-                        'Content-Type: Application/JSON',          
-                        'Accept: Application/JSON'     
-                    );
-                    $arr = array(
-                        "subjek" => "$subjek",
-                        "email_asal" => "$email_gateway",
-                        "password_email_asal" => "$password_gateway",
-                        "url_provider" => "$url_provider",
-                        "nama_pengirim" => "$nama_pengirim",
-                        "email_tujuan" => "$email_tujuan",
-                        "nama_tujuan" => "$nama_anggota",
-                        "pesan" => "$pesan",
-                        "port" => "$port_gateway"
-                    );
-                    $json = json_encode($arr);
-                    curl_setopt($ch, CURLOPT_URL, "$url_service");
-                    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-                    curl_setopt($ch, CURLOPT_TIMEOUT, 300); 
-                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $content = curl_exec($ch);
-                    $err = curl_error($ch);
-                    curl_close($ch);
-                    $get =json_decode($content, true);
-                    echo '<small class="text-success" id="NotifikasiResetPasswordBerhasil">Success</small>';
+
+                //Menangkap PasswordBaru1
+                if($_POST['PasswordBaru1']!==$_POST['PasswordBaru2']){
+                    $validasi_data="Password Yang Anda Masukan Tidak Sama!";
                 }else{
-                    echo '<small class="text-danger">Maaf!! Terjadi kesalahan pada saat menyimpan data kode verifikasi.</small>';
+                    
+                    //Validasi Jumlah Karakter
+                    if(strlen($_POST['PasswordBaru1'])<6){
+                        $validasi_data="Password Yang Anda Masukan Tidak Boleh Kurang Dari 6 Karakter!";
+                    }else{
+                        if(strlen($_POST['PasswordBaru1'])>20){
+                            $validasi_data="Password Yang Anda Masukan Tidak Boleh Lebih Dari 20 Karakter!";
+                        }else{
+                            $validasi_data="Valid";
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if($validasi_data!=="Valid"){
+        echo '
+            <div class="alert alert-danger">
+                <small>'.$validasi_data.'</small>
+            </div>
+        ';
+    }else{
+        //Buat Variabel Dan Bersihkan
+        $email=validateAndSanitizeInput($_POST['email']);
+        $token=validateAndSanitizeInput($_POST['token']);
+        $password=validateAndSanitizeInput($_POST['PasswordBaru1']);
+        $token_md5=md5($token);
+
+        //Buka Data lupa_password
+        $QryLupaPassword=mysqli_query($Conn,"SELECT*FROM lupa_password WHERE email='$email' AND code_unik='$token_md5'")or die(mysqli_error($Conn));
+        $DataLupaPassword = mysqli_fetch_array($QryLupaPassword);
+
+        //Validasi Keberadaan data lupa_password
+        if(empty($DataLupaPassword["id_lupa_password"])){
+            $validasi_token="Kombinasi email dan token yang anda gunakan tidak valid! Silahkan gunakan tautan yang telah kami kirim ke email anda!";
+        }else{
+
+            //Validasi Status token
+            if($DataLupaPassword["status"]==1){
+                $validasi_token="Kombinasi email dan token tersebut sudah digunakan!";
+            }else{
+
+                //Validasi apakah token masih berlaku
+                if($DataLupaPassword["tanggal_expired"]<$tanggal_sekarang){
+                    $validasi_token="Kombinasi email dan token tersebut sudah tidak berlaku!";
+                }else{
+                    $validasi_token="Valid";
+                }
+            }
+        }
+        if($validasi_token!=="Valid"){
+            echo '
+                <div class="alert alert-danger">
+                    <small>'.$validasi_token.'</small>
+                </div>
+            ';
+        }else{
+            $id_lupa_password=$DataLupaPassword["id_lupa_password"];
+            if(empty($DataLupaPassword["id_anggota"])){
+                $mode_akses="Pengurus";
+                $id_anggota="";
+                $id_akses=$DataLupaPassword["id_akses"];
+                $password=md5($password);
+            }else{
+                $mode_akses="Anggota";
+                $id_anggota=$DataLupaPassword["id_anggota"];
+                $id_akses="";
+                $password=$password;
+            }
+            
+            //Apabila Mode Akssses Anggota
+            if($mode_akses=="Anggota"){
+                $Update = mysqli_query($Conn,"UPDATE anggota SET 
+                    password='$password'
+                WHERE id_anggota='$id_anggota'") or die(mysqli_error($Conn)); 
+                if($Update){
+                    $validasi_proses="Berhasil";
+                }else{
+                    $validasi_proses="Terjadi kesalahan pada saat update data password anggota";
+                }
+            }else{
+                $Update = mysqli_query($Conn,"UPDATE akses SET 
+                    password='$password'
+                WHERE id_akses='$id_akses'") or die(mysqli_error($Conn)); 
+                if($Update){
+                    $validasi_proses="Berhasil";
+                }else{
+                    $validasi_proses="Terjadi kesalahan pada saat update data password pengurus";
+                }
+            }
+
+            //Apabila Gagal
+            if($validasi_proses!=="Berhasil"){
+                echo '
+                    <div class="alert alert-danger">
+                        <small>'.$validasi_proses.'</small>
+                    </div>
+                ';
+            }else{
+                //Apabila Berhasil
+
+                //Ubah Status Lupa Password
+                $update_lupa_password = mysqli_query($Conn,"UPDATE lupa_password SET 
+                    status=1
+                WHERE id_lupa_password='$id_lupa_password'") or die(mysqli_error($Conn)); 
+                if($update_lupa_password){
+                    $validasi_lupa_password="Berhasil";
+                }else{
+                    $validasi_lupa_password="Terjadi kesalahan pada saat update data lupa password";
+                }
+                if($validasi_lupa_password!=="Berhasil"){
+                    echo '
+                        <div class="alert alert-danger">
+                            <small>'.$validasi_lupa_password.'</small>
+                        </div>
+                    ';
+                }else{
+                    //Tanpa konfirmasi email terkirim atau tidak 
+                    echo '
+                        <div class="alert alert-success">
+                            <small id="NotifikasiResetPasswordBerhasil">Success</small>
+                        </div>
+                    ';
                 }
             }
         }
