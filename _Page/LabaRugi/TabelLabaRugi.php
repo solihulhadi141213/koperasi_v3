@@ -130,6 +130,7 @@
                                                         $NoPemasukan++;
                                                     }
                                                 }
+                                                $SaldoPemasukanFormat = "Rp " . number_format($SaldoPemasukan,0,',','.');
                                             ?>
                                             <tr>
                                                 <td></td>

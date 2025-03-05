@@ -67,7 +67,7 @@
                                             echo '<small class="text-danger">Akun Debet Pada Pengaturan Jenis Transaksi Tidak Valid</small>';
                                         }else{
                                             //Ciptakan uuid
-                                            $uuid_transaksi=GenerateToken(32);
+                                            $uuid_transaksi=generateRandomNumber(32);
                                             //Simpan data
                                             $EntryData="INSERT INTO transaksi (
                                                 uuid_transaksi,

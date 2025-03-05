@@ -19,21 +19,33 @@
             $token_md5=md5($token);
 
             //Validasi email dan token pada tabel lupa_password
-            $Qry=mysqli_query($Conn,"SELECT*FROM lupa_password WHERE email='$email' AND code_unik='$token_md5'")or die(mysqli_error($Conn));
-            $Data = mysqli_fetch_array($Qry);
-            if(empty($Data["id_lupa_password"])){
-                $validasi_data="Kombinasi Email Dan Token Yang Anda Gunakan Tidak Valid! Silahkan gunakan tautan yang benar dan valid dari URL yang telah dikirim pada email anda.";
-            }else{
-                $id_lupa_password=$Data["id_lupa_password"];
-                $tanggal_expired=$Data["tanggal_expired"];
+            // Gunakan prepared statement untuk menghindari SQL Injection
+            $query = "SELECT id_lupa_password, id_anggota, id_akses, tanggal_expired 
+            FROM lupa_password 
+            WHERE email = ? AND code_unik = ?";
 
-                //Validasi tanggal_expired
-                if($tanggal_expired<$tanggal_sekarang){
-                    $validasi_data="Tautan yang anda gunakan sudah tidak berlaku! Silahkan kirim ulang tautan lupa password";
-                }else{
-                    $validasi_data="Valid";
-                    $id_anggota=$Data["id_anggota"];
-                    $id_akses=$Data["id_akses"];
+            $stmt = mysqli_prepare($Conn, $query);
+            mysqli_stmt_bind_param($stmt, "ss", $email, $token_md5);
+            mysqli_stmt_execute($stmt);
+            $result = mysqli_stmt_get_result($stmt);
+            $Data = mysqli_fetch_assoc($result);
+
+            if (!$Data) {
+                $validasi_data = "Kombinasi Email Dan Token Yang Anda Gunakan Tidak Valid! Silahkan gunakan tautan yang benar dan valid dari URL yang telah dikirim pada email anda.";
+            } else {
+                $id_lupa_password = $Data["id_lupa_password"];
+                $tanggal_expired = $Data["tanggal_expired"];
+
+                // Pastikan $tanggal_sekarang sudah didefinisikan dengan format yang sesuai
+                $tanggal_sekarang = date("Y-m-d H:i:s");
+
+                // Validasi tanggal_expired
+                if ($tanggal_expired < $tanggal_sekarang) {
+                    $validasi_data = "Tautan yang anda gunakan sudah tidak berlaku! Silahkan kirim ulang tautan lupa password";
+                } else {
+                    $validasi_data = "Valid";
+                    $id_anggota = $Data["id_anggota"];
+                    $id_akses = $Data["id_akses"];
                 }
             }
         }
@@ -109,4 +121,5 @@
         </form>
 <?php 
     }
+    mysqli_stmt_close($stmt);
 ?>

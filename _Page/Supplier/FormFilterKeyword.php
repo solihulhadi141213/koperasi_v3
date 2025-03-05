@@ -1,6 +1,6 @@
 <?php
     include "../../_Config/Connection.php";
-    include "../../_Config/Session.php";
+    
     if(!empty($_POST['KeywordBy'])){
         $KeywordBy=$_POST['KeywordBy'];
         if($KeywordBy=="email_supplier"){

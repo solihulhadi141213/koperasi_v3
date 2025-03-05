@@ -134,12 +134,12 @@
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalEditSupplier" data-id="'.$id_supplier.'">
-                                        <i class="bi bi-pencil"></i> Edit Barang
+                                        <i class="bi bi-pencil"></i> Edit
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalHapusSupplier" data-id="'.$id_supplier.'">
-                                        <i class="bi bi-trash"></i> Hapus Barang
+                                        <i class="bi bi-trash"></i> Hapus
                                     </a>
                                 </li>
                             </ul>

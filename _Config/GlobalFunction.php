@@ -19,6 +19,17 @@
         return $token;
     }
     //Membuat Token
+    function GenerateToken($length) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randomString = '';
+        $charLength = strlen($characters);
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charLength - 1)];
+        }
+        return $randomString;
+    }
+
+    //Membuat Randome String
     function generateRandomString($length) {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $randomString = '';
@@ -649,7 +660,7 @@
 
                             $kode_perkiraan_3="";
                             $nama_perkiraan_3="";
-                            $nilai_3="";
+                            $nilai_3=0;
                         }else{
                             // Retur Penjualan dan Retur Pembelian Kredit
                             $kode_perkiraan_1=$kode_akun_kredit;
@@ -662,7 +673,7 @@
 
                             $kode_perkiraan_3=$kode_akun_utang_piutang;
                             $nama_perkiraan_3=$nama_akun_utang_piutang;
-                            $nilai_3="$tagihan-$pembayaran";
+                            $nilai_3=$tagihan-$pembayaran;
                         }
                     }else{
                         //Penjualan dan Pembelian Cash
@@ -677,9 +688,9 @@
 
                             $kode_perkiraan_3="";
                             $nama_perkiraan_3="";
-                            $nilai_3="";
+                            $nilai_3=0;
                         }else{
-                            // Retur Penjualan dan Retur Pembelian Kredit
+                            // Penjualan dan Pembelian Pembelian Kredit
                             $kode_perkiraan_1=$kode_akun_debet;
                             $nama_perkiraan_1=$nama_akun_debet;
                             $nilai_1=$tagihan;
@@ -690,7 +701,7 @@
 
                             $kode_perkiraan_3=$kode_akun_utang_piutang;
                             $nama_perkiraan_3=$nama_akun_utang_piutang;
-                            $nilai_3="$tagihan-$pembayaran";
+                            $nilai_3=$tagihan-$pembayaran;
                         }
                     }
 
@@ -766,7 +777,7 @@
                                 if($Input3){
                                     $validasi_auto_jurnal="Success";
                                 }else{
-                                    $validasi_auto_jurnal="Terjadi Kesalahan Pada Saat Menyimpan Jurnal Ke 3";
+                                    $validasi_auto_jurnal="Terjadi Kesalahan Pada Saat Menyimpan Jurnal Ke 3 $nilai_3";
                                 }
                             }else{
                                 $validasi_auto_jurnal="Success";
