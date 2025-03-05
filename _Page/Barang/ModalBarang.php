@@ -960,6 +960,76 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="ModalImportBarang" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form action="javascript:void(0);" id="ProsesImportBarang">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark">
+                        <i class="bi bi-upload"></i> Import Data Barang
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <small class="credit">
+                                Sebelum melakukan import data, perhatikan hal berikut ini.
+                                <ol>
+                                    <li>
+                                        Pastikan anda sudah mempunyai template file untuk melakukan import dengan cara melakukan export data barang terlebih dulu.
+                                    </li>
+                                    <li>
+                                        Export data barang bisa anda lakukan dengan cara klik pada tombol <b>Opsi Lanjutan</b>, kemudian pilih <b>Export</b>
+                                    </li>
+                                    <li>
+                                        Isi kolom <b>No, Kode Barang, Nama Barang, Kategori, Stok, Satuan Dan Harga Beli</b> sesuai data yang anda miliki.
+                                    </li>
+                                    <li>
+                                        Setelah Kolom <b>Harga Beli</b> diisi dengan muti harga penjualan sesuai kategori harga barang yang anda tetapkan.
+                                    </li>
+                                    <li>
+                                        Kolom <b>No, Kode Barang, Nama Barang, Kategori, Satuan</b> wajib diisi.
+                                    </li>
+                                    <li>
+                                        Jika anda mengosongkan kolom <b>Stok dan Harga Beli</b> maka sistem akan membacanya sebagai 0.
+                                    </li>
+                                    <li>
+                                        Sistem akan menolak duplikasi data berdasarkan <b>Kode Barang</b> jika ditemukan sama identik.
+                                    </li>
+                                </ol>
+                            </small>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <label for="file_barang">File Excel</label>
+                            <input type="file" name="file_barang" id="file_barang" class="form-control">
+                            <small class="text text-muted">File type excel dan maksimal 10 mb</small>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <div class="table table-responsive" id="NotifikasiImportBarang">
+                                <!-- Notifikasi Import Akan Muncul Disini -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-rounded">
+                        <i class="bi bi-upload"></i> Import
+                    </button>
+                    <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Tutup
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="ModalExportRiwayatTransaksi" tabindex="-1">
     <div class="modal-dialog modal-md">
         <div class="modal-content">

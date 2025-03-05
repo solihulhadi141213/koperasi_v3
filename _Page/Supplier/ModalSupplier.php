@@ -262,7 +262,7 @@
                                         Kolom <b>No dan Nama Supplier</b> wajib diisi, selebihnya anda bisa mengosongkannya jika data tidak ada
                                     </li>
                                     <li>
-                                        Sistem akan melakukan menolak duplikasi data berdasarkan <b>Nama Supplier, Alamat, Email Dan Kontak</b> jika ditemukan identik.
+                                        Sistem akan menolak duplikasi data berdasarkan <b>Nama Supplier, Alamat, Email Dan Kontak</b> jika ditemukan identik.
                                     </li>
                                 </ol>
                             </small>

@@ -1436,22 +1436,66 @@ $('#ModalDeleteExpiredDate').on('show.bs.modal', function (e) {
         }
     });
 });
-//Proses Import Data Barang
-$('#ProsesImportDataBarang').submit(function(){
-    $('#NotifikasiLogProsesImport').html('<div class="spinner-border text-secondary" role="status"><span class="sr-only"></span></div>');
-    var form = $('#ProsesImportDataBarang')[0];
-    var data = new FormData(form);
+
+//Modal Import Barang
+$('#ModalImportBarang').on('show.bs.modal', function () {
+    // Reset form dan notifikasi saat modal muncul
+    $('#ProsesImportBarang')[0].reset();
+    $('#NotifikasiImportBarang').html('');
+});
+
+//Validasi File Import
+$('#file_barang').on('change', function () {
+    var file = this.files[0];
+    var validTypes = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'];
+    var maxSize = 10 * 1024 * 1024; // 10 MB
+
+    // Reset notifikasi
+    $('#NotifikasiImportBarang').html('');
+
+    if (file) {
+        if (!validTypes.includes(file.type)) {
+            $('#NotifikasiImportBarang').html('<div class="alert alert-danger">Format file tidak valid. Hanya diperbolehkan file Excel (.xls, .xlsx).</div>');
+            $(this).val(''); // Reset input file
+            return;
+        }
+
+        if (file.size > maxSize) {
+            $('#NotifikasiImportBarang').html('<div class="alert alert-danger">Ukuran file terlalu besar. Maksimal 10 MB.</div>');
+            $(this).val(''); // Reset input file
+            return;
+        }
+
+        $('#NotifikasiImportBarang').html('<div class="alert alert-success">File valid dan siap untuk diimport.</div>');
+    }
+});
+
+//Proses Import
+$('#ProsesImportBarang').on('submit', function (e) {
+    e.preventDefault();
+    var formData = new FormData(this);
+
     $.ajax({
-        type 	    : 'POST',
-        url 	    : '_Page/Barang/ProsesImportDataBarang.php',
-        data 	    :  data,
-        cache       : false,
-        processData : false,
-        contentType : false,
-        enctype     : 'multipart/form-data',
-        success     : function(data){
-            $('#NotifikasiLogProsesImport').html(data);
-            swal("Import Selesai!", "Silahakan Cek Kembali Proses Import Melalui Log!", "success");
+        url: '_Page/Barang/ProsesImportBarang.php',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        beforeSend: function () {
+            $('#NotifikasiImportBarang').html('<div class="alert alert-info">Sedang memproses import...</div>');
+        },
+        success: function (response) {
+            $('#NotifikasiImportBarang').html(response);
+            
+            //Reset Filter
+            $('#ProsesFilter')[0].reset();
+            
+            //Tampilkan Data
+            ShowData();
+
+        },
+        error: function () {
+            $('#NotifikasiImportBarang').html('<div class="alert alert-danger">Terjadi kesalahan saat mengimpor data.</div>');
         }
     });
 });
