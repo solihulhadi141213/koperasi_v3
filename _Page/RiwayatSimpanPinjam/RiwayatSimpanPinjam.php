@@ -163,8 +163,8 @@
                                                 }else{
                                                     $JumlahPinjaman = $SumPinjaman['jumlah'];
                                                 }
-                                                $JumllahTotalPinjaman=$JumllahTotal+$JumlahPinjaman;
-                                                $JumlahPinjamanFormat="Rp " . number_format($JumlahSimpanan,0,',','.');
+                                                $JumllahTotal=$JumllahTotal+$JumlahPinjaman;
+                                                $JumlahPinjamanFormat="Rp " . number_format($JumlahPinjaman,0,',','.');
                                                 echo '<tr>';
                                                 echo '  <td align="center">'.$no.'</td>';
                                                 echo '  <td align="left">'.$nama.'</td>';
@@ -173,7 +173,7 @@
                                                 echo '</tr>';
                                                 $no++;
                                             }
-                                            $JumlahTotalPinjamanFormat="Rp " . number_format($JumllahTotalPinjaman,0,',','.');
+                                            $JumlahTotalPinjamanFormat="Rp " . number_format($JumllahTotal,0,',','.');
                                             echo '<tr>';
                                             echo '  <td align="left"></td>';
                                             echo '  <td align="left" colspan="2"><b>JUMLAH TOTAL</b></td>';

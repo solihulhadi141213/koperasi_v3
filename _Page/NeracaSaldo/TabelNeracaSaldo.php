@@ -114,21 +114,22 @@
                                                         if(empty($JumlahDebet)){
                                                             $JumlahDebet=0;
                                                         }
-                                                        $JumlahDebetFormat = "Rp " . number_format($JumlahDebet,0,',','.');
+                                                        $JumlahDebetFormat = "" . number_format($JumlahDebet,0,',','.');
                                                         //Jumlah Kredit
-                                                        $SumKredit = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(nilai) AS nilai FROM jurnal WHERE kode_perkiraan='$kode' AND d_k='D' AND tanggal>='$periode1' AND tanggal<='$periode2'"));
+                                                        $SumKredit = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(nilai) AS nilai FROM jurnal WHERE kode_perkiraan='$kode' AND d_k='K' AND tanggal>='$periode1' AND tanggal<='$periode2'"));
                                                         $JumlahKredit = $SumKredit['nilai'];
                                                         if(empty($JumlahKredit)){
                                                             $JumlahKredit=0;
                                                         }
-                                                        $JumlahKreditFormat = "Rp " . number_format($JumlahKredit,0,',','.');
+                                                        $JumlahKreditFormat = "" . number_format($JumlahKredit,0,',','.');
                                                         //Hitung Saldo Berdasarkan Saldo Normal
                                                         if($saldo_normal_anak=="Debet"){
                                                             $JumlahSaldo=$JumlahDebet-$JumlahKredit;
                                                         }else{
                                                             $JumlahSaldo=$JumlahKredit-$JumlahDebet;
                                                         }
-                                                        $JumlahSaldoFormat="Rp" . number_format($JumlahSaldo,0,',','.');
+                                                        $JumlahSaldoFormat="" . number_format($JumlahSaldo,0,',','.');
+                                                        
                                                         echo '<tr class="text text-grayish">';
                                                         echo '  <td align="center">'.$NoAnak.'</td>';
                                                         echo '  <td align="left">'.$kode.'</td>';

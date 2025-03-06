@@ -1,299 +1,165 @@
 <?php
-    //koneksi dan session
-    ini_set("display_errors","off");
+    // Koneksi dan session
     include "../../_Config/Connection.php";
+    include "../../_Config/GlobalFunction.php";
     include "../../_Config/Session.php";
-    //id_barang tidak boleh kosong
-    if(empty($_POST['id_barang'])){
-        echo '<div class="card-body">';
-        echo '  <div class="row">';
-        echo '      <div class="col-md-12 text-center text-danger">';
-        echo '          ID Barang Tidak Boleh Kosong!';
-        echo '      </div>';
-        echo '  </div>';
-        echo '</div>';
-    }else{
-        $id_barang=$_POST['id_barang'];
-        //periode1
-        if(!empty($_POST['periode1'])){
-            $periode1=$_POST['periode1'];
-        }else{
-            $periode1="";
-        }
-        //periode2
-        if(!empty($_POST['periode2'])){
-            $periode2=$_POST['periode2'];
-        }else{
-            $periode2="";
-        }
-        //batas
-        if(!empty($_POST['batas'])){
-            $batas=$_POST['batas'];
-        }else{
-            $batas="10";
-        }
-        //ShortBy
-        $ShortBy="DESC";
-        //OrderBy
-        $OrderBy="updatetime";
-        //Atur Page
-        if(!empty($_POST['page'])){
-            $page=$_POST['page'];
-            $posisi = ( $page - 1 ) * $batas;
-        }else{
-            $page="1";
-            $posisi = 0;
-        }
-        if(empty($periode1)||empty($periode2)){
-            $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM transaksi_rincian WHERE id_barang='$id_barang'"));
-        }else{
-            $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM transaksi_rincian WHERE id_barang='$id_barang' AND updatetime>='$periode1' AND updatetime<='$periode2'"));
-        }
-        $SumJumlahTotal = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(jumlah) AS jumlah FROM transaksi_rincian WHERE id_barang='$id_barang'"));
-        $jumlah_transaksi = $SumJumlahTotal['jumlah'];
-        $JumlahTransaksiRp = "" . number_format($jumlah_transaksi,0,',','.');
-?>
-    <script>
-        //ketika klik next
-        $('#NextPage').click(function() {
-            var valueNext=$('#NextPage').val();
-            var id_barang="<?php echo "$id_barang"; ?>";
-            var batas="<?php echo "$batas"; ?>";
-            var periode1="<?php echo "$periode1"; ?>";
-            var periode2="<?php echo "$periode2"; ?>";
-            var OrderBy="<?php echo "$OrderBy"; ?>";
-            var ShortBy="<?php echo "$ShortBy"; ?>";
-            $.ajax({
-                url     : "_Page/Barang/TabelRiwayatTransaksi.php",
-                method  : "POST",
-                data 	:  { page: valueNext, id_barang: id_barang, batas: batas, periode1: periode1, periode2: periode2, OrderBy: OrderBy, ShortBy: ShortBy },
-                success: function (data) {
-                    $('#TampilkanRiwayatTransaksi').html(data);
 
-                }
-            })
-        });
-        //Ketika klik Previous
-        $('#PrevPage').click(function() {
-            var ValuePrev = $('#PrevPage').val();
-            var id_barang="<?php echo "$id_barang"; ?>";
-            var batas="<?php echo "$batas"; ?>";
-            var periode1="<?php echo "$periode1"; ?>";
-            var periode2="<?php echo "$periode2"; ?>";
-            var OrderBy="<?php echo "$OrderBy"; ?>";
-            var ShortBy="<?php echo "$ShortBy"; ?>";
-            $.ajax({
-                url     : "_Page/Barang/TabelRiwayatTransaksi.php",
-                method  : "POST",
-                data 	:  { page: ValuePrev, id_barang: id_barang, batas: batas, periode1: periode1, periode2: periode2, OrderBy: OrderBy, ShortBy: ShortBy },
-                success : function (data) {
-                    $('#TampilkanRiwayatTransaksi').html(data);
-                }
-            })
-        });
-        <?php 
-            $JmlHalaman =ceil($jml_data/$batas); 
-            $a=1;
-            $b=$JmlHalaman;
-            for ( $i =$a; $i<=$b; $i++ ){
-        ?>
-            //ketika klik page number
-            $('#PageNumber<?php echo $i;?>').click(function() {
-                var PageNumber = $('#PageNumber<?php echo $i;?>').val();
-                var id_barang="<?php echo "$id_barang"; ?>";
-                var batas="<?php echo "$batas"; ?>";
-                var periode1="<?php echo "$periode1"; ?>";
-                var periode2="<?php echo "$periode2"; ?>";
-                var OrderBy="<?php echo "$OrderBy"; ?>";
-                var ShortBy="<?php echo "$ShortBy"; ?>";
-                $.ajax({
-                    url     : "_Page/Barang/TabelRiwayatTransaksi.php",
-                    method  : "POST",
-                    data 	:  { page: PageNumber, id_barang: id_barang, batas: batas, periode1: periode1, periode2: periode2, OrderBy: OrderBy, ShortBy: ShortBy },
-                    success: function (data) {
-                        $('#TampilkanRiwayatTransaksi').html(data);
+    // Inisiasi Variabel
+    $JmlHalaman = 0;
+    $page = 1;
+
+    if(empty($SessionIdAkses)){
+        echo '
+            <tr>
+                <td colspan="10" class="text-center text-danger">
+                    <small>Sesi Akses Sudah Berakhir! Silahkan Login Ulang</small>
+                </td>
+            </tr>
+        ';
+    } else {
+        if(empty($_POST['id_barang'])){
+            echo '
+                <tr>
+                    <td colspan="10" class="text-center text-danger">
+                        <small>ID Barang Tidak Boleh Kosong</small>
+                    </td>
+                </tr>
+            ';
+        } else {
+            $id_barang = $_POST['id_barang'];
+
+            // Keyword_by
+            $keyword_by = !empty($_POST['keyword_by']) ? $_POST['keyword_by'] : "";
+            // Keyword
+            $keyword = !empty($_POST['keyword']) ? $_POST['keyword'] : "";
+            // Batas
+            $batas = !empty($_POST['batas']) ? $_POST['batas'] : "10";
+            // ShortBy
+            $ShortBy = !empty($_POST['ShortBy']) ? $_POST['ShortBy'] : "DESC";
+            // OrderBy
+            $OrderBy = !empty($_POST['OrderBy']) ? $_POST['OrderBy'] : "id_transaksi_jual_beli_rincian";
+            // Atur Page
+            $page = !empty($_POST['page']) ? $_POST['page'] : "1";
+            $posisi = ($page - 1) * $batas;
+
+            // Query dasar
+            $query = "SELECT r.*, t.kategori, t.tanggal, t.status 
+                      FROM transaksi_jual_beli_rincian r
+                      JOIN transaksi_jual_beli t ON r.id_transaksi_jual_beli = t.id_transaksi_jual_beli
+                      WHERE r.id_barang = '$id_barang'";
+
+            // Tambahkan kondisi pencarian
+            if (!empty($keyword_by) && !empty($keyword)) {
+                $query .= " AND $keyword_by LIKE '%$keyword%'";
+            } elseif (!empty($keyword)) {
+                $query .= " AND (t.kategori LIKE '%$keyword%' OR t.tanggal LIKE '%$keyword%' OR t.status LIKE '%$keyword%' OR r.satuan LIKE '%$keyword%')";
+            }
+
+            // Hitung jumlah data
+            $jml_data = mysqli_num_rows(mysqli_query($Conn, $query));
+
+            if(empty($jml_data)){
+                echo '
+                    <tr>
+                        <td colspan="10" class="text-center text-danger">
+                            Tidak Ada Data Yang Ditampilkan.
+                        </td>
+                    </tr>
+                ';
+            } else {
+                // Tambahkan pengurutan dan batasan
+                $query .= " ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas";
+                $result = mysqli_query($Conn, $query);
+
+                $no = 1 + $posisi;
+                while ($data = mysqli_fetch_assoc($result)) {
+                    $id_transaksi_jual_beli_rincian = $data['id_transaksi_jual_beli_rincian'];
+                    $id_transaksi_jual_beli = $data['id_transaksi_jual_beli'];
+                    $satuan = $data['satuan'];
+                    $qty = $data['qty'];
+                    $harga = $data['harga'];
+                    $ppn = $data['ppn'];
+                    $diskon = $data['diskon'];
+                    $subtotal = $data['subtotal'];
+                    $kategori = $data['kategori'];
+                    $tanggal = $data['tanggal'];
+                    $status = $data['status'];
+
+                    // Format tanggal
+                    $tanggal = date('d/m/Y', strtotime($tanggal));
+
+                    // Label Kategori
+                    $label_kategori = '';
+                    switch ($kategori) {
+                        case 'Pembelian':
+                            $label_kategori = '<span class="badge badge-info">Pembelian</span>';
+                            break;
+                        case 'Penjualan':
+                            $label_kategori = '<span class="badge badge-primary">Penjualan</span>';
+                            break;
+                        case 'Retur Pembelian':
+                            $label_kategori = '<span class="badge badge-warning">Retur Pembelian</span>';
+                            break;
+                        case 'Retur Penjualan':
+                            $label_kategori = '<span class="badge badge-danger">Retur Penjualan</span>';
+                            break;
                     }
-                })
-            });
-        <?php } ?>
-        $('#batas').change(function(){
-            var ProsesCariRiwayatTransaksi = $('#ProsesCariRiwayatTransaksi').serialize();
-            $('#TampilkanRiwayatTransaksi').html('Loading...');
-            $.ajax({
-                type 	    : 'POST',
-                url 	    : '_Page/Barang/TabelRiwayatTransaksi.php',
-                data 	    :  ProsesCariRiwayatTransaksi,
-                success     : function(data){
-                    $('#TampilkanRiwayatTransaksi').html(data);
+
+                    // Label Status
+                    $label_status = $status == "Lunas" ? '<span class="badge badge-success">Lunas</span>' : '<span class="badge badge-warning">Kredit</span>';
+
+                    // Format Rp
+                    $jumlah = $qty * $harga;
+                    $jumlah_format = number_format($jumlah, 0, ',', '.');
+                    $harga_format = number_format($harga, 0, ',', '.');
+                    $diskon_format = number_format($diskon, 0, ',', '.');
+                    $ppn_format = number_format($ppn, 0, ',', '.');
+                    $subtotal_format = number_format($subtotal, 0, ',', '.');
+
+                    echo '
+                        <tr>
+                            <td><small>'.$no.'</small></td>
+                            <td>
+                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#ModalDetailTransaksi" data-id="'.$id_transaksi_jual_beli.'" data-id_rincian="'.$id_transaksi_jual_beli_rincian.'">
+                                    <small>'.$tanggal.'</small>
+                                </a>
+                            </td>
+                            <td><small>'.$label_kategori.'</small></td>
+                            <td><small>'.$harga_format.'</small></td>
+                            <td><small>'.$qty.'</small></td>
+                            <td><small>'.$satuan.'</small></td>
+                            <td><small>'.$jumlah_format.'</small></td>
+                            <td><small>'.$ppn_format.'</small></td>
+                            <td><small>'.$diskon_format.'</small></td>
+                            <td><small>'.$subtotal_format.'</small></td>
+                            <td><small>'.$label_status.'</small></td>
+                        </tr>
+                    ';
+                    $no++;
                 }
-            });
-        });
-    </script>
-    <div class="card-body">
-        <div class="row mt-4">
-            <div class="col-md-12 text-center">
-                <div class="table-responsive">
-                    <table class="table table-hover table-bordered align-items-center mb-0">
-                        <thead class="">
-                            <tr>
-                                <th class="text-center">
-                                    <b>No</b>
-                                </th>
-                                <th class="text-center">
-                                    <b>Tanggal</b>
-                                </th>
-                                <th class="text-center">
-                                    <b>Transaksi</b>
-                                </th>
-                                <th class="text-center">
-                                    <b>QTY</b>
-                                </th>
-                                <th class="text-center">
-                                    <b>Harga</b>
-                                </th>
-                                <th class="text-center">
-                                    <b>Jumlah</b>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                                if(empty($jml_data)){
-                                    echo '<tr>';
-                                    echo '  <td colspan="6">';
-                                    echo '      <span class="text-danger">Tidak Ada Riwayat Transaksi</span>';
-                                    echo '  </td>';
-                                    echo '</tr>';
-                                }else{
-                                    $no = 1+$posisi;
-                                    //KONDISI PENGATURAN MASING FILTER
-                                    if(empty($periode1)||empty($periode2)){
-                                        $query = mysqli_query($Conn, "SELECT*FROM transaksi_rincian WHERE id_barang='$id_barang' ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
-                                    }else{
-                                        $query = mysqli_query($Conn, "SELECT*FROM transaksi_rincian WHERE id_barang='$id_barang' AND updatetime>='$periode1' AND updatetime<='$periode2' ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
-                                    }
-                                    while ($data = mysqli_fetch_array($query)) {
-                                        $id_transaksi_rincian= $data['id_transaksi_rincian'];
-                                        $id_transaksi= $data['id_transaksi'];
-                                        $nama_barang= $data['nama_barang'];
-                                        $harga= $data['harga'];
-                                        $qty= $data['qty'];
-                                        $jumlah= $data['jumlah'];
-                                        $updatetime= $data['updatetime'];
-                                        $HargaRp = "" . number_format($harga,0,',','.');
-                                        $JumlahRp = "" . number_format($jumlah,0,',','.');
-                                        //Buka Data Transaksi
-                                        $QryTransaksi = mysqli_query($Conn,"SELECT * FROM transaksi WHERE id_transaksi='$id_transaksi'")or die(mysqli_error($Conn));
-                                        $DataTransaksi = mysqli_fetch_array($QryTransaksi);
-                                        $id_transaksi = $DataTransaksi['id_transaksi'];
-                                        $kategori= $DataTransaksi['kategori'];
-                                        //Buka data barang
-                                        $QryBarang = mysqli_query($Conn,"SELECT * FROM barang WHERE id_barang='$id_barang'")or die(mysqli_error($Conn));
-                                        $DataBarang = mysqli_fetch_array($QryBarang);
-                                        $satuan_barang= $DataBarang['satuan_barang'];
-                                        //Format Tanggal
-                                        $Strtotime=strtotime($updatetime);
-                                        $TanggalFormat=date('d/m/Y H:i',$Strtotime);
-                                ?>
-                                    <tr>
-                                        <td class="text-center text-xs">
-                                            <?php 
-                                                echo "<small >$no</small>";
-                                            ?>
-                                        </td>
-                                        <td class="text-left" align="left">
-                                            <?php 
-                                                echo '<small class="credits"><i class="bi bi-calendar-check"></i> '.$TanggalFormat.'</small>';
-                                            ?>
-                                        </td>
-                                        <td class="text-left" align="left">
-                                            <?php 
-                                                echo "<small><i class='bi bi-tag'></i>$kategori</small><br>";
-                                            ?>
-                                        </td>
-                                        <td class="text-left" align="center">
-                                            <?php 
-                                                echo "<small>$qty $satuan_barang</small>";
-                                            ?>
-                                        </td>
-                                        <td class="text-right" align="right">
-                                            <?php 
-                                                echo "<small>$HargaRp</small><br>";
-                                            ?>
-                                        </td>
-                                        <td class="text-right" align="right">
-                                            <?php 
-                                                echo "<small>$JumlahRp</small><br>";
-                                            ?>
-                                        </td>
-                                    </tr>
-                                <?php $no++; }} ?>
-                                <tr>
-                                    <td></td>
-                                    <td colspan="4" align="left"><b>JUMLAH TOTAL</b></td>
-                                    <td class="text-right" align="right"><b><?php echo $JumlahTransaksiRp;?></b></td>
-                                </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="card-footer text-center">
-        <div class="btn-group shadow-0" role="group" aria-label="Basic example">
-            <?php
-                //Mengatur Halaman
-                $JmlHalaman = ceil($jml_data/$batas); 
-                $JmlHalaman_real = ceil($jml_data/$batas); 
-                $prev=$page-1;
-                $next=$page+1;
-                if($next>$JmlHalaman){
-                    $next=$page;
-                }else{
-                    $next=$page+1;
-                }
-                if($prev<"1"){
-                    $prev="1";
-                }else{
-                    $prev=$page-1;
-                }
-            ?>
-            <button class="btn btn-sm btn-outline-info" id="PrevPage" value="<?php echo $prev;?>">
-                <span aria-hidden="true">«</span>
-            </button>
-            <?php 
-                //Navigasi nomor
-                if($JmlHalaman>3){
-                    if($page>=2){
-                        $a=$page-1;
-                        $b=$page+1;
-                        if($JmlHalaman<=$b){
-                            $a=$page-1;
-                            $b=$JmlHalaman;
-                        }
-                    }else{
-                        $a=1;
-                        $b=$page+1;
-                        if($JmlHalaman<=$b){
-                            $a=1;
-                            $b=$JmlHalaman;
-                        }
-                    }
-                }else{
-                    $a=1;
-                    $b=$JmlHalaman;
-                }
-                for ( $i =$a; $i<=$b; $i++ ){
-                    if($page=="$i"){
-                        echo '<button class="btn btn-sm btn-info" id="PageNumber'.$i.'" value="'.$i.'"><span aria-hidden="true">'.$i.'</span></button>';
-                    }else{
-                        echo '<button class="btn btn-sm btn-outline-info" id="PageNumber'.$i.'" value="'.$i.'"><span aria-hidden="true">'.$i.'</span></button>';
-                    }
-                }
-            ?>
-            <button class="btn btn-sm btn-outline-info" id="NextPage" value="<?php echo $next;?>">
-                <span aria-hidden="true">»</span>
-            </button>
-        </div>
-    </div>
-<?php } ?>
+                $JmlHalaman = ceil($jml_data / $batas);
+            }
+        }
+    }
+?>
+
+<script>
+    // Create Javascript Variabel
+    var page_count = <?php echo $JmlHalaman; ?>;
+    var curent_page = <?php echo $page; ?>;
+
+    // Put Into Pagging Element
+    $('#page_info_riwayat_transaksi').html('Page ' + curent_page + ' Of ' + page_count + '');
+
+    // Set Pagging Button
+    if(curent_page == 1){
+        $('#prev_button_riwayat_transaksi').prop('disabled', true);
+    } else {
+        $('#prev_button_riwayat_transaksi').prop('disabled', false);
+    }
+    if(page_count <= curent_page){
+        $('#next_button_riwayat_transaksi').prop('disabled', true);
+    } else {
+        $('#next_button_riwayat_transaksi').prop('disabled', false);
+    }
+</script>

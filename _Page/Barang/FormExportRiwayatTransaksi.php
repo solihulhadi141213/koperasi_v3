@@ -1,60 +1,78 @@
 <?php
-    if(empty($_POST['id_barang'])){
-        echo '<div class="modal-body">';
-        echo '  <div class="row">';
-        echo '      <div class="col-md-12 text-center text-danger">';
-        echo '          ID Barang Tidak Boleh Kosong';
-        echo '      </div>';
-        echo '  </div>';
-        echo '</div>';
-        echo '<div class="modal-footer bg-success">';
-        echo '  <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">';
-        echo '      <i class="bi bi-x-circle"></i> Tutup';
-        echo '  </button>';
-        echo '</div>';
+    //Koneksi
+    date_default_timezone_set('Asia/Jakarta');
+    include "../../_Config/Connection.php";
+    include "../../_Config/GlobalFunction.php";
+    include "../../_Config/Session.php";
+
+    //Validasi Sesi Akses
+    if(empty($SessionIdAkses)){
+        echo '
+            <div class="alert alert-danger">
+                <small>Sessi Akses Sudah Berakhir, Silahkan Login Ulang!</small>
+            </div>
+        ';
     }else{
-        $id_barang=$_POST['id_barang'];
-        //periode1
-        if(!empty($_POST['periode1'])){
-            $periode1=$_POST['periode1'];
+        if(empty($_POST['id_barang'])){
+            echo '
+                <div class="alert alert-danger">
+                    <small>ID Barang Tidak Boleh Kosong</small>
+                </div>
+            ';
         }else{
-            $periode1="";
+            $id_barang=validateAndSanitizeInput($_POST['id_barang']);
+            //Buka Data Barang
+            $nama_barang=GetDetailData($Conn, 'barang', 'id_barang', $id_barang, 'nama_barang');
+            $kode_barang=GetDetailData($Conn, 'barang', 'id_barang', $id_barang, 'kode_barang');
+            echo '
+                <input type="hidden" name="id_barang" value="'.$id_barang.'">
+                <div class="row mb-3">
+                    <div class="col-4">
+                        <small>Kode Barang</small>
+                    </div>
+                    <div class="col-1">:</div>
+                    <div class="col-7">
+                        <small class="text text-muted">'.$kode_barang.'</small>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-4">
+                        <small>Nama Barang</small>
+                    </div>
+                    <div class="col-1">:</div>
+                    <div class="col-7">
+                        <small class="text text-muted">'.$nama_barang.'</small>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-4">
+                        <label for="periode_awal_transaksi"><small>Periode Awal</small></label>
+                    </div>
+                    <div class="col-1">:</div>
+                    <div class="col-7">
+                        <input type="date" name="periode_awal_transaksi" id="periode_awal_transaksi" class="form-control">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-4">
+                        <label for="periode_akhir_transaksi"><small>Periode Akhir</small></label>
+                    </div>
+                    <div class="col-1">:</div>
+                    <div class="col-7">
+                        <input type="date" name="periode_akhir_transaksi" id="periode_akhir_transaksi" class="form-control">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <div class="alert alert-warning">
+                            <small>
+                                Sistem akan melakukan export data riwayat transaksi dalam format file <b>Excel</b> sesuai parameter di atas. 
+                                Pastikan periode data sudah terisi dengan benar
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            ';
         }
-        //periode2
-        if(!empty($_POST['periode2'])){
-            $periode2=$_POST['periode2'];
-        }else{
-            $periode2="";
-        }
+    }
 ?>
-    <form action="_Page/Barang/ExportRiwayatTransaksi.php" method="POST" target="_blank">
-        <div class="modal-body">
-            <div class="row">
-                <div class="col-md-12 mb-2">
-                    <label for="id_barang">ID Barang</label>
-                    <input type="text" readonly name="id_barang" class="form-control" value="<?php echo "$id_barang"; ?>">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12 mb-2">
-                    <label for="periode1">Periode awal</label>
-                    <input type="date" name="periode1" class="form-control" value="<?php echo "$periode1"; ?>">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12 mb-2">
-                    <label for="periode2">Periode Akhir</label>
-                    <input type="date" name="periode2" class="form-control" value="<?php echo "$periode2"; ?>">
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer bg-success">
-            <button type="submit" class="btn btn-primary btn-rounded">
-                <i class="bi bi-download"></i> Download
-            </button>
-            <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
-                <i class="bi bi-x-circle"></i> Tutup
-            </button>
-        </div>
-    </form>
-<?php } ?>

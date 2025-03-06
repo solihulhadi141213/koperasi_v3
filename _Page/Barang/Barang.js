@@ -211,6 +211,25 @@ function DetailBarangOnPage(id_barang) {
         },
     });
 }
+
+//Fungsi Menampilkan Riwayat Transaksi
+function ShowRiwayatTransaksi(id_barang) {
+    //Tempelkan id_barang ke form filter
+    $('#put_id_barang_for_filter_riwayat_transaksi').val(id_barang);
+
+    //Form Filter
+    var ProsesFilterRiwayatTransaksi = $('#ProsesFilterRiwayatTransaksi').serialize();
+    $('#TabelRiwayatTransaksi').html('<tr><td class="text-center" colspan="10">Loading...</td></tr>');
+    $.ajax({
+        type    : 'POST',
+        url     : '_Page/Barang/TabelRiwayatTransaksi.php',
+        data    : ProsesFilterRiwayatTransaksi,
+        success: function(data) {
+            $('#TabelRiwayatTransaksi').html(data);
+        }
+    });
+}
+
 $(document).ready(function() {
     //Menampilkan Data Pertama Kali
     ShowData();
@@ -219,6 +238,75 @@ $(document).ready(function() {
     if ($("#DetailBarangOnPage").length) {
         var id_barang_in_line=$('#put_id_barang_in_line_page').val();
         DetailBarangOnPage(id_barang_in_line);
+
+        //Tampilkan Tabel Riwayat transaksi
+        ShowRiwayatTransaksi(id_barang_in_line);
+
+        //Filter RIWAYAT TRANSAKSI
+        $('#keyword_by_riwayat_transaksi').change(function(){
+            var keyword_by = $('#keyword_by_riwayat_transaksi').val();
+            $.ajax({
+                type 	    : 'POST',
+                url 	    : '_Page/Barang/FormFilterKeywordRiwayatTransaksi.php',
+                data 	    :  {keyword_by: keyword_by},
+                success     : function(data){
+                    $('#FormFilterKeywordRiwayatTransaksi').html(data);
+                }
+            });
+        });
+
+        //Ketika Submit Filter
+        $('#ProsesFilterRiwayatTransaksi').submit(function(){
+            //Kembalikan ke halaman 1
+            $('#page_riwayat_transaksi').val(1);
+
+            //Tampilkan Data
+            ShowRiwayatTransaksi(id_barang_in_line);
+
+            //Tutup Modal
+            $('#ModalFilterRiwayatTransaksi').modal('hide');
+        });
+
+
+        //PAGGING
+        $(document).on('click', '#next_button_riwayat_transaksi', function() {
+            var page_now = parseInt($('#page_riwayat_transaksi').val(), 10); // Pastikan nilai diambil sebagai angka
+            var next_page = page_now + 1;
+            $('#page_riwayat_transaksi').val(next_page);
+            ShowRiwayatTransaksi(id_barang_in_line);
+        });
+        $(document).on('click', '#prev_button_riwayat_transaksi', function() {
+            var page_now = parseInt($('#page_riwayat_transaksi').val(), 10); // Pastikan nilai diambil sebagai angka
+            var next_page = page_now - 1;
+            $('#page_riwayat_transaksi').val(next_page);
+            ShowRiwayatTransaksi(id_barang_in_line);
+        });
+
+        //Modal Detail Transaksi
+        $('#ModalDetailTransaksi').on('show.bs.modal', function (e) {
+            var id_transaksi_jual_beli= $(e.relatedTarget).data('id');
+            var id_transaksi_jual_beli_rincian= $(e.relatedTarget).data('id_rincian');
+
+            //Loading
+            $('#FormDetailTransaksi').html('Loading...');
+
+            //Tampikan Dalam Ajax
+            $.ajax({
+                type 	    : 'POST',
+                url 	    : '_Page/Barang/FormDetailTransaksi.php',
+                data 	    :  {
+                    id_transaksi_jual_beli: id_transaksi_jual_beli, 
+                    id_transaksi_jual_beli_rincian: id_transaksi_jual_beli_rincian
+                },
+                success     : function(data){
+                    $('#FormDetailTransaksi').html(data);
+                }
+            });
+        });
+
+
+
+
     }
     //Ketika Batas Diubah
     $('#batas').change(function(){
@@ -1503,12 +1591,12 @@ $('#ProsesImportBarang').on('submit', function (e) {
 
 //Hapus Satuan Barang
 $('#ModalExportRiwayatTransaksi').on('show.bs.modal', function (e) {
-    var ProsesCariRiwayatTransaksi = $('#ProsesCariRiwayatTransaksi').serialize();
+    var id_barang =$(e.relatedTarget).data('id');
     $('#FormExportRiwayatTransaksi').html('Loading...');
     $.ajax({
         type 	    : 'POST',
         url 	    : '_Page/Barang/FormExportRiwayatTransaksi.php',
-        data 	    :  ProsesCariRiwayatTransaksi,
+        data 	    :  {id_barang: id_barang},
         success     : function(data){
             $('#FormExportRiwayatTransaksi').html(data);
         }

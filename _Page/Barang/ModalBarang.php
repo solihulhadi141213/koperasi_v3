@@ -1030,16 +1030,154 @@
     </div>
 </div>
 
+<div class="modal fade" id="ModalFilterRiwayatTransaksi" tabindex="-1">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <form action="javascript:void(0);" id="ProsesFilterRiwayatTransaksi">
+                <input type="hidden" name="id_barang" id="put_id_barang_for_filter_riwayat_transaksi">
+                <input type="hidden" name="page" id="page_riwayat_transaksi" value="1">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark"><i class="bi bi-funnel"></i> Filter Riwayat Transaksi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="batas_riwayat_transaksi">
+                                <small>Data/Limit</small>
+                            </label>
+                        </div>
+                        <div class="col-8">
+                            <select name="batas" id="batas_riwayat_transaksi" class="form-control">
+                                <option value="5">5</option>
+                                <option selected value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="250">250</option>
+                                <option value="500">500</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="OrderByRiwayatTransaksi">
+                                <small>Mode Urutan</small>
+                            </label>
+                        </div>
+                        <div class="col-8">
+                            <select name="OrderBy" id="OrderByRiwayatTransaksi" class="form-control">
+                                <option value="">Pilih</option>
+                                <option value="kategori">kategori</option>
+                                <option value="tanggal">Tanggal</option>
+                                <option value="status">Status</option>
+                                <option value="satuan">Satuan</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="ShortByRiwayatTransaksi">
+                                <small>Tipe Urutan</small>
+                            </label>
+                        </div>
+                        <div class="col-8">
+                            <select name="ShortBy" id="ShortByRiwayatTransaksi" class="form-control">
+                                <option value="ASC">A To Z</option>
+                                <option selected value="DESC">Z To A</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="keyword_by_riwayat_transaksi">
+                                <small>Dasar Pencarian</small>
+                            </label>
+                        </div>
+                        <div class="col-8">
+                            <select name="keyword_by" id="keyword_by_riwayat_transaksi" class="form-control">
+                                <option value="">Pilih</option>
+                                <option value="kategori">kategori</option>
+                                <option value="tanggal">Tanggal</option>
+                                <option value="status">Status</option>
+                                <option value="satuan">Satuan</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="keyword_riwayat_transaksi"><small>Kata Kunci</small></label>
+                        </div>
+                        <div class="col-md-8" id="FormFilterKeywordRiwayatTransaksi">
+                            <input type="text" name="keyword" id="keyword_riwayat_transaksi" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success btn-rounded">
+                        <i class="bi bi-save"></i> Filter
+                    </button>
+                    <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Tutup
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalDetailTransaksi" tabindex="-1">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <form action="index.php" method="GET">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark"><i class="bi bi-info-circle"></i> Detail Transaksi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-12" id="FormDetailTransaksi">
+                            <!-- Form Detail Transaksi Disini -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-md btn-outline-info btn-rounded">
+                        <i class="bi bi-three-dots"></i> Selengkapnya
+                    </button>
+                    <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Tutup
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <div class="modal fade" id="ModalExportRiwayatTransaksi" tabindex="-1">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
-            <div class="modal-header bg-success">
-                <h5 class="modal-title text-light"><i class="bi bi-download"></i> Export Riwayat Transaksi</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <form action="_Page/Barang/ProsesExportRiwayatTransaksi.php" method="POST">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark"><i class="bi bi-download"></i> Export Riwayat Transaksi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-12" id="FormExportRiwayatTransaksi">
+                            <!-- Form Export Riwayat Transaksi Disini -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-md btn-success btn-rounded">
+                        <i class="bi bi-download"></i> Export
+                    </button>
+                    <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Tutup
+                    </button>
+                </div>
             </div>
-            <div id="FormExportRiwayatTransaksi">
-                
-            </div>
-        </div>
+        </form>
     </div>
 </div>
