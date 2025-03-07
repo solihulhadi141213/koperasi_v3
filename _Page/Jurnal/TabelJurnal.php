@@ -147,6 +147,7 @@
                                 $uuid= $data['uuid'];
                                 //Buka Detail
                                 $kategori=GetDetailData($Conn,'jurnal','uuid',$uuid,'kategori');
+                                $tanggal_jurnal=GetDetailData($Conn,'jurnal','uuid',$uuid,'tanggal');
                                 //Banyaknya Data Jurnal
                                 $JumlahRow = mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM jurnal WHERE uuid='$uuid' AND kategori='$kategori'"));
                                 //Mencari Referensi
@@ -185,7 +186,21 @@
                                                     $TanggalShuFormat=date('d/m/y',$strtotime);
                                                     $Referensi="SHU/$id_shu_session/$TanggalShuFormat";
                                                 }else{
-                                                    $Referensi="None";
+                                                    if($kategori=="Penjualan"||$kategori=="Retur Penjualan"){
+                                                        $TanggalPenjualan=GetDetailData($Conn,'transaksi_jual_beli','id_transaksi_jual_beli',$uuid,'tanggal');
+                                                        $strtotime=strtotime($TanggalPenjualan);
+                                                        $TanggalPenjualanFormat=date('d/m/y',$strtotime);
+                                                        $Referensi="PNJ/$TanggalPenjualanFormat";
+                                                    }else{
+                                                        if($kategori=="Pembelian"||$kategori=="Retur Pembelian"){
+                                                            $TanggalPembelian=GetDetailData($Conn,'transaksi_jual_beli','id_transaksi_jual_beli',$uuid,'tanggal');
+                                                            $strtotime=strtotime($TanggalPembelian);
+                                                            $TanggalPembelianFormat=date('d/m/y',$strtotime);
+                                                            $Referensi="PMB/$TanggalPembelianFormat";
+                                                        }else{
+                                                            $Referensi="None";
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
@@ -195,7 +210,8 @@
                                 <tr>
                                     <td align="center" rowspan="<?php echo $JumlahRow; ?>"><?php echo $no; ?></td>
                                     <td align="left" rowspan="<?php echo $JumlahRow; ?>">
-                                        <?php echo '<code class="text text-dark">' . $Referensi . '</code>'; ?>
+                                        <?php echo '<code class="text text-dark">' . $Referensi . '</code>'; ?><br>
+                                        <?php echo '<code class="text text-dark">' . $tanggal_jurnal . '</code>'; ?>
                                     </td>
                                     <?php
                                         $QrySub = mysqli_query($Conn, "SELECT * FROM jurnal WHERE uuid='$uuid' ORDER BY d_k ASC");

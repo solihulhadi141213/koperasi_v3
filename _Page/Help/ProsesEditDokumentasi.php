@@ -21,7 +21,7 @@
             $kategori   = mysqli_real_escape_string($Conn, trim($_POST['kategori']));
             $author     = mysqli_real_escape_string($Conn, trim($_POST['author']));
             $tanggal    = mysqli_real_escape_string($Conn, trim($_POST['tanggal']));
-            $deskripsi  = mysqli_real_escape_string($Conn, trim($_POST['deskripsi_edit']));
+            $deskripsi  = $_POST['deskripsi_edit'];
 
             // Validasi input
             if (empty($id_help)) {

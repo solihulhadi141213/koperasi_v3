@@ -19,15 +19,10 @@
             $id_simpanan=validateAndSanitizeInput($id_simpanan);
             $HapusSimpanan = mysqli_query($Conn, "DELETE FROM simpanan WHERE id_simpanan='$id_simpanan'") or die(mysqli_error($Conn));
             if($HapusSimpanan) {
-                $HapusJurnal = mysqli_query($Conn, "DELETE FROM jurnal WHERE kategori='Simpanan' AND uuid='$uuid_simpanan'") or die(mysqli_error($Conn));
-                if ($HapusJurnal) {
-                    $KategoriLog="Simpanan Wajib";
-                    $KeteranganLog="Hapus Simpanan Wajib";
-                    include "../../_Config/InputLog.php";
-                    echo '<small class="text-success" id="NotifikasiHapusSimpananBerhasil">Success</small>';
-                }else{
-                    echo '<span class="text-danger">Terjadi Kesalahan Pada Saat Menghapus Jurnal</span>';
-                }
+                $KategoriLog="Simpanan Wajib";
+                $KeteranganLog="Hapus Simpanan Wajib";
+                include "../../_Config/InputLog.php";
+                echo '<small class="text-success" id="NotifikasiHapusSimpananBerhasil">Success</small>';
             }else{
                 echo '<small class="text-danger">Terjadi kesalahan pada saat menyimpan data.</small>';
             }

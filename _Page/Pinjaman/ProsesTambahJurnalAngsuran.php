@@ -49,6 +49,7 @@
                                 $EntryData="INSERT INTO jurnal (
                                     kategori,
                                     uuid,
+                                    id_pinjaman_angsuran,
                                     tanggal,
                                     kode_perkiraan,
                                     nama_perkiraan,
@@ -57,6 +58,7 @@
                                 ) VALUES (
                                     'Angsuran',
                                     '$uuid_angsuran',
+                                    '$id_pinjaman_angsuran',
                                     '$tanggal',
                                     '$kode',
                                     '$nama',

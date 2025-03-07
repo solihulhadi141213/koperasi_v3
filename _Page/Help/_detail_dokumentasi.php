@@ -53,7 +53,8 @@
             $Result = $Qry->get_result();
             $Data = $Result->fetch_assoc();
             $Qry->close();
-
+            $deskripsi=htmlspecialchars_decode($Data['deskripsi']);
+            $deskripsi = str_replace(["\r\n", "\r", "\n"], ' ', $deskripsi);
             //Buat Variabel
             $dataset = [
                 "id_help" => $Data['id_help'],
@@ -61,7 +62,7 @@
                 "judul" => $Data['judul'],
                 "kategori" => $Data['kategori'],
                 "deskripsi_script" =>$Data['deskripsi'],
-                "deskripsi" =>htmlspecialchars_decode($Data['deskripsi']),
+                "deskripsi" =>$deskripsi,
                 "datetime_creat" => $Data['datetime_creat']
             ];
 

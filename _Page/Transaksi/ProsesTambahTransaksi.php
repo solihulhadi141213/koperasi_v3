@@ -166,6 +166,7 @@
                                                         $EntryJurnalDebet="INSERT INTO jurnal (
                                                             kategori,
                                                             uuid,
+                                                            id_transaksi,
                                                             tanggal,
                                                             kode_perkiraan,
                                                             nama_perkiraan,
@@ -174,6 +175,7 @@
                                                         ) VALUES (
                                                             'Transaksi',
                                                             '$uuid_transaksi',
+                                                            '$id_transaksi',
                                                             '$tanggal',
                                                             '$KodeAkunDebet',
                                                             '$AkunDebet',
@@ -186,6 +188,7 @@
                                                             $EntryJurnalKredit="INSERT INTO jurnal (
                                                                 kategori,
                                                                 uuid,
+                                                                id_transaksi,
                                                                 tanggal,
                                                                 kode_perkiraan,
                                                                 nama_perkiraan,
@@ -194,6 +197,7 @@
                                                             ) VALUES (
                                                                 'Transaksi',
                                                                 '$uuid_transaksi',
+                                                                '$id_transaksi',
                                                                 '$tanggal',
                                                                 '$KodeAkunKredit',
                                                                 '$AkunKredit',

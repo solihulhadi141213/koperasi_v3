@@ -121,7 +121,136 @@
                             )";
                             $InputAngsuran=mysqli_query($Conn, $EntryAngsuran);
                             if($InputAngsuran){
-                                $jumlah_error=$jumlah_error+0;
+                                //Buka Auto Jurnal
+                                $id_auto_jurnal=GetDetailData($Conn,'auto_jurnal','kategori_transaksi','Angsuran','id_auto_jurnal');
+                                if(empty($id_auto_jurnal)){
+                                    $jumlah_error=$jumlah_error+0;
+                                }else{ 
+                                    $debet_id=GetDetailData($Conn,'auto_jurnal','id_auto_jurnal',$id_auto_jurnal,'debet_id');
+                                    $debet_name=GetDetailData($Conn,'auto_jurnal','id_auto_jurnal',$id_auto_jurnal,'debet_name');
+                                    $kredit_id=GetDetailData($Conn,'auto_jurnal','id_auto_jurnal',$id_auto_jurnal,'kredit_id');
+                                    $kredit_name=GetDetailData($Conn,'auto_jurnal','id_auto_jurnal',$id_auto_jurnal,'kredit_name');
+                                    //Buka Akun Debet
+                                    $KodeDebet =GetDetailData($Conn,'akun_perkiraan','id_perkiraan',$debet_id,'kode');
+                                    //Buka Akun Kredit
+                                    $KodeKredit =GetDetailData($Conn,'akun_perkiraan','id_perkiraan',$kredit_id,'kode');
+                                    if(empty($KodeDebet)){
+                                        $jumlah_error=$jumlah_error+0;
+                                    }else{
+                                        if(empty($KodeKredit)){
+                                            $jumlah_error=$jumlah_error+0;
+                                        }else{
+                                            //Buka Auto Jurnal Angsuran
+                                            $id_perkiraan_jasa=GetDetailData($Conn,'auto_jurnal_angsuran','komponen','Jasa','id_perkiraan');
+                                            $kode_jasa=GetDetailData($Conn,'auto_jurnal_angsuran','komponen','Jasa','kode');
+                                            $nama_jasa=GetDetailData($Conn,'auto_jurnal_angsuran','komponen','Jasa','nama');
+                                            $id_perkiraan_denda=GetDetailData($Conn,'auto_jurnal_angsuran','komponen','Denda','id_perkiraan');
+                                            $kode_denda=GetDetailData($Conn,'auto_jurnal_angsuran','komponen','Denda','kode');
+                                            $nama_denda=GetDetailData($Conn,'auto_jurnal_angsuran','komponen','Denda','nama');
+                                            if(empty($id_perkiraan_jasa)||empty($id_perkiraan_denda)){
+                                                $jumlah_error=$jumlah_error+0;
+                                            }else{
+                                               //Cari id_pinjaman_anmgsuran
+                                                $id_pinjaman_angsuran=GetDetailData($Conn,'pinjaman_angsuran','uuid_angsuran',$uuid_angsuran,'id_pinjaman_angsuran');
+                                                
+                                                //Simpan Ke Jurnal Kredit
+                                                $EntryDataKredit="INSERT INTO jurnal (
+                                                    kategori,
+                                                    uuid,
+                                                    id_pinjaman_angsuran,
+                                                    tanggal,
+                                                    kode_perkiraan,
+                                                    nama_perkiraan,
+                                                    d_k,
+                                                    nilai
+                                                ) VALUES (
+                                                    'Angsuran',
+                                                    '$uuid_angsuran',
+                                                    '$id_pinjaman_angsuran',
+                                                    '$tanggal_bayar',
+                                                    '$KodeKredit',
+                                                    '$kredit_name',
+                                                    'K',
+                                                    '$angsuran_pokok'
+                                                )";
+                                                $InputDataKredit=mysqli_query($Conn, $EntryDataKredit);
+                                                if($InputDataKredit){
+                                                    //Simpan Ke Jurnal Debet
+                                                    $EntryDataDebet="INSERT INTO jurnal (
+                                                        kategori,
+                                                        uuid,
+                                                        id_pinjaman_angsuran,
+                                                        tanggal,
+                                                        kode_perkiraan,
+                                                        nama_perkiraan,
+                                                        d_k,
+                                                        nilai
+                                                    ) VALUES (
+                                                        'Angsuran',
+                                                        '$uuid_angsuran',
+                                                        '$id_pinjaman_angsuran',
+                                                        '$tanggal_bayar',
+                                                        '$KodeDebet',
+                                                        '$debet_name',
+                                                        'D',
+                                                        '$angsuran_total'
+                                                    )";
+                                                    $InputDataDebet=mysqli_query($Conn, $EntryDataDebet);
+                                                    if($InputDataDebet){
+                                                        //Simpan Data denda dan jasa Jika Ada
+                                                        if(!empty($denda)){
+                                                            //Insert Jurnal Denda
+                                                            $EntryJurnalDenda="INSERT INTO jurnal (
+                                                                kategori,
+                                                                uuid,
+                                                                id_pinjaman_angsuran,
+                                                                tanggal,
+                                                                kode_perkiraan,
+                                                                nama_perkiraan,
+                                                                d_k,
+                                                                nilai
+                                                            ) VALUES (
+                                                                'Angsuran',
+                                                                '$uuid_angsuran',
+                                                                '$id_pinjaman_angsuran',
+                                                                '$tanggal_bayar',
+                                                                '$kode_denda',
+                                                                '$nama_denda',
+                                                                'K',
+                                                                '$denda'
+                                                            )";
+                                                            $InputJurnalDenda=mysqli_query($Conn, $EntryJurnalDenda);
+                                                        }
+                                                        if(!empty($jasa)){
+                                                            //Insert Jurnal jasa
+                                                            $EntryJurnalJasa="INSERT INTO jurnal (
+                                                                kategori,
+                                                                uuid,
+                                                                id_pinjaman_angsuran,
+                                                                tanggal,
+                                                                kode_perkiraan,
+                                                                nama_perkiraan,
+                                                                d_k,
+                                                                nilai
+                                                            ) VALUES (
+                                                                'Angsuran',
+                                                                '$uuid_angsuran',
+                                                                '$id_pinjaman_angsuran',
+                                                                '$tanggal_bayar',
+                                                                '$kode_jasa',
+                                                                '$nama_jasa',
+                                                                'K',
+                                                                '$rp_jasa'
+                                                            )";
+                                                            $InputJurnalJasa=mysqli_query($Conn, $EntryJurnalJasa);
+                                                            $jumlah_error=$jumlah_error+0;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }else{
                                 $jumlah_error=$jumlah_error+1;
                             }

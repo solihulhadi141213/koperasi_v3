@@ -206,6 +206,16 @@
                 </small>
             </div>
         </div>
+        <div class="row mb-2">
+            <div class="col-12 mb-2 text-center">
+                <button type="button" class="btn btn-sm btn-rounded jump_to <?php if($semester=="1"){echo 'btn-secondary';}else{echo 'btn-outline-secondary';} ?> m-2" <?php if($semester=="1"){echo 'disabled';} ?> data-id="1">
+                    Semester 1
+                </button>
+                <button type="button" class="btn btn-sm btn-rounded jump_to <?php if($semester=="2"){echo 'btn-secondary';}else{echo 'btn-outline-secondary';} ?> m-2" <?php if($semester=="2"){echo 'disabled';} ?> data-id="2">
+                    Semester 2
+                </button>
+            </div>
+        </div>
         <div class="row mb-3">
             <div class="table table-responsive">
                 <table class="table table-bordered table-hover">
@@ -446,6 +456,15 @@
                 </div>
             </div>
         </div>
+        <script>
+            $('.jump_to').click(function(){
+                var semester= $(this).data('id');
+                //Ubah Form Filter
+                $('#semester').val(semester);
+                //Tamppilkan Data
+                filterAndLoadTable();
+            });
+        </script>
 <?php
         }
     }

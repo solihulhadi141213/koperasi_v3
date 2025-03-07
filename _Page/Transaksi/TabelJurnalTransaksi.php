@@ -70,9 +70,9 @@
         <tbody>
             <?php
                 //Menampilkan Jurnal
+                $JumlahDebet=0;
+                $JumlahKredit=0;
                 if(!empty($JumlahJurnal)){
-                    $JumlahDebet=0;
-                    $JumlahKredit=0;
                     $query = mysqli_query($Conn, "SELECT*FROM jurnal WHERE kategori='Transaksi' AND uuid='$uuid_transaksi' ORDER BY id_jurnal ASC");
                     while ($data = mysqli_fetch_array($query)) {
                         $id_jurnal= $data['id_jurnal'];

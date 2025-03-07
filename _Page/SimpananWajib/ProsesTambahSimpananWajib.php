@@ -175,6 +175,8 @@
                                     )";
                                     $InputSimpananWajib=mysqli_query($Conn, $EntrySimpanan);
                                     if($InputSimpananWajib){
+                                        //Cari id_simpanan
+                                        $id_simpanan=GetDetailData($Conn,'simpanan','uuid_simpanan',$uuid_simpanan,'id_simpanan');
                                         //Membuat Jurnal
                                         //Buka Akun Debet
                                         $NamaAkunDebet=GetDetailData($Conn,'akun_perkiraan','id_perkiraan',$id_perkiraan_debet,'nama');
@@ -186,6 +188,7 @@
                                         $EntryJurnalDebet="INSERT INTO jurnal (
                                             kategori,
                                             uuid,
+                                            id_simpanan,
                                             tanggal,
                                             kode_perkiraan,
                                             nama_perkiraan,
@@ -194,6 +197,7 @@
                                         ) VALUES (
                                             'Simpanan',
                                             '$uuid_simpanan',
+                                            '$id_simpanan',
                                             '$tanggal_simpanan',
                                             '$KodeAkunDebet',
                                             '$NamaAkunDebet',
@@ -206,6 +210,7 @@
                                             $EntryJurnalKredit="INSERT INTO jurnal (
                                                 kategori,
                                                 uuid,
+                                                id_simpanan,
                                                 tanggal,
                                                 kode_perkiraan,
                                                 nama_perkiraan,
@@ -214,6 +219,7 @@
                                             ) VALUES (
                                                 'Simpanan',
                                                 '$uuid_simpanan',
+                                                '$id_simpanan',
                                                 '$tanggal_simpanan',
                                                 '$KodeAkunKredit',
                                                 '$NamaAkunKredit',

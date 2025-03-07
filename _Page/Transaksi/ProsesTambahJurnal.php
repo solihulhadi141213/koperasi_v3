@@ -32,6 +32,7 @@
                         $d_k=validateAndSanitizeInput($d_k);
                         $nilai=validateAndSanitizeInput($nilai);
                         //Buka Transaksi
+                        $id_transaksi=GetDetailData($Conn,'transaksi','uuid_transaksi',$uuid,'id_transaksi');
                         $tanggal=GetDetailData($Conn,'transaksi','uuid_transaksi',$uuid,'tanggal');
                         //Buka Akun Perkiraan
                         $nama_perkiraan=GetDetailData($Conn,'akun_perkiraan','kode',$kode_perkiraan,'nama');
@@ -41,6 +42,7 @@
                         $EntryData="INSERT INTO jurnal (
                             kategori,
                             uuid,
+                            id_transaksi,
                             tanggal,
                             kode_perkiraan,
                             nama_perkiraan,
@@ -49,6 +51,7 @@
                         ) VALUES (
                             'Transaksi',
                             '$uuid',
+                            '$id_transaksi',
                             '$TanggalFormat',
                             '$kode_perkiraan',
                             '$nama_perkiraan',

@@ -46,6 +46,7 @@
                             $tanggal_simpanan=validateAndSanitizeInput($tanggal_simpanan);
                             $id_simpanan_jenis=validateAndSanitizeInput($id_simpanan_jenis);
                             $nominal=validateAndSanitizeInput($nominal);
+                            $keterangan=validateAndSanitizeInput($keterangan);
                             //Buka UIID Simpanan
                             $uuid_simpanan=GetDetailData($Conn,'simpanan','id_simpanan',$id_simpanan,'uuid_simpanan');
                             //Buka Anggota
@@ -76,16 +77,33 @@
                                     echo '<small class="text-danger">Periksa pengaturan akun kredit pada jenis simpanan yang anda gunakkkan!</small>';
                                 }else{
                                     //Insert
-                                    $UpdateSimpanan = mysqli_query($Conn,"UPDATE simpanan SET 
-                                        id_simpanan_jenis='$id_simpanan_jenis',
-                                        rutin='$rutin',
-                                        tanggal='$tanggal_simpanan',
-                                        nama='$nama',
-                                        kategori='$nama_simpanan',
-                                        keterangan='$keterangan',
-                                        jumlah='$nominal'
-                                    WHERE id_simpanan='$id_simpanan'") or die(mysqli_error($Conn)); 
-                                    if($UpdateSimpanan){
+                                    $query = "UPDATE simpanan SET 
+                                        id_simpanan_jenis=?, 
+                                        rutin=?, 
+                                        tanggal=?, 
+                                        nama=?, 
+                                        kategori=?, 
+                                        keterangan=?, 
+                                        jumlah=? 
+                                    WHERE id_simpanan=?";
+
+                                    $stmt = $Conn->prepare($query);
+                                    if ($stmt === false) {
+                                        die("Error: " . $Conn->error); // Cek jika terjadi kesalahan pada query
+                                    }
+
+                                    $stmt->bind_param("sisssssi", 
+                                        $id_simpanan_jenis, 
+                                        $rutin, 
+                                        $tanggal_simpanan, 
+                                        $nama, 
+                                        $nama_simpanan, 
+                                        $keterangan, 
+                                        $nominal, 
+                                        $id_simpanan
+                                    );
+
+                                    if ($stmt->execute()) {
                                         //Hapus Jurnal Yang Lama
                                         $HapusJurnal = mysqli_query($Conn, "DELETE FROM jurnal WHERE kategori='Simpanan' AND uuid='$uuid_simpanan'") or die(mysqli_error($Conn));
                                         if ($HapusJurnal) {
@@ -100,6 +118,7 @@
                                             $EntryJurnalDebet="INSERT INTO jurnal (
                                                 kategori,
                                                 uuid,
+                                                id_simpanan,
                                                 tanggal,
                                                 kode_perkiraan,
                                                 nama_perkiraan,
@@ -108,6 +127,7 @@
                                             ) VALUES (
                                                 'Simpanan',
                                                 '$uuid_simpanan',
+                                                '$id_simpanan',
                                                 '$tanggal_simpanan',
                                                 '$KodeAkunDebet',
                                                 '$NamaAkunDebet',
@@ -120,6 +140,7 @@
                                                 $EntryJurnalKredit="INSERT INTO jurnal (
                                                     kategori,
                                                     uuid,
+                                                    id_simpanan,
                                                     tanggal,
                                                     kode_perkiraan,
                                                     nama_perkiraan,
@@ -128,6 +149,7 @@
                                                 ) VALUES (
                                                     'Simpanan',
                                                     '$uuid_simpanan',
+                                                    '$id_simpanan',
                                                     '$tanggal_simpanan',
                                                     '$KodeAkunKredit',
                                                     '$NamaAkunKredit',
@@ -152,6 +174,7 @@
                                     }else{
                                         echo '<small class="text-danger">Terjadi kesalahan pada saat menyimpan data.</small>';
                                     }
+                                    $stmt->close();
                                 }
                             }
                         }

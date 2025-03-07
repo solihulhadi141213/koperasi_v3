@@ -155,11 +155,14 @@
                                                                                     )";
                                                                                     $InputAngsuran=mysqli_query($Conn, $EntryAngsuran);
                                                                                     if($InputAngsuran){
+                                                                                        //Cari id_pinjaman_anmgsuran
+                                                                                        $id_pinjaman_angsuran=GetDetailData($Conn,'pinjaman_angsuran','uuid_angsuran',$uuid_angsuran,'id_pinjaman_angsuran');
                                                                                         //Perlu Diketahui Bahwa ini terbalik dengan pinjaman
                                                                                         //Simpan Ke Jurnal Kredit
                                                                                         $EntryDataKredit="INSERT INTO jurnal (
                                                                                             kategori,
                                                                                             uuid,
+                                                                                            id_pinjaman_angsuran,
                                                                                             tanggal,
                                                                                             kode_perkiraan,
                                                                                             nama_perkiraan,
@@ -168,6 +171,7 @@
                                                                                         ) VALUES (
                                                                                             'Angsuran',
                                                                                             '$uuid_angsuran',
+                                                                                            '$id_pinjaman_angsuran',
                                                                                             '$tanggal_bayar',
                                                                                             '$KodeKredit',
                                                                                             '$kredit_name',
@@ -180,6 +184,7 @@
                                                                                             $EntryDataDebet="INSERT INTO jurnal (
                                                                                                 kategori,
                                                                                                 uuid,
+                                                                                                id_pinjaman_angsuran,
                                                                                                 tanggal,
                                                                                                 kode_perkiraan,
                                                                                                 nama_perkiraan,
@@ -188,6 +193,7 @@
                                                                                             ) VALUES (
                                                                                                 'Angsuran',
                                                                                                 '$uuid_angsuran',
+                                                                                                '$id_pinjaman_angsuran',
                                                                                                 '$tanggal_bayar',
                                                                                                 '$KodeDebet',
                                                                                                 '$debet_name',
@@ -202,6 +208,7 @@
                                                                                                     $EntryJurnalDenda="INSERT INTO jurnal (
                                                                                                         kategori,
                                                                                                         uuid,
+                                                                                                        id_pinjaman_angsuran,
                                                                                                         tanggal,
                                                                                                         kode_perkiraan,
                                                                                                         nama_perkiraan,
@@ -210,6 +217,7 @@
                                                                                                     ) VALUES (
                                                                                                         'Angsuran',
                                                                                                         '$uuid_angsuran',
+                                                                                                        '$id_pinjaman_angsuran',
                                                                                                         '$tanggal_bayar',
                                                                                                         '$kode_denda',
                                                                                                         '$nama_denda',
@@ -223,6 +231,7 @@
                                                                                                     $EntryJurnalJasa="INSERT INTO jurnal (
                                                                                                         kategori,
                                                                                                         uuid,
+                                                                                                        id_pinjaman_angsuran,
                                                                                                         tanggal,
                                                                                                         kode_perkiraan,
                                                                                                         nama_perkiraan,
@@ -231,6 +240,7 @@
                                                                                                     ) VALUES (
                                                                                                         'Angsuran',
                                                                                                         '$uuid_angsuran',
+                                                                                                        '$id_pinjaman_angsuran',
                                                                                                         '$tanggal_bayar',
                                                                                                         '$kode_jasa',
                                                                                                         '$nama_jasa',
@@ -264,7 +274,16 @@
                                                                                                     echo '<div class="text-success" id="NotifikasiTambahAngsuranBerhasil">Success</div>';
                                                                                                 }
                                                                                             }else{
-                                                                                                echo '<div class="text-danger">Terjadi kesalahan pada saat menyimpan data jurnal Debet!!</div>';
+                                                                                                echo '
+                                                                                                <div class="text-danger">
+                                                                                                Terjadi kesalahan pada saat menyimpan data jurnal Debet!! <br> 
+                                                                                                uid: '.$uuid_angsuran.' <br> 
+                                                                                                Jumlah : '.$jumlah.'<br> 
+                                                                                                id_pinjaman_angsuran : '.$id_pinjaman_angsuran.'<br> 
+                                                                                                tanggal_bayar : '.$tanggal_bayar.'<br> 
+                                                                                                KodeDebet : '.$KodeDebet.'<br> 
+                                                                                                debet_name : '.$debet_name.'<br> 
+                                                                                                </div>';
                                                                                             }
                                                                                         }else{
                                                                                             echo '<div class="text-danger">Terjadi kesalahan pada saat menyimpan data jurnal Kredit!!</div>';

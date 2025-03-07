@@ -165,10 +165,13 @@
                                                                         )";
                                                                         $Input=mysqli_query($Conn, $entry);
                                                                         if($Input){
+                                                                            //Cari id_pinjaman
+                                                                            $id_pinjaman=GetDetailData($Conn,'pinjaman','uuid_pinjaman',$uuid_pinjaman,'id_pinjaman');
                                                                             //Simpan Ke Jurnal Kredit
                                                                             $EntryDataKredit="INSERT INTO jurnal (
                                                                                 kategori,
                                                                                 uuid,
+                                                                                id_pinjaman,
                                                                                 tanggal,
                                                                                 kode_perkiraan,
                                                                                 nama_perkiraan,
@@ -177,6 +180,7 @@
                                                                             ) VALUES (
                                                                                 'Pinjaman',
                                                                                 '$uuid_pinjaman',
+                                                                                '$id_pinjaman',
                                                                                 '$tanggal',
                                                                                 '$KodeKredit',
                                                                                 '$kredit_name',
@@ -189,6 +193,7 @@
                                                                                 $EntryDataDebet="INSERT INTO jurnal (
                                                                                     kategori,
                                                                                     uuid,
+                                                                                    id_pinjaman,
                                                                                     tanggal,
                                                                                     kode_perkiraan,
                                                                                     nama_perkiraan,
@@ -197,6 +202,7 @@
                                                                                 ) VALUES (
                                                                                     'Pinjaman',
                                                                                     '$uuid_pinjaman',
+                                                                                    '$id_pinjaman',
                                                                                     '$tanggal',
                                                                                     '$KodeDebet',
                                                                                     '$debet_name',

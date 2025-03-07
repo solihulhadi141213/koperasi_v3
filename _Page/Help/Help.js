@@ -37,7 +37,7 @@ function ShowDetailDokumentasi(id_help) {
                 $('#ShowDetail').show();
                 $('#ShowTambahDokumentasi').hide();
                 $('#ShowEditDokumentasi').hide();
-
+               
                 //Tempelkan Data Pada Element
                 $('#put_judul_dokumentasi').html(response.dataset.judul);
                 $('#put_kategori_dokumentasi').html(response.dataset.kategori);
@@ -86,6 +86,7 @@ function ShowEditDokumentasi(id_help) {
 
                 // Pastikan TinyMCE sudah siap sebelum mengatur konten
                 var deskripsi = response.dataset.deskripsi;
+                var deskripsi = $("<textarea/>").html(response.dataset.deskripsi).text();
                 if (tinymce.get('deskripsi_edit')) {
                     tinymce.get('deskripsi_edit').setContent(deskripsi);
                 } else {
