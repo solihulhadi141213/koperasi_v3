@@ -793,4 +793,35 @@
         }
         return $validasi_auto_jurnal;
     }
+
+    //Untuk Mendapatkan Pengaturan Auto Jurnal SHU
+    function getAutoJurnalSHU($Conn, $komponen) {
+        $query = "SELECT id_setting_autojurnal_shu, id_perkiraan_debet, id_perkiraan_kredit FROM setting_autojurnal_shu WHERE komponen = ?";
+        
+        if ($stmt = $Conn->prepare($query)) {
+            $stmt->bind_param("s", $komponen);
+            $stmt->execute();
+            $stmt->bind_result($id_setting_autojurnal_shu, $id_perkiraan_debet, $id_perkiraan_kredit);
+            
+            if ($stmt->fetch()) {
+                $result = [
+                    'id_setting_autojurnal_shu' => $id_setting_autojurnal_shu,
+                    'id_perkiraan_debet' => $id_perkiraan_debet,
+                    'id_perkiraan_kredit' => $id_perkiraan_kredit
+                ];
+            } else {
+                $result = [
+                    'id_setting_autojurnal_shu' => $id_setting_autojurnal_shu,
+                    'id_perkiraan_debet' => "",
+                    'id_perkiraan_kredit' => ""
+                ];
+            }
+            
+            $stmt->close();
+        } else {
+            die("Query gagal: " . $Conn->error);
+        }
+        
+        return $result;
+    }
 ?>

@@ -43,3 +43,26 @@ $('#ProssesSimpanAutoJurnalJualBeli').submit(function(){
         }
     });
 });
+
+//Proses Auto Jurnal SHU
+$('#ProssesSimpanAutoJurnalShu').submit(function(){
+    $('#NotifikasiSimpanAutoJurnalShu').html('<div class="spinner-border text-secondary" role="status"><span class="sr-only"></span></div>');
+    var form = $('#ProssesSimpanAutoJurnalShu')[0];
+    var data = new FormData(form);
+    $.ajax({
+        type 	    : 'POST',
+        url 	    : '_Page/AutoJurnal/ProssesSimpanAutoJurnalShu.php',
+        data 	    :  data,
+        cache       : false,
+        processData : false,
+        contentType : false,
+        enctype     : 'multipart/form-data',
+        success     : function(data){
+            $('#NotifikasiSimpanAutoJurnalShu').html(data);
+            var NotifikasiSimpanAutoJurnalShuBerhasil=$('#NotifikasiSimpanAutoJurnalShuBerhasil').html();
+            if(NotifikasiSimpanAutoJurnalShuBerhasil=="Berhasil"){
+                location.reload();
+            }
+        }
+    });
+});
