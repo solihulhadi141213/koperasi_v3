@@ -157,6 +157,23 @@ $(document).ready(function() {
     //Menampilkan Data Pertama Kali
     ShowData();
     
+    //Menampilkan readme
+    $.get('README.md', function(data) {
+        const htmlContent = marked.parse(data);
+        $('#show_readme').html(htmlContent);
+
+        // Pastikan CSS diterapkan setelah gambar dimuat
+        $('#show_readme img').on('load', function() {
+            $(this).css({
+                'width': '90%',
+                'max-width': '100%',
+                'height': 'auto',
+                'border-radius': '8px'
+            });
+        });
+    }).fail(function() {
+        $('#show_readme').html('<p>Failed to load README.md</p>');
+    });
     //Ketika KeywordBy Diubah
     $('#keyword_by').change(function(){
         var keyword_by = $('#keyword_by').val();

@@ -23,3 +23,4 @@
 <link href="assets/css/style.css" rel="stylesheet">
 <link href="node_modules/mdb-ui-kit/css/mdb.min.css" rel="stylesheet">
 <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="node_modules/marked/marked.min.js"></script>

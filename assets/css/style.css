@@ -1345,3 +1345,10 @@ body .title_page_app {
 .text-grayish{
   color: #a7a7a7;
 }
+
+#show_readme img {
+  max-width: 100%;  /* Agar gambar tidak melebihi lebar parent */
+  height: auto;     /* Menjaga rasio aspek gambar */
+  width: 100%;     /* Atur lebar sesuai keinginan */
+  border-radius: 8px; /* Opsional, untuk sudut membulat */
+}

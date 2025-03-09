@@ -36,7 +36,7 @@
         </div>
         <div class="row" id="ShowData">
             <div class="col-lg-12">
-                <div class="card">
+                <div class="card mb-3">
                     <div class="card-header">
                         <div class="row mb-3">
                             <div class="col-9 mb-3 mt-3">
@@ -103,6 +103,19 @@
                                 </button>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <b class="card-title"># Tentang Aplikasi</b>
+                    </div>
+                    <div class="card-body" id="show_readme">
+                        <!-- Konten Readme Disini -->
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">
+                            Open By Readme.md
+                        </small>
                     </div>
                 </div>
             </div>
