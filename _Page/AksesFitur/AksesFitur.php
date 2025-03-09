@@ -40,15 +40,15 @@
                     <div class="card-header">
                         <form action="javascript:void(0);" id="ProsesBatas">
                             <div class="row">
-                                <div class="col-md-8 mb-3">
+                                <div class="col-12 col-md-8 mb-3">
                                     
                                 </div>
-                                <div class="col-md-2 mb-3">
+                                <div class="col-6 col-md-2 mb-3">
                                     <button type="button" class="btn btn-md btn-outline-dark btn-block btn-rounded" data-bs-toggle="modal" data-bs-target="#ModalFilter">
                                         <i class="bi bi-funnel"></i> Filter
                                     </button>
                                 </div>
-                                <div class="col-md-2 mb-3">
+                                <div class="col-6 col-md-2 mb-3">
                                     <button type="button" class="btn btn-md btn-primary btn-block btn-rounded" data-bs-toggle="modal" data-bs-target="#ModalTambahFitur">
                                         <i class="bi bi-plus"></i> Tambah
                                     </button>
@@ -56,8 +56,46 @@
                             </div>
                         </form>
                     </div>
-                    <div class="card-body" id="MenampilkanTabelFitur">
-
+                    <div class="card-body">
+                        <div class="table table-responsive">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th><b>No</b></th>
+                                        <th><b>Kategori</b></th>
+                                        <th><b>Fitur</b></th>
+                                        <th><b>Kode</b></th>
+                                        <th><b>Akses/User</b></th>
+                                        <th><b>Opsi</b></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="MenampilkanTabelFitur">
+                                    <!-- Menampilkan Tabel Fitur -->
+                                    <tr>
+                                        <td colspan="6" class="text-center">
+                                            <small class="text-danger">Tidak Ada Data Fitur Yang Ditampilkan!</small>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-6">
+                                <small id="page_info">
+                                    Page 1 Of 100
+                                </small>
+                            </div>
+                            <div class="col-6 text-end">
+                                <button type="button" class="btn btn-sm btn-outline-info btn-floating" id="prev_button">
+                                    <i class="bi bi-chevron-left"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-info btn-floating" id="next_button">
+                                    <i class="bi bi-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

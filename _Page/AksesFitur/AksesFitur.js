@@ -10,6 +10,7 @@ function filterAndLoadTable() {
         }
     });
 }
+
 //Fungsi Generate Kode
 function generateRandomString(length) {
     var result = '';
@@ -23,6 +24,20 @@ function generateRandomString(length) {
 //Menampilkan Data Pertama Kali
 $(document).ready(function() {
     filterAndLoadTable();
+
+    //Pagging
+    $(document).on('click', '#next_button', function() {
+        var page_now = parseInt($('#page').val(), 10); // Pastikan nilai diambil sebagai angka
+        var next_page = page_now + 1;
+        $('#page').val(next_page);
+        filterAndLoadTable(0);
+    });
+    $(document).on('click', '#prev_button', function() {
+        var page_now = parseInt($('#page').val(), 10); // Pastikan nilai diambil sebagai angka
+        var next_page = page_now - 1;
+        $('#page').val(next_page);
+        filterAndLoadTable(0);
+    });
 });
 //Filter Data
 $('#ProsesFilter').submit(function(){
@@ -159,6 +174,20 @@ $('#ProsesEditFitur').submit(function(){
                 //Menampilkan Data
                 filterAndLoadTable();
             }
+        }
+    });
+});
+
+//Modal Detail Fitur
+$('#ModalDetailFitur').on('show.bs.modal', function (e) {
+    var id_akses_fitur = $(e.relatedTarget).data('id');
+    $('#FormDetailFitur').html("Loading...");
+    $.ajax({
+        type 	    : 'POST',
+        url 	    : '_Page/AksesFitur/FormDetailFitur.php',
+        data        : {id_akses_fitur: id_akses_fitur},
+        success     : function(data){
+            $('#FormDetailFitur').html(data);
         }
     });
 });

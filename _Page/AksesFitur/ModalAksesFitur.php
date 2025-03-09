@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <form action="javascript:void(0);" id="ProsesFilter">
-                <input type="hidden" name="page" id="page">
+                <input type="hidden" name="page" id="page" value="1">
                 <div class="modal-header">
                     <h5 class="modal-title text-dark"><i class="bi bi-funnel"></i> Filter Data</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -203,6 +203,29 @@
                     </button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalDetailFitur" tabindex="-1">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-dark"><i class="bi bi-info-circle"></i> Detail Fitur</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12" id="FormDetailFitur">
+                        <!-- Form Detail Fitur -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle"></i> Tutup
+                </button>
+            </div>
         </div>
     </div>
 </div>
