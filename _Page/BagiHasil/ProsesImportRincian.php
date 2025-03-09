@@ -1,152 +1,128 @@
 <?php
-    //Koneksi
-    // ini_set("display_errors","off");
+    require '../../vendor/autoload.php';
+    use PhpOffice\PhpSpreadsheet\IOFactory;
+    use PhpOffice\PhpSpreadsheet\Reader\Exception;
+
     include "../../_Config/Connection.php";
-    require "../../vendor/excel_reader/php-excel-reader/excel_reader2.php";
-    require "../../vendor/excel_reader/SpreadsheetReader.php";
-    //Validasi file
-    if(empty(explode(".",$_FILES['file_import']['name']))){
-        echo '<tr><td colspan="4" class="text-center"><span class="text-danger">File belum dipilih</span></td></tr>';
-    }else{
-        if(empty($_POST['id_shu_session'])){
-            echo '<tr><td colspan="4" class="text-center"><span class="text-danger">File belum dipilih</span></td></tr>';
-        }else{
-            $id_shu_session=$_POST['id_shu_session'];
-            $ekstensi = explode(".",$_FILES['file_import']['name']);
-            $file_extension = end($ekstensi);
-            if($file_extension != 'xls' && $file_extension != 'xlsx'){
-                echo '<tr><td colspan="4" class="text-center"><span class="text-danger">File yang diperbolehkan hanya file Excel</span></td></tr>';
-            }else{
-                $uploadFilePath = 'uploads/'.basename($_FILES['file_import']['name']);
-                move_uploaded_file($_FILES['file_import']['tmp_name'], $uploadFilePath);
-                $Reader = new SpreadsheetReader($uploadFilePath);
-                $totalSheet = count($Reader->sheets());
-                for ($i=0; $i<=$totalSheet; $i++){
-                    $i=$i+1;
-                    $Reader->ChangeSheet($i);
-                    $no=0;
-                    $no2=1;
-                    foreach ($Reader as $Row){
-                        $id_sessi=isset($Row[0]) ? $Row[0] : '';
-                        $id_anggota=isset($Row[1]) ? $Row[1] : '';
-                        $nama_anggota=isset($Row[2]) ? $Row[2] : '';
-                        $simpanan=isset($Row[3]) ? $Row[3] : '';
-                        $pinjaman=isset($Row[4]) ? $Row[4] : '';
-                        $penjualan=isset($Row[5]) ? $Row[5] : '';
-                        $jasa_simpanan=isset($Row[6]) ? $Row[6] : '';
-                        $jasa_pinjaman=isset($Row[7]) ? $Row[7] : '';
-                        $jasa_penjualan=isset($Row[8]) ? $Row[8] : '';
-                        $shu=isset($Row[9]) ? $Row[9] : '';
-                        if($id_sessi=="ID Sessi"){
-                            echo '<tr><td colspan="4" class="text-center"><span class="text-success">Header File Sudah Benar!</span></td></tr>';
-                        }else{
-                            if(empty($id_anggota)){
-                                $kategori="None";
-                                $ValidasiProses="ID Anggota Tidak Boleh Kosong!";
-                            }else{
-                                if(empty($nama_anggota)){
-                                    $kategori="None";
-                                    $ValidasiProses="Nama Anggota Tidak Boleh Kosong!";
-                                }else{
-                                    //Validasi id_anggota
-                                    $CekDataAnggota = mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM shu_rincian WHERE id_anggota='$id_anggota' AND id_shu_session='$id_shu_session'"));
-                                    if(!empty($CekDataAnggota)){
-                                        $kategori="Update";
-                                        $UpdateRincian = mysqli_query($Conn,"UPDATE shu_rincian SET 
-                                            simpanan='$simpanan',
-                                            pinjaman='$pinjaman',
-                                            penjualan='$penjualan',
-                                            jasa_simpanan='$jasa_simpanan',
-                                            jasa_pinjaman='$jasa_pinjaman',
-                                            jasa_penjualan='$jasa_penjualan',
-                                            shu='$shu'
-                                        WHERE id_anggota='$id_anggota' AND id_shu_session='$id_shu_session'") or die(mysqli_error($Conn)); 
-                                        if($UpdateRincian){
-                                            $ValidasiProses="Success";
-                                        }else{
-                                            $ValidasiProses="Update Error!";
-                                        }
-                                    }else{
-                                        $kategori="Insert";
-                                        //Insert Ke rincian
-                                        $EntryData="INSERT INTO shu_rincian (
-                                            id_shu_session,
-                                            id_anggota,
-                                            nama_anggota,
-                                            simpanan,
-                                            pinjaman,
-                                            penjualan,
-                                            jasa_simpanan,
-                                            jasa_pinjaman,
-                                            jasa_penjualan,
-                                            shu
-                                        ) VALUES (
-                                            '$id_shu_session',
-                                            '$id_anggota',
-                                            '$nama_anggota',
-                                            '$simpanan',
-                                            '$pinjaman',
-                                            '$penjualan',
-                                            '$jasa_simpanan',
-                                            '$jasa_pinjaman',
-                                            '$jasa_penjualan',
-                                            '$shu'
-                                        )";
-                                        $InputData=mysqli_query($Conn, $EntryData);
-                                        if($InputData){
-                                            $ValidasiProses="Success";
-                                        }else{
-                                            $ValidasiProses="Insert Error!";
-                                        }
-                                    }
-                                }
-                            }
-                            echo '
-                            <tr>
-                            <td>'.$no2.'</td>
-                            <td>'.$nama_anggota.'</td>
-                            <td>'.$kategori.'</td>
-                            <td>'.$ValidasiProses.'</td>
-                            </tr>';   
-                            $no2++;     
-                        }
-                    } 
-                    //Menghitung Simpanan rincian
-                    $SumSimpananAnggota = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(simpanan) AS simpanan FROM shu_rincian WHERE id_shu_session='$id_shu_session'"));
-                    $JumlahSimpananAnggota = $SumSimpananAnggota['simpanan'];
-                    //Hitung Jasa simpanan
-                    $SumJasaSimpananAnggota = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(jasa_simpanan) AS jasa_simpanan FROM shu_rincian WHERE id_shu_session='$id_shu_session'"));
-                    $JumlahJasaSimpanan = $SumJasaSimpananAnggota['jasa_simpanan'];
-                    //Menghitung Pinjaman rincian
-                    $SumPinjamanAnggota = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(pinjaman) AS pinjaman FROM shu_rincian WHERE id_shu_session='$id_shu_session'"));
-                    $JumlahPinjamanAnggota = $SumPinjamanAnggota['pinjaman'];
-                    //Hitung Jasa Pinjaman
-                    $SumJasaPinjaman = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(jasa_pinjaman) AS jasa_pinjaman FROM shu_rincian WHERE id_shu_session='$id_shu_session'"));
-                    $JumlahJasaPinjaman = $SumJasaPinjaman['jasa_pinjaman'];
-                    //Menghitung Penjualan
-                    $SumPenjualanAnggota = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(penjualan) AS penjualan FROM shu_rincian WHERE id_shu_session='$id_shu_session'"));
-                    $JumlahPenjualanAnggota = $SumPenjualanAnggota['penjualan'];
-                    //Hitung Jasa Penjualan
-                    $SumJasaPenjualan = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(jasa_penjualan) AS jasa_penjualan FROM shu_rincian WHERE id_shu_session='$id_shu_session'"));
-                    $JumlahJasaPenjualan = $SumJasaPenjualan['jasa_penjualan'];
-                    //Update Ke Sessi
-                    $UpdateBagiHasil = mysqli_query($Conn,"UPDATE shu_session SET 
-                        modal_anggota='$JumlahSimpananAnggota',
-                        penjualan='$JumlahPenjualanAnggota',
-                        pinjaman='$JumlahPinjamanAnggota',
-                        jasa_modal_anggota='$JumlahJasaSimpanan',
-                        laba_penjualan='$JumlahJasaPenjualan',
-                        jasa_pinjaman='$JumlahJasaPinjaman'
-                    WHERE id_shu_session='$id_shu_session'") or die(mysqli_error($Conn)); 
-                    if($UpdateBagiHasil){
-                        echo '<tr><td colspan="4" class="text-center"><span class="text-success">Update Sessi Berhasil</span></td></tr>';
-                        echo '<tr><td colspan="4" class="text-center"><a href="">Reload Halaman</a></td></tr>';
-                    }else{
-                        echo '<tr><td colspan="4" class="text-center"><span class="text-danger">Update Sessi Gagal!</span></td></tr>';
-                    }  
+    include "../../_Config/GlobalFunction.php";
+    include "../../_Config/Session.php";
+
+    date_default_timezone_set('Asia/Jakarta');
+    $now = date('Y-m-d H:i:s');
+
+    // Validasi Sesi Akses
+    if (empty($SessionIdAkses)) {
+        die('<div class="alert alert-danger">Sesi Akses Sudah Berakhir, Silahkan Login Ulang</div>');
+    }
+
+    // Validasi ID SHU Session
+    if (empty($_POST['id_shu_session'])) {
+        die('<div class="alert alert-danger">ID sesi bagi hasil tidak boleh kosong</div>');
+    }
+
+    $id_shu_session = $_POST['id_shu_session'];
+    $status=GetDetailData($Conn, 'shu_session', 'id_shu_session', $id_shu_session, 'status');
+    if($status!=="Pending"){
+        die('<div class="alert alert-danger">Sesi SHU Sudah Teralokasikan! Anda Tidak Bisa Mengubah Data Ini!</div>');
+    }
+
+    // Validasi File Upload
+    if (empty($_FILES['file_import_rincian']['name'])) {
+        die('<div class="alert alert-danger">File tidak boleh kosong</div>');
+    }
+
+    $file = $_FILES['file_import_rincian']['tmp_name'];
+    $filename = $_FILES['file_import_rincian']['name'];
+    $file_extension = pathinfo($filename, PATHINFO_EXTENSION);
+
+    // Cek format file
+    if (!in_array($file_extension, ['xls', 'xlsx'])) {
+        die('<div class="alert alert-danger">Format file harus Excel (.xls / .xlsx)</div>');
+    }
+    
+    try {
+        echo '<div class="row mb-3">';
+        echo '  <div class="col-12 pre-scrollable overflow-y-scroll" style="max-height: 400px;">';
+        echo '      <ul>';
+        // Load Spreadsheet
+        $spreadsheet = IOFactory::load($file);
+        $sheet = $spreadsheet->getActiveSheet();
+        $data = $sheet->toArray();
+
+        // Inisialisasi notifikasi
+        $notifikasi = "";
+
+        // Looping Data dari Excel (mulai dari baris ke-3 untuk melewati header)
+        for ($i = 2; $i < count($data); $i++) {
+            // Periksa apakah seluruh baris kosong
+            if (empty(implode('', $data[$i]))) {
+                continue; // Skip baris kosong
+            }
+
+            $no = trim($data[$i][0]);
+            $nama_anggota = trim($data[$i][1]);
+            $nip = trim($data[$i][2]);
+            $penjualan = floatval($data[$i][3]);
+            $simpanan = floatval($data[$i][4]);
+            $pinjaman = floatval($data[$i][5]);
+            $shu_penjualan = floatval($data[$i][6]);
+            $shu_simpanan = floatval($data[$i][7]);
+            $shu_pinjaman = floatval($data[$i][8]);
+            $shu_total = floatval($data[$i][9]);
+
+            // Validasi Data Kosong
+            if (empty($no) || empty($nama_anggota) || empty($nip)) {
+                $notifikasi .= "<li class='text text-danger'><small>Baris ke-$i: No, Nama, dan NIP wajib diisi.</small></li>";
+                continue;
+            }
+
+            // Validasi NIP di Database
+            $cekAnggota = mysqli_query($Conn, "SELECT id_anggota FROM anggota WHERE nip='$nip' AND status='Aktif'");
+            if (mysqli_num_rows($cekAnggota) == 0) {
+                $notifikasi .= "<li class='text text-danger'><small>Baris ke-$i: NIP <b>$nip</b> tidak ditemukan atau tidak aktif.</small></li>";
+                continue;
+            }
+
+            $rowAnggota = mysqli_fetch_assoc($cekAnggota);
+            $id_anggota = $rowAnggota['id_anggota'];
+
+            // Cek apakah data sudah ada di tabel shu_rincian
+            $cekData = mysqli_query($Conn, "SELECT id_anggota FROM shu_rincian WHERE id_anggota='$id_anggota' AND id_shu_session='$id_shu_session'");
+
+            if (mysqli_num_rows($cekData) == 0) {
+                // Insert data baru
+                $insert = mysqli_query($Conn, "INSERT INTO shu_rincian 
+                    (id_shu_session, id_anggota, nama_anggota, nip, simpanan, pinjaman, penjualan, jasa_simpanan, jasa_pinjaman, jasa_penjualan, shu) 
+                    VALUES ('$id_shu_session', '$id_anggota', '$nama_anggota', '$nip', '$simpanan', '$pinjaman', '$penjualan', 
+                            '$shu_simpanan', '$shu_pinjaman', '$shu_penjualan', '$shu_total')");
+
+                if ($insert) {
+                    $notifikasi .= "<li class='text text-success'><small>Baris ke-$i: Data anggota <b>$nama_anggota</b> berhasil ditambahkan.</small></li>";
+                } else {
+                    $notifikasi .= "<li class='text text-danger'><small>Baris ke-$i: Gagal menambahkan data untuk <b>$nama_anggota</b>.</small></li>";
                 }
-                echo '</table>';
+            } else {
+                // Update data jika sudah ada
+                $update = mysqli_query($Conn, "UPDATE shu_rincian SET 
+                    nama_anggota='$nama_anggota', nip='$nip', simpanan='$simpanan', pinjaman='$pinjaman', penjualan='$penjualan',
+                    jasa_simpanan='$shu_simpanan', jasa_pinjaman='$shu_pinjaman', jasa_penjualan='$shu_penjualan', shu='$shu_total'
+                    WHERE id_anggota='$id_anggota' AND id_shu_session='$id_shu_session'");
+
+                if ($update) {
+                    $notifikasi .= "<li class='text text-success'><small>Baris ke-$i: Data anggota <b>$nama_anggota</b> berhasil diperbarui.</small></li>";
+                } else {
+                    $notifikasi .= "<li class='text text-danger'><small>Baris ke-$i: Gagal memperbarui data untuk <b>$nama_anggota</b>.</small></li>";
+                }
             }
         }
+
+        // Tampilkan hasil proses import
+        echo $notifikasi;
+
+        echo '      </ul>';
+        echo '  </div>';
+        echo '</div>';
+    } catch (Exception $e) {
+        die('<div class="alert alert-danger">Terjadi kesalahan dalam membaca file: ' . $e->getMessage() . '</div>');
     }
 ?>

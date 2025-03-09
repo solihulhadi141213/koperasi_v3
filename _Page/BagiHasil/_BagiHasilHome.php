@@ -38,25 +38,64 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
-                            <div class="col-md-8 mb-3">
+                            <div class="col-12 col-md-8 mb-3 text-md-start text-center">
                                 <b class="card-title">
                                     <i class="bi bi-calendar"></i> Data Sesi Bagi Hasil (SHU)
                                 </b>
                             </div>
-                            <div class="col-md-2 mb-3">
+                            <div class="col-6 col-md-2 mb-3">
                                 <a class="btn btn-md btn-outline-dark btn-rounded btn-block" href="javascript:void(0);" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalFilter" title="Filter Data Bagi Hasil">
                                     <i class="bi bi-funnel"></i> Filter
                                 </a>
                             </div>
-                            <div class="col-md-2 text-center mb-3">
+                            <div class="col-6 col-md-2 mb-3">
                                 <button type="button" class="btn btn-md btn-primary btn-block btn-rounded" data-bs-toggle="modal" data-bs-target="#ModalTambahBagiHasil" title="Tambah Sesi Pembagian">
                                     <i class="bi bi-plus-lg"></i> Tambah Sesi
                                 </button>
                             </div>
                         </div>
                     </div>
-                    <div class="card-body" id="MenampilkanTabelBagiHasil">
-                        <!-- Menampilkan Tabel Bagi Hasil -->
+                    <div class="card-body">
+                        <div class="table table-responsive">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th><b>No</b></th>
+                                        <th><b>Periode</b></th>
+                                        <th><b>Anggota</b></th>
+                                        <th><b>SHU (RP)</b></th>
+                                        <th><b>Alokasi (RP)</b></th>
+                                        <th><b>Jurnal</b></th>
+                                        <th><b>Status</b></th>
+                                        <th><b>Opsi</b></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="TabelBagiHasil">
+                                    <tr>
+                                        <td colspan="8" class="text-center">
+                                            <small class="text-danger">Tidak Ada Data Yang Ditampilkan</small>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-6">
+                                <small id="page_info">
+                                    Page 1 Of 100
+                                </small>
+                            </div>
+                            <div class="col-6 text-end">
+                                <button type="button" class="btn btn-sm btn-outline-info btn-floating" id="prev_button">
+                                    <i class="bi bi-chevron-left"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-info btn-floating" id="next_button">
+                                    <i class="bi bi-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

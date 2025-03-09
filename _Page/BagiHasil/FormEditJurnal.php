@@ -41,7 +41,9 @@
     <input type="hidden" name="id_jurnal" value="<?php echo $id_jurnal; ?>">
     <div class="row  mb-3">
         <div class="col col-md-4">
-            <label for="id_perkiraan">Akun Perkiraan</label>
+            <label for="id_perkiraan">
+                <small>Akun Perkiraan</small>
+            </label>
         </div>
         <div class="col col-md-8">
             <select name="id_perkiraan" id="id_perkiraan" class="form-control" required>
@@ -86,7 +88,9 @@
     </div>
     <div class="row mb-3">
         <div class="col col-md-4">
-            <label for="nominal_pinjaman_edit">Nominal (Rp)</label>
+            <label for="nominal_pinjaman_edit">
+                <small>Nominal (Rp)</small>
+            </label>
         </div>
         <div class="col col-md-8">
             <input type="text" required class="form-control format_uang" name="nominal_pinjaman" id="nominal_pinjaman_edit" value="<?php echo $nilai; ?>">
@@ -94,7 +98,9 @@
     </div>
     <div class="row mb-3">
         <div class="col col-md-4">
-            <label for="d_k">Debet/Kredit</label>
+            <label for="d_k">
+                <small>Debet/Kredit</small>
+            </label>
         </div>
         <div class="col col-md-8">
             <select name="d_k" id="d_k" class="form-control" required>

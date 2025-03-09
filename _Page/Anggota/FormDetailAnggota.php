@@ -66,70 +66,81 @@
         </div>
         <div class="col-md-12 mb-4">
             <div class="row mb-3">
-                <div class="col col-md-4">Nomor Induk</div>
-                <div class="col col-md-8">
-                    <code class="text text-grayish"><?php echo $nip; ?></code>
+                <div class="col col-4"><small>Nomor Induk</small></div>
+                <div class="col col-1"><small>:</small></div>
+                <div class="col col-7">
+                    <code class="text text-muted"><?php echo $nip; ?></code>
                 </div>
             </div>
             <div class="row mb-3">
-                <div class="col col-md-4">Nama Lengkap</div>
-                <div class="col col-md-8">
-                    <code class="text text-grayish"><?php echo $nama; ?></code>
+                <div class="col col-4"><small>Nama Lengkap</small></div>
+                <div class="col col-1"><small>:</small></div>
+                <div class="col col-7">
+                    <code class="text text-muted"><?php echo $nama; ?></code>
                 </div>
             </div>
             <div class="row mb-3">
-                <div class="col col-md-4">Tanggal Masuk</div>
-                <div class="col col-md-8">
-                    <code class="text text-grayish"><?php echo $TanggalMasuk; ?></code>
+                <div class="col col-4"><small>Tanggal Masuk</small></div>
+                <div class="col col-1"><small>:</small></div>
+                <div class="col col-7">
+                    <code class="text text-muted"><?php echo $TanggalMasuk; ?></code>
                 </div>
             </div>
             <div class="row mb-3">
-                <div class="col col-md-4">Divisi/Unit Kerja</div>
-                <div class="col col-md-8">
-                    <code class="text text-grayish"><?php echo $lembaga; ?></code>
+                <div class="col col-4"><small>Divisi/Unit Kerja</small></div>
+                <div class="col col-1"><small>:</small></div>
+                <div class="col col-7">
+                    <code class="text text-muted"><?php echo $lembaga; ?></code>
                 </div>
             </div>
             <div class="row mb-3">
-                <div class="col col-md-4">Ranking</div>
-                <div class="col col-md-8">
-                    <code class="text text-grayish"><?php echo $ranking; ?></code>
+                <div class="col col-4"><small>Ranking</small></div>
+                <div class="col col-1"><small>:</small></div>
+                <div class="col col-7">
+                    <code class="text text-muted"><?php echo $ranking; ?></code>
                 </div>
             </div>
             <div class="row mb-3">
-                <div class="col col-md-4">Kontak</div>
-                <div class="col col-md-8">
-                    <code class="text text-grayish"><?php echo $kontak; ?></code>
+                <div class="col col-4"><small>Kontak</small></div>
+                <div class="col col-1"><small>:</small></div>
+                <div class="col col-7">
+                    <code class="text text-muted"><?php echo $kontak; ?></code>
                 </div>
             </div>
             <div class="row mb-3">
-                <div class="col col-md-4">Email</div>
-                <div class="col col-md-8">
-                    <code class="text text-grayish"><?php echo $email; ?></code>
+                <div class="col col-4"><small>Email</small></div>
+                <div class="col col-1"><small>:</small></div>
+                <div class="col col-7">
+                    <code class="text text-muted"><?php echo $email; ?></code>
                 </div>
             </div>
             <div class="row mb-3">
-                <div class="col col-md-4">Password</div>
-                <div class="col col-md-8">
-                    <code class="text text-grayish"><?php echo $password; ?></code>
+                <div class="col col-4"><small>Password</small></div>
+                <div class="col col-1"><small>:</small></div>
+                <div class="col col-7">
+                    <code class="text text-muted"><?php echo $password; ?></code>
                 </div>
             </div>
             <div class="row mb-3">
-                <div class="col col-md-4">Status</div>
-                <div class="col col-md-8">
-                    <code class="text text-grayish"><?php echo $LabelStatus; ?></code>
+                <div class="col col-4"><small>Status</small></div>
+                <div class="col col-1"><small>:</small></div>
+                <div class="col col-7">
+                    <code class="text text-muted"><?php echo $LabelStatus; ?></code>
                 </div>
             </div>
             <?php if($status=="Keluar"){ ?>
                 <div class="row mb-3 border-1 border-top">
-                    <div class="col col-md-4 mt-3">Tanggal Keluar</div>
-                    <div class="col col-md-8 mt-3">
-                        <code class="text text-grayish"><?php echo $TanggalKeluar; ?></code>
+                    <div class="col col-4 mt-3"><small>Tanggal Keluar</small></div>
+                    <div class="col col-1"><small>:</small></div>
+                    <div class="col col-7 mt-3">
+                        <code class="text text-muted"><?php echo $TanggalKeluar; ?></code>
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <div class="col col-md-4">Alasan Keluar</div>
-                    <div class="col col-md-8">
-                        <code class="text text-grayish"><?php echo $alasan_keluar; ?></code>
+                    <div class="col col-4"><small>Alasan Keluar</small></div>
+                    <div class="col col-1"><small>:</small></div>
+                    <div class="col col-7">
+                        <code class="text text-muted"><?php echo $alasan_keluar; ?></code>
                     </div>
                 </div>
             <?php } ?>

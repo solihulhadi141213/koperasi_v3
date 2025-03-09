@@ -13,23 +13,16 @@
             echo '<span class="text-danger">ID Sesi tidak dapat ditangkap oleh sistem</span>';
         }else{
             $id_shu_session=$_POST['id_shu_session'];
-            $uuid=GetDetailData($Conn,'shu_session','id_shu_session',$id_shu_session,'uuid_shu_session');
             //Proses hapus Sessi
             $HapusSessi = mysqli_query($Conn, "DELETE FROM shu_session WHERE id_shu_session='$id_shu_session'") or die(mysqli_error($Conn));
             if($HapusSessi) {
-                $HapusRincianSessi = mysqli_query($Conn, "DELETE FROM shu_rincian WHERE id_shu_session='$id_shu_session'") or die(mysqli_error($Conn));
-                if($HapusRincianSessi) {
-                    $HapusJurnal = mysqli_query($Conn, "DELETE FROM jurnal WHERE uuid='$uuid'") or die(mysqli_error($Conn));
-                    if($HapusJurnal) {
-                        echo '<span class="text-success" id="NotifikasiHapusSesiBagiHasilBerhasil">Success</span>';
-                        $KategoriLog="Bagi Hasil";
-                        $KeteranganLog="Hapus Bagi Hasil Berhasil";
-                        include "../../_Config/InputLog.php";
-                    }else{
-                        echo '<span class="text-danger">Terjadi kesalahan pada saat menghapus data Rincian Bagi Hasil</span>';
-                    }
+                $kategori_log="SHU";
+                $deskripsi_log="Hapus SHU";
+                $InputLog=addLog($Conn,$SessionIdAkses,$now,$kategori_log,$deskripsi_log);
+                if($InputLog=="Success"){
+                    echo '<span class="text-success" id="NotifikasiHapusSesiBagiHasilBerhasil">Success</span>';
                 }else{
-                    echo '<span class="text-danger">Terjadi kesalahan pada saat menghapus data Rincian Bagi Hasil</span>';
+                    echo '<span class="text-danger">Terjadi kesalahan pada saat menyimpan log</span>';
                 }
             }else{
                 echo '<span class="text-danger">Terjadi kesalahan pada saat menghapus data Bagi Hasil</span>';

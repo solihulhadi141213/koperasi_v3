@@ -5,11 +5,13 @@
     include "../../_Config/Session.php";
     date_default_timezone_set("Asia/Jakarta");
     if(empty($SessionIdAkses)){
-        echo '<div class="row">';
-        echo '  <div class="col-md-12 text-center">';
-        echo '      <small class="text-danger">Sesi Akses Sudah Berakhir, Silahkan Login Ulang</small>';
-        echo '  </div>';
-        echo '</div>';
+        echo '
+            <tr>
+                <td colspan="8" class="text-center">
+                    <small class="text-danger">Sesi Akses Sudah Berakhir. Silahkan Login Ulang!</small>
+                </td>
+            </tr>
+        ';
     }else{
         //Keyword_by
         if(!empty($_POST['keyword_by'])){
@@ -32,14 +34,8 @@
         //ShortBy
         if(!empty($_POST['ShortBy'])){
             $ShortBy=$_POST['ShortBy'];
-            if($ShortBy=="ASC"){
-                $NextShort="DESC";
-            }else{
-                $NextShort="ASC";
-            }
         }else{
             $ShortBy="DESC";
-            $NextShort="ASC";
         }
         //OrderBy
         if(!empty($_POST['OrderBy'])){
@@ -57,206 +53,154 @@
         }
         if(empty($keyword_by)){
             if(empty($keyword)){
-                $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM shu_session"));
+                $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_shu_session FROM shu_session"));
             }else{
-                $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM shu_session WHERE like '%$keyword%' OR periode_hitung1 like '%$keyword%' OR periode_hitung2 like '%$keyword%' OR jasa_modal like '%$keyword%' OR jasa_usaha like '%$keyword%' OR status like '%$keyword%'"));
+                $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_shu_session FROM shu_session WHERE like '%$keyword%' OR periode_hitung1 like '%$keyword%' OR periode_hitung2 like '%$keyword%' OR status like '%$keyword%'"));
             }
         }else{
             if(empty($keyword)){
-                $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM shu_session"));
+                $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_shu_session FROM shu_session"));
             }else{
-                $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM shu_session WHERE $keyword_by like '%$keyword%'"));
+                $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_shu_session FROM shu_session WHERE $keyword_by like '%$keyword%'"));
             }
         }
         //Mengatur Halaman
         $JmlHalaman = ceil($jml_data/$batas); 
         $prev=$page-1;
         $next=$page+1;
-        if($next>$JmlHalaman){
-            $next=$page;
+        if(empty($jml_data)){
+            echo '
+                <tr>
+                    <td colspan="8" class="text-center">
+                        <small class="text-danger">Tidak Ada Data Yang Ditampilkan</small>
+                    </td>
+                </tr>
+            ';
         }else{
-            $next=$page+1;
-        }
-        if($prev<"1"){
-            $prev="1";
-        }else{
-            $prev=$page-1;
-        }
-?>
-    <script>
-        //ketika klik next
-        $('#NextPage').click(function() {
-            var page=$('#NextPage').val();
-            $('#page').val(page);
-            filterAndLoadTable();
-        });
-        //Ketika klik Previous
-        $('#PrevPage').click(function() {
-            var page = $('#PrevPage').val();
-            $('#page').val(page);
-            filterAndLoadTable();
-        });
-    </script>
-    <div class="row mb-3">
-        <div class="col-md-12">
-            <div class="table-responsive">
-                <table class="table table-hover table-bordered">
-                    <thead>
-                        <tr>
-                            <td class="text-center">
-                                <b>No</b>
-                            </td>
-                            <td class="text-center">
-                                <b>Nama Sesi</b>
-                            </td>
-                            <td class="text-center">
-                                <b>Periode SHU</b>
-                            </td>
-                            <td class="text-center">
-                                <b>Anggota</b>
-                            </td>
-                            <td class="text-center">
-                                <b>SHU (Rp)</b>
-                            </td>
-                            <td class="text-center">
-                                <b>Jurnal</b>
-                            </td>
-                            <td class="text-center">
-                                <b>Status</b>
-                            </td>
-                            <td class="text-center">
-                                <b>Opsi</b>
-                            </td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                            if(empty($jml_data)){
-                                echo '<tr>';
-                                echo '  <td colspan="8" align="center">';
-                                echo '      <span class="text-danger">Belum Ada Data Sesi Bagi Hasil Yang Ditampilkan</span>';
-                                echo '  </td>';
-                                echo '</tr>';
-                            }else{
-                                $no = 1+$posisi;
-                                //KONDISI PENGATURAN MASING FILTER
-                                if(empty($keyword_by)){
-                                    if(empty($keyword)){
-                                        $query = mysqli_query($Conn, "SELECT*FROM shu_session ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
-                                    }else{
-                                        $query = mysqli_query($Conn, "SELECT*FROM shu_session WHERE sesi_shu like '%$keyword%' OR periode_hitung1 like '%$keyword%' OR periode_hitung2 like '%$keyword%' OR jasa_modal like '%$keyword%' OR jasa_usaha like '%$keyword%' OR status like '%$keyword%' ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
-                                    }
-                                }else{
-                                    if(empty($keyword)){
-                                        $query = mysqli_query($Conn, "SELECT*FROM shu_session ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
-                                    }else{
-                                        $query = mysqli_query($Conn, "SELECT*FROM shu_session WHERE $keyword_by like '%$keyword%' ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
-                                    }
-                                }
-                                while ($data = mysqli_fetch_array($query)) {
-                                    $id_shu_session= $data['id_shu_session'];
-                                    $uuid_shu_session= $data['uuid_shu_session'];
-                                    $sesi_shu= $data['sesi_shu'];
-                                    $periode_hitung1= $data['periode_hitung1'];
-                                    $periode_hitung2= $data['periode_hitung2'];
-                                    $alokasi_hitung= $data['alokasi_hitung'];
-                                    $alokasi_nyata= $data['alokasi_nyata'];
-                                    $status= $data['status'];
-                                    $alokasi_hitung_rp = "" . number_format($alokasi_hitung,0,',','.');
-                                    $alokasi_nyata_rp = "" . number_format($alokasi_nyata,0,',','.');
-                                    $strtotime1=strtotime($periode_hitung1);
-                                    $strtotime2=strtotime($periode_hitung2);
-                                    $periode_hitung1=date('d/m/Y',$strtotime1);
-                                    $periode_hitung2=date('d/m/Y',$strtotime2);
-                                    //Cek Status Jurnal
-                                    $JumlahJurnal = mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM jurnal WHERE uuid='$uuid_shu_session'"));
-                                    //Jumlah Anggota
-                                    $JumlahRincian = mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM shu_rincian WHERE id_shu_session='$id_shu_session'"));
-                                    $JumlahRincian = "" . number_format($JumlahRincian,0,',','.');
-                                    //Label Jurnal Ada/Tidak Ada
-                                    if(empty($JumlahJurnal)){
-                                        $LabelJurnal='<span class="text-grayish">No Jurnal</span>';
-                                    }else{
-                                        $LabelJurnal='<span class="text-sucess"> '.$JumlahJurnal.' Record</span>';
-                                    }
-                                    //Label Status
-                                    if($status=="Pending"){
-                                        $LabelStatus='<span class="badge badge-warning">Pending</span>';
-                                    }else{
-                                        $LabelStatus='<span class="badge badge-success">'.$status.'</span>';
-                                    }
-                                ?>
-                            <tr>
-                                <td class="text-center text-xs">
-                                    <?php echo "$no"; ?>
-                                </td>
-                                <td class="text-left">
-                                    <?php echo "$sesi_shu"; ?>
-                                </td>
-                                <td class="text-left">
-                                    <?php  echo "$periode_hitung1 - $periode_hitung2"; ?>
-                                </td>
-                                <td class="text-left">
-                                    <?php  echo "$JumlahRincian Record"; ?>
-                                </td>
-                                <td align="right">
-                                    <?php  echo "$alokasi_nyata_rp"; ?>
-                                </td>
-                                <td class="text-left">
-                                    <?php  echo "$LabelJurnal"; ?>
-                                </td>
-                                <td class="text-center text-xs">
-                                    <?php  echo "$LabelStatus"; ?>
-                                </td>
-                                <td align="center">
-                                    <a class="btn btn-sm btn-outline-dark btn-rounded" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="bi bi-three-dots"></i>
+            $no = 1+$posisi;
+            //KONDISI PENGATURAN MASING FILTER
+            if(empty($keyword_by)){
+                if(empty($keyword)){
+                    $query = mysqli_query($Conn, "SELECT*FROM shu_session ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
+                }else{
+                    $query = mysqli_query($Conn, "SELECT*FROM shu_session WHERE sesi_shu like '%$keyword%' OR periode_hitung1 like '%$keyword%' OR periode_hitung2 like '%$keyword%' OR status like '%$keyword%' ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
+                }
+            }else{
+                if(empty($keyword)){
+                    $query = mysqli_query($Conn, "SELECT*FROM shu_session ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
+                }else{
+                    $query = mysqli_query($Conn, "SELECT*FROM shu_session WHERE $keyword_by like '%$keyword%' ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
+                }
+            }
+            while ($data = mysqli_fetch_array($query)) {
+                $id_shu_session= $data['id_shu_session'];
+                $shu= $data['shu'];
+                $periode_hitung1= $data['periode_hitung1'];
+                $periode_hitung2= $data['periode_hitung2'];
+                $persen_penjualan= $data['persen_penjualan'];
+                $persen_simpanan= $data['persen_simpanan'];
+                $persen_pinjaman= $data['persen_pinjaman'];
+                $status= $data['status'];
+
+                //Format Jumlah SHU
+                $shu_rp = "" . number_format($shu,0,',','.');
+
+                $periode_hitung1=date('d/m/Y',strtotime($periode_hitung1));
+                $periode_hitung2=date('d/m/Y',strtotime($periode_hitung2));
+                
+                //Jumlah Anggota
+                $JumlahRincian = mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM shu_rincian WHERE id_shu_session='$id_shu_session'"));
+                if(empty($JumlahRincian)){
+                    $JumlahRincian ='<small class="text-danger">Tidak Ada</small>';
+                }else{
+                    $JumlahRincian = "" . number_format($JumlahRincian,0,',','.');
+                    $JumlahRincian="$JumlahRincian Orang";
+                }
+                
+                //Jumlah Rincian SHU
+                $sum_alokasi= mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(shu) AS jumlah FROM shu_rincian WHERE id_shu_session='$id_shu_session'"));
+                if(!empty($sum_alokasi['jumlah'])){
+                    $jumlah_alokasi = $sum_alokasi['jumlah'];
+                }else{
+                    $jumlah_alokasi =0;
+                }
+                $jumlah_alokasi_rp = "" . number_format($jumlah_alokasi,0,',','.');
+
+                //Jumlah Jurnal
+                $jumlah_jurnal = mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM jurnal WHERE id_shu_session='$id_shu_session'"));
+                if(empty($jumlah_jurnal)){
+                    $label_jurnal='<span class="badge badge-secondary">NULL</span>';
+                }else{
+                    $label_jurnal='<span class="badge badge-success">'.$jumlah_jurnal.'</span>';
+                }
+                //Label Status
+                if($status=="Pending"){
+                    $LabelStatus='<span class="badge badge-warning">Pending</span>';
+                }else{
+                    $LabelStatus='<span class="badge badge-success">'.$status.'</span>';
+                }
+                echo '
+                    <tr>
+                        <td><small>'.$no.'</small></td>
+                        <td>
+                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalDetailBagiHasil" data-id="'.$id_shu_session.'">
+                                <small>'.$periode_hitung1.' - '.$periode_hitung2.'</small>
+                            </a>
+                        </td>
+                        <td><small>'.$JumlahRincian.'</small></td>
+                        <td><small>'.$shu_rp.'</small></td>
+                        <td><small>'.$jumlah_alokasi_rp.'</small></td>
+                        <td>'.$label_jurnal.'</td>
+                        <td>'.$LabelStatus.'</td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-outline-dark btn-floating" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-three-dots"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" style="">
+                                <li class="dropdown-header text-start">
+                                    <h6>Option</h6>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalDetailBagiHasil" data-id="'.$id_shu_session.'">
+                                        <i class="bi bi-info-circle"></i> Detail
                                     </a>
-                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" style="">
-                                        <li class="dropdown-header text-start">
-                                            <h6>Option</h6>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalDetailBagiHasil" data-id="<?php echo "$id_shu_session"; ?>">
-                                                <i class="bi bi-info-circle"></i> Detail
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalEditBagiHasil" data-id="<?php echo "$id_shu_session"; ?>">
-                                                <i class="bi bi-pencil"></i> Edit
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalHapusBagiHasil" data-id="<?php echo "$id_shu_session"; ?>">
-                                                <i class="bi bi-x"></i> Hapus
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </td>
-                            </tr>
-                            <?php
-                                        $no++; 
-                                    }
-                                }
-                            ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <div class="row mb-3">
-        <div class="col-md-12 text-center">
-            <div class="btn-group shadow-0" role="group" aria-label="Basic example">
-                <button class="btn btn-sm btn-info" id="PrevPage" value="<?php echo $prev;?>">
-                    <i class="bi bi-chevron-left"></i>
-                </button>
-                <button class="btn btn-sm btn-outline-info">
-                    <?php echo "$page of $JmlHalaman"; ?>
-                </button>
-                <button class="btn btn-sm btn-info" id="NextPage" value="<?php echo $next;?>">
-                    <i class="bi bi-chevron-right"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-<?php } ?>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalEditBagiHasil" data-id="'.$id_shu_session.'">
+                                        <i class="bi bi-pencil"></i> Edit
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalHapusBagiHasil" data-id="'.$id_shu_session.'">
+                                        <i class="bi bi-x"></i> Hapus
+                                    </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                ';
+                $no++;
+            }
+        }
+    }
+?>
+<script>
+    //Creat Javascript Variabel
+    var page_count=<?php echo $JmlHalaman; ?>;
+    var curent_page=<?php echo $page; ?>;
+    
+    //Put Into Pagging Element
+    $('#page_info').html('Page '+curent_page+' Of '+page_count+'');
+    
+    //Set Pagging Button
+    if(curent_page==1){
+        $('#prev_button').prop('disabled', true);
+    }else{
+        $('#prev_button').prop('disabled', false);
+    }
+    if(page_count<=curent_page){
+        $('#next_button').prop('disabled', true);
+    }else{
+        $('#next_button').prop('disabled', false);
+    }
+</script>

@@ -49,6 +49,7 @@
                                 $EntryData="INSERT INTO jurnal (
                                     kategori,
                                     uuid,
+                                    id_shu_session,
                                     tanggal,
                                     kode_perkiraan,
                                     nama_perkiraan,
@@ -57,6 +58,7 @@
                                 ) VALUES (
                                     'Bagi Hasil',
                                     '$uuid_shu_session',
+                                    '$id_shu_session',
                                     '$tanggal',
                                     '$kode',
                                     '$nama',
@@ -65,8 +67,8 @@
                                 )";
                                 $InputData=mysqli_query($Conn, $EntryData);
                                 if($InputData){
-                                    $KategoriLog="Bagi Hasil";
-                                    $KeteranganLog="Tambah Jurnal Bagi Hasil Berhasil";
+                                    $KategoriLog="SHU";
+                                    $KeteranganLog="Tambah Jurnal SHU";
                                     include "../../_Config/InputLog.php";
                                     echo '<small class="text-success" id="NotifikasiTambahJurnalBerhasil">Success</small>';
                                 }else{

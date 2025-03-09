@@ -20,174 +20,211 @@
             echo '</div>';
         }else{
             $id_shu_session=$_POST['id_shu_session'];
-            //Buka data
-            $id_shu_session=GetDetailData($Conn,'shu_session','id_shu_session',$id_shu_session,'id_shu_session');
-            $uuid_shu_session=GetDetailData($Conn,'shu_session','id_shu_session',$id_shu_session,'uuid_shu_session');
-            $sesi_shu=GetDetailData($Conn,'shu_session','id_shu_session',$id_shu_session,'sesi_shu');
-            $periode_hitung1=GetDetailData($Conn,'shu_session','id_shu_session',$id_shu_session,'periode_hitung1');
-            $periode_hitung2=GetDetailData($Conn,'shu_session','id_shu_session',$id_shu_session,'periode_hitung2');
-            $modal_anggota=GetDetailData($Conn,'shu_session','id_shu_session',$id_shu_session,'modal_anggota');
-            $penjualan=0;
-            $pinjaman=GetDetailData($Conn,'shu_session','id_shu_session',$id_shu_session,'pinjaman');
-            $jasa_modal_anggota=GetDetailData($Conn,'shu_session','id_shu_session',$id_shu_session,'jasa_modal_anggota');
-            $laba_penjualan=0;
-            $jasa_pinjaman=GetDetailData($Conn,'shu_session','id_shu_session',$id_shu_session,'jasa_pinjaman');
-            $persen_usaha=GetDetailData($Conn,'shu_session','id_shu_session',$id_shu_session,'persen_usaha');
-            $persen_modal=GetDetailData($Conn,'shu_session','id_shu_session',$id_shu_session,'persen_modal');
-            $persen_pinjaman=GetDetailData($Conn,'shu_session','id_shu_session',$id_shu_session,'persen_pinjaman');
-            $alokasi_hitung=GetDetailData($Conn,'shu_session','id_shu_session',$id_shu_session,'alokasi_hitung');
-            $alokasi_nyata=GetDetailData($Conn,'shu_session','id_shu_session',$id_shu_session,'alokasi_nyata');
-            $status=GetDetailData($Conn,'shu_session','id_shu_session',$id_shu_session,'status');
-            //Format Data
-            if(!empty($modal_anggota)){
-                $modal_anggota = "" . number_format($modal_anggota,0,',','.');
-            }else{
-                $modal_anggota =0;
-            }
-            if(!empty($penjualan)){
-                $penjualan = "" . number_format($penjualan,0,',','.');
-            }else{
-                $penjualan =0;
-            }
-            if(!empty($pinjaman)){
-                $pinjaman_rp = "" . number_format($pinjaman,0,',','.');
-            }else{
-                $pinjaman_rp = 0;
-            }
-            if(!empty($jasa_modal_anggota)){
-                $jasa_modal_anggota_rp = "" . number_format($jasa_modal_anggota,0,',','.');
-            }else{
-                $jasa_modal_anggota_rp = 0;
-            }
-            if(!empty($laba_penjualan)){
-                $laba_penjualan_rp = "" . number_format($laba_penjualan,0,',','.');
-            }else{
-                $laba_penjualan_rp = 0;
-            }
-            if(!empty($jasa_pinjaman)){
-                $jasa_pinjaman_rp = "" . number_format($jasa_pinjaman,0,',','.');
-            }else{
-                $jasa_pinjaman_rp = 0;
-            }
-            if(!empty($persen_usaha)){
-                $persen_usaha_rp = "" . number_format($persen_usaha,0,',','.');
-            }else{
-                $persen_usaha_rp = 0;
-            }
-            if(!empty($alokasi_hitung)){
-                $alokasi_hitung_rp = "" . number_format($alokasi_hitung,0,',','.');
-            }else{
-                $alokasi_hitung_rp = 0;
-            }
-            if(!empty($alokasi_nyata)){
-                $alokasi_nyata_rp = "" . number_format($alokasi_nyata,0,',','.');
-            }else{
-                $alokasi_nyata_rp = 0;
-            }
-            $strtotime1=strtotime($periode_hitung1);
-            $strtotime2=strtotime($periode_hitung2);
-            $periode_hitung1=date('d/m/Y',$strtotime1);
-            $periode_hitung2=date('d/m/Y',$strtotime2);
-            //Cek Status Jurnal
-            $JumlahJurnal = mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM jurnal WHERE uuid='$uuid_shu_session'"));
-            //Jumlah Anggota
-            $JumlahRincian = mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM shu_rincian WHERE id_shu_session='$id_shu_session'"));
-            if(!empty($JumlahRincian)){
-                $JumlahRincian = "" . number_format($JumlahRincian,0,',','.');
-            }else{
-                $JumlahRincian =0;
-            }
             
-            //Label Jurnal Ada/Tidak Ada
-            if(empty($JumlahJurnal)){
-                $LabelJurnal='<span class="text-grayish">No Jurnal</span>';
+            //Buka data dengan prepared statment
+            $Qry = $Conn->prepare("SELECT * FROM shu_session WHERE id_shu_session = ?");
+            $Qry->bind_param("i", $id_shu_session);
+            if (!$Qry->execute()) {
+                $error=$Conn->error;
+                echo '
+                    <div class="alert alert-danger">
+                        <small>Terjadi kesalahan pada saat menampilkan data sesi SHU <br> Keterangan : '.$error.'</small>
+                    </div>
+                ';
             }else{
-                $LabelJurnal='<span class="text-sucess"> '.$JumlahJurnal.' Record</span>';
-            }
-            //Label Status
-            if($status=="Pending"){
-                $LabelStatus='<span class="badge badge-warning">Pending</span>';
-            }else{
-                $LabelStatus='<span class="badge badge-success">'.$status.'</span>';
-            }
+                $Result = $Qry->get_result();
+                $Data = $Result->fetch_assoc();
+
+                //Apabila Data Tidak Ditemukan
+                if(empty($Data['id_shu_session'])){
+                    echo '
+                        <div class="alert alert-danger">
+                            <small>Data Sesi SHU tidak ditemukan!</small>
+                        </div>
+                    ';
+                }else{
+                    //Buat Variabel
+                    $periode_hitung1=$Data['periode_hitung1'];
+                    $periode_hitung2=$Data['periode_hitung2'];
+                    $total_penjualan=$Data['total_penjualan'];
+                    $total_simpanan=$Data['total_simpanan'];
+                    $total_pinjaman=$Data['total_pinjaman'];
+                    $persen_penjualan=$Data['persen_penjualan'];
+                    $persen_simpanan=$Data['persen_simpanan'];
+                    $persen_pinjaman=$Data['persen_pinjaman'];
+                    $shu=$Data['shu'];
+                    $status=$Data['status'];
+
+                    //Format tanggal
+                    $periode_hitung1=date('d/m/Y',strtotime($periode_hitung1));
+                    $periode_hitung2=date('d/m/Y',strtotime($periode_hitung2));
+
+                    //Format Rupiah
+                    $shu_rp = "Rp " . number_format($shu,0,',','.');
+                    $total_penjualan_rp = "Rp " . number_format($total_penjualan,0,',','.');
+                    $total_simpanan_rp = "Rp " . number_format($total_simpanan,0,',','.');
+                    $total_pinjaman_rp = "Rp " . number_format($total_pinjaman,0,',','.');
+
+                    //Label Status
+                    if($status=="Pending"){
+                        $LabelStatus='<span class="badge badge-warning">Pending</span>';
+                    }else{
+                        $LabelStatus='<span class="badge badge-success">'.$status.'</span>';
+                    }
+
+                     //Jumlah Anggota
+                    $JumlahRincian = mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM shu_rincian WHERE id_shu_session='$id_shu_session'"));
+                    $JumlahRincian = "" . number_format($JumlahRincian,0,',','.');
+
+                    //Jumlah Rincian SHU
+                    $sum_alokasi= mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(shu) AS jumlah FROM shu_rincian WHERE id_shu_session='$id_shu_session'"));
+                    if(!empty($sum_alokasi['jumlah'])){
+                        $jumlah_alokasi = $sum_alokasi['jumlah'];
+                    }else{
+                        $jumlah_alokasi =0;
+                    }
+                    $jumlah_alokasi_rp = "Rp " . number_format($jumlah_alokasi,0,',','.');
 ?>
-            <div class="modal-body">
-                <div class="row mb-3">
-                    <div class="col col-md-4">Nama Sesi SHU</div>
-                    <div class="col col-md-8">
-                        <code class="text text-grayish"><?php echo $sesi_shu; ?></code>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col col-md-4">Periode SHU</div>
-                    <div class="col col-md-8">
-                        <code class="text text-grayish"><?php echo "$periode_hitung1-$periode_hitung2"; ?></code>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col col-md-4">Jumlah Modal Anggota</div>
-                    <div class="col col-md-8">
-                        <code class="text text-grayish"><?php echo "$modal_anggota"; ?></code>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col col-md-4">Jumlah Pinjaman Anggota</div>
-                    <div class="col col-md-8">
-                        <code class="text text-grayish"><?php echo "$pinjaman_rp"; ?></code>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col col-md-4">Jasa Modal Simpanan</div>
-                    <div class="col col-md-8">
-                        <code class="text text-grayish"><?php echo "$jasa_modal_anggota_rp"; ?></code>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col col-md-4">Jasa Pinjaman</div>
-                    <div class="col col-md-8">
-                        <code class="text text-grayish"><?php echo "$jasa_pinjaman_rp"; ?></code>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col col-md-4">Persentase Usaha</div>
-                    <div class="col col-md-8">
-                        <code class="text text-grayish"><?php echo "$persen_usaha %"; ?></code>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col col-md-4">Persentase Modal</div>
-                    <div class="col col-md-8">
-                        <code class="text text-grayish"><?php echo "$persen_usaha %"; ?></code>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col col-md-4">Persentase Pinjaman</div>
-                    <div class="col col-md-8">
-                        <code class="text text-grayish"><?php echo "$persen_pinjaman %"; ?></code>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col col-md-4">Alokasi SHU</div>
-                    <div class="col col-md-8">
-                        <code class="text text-grayish"><?php echo "$alokasi_nyata_rp"; ?></code>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col col-md-4">Status</div>
-                    <div class="col col-md-8">
-                        <?php echo "$LabelStatus"; ?>
-                    </div>
+            <input type="hidden" name="id" value="<?php echo "$id_shu_session"; ?>">
+            <div class="row mb-2">
+                <div class="col-12">
+                    <b># Informasi Pengaturan SHU</b>
                 </div>
             </div>
-            <div class="modal-footer">
-                <a href="index.php?Page=BagiHasil&Sub=DetailBagiHasil&id=<?php echo $id_shu_session;?>" class="btn btn-primary btn-rounded">
-                    <i class="bi bi-three-dots"></i> Lihat Selengkapnya
-                </a>
-                <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
-                    <i class="bi bi-x-circle"></i> Tutup
-                </button>
+            <div class="row mb-2">
+                <div class="col-4">
+                    <small>Periode Perhitungan</small>
+                </div>
+                <div class="col-1">:</div>
+                <div class="col-7">
+                    <small class="text-muted">
+                        <?php echo "$periode_hitung1 - $periode_hitung2"; ?>
+                    </small>
+                </div>
             </div>
+            <div class="row mb-2">
+                <div class="col-4">
+                    <small>Jumlah SHU</small>
+                </div>
+                <div class="col-1">:</div>
+                <div class="col-7">
+                    <small class="text-muted">
+                        <?php echo "$shu_rp"; ?>
+                    </small>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-4">
+                    <small>Persentase Penjualan</small>
+                </div>
+                <div class="col-1">:</div>
+                <div class="col-7">
+                    <small class="text-muted">
+                        <?php echo "$persen_penjualan %"; ?>
+                    </small>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-4">
+                    <small>Persentase Simpanan</small>
+                </div>
+                <div class="col-1">:</div>
+                <div class="col-7">
+                    <small class="text-muted">
+                        <?php echo "$persen_simpanan %"; ?>
+                    </small>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-4">
+                    <small>Persentase Pinjaman</small>
+                </div>
+                <div class="col-1">:</div>
+                <div class="col-7">
+                    <small class="text-muted">
+                        <?php echo "$persen_pinjaman %"; ?>
+                    </small>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-4">
+                    <small>Status</small>
+                </div>
+                <div class="col-1">:</div>
+                <div class="col-7">
+                    <?php echo "$LabelStatus"; ?>
+                </div>
+            </div>
+            <div class="row mb-3 mt-3">
+                <div class="col-12">
+                    <b># Perhitungan Total Transaksi</b>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-4">
+                    <small>Total Penjualan Anggota</small>
+                </div>
+                <div class="col-1">:</div>
+                <div class="col-7">
+                    <small class="text-muted">
+                        <?php echo "$total_penjualan_rp"; ?>
+                    </small>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-4">
+                    <small>Total Simpanan Anggota</small>
+                </div>
+                <div class="col-1">:</div>
+                <div class="col-7">
+                    <small class="text-muted">
+                        <?php echo "$total_simpanan_rp"; ?>
+                    </small>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-4">
+                    <small>Total Pinjaman Anggota</small>
+                </div>
+                <div class="col-1">:</div>
+                <div class="col-7">
+                    <small class="text-muted">
+                        <?php echo "$total_pinjaman_rp"; ?>
+                    </small>
+                </div>
+            </div>
+            <div class="row mb-3 mt-3">
+                <div class="col-12">
+                    <b># Alokasi SHU</b>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-4">
+                    <small>Jumlah Anggota</small>
+                </div>
+                <div class="col-1">:</div>
+                <div class="col-7">
+                    <small class="text-muted">
+                        <?php echo "$JumlahRincian Orang"; ?>
+                    </small>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-4">
+                    <small>Jumlah Alokasi</small>
+                </div>
+                <div class="col-1">:</div>
+                <div class="col-7">
+                    <small class="text-muted">
+                        <?php echo "$jumlah_alokasi_rp"; ?>
+                    </small>
+                </div>
+            </div>
+
 <?php 
+                    $Qry->close();
+                } 
+            } 
         } 
     } 
 ?>

@@ -73,9 +73,9 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col col-md-12 text-center">
-                        <code class="text text-primary">
-                            Apakah anda yakin akan menghapus data jurnal pinjaman ini?
-                        </code>
+                        <small class="text text-primary">
+                            Apakah anda yakin akan menghapus data jurnal ini?
+                        </small>
                     </div>
                 </div>
 <?php
