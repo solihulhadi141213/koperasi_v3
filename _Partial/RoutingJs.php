@@ -18,6 +18,7 @@
             "SimpananWajib"             => "_Page/SimpananWajib/SimpananWajib.js",
             "Tabungan"                  => "_Page/Tabungan/Tabungan.js",
             "RekapSimpanan"             => "_Page/RekapSimpanan/RekapSimpanan.js",
+            "JenisPinjaman"             => "_Page/JenisPinjaman/JenisPinjaman.js",
             "Pinjaman"                  => "_Page/Pinjaman/Pinjaman.js",
             "Tagihan"                   => "_Page/Tagihan/Tagihan.js",
             "RekapPinjaman"             => "_Page/RekapPinjaman/RekapPinjaman.js",
@@ -58,4 +59,5 @@
             echo '<script type="text/javascript" src="' . $scripts[$_GET['Page']] . '?V='.$date_version.'"></script>';
         }
     }
+    echo '<script type="text/javascript" src="_Partial/Universal.js?V='.$date_version.'"></script>';
 ?>

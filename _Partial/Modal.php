@@ -30,6 +30,7 @@
             "RekapJualBeli"         => "_Page/RekapJualBeli/ModalRekapJualBeli.php",
             "SettingGeneral"        => "_Page/SettingGeneral/ModalSettingGeneral.php",
             "Tabungan"              => "_Page/Tabungan/ModalTabungan.php",
+            "JenisPinjaman"         => "_Page/JenisPinjaman/ModalJenisPinjaman.php",
             "Pinjaman"              => "_Page/Pinjaman/ModalPinjaman.php",
             "AutoJurnal"            => "_Page/AutoJurnal/ModalAutoJurnal.php",
             "Help"                  => "_Page/Help/ModalHelp.php",

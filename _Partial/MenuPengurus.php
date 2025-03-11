@@ -83,12 +83,17 @@
             </ul>
         </li>
         <li class="nav-item">
-            <a class="nav-link <?php if($PageMenu=="Pinjaman"||$PageMenu=="Tagihan"||$PageMenu=="RekapPinjaman"){echo "";}else{echo "collapsed";} ?>" data-bs-target="#pinjaman-nav" data-bs-toggle="collapse" href="javascript:void(0);">
+            <a class="nav-link <?php if($PageMenu=="JenisPinjaman"||$PageMenu=="Pinjaman"||$PageMenu=="Tagihan"||$PageMenu=="RekapPinjaman"){echo "";}else{echo "collapsed";} ?>" data-bs-target="#pinjaman-nav" data-bs-toggle="collapse" href="javascript:void(0);">
                 <i class="bi bi-bank"></i>
                 <span>Pinjaman</span>
                 <i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="pinjaman-nav" class="nav-content collapse <?php if($PageMenu=="Pinjaman"||$PageMenu=="Tagihan"||$PageMenu=="RekapPinjaman"){echo "show";} ?>" data-bs-parent="#sidebar-nav">
+            <ul id="pinjaman-nav" class="nav-content collapse <?php if($PageMenu=="JenisPinjaman"||$PageMenu=="Pinjaman"||$PageMenu=="Tagihan"||$PageMenu=="RekapPinjaman"){echo "show";} ?>" data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="index.php?Page=JenisPinjaman" class="<?php if($PageMenu=="JenisPinjaman"){echo "active";} ?>">
+                        <i class="bi bi-circle"></i><span>Jenis Pinjaman</span>
+                    </a>
+                </li>
                 <li>
                     <a href="index.php?Page=Pinjaman" class="<?php if($PageMenu=="Pinjaman"){echo "active";} ?>">
                         <i class="bi bi-circle"></i><span>Sesi Pinjaman</span>

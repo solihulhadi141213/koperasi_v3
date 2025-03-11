@@ -28,6 +28,7 @@
             "ApiDoc"            =>  "_Page/ApiDoc/ApiDoc.php",
             "Tabungan"          =>  "_Page/Tabungan/Tabungan.php",
             "Pinjaman"          =>  "_Page/Pinjaman/Pinjaman.php",
+            "JenisPinjaman"     =>  "_Page/JenisPinjaman/JenisPinjaman.php",
             "Barang"            =>  "_Page/Barang/Barang.php",
             "BarangExpired"     =>  "_Page/BarangExpired/BarangExpired.php",
             "StockOpename"      =>  "_Page/StockOpename/StockOpename.php",
