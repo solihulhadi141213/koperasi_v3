@@ -125,7 +125,7 @@
                     if($status=="Lunas"){
                         $label_status='<span class="badge badge-success">Lunas</span>';
                     }else{
-                        $label_status='<span class="badge badge-warning">Piutang</span>';
+                        $label_status='<span class="badge badge-warning">Kredit</span>';
                     }
 
                     //Format Rp

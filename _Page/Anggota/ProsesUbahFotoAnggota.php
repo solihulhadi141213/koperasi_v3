@@ -75,10 +75,14 @@
                         foto='$namabaru'
                     WHERE id_anggota='$id_anggota'") or die(mysqli_error($Conn)); 
                     if($UpdateAnggota){
-                        $KategoriLog="Angggota";
-                        $KeteranganLog="Ubah Foto Anggota";
-                        include "../../_Config/InputLog.php";
-                        echo '<small class="text-success" id="NotifikasiUbahFotoAnggotaBerhasil">Success</small>';
+                        $kategori_log="Anggota";
+                        $deskripsi_log="Ubah Foto Anggota";
+                        $InputLog=addLog($Conn,$SessionIdAkses,$now,$kategori_log,$deskripsi_log);
+                        if($InputLog=="Success"){
+                            echo '<small class="text-success" id="NotifikasiUbahFotoAnggotaBerhasil">Success</small>';
+                        }else{
+                            echo '<small class="text-danger">Terjadi kesalahan pada saat menyimpan log</small>';
+                        }
                     }else{
                         echo '<small class="text-danger">Terjadi kesalahan pada saat menyimpan data anggota</small>';
                     }

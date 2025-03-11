@@ -60,6 +60,9 @@
             //Menampilkan Tanggal
             $TanggalMasuk=date('d/m/Y', $strtotime1);
 ?>
+    <input type="hidden" name="Page" value="Anggota">
+    <input type="hidden" name="Sub" value="DetailAnggota">
+    <input type="hidden" name="id" value="<?php echo $id_anggota; ?>">
     <div class="row mb-3">
         <div class="col-md-12 text-center mb-4">
             <img src="<?php echo $base_url; ?>/assets/img/Anggota/<?php echo $foto; ?>" alt="" width="50%" class="rounded-circle">

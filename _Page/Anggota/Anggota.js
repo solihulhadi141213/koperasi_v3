@@ -1,3 +1,4 @@
+//Fungsi Untuk Menampilkan Data Anggota
 function filterAndLoadTable() {
     var ProsesFilter = $('#ProsesFilter').serialize();
     $.ajax({
@@ -9,16 +10,313 @@ function filterAndLoadTable() {
         }
     });
 }
+//Fungsi Untuk Menampilkan Detail Anggota
+function ShowDetailInline(id_anggota) {
+    
+    $.ajax({
+        type        : 'POST',
+        url         : '_Page/Anggota/_detail_anggota.php',
+        data        : {id_anggota: id_anggota},
+        dataType    : "json",
+        success: function(response) {
+            if(response.status=="Success"){
+                var tanggal_masuk=response.dataset.tanggal_masuk;
+                var tanggal_keluar=response.dataset.tanggal_keluar;
+                var nip=response.dataset.nip;
+                var nama=response.dataset.nama;
+                var email=response.dataset.email;
+                var password=response.dataset.password;
+                var kontak=response.dataset.kontak;
+                var lembaga=response.dataset.lembaga;
+                var ranking=response.dataset.ranking;
+                var foto=response.dataset.foto;
+                var base_url=response.dataset.base_url;
+                var akses_anggota=response.dataset.akses_anggota;
+                var status=response.dataset.status;
+                var alasan_keluar=response.dataset.alasan_keluar;
+                if(akses_anggota==1){
+                    var label_akses_anggota='<span class="badge badge-success">Tersedia</span>';
+                }else{
+                    var label_akses_anggota='<span class="badge badge-danger">Tidak Ada</span>';
+                }
+                if(status=="Aktif"){
+                    var label_status='<span class="badge badge-success">Aktif</span>';
+                }else{
+                    var label_status='<span class="badge badge-danger">Tidak Aktif</span>';
+                }
+
+                //Tampilkan Data
+                $('#put_detail_anggota').html(`
+                    <div class="row mb-2">
+                        <div class="col-md-5 mb-3">
+                            <div class="row mb-2">
+                                <div class="col-12"><b># Informasi Identitas Anggota</b></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-4"><small>Nama Anggota</small></div>
+                                <div class="col-1"><small>:</small></div>
+                                <div class="col-7"><small class="text-muted">${nama}</small></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-4"><small>Nomor Induk</small></div>
+                                <div class="col-1"><small>:</small></div>
+                                <div class="col-7"><small class="text-muted">${nip}</small></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-4"><small>Email</small></div>
+                                <div class="col-1"><small>:</small></div>
+                                <div class="col-7"><small class="text-muted">${email}</small></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-4"><small>Kontak</small></div>
+                                <div class="col-1"><small>:</small></div>
+                                <div class="col-7"><small class="text-muted">${kontak}</small></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-4"><small>Divisi/Unit</small></div>
+                                <div class="col-1"><small>:</small></div>
+                                <div class="col-7"><small class="text-muted">${lembaga}</small></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-4"><small>Group/Ranking</small></div>
+                                <div class="col-1"><small>:</small></div>
+                                <div class="col-7"><small class="text-muted">${ranking}</small></div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="row mb-2">
+                                <div class="col-12"><b># Informasi Status Anggota</b></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-4"><small>Tanggal Masuk</small></div>
+                                <div class="col-1"><small>:</small></div>
+                                <div class="col-7"><small class="text-muted">${tanggal_masuk}</small></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-4"><small>Tanggal Keluar</small></div>
+                                <div class="col-1"><small>:</small></div>
+                                <div class="col-7"><small class="text-muted">${tanggal_keluar}</small></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-4"><small>Akses Anggota</small></div>
+                                <div class="col-1"><small>:</small></div>
+                                <div class="col-7"><small class="text-muted">${label_akses_anggota}</small></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-4"><small>Status Anggota</small></div>
+                                <div class="col-1"><small>:</small></div>
+                                <div class="col-7"><small class="text-muted">${label_status}</small></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-4"><small>Alasan Keluar</small></div>
+                                <div class="col-1"><small>:</small></div>
+                                <div class="col-7"><small class="text-muted">${alasan_keluar}</small></div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="row mb-2">
+                                <div class="col-12"><b># Foto Profil Anggota</b></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-12">
+                                    <img src="${base_url}/assets/img/Anggota/${foto}" alt="" width="60%" class="rounded-circle">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `);
+            }else{
+                Swal.fire(
+                    'Opss!',
+                    response.message,
+                    'error'
+                );
+            }
+        },
+        error: function () {
+            Swal.fire(
+                'Opss!',
+                'Terjadi kesalahan pada saat menampilkan detail informasi anggota!',
+                'error'
+            );
+        }
+    });
+}
+
+//Fungsi Untuk Menampilkan Data Riwayat Simpanan
+function ShowRiwayatSimpananInline() {
+    var ProsesFilterRiwayatSimpanan = $('#ProsesFilterRiwayatSimpanan').serialize();
+    $.ajax({
+        type    : 'POST',
+        url     : '_Page/Anggota/TabelRiwayatSimpanan.php',
+        data    : ProsesFilterRiwayatSimpanan,
+        success: function(data) {
+            $('#put_tabel_riwayat_simpanan').html(data);
+        }
+    });
+}
+
+//Fungsi Untuk Menampilkan Data Riwayat Pinjaman
+function ShowRiwayatPinjamanInline() {
+    var ProsesFilterRiwayatPinjaman = $('#ProsesFilterRiwayatPinjaman').serialize();
+    $.ajax({
+        type    : 'POST',
+        url     : '_Page/Anggota/TabelRiwayatPinjaman.php',
+        data    : ProsesFilterRiwayatPinjaman,
+        success: function(data) {
+            $('#put_tabel_riwayat_pinjaman').html(data);
+        }
+    });
+}
+
+//Fungsi Untuk Menampilkan Data Riwayat Penjualan
+function ShowRiwayatPenjualanInline() {
+    var ProsesFilterRiwayatPenjualan = $('#ProsesFilterRiwayatPenjualan').serialize();
+    $.ajax({
+        type    : 'POST',
+        url     : '_Page/Anggota/TabelRiwayatPenjualan.php',
+        data    : ProsesFilterRiwayatPenjualan,
+        success: function(data) {
+            $('#put_tabel_riwayat_penjualan').html(data);
+        }
+    });
+}
+// Fungsi untuk memformat angka ke Rupiah tanpa desimal
+function formatRupiah(angka) {
+    return new Intl.NumberFormat('id-ID', { 
+        style: 'currency', 
+        currency: 'IDR', 
+        minimumFractionDigits: 0, 
+        maximumFractionDigits: 0 
+    }).format(angka);
+}
+
 $(document).ready(function() {
     filterAndLoadTable();
     //Form Password dan tanggal keluar Untuk Pertama Kali
     $('#form_password').hide();
     $('#form_tanggal_keluar').hide();
     $('#form_alasan_keluar').hide();
+
+    //Apabila Berada di Halaman Detail
+    if ($("#GetIdAnggota").length) {
+        //Menampilkan Detail Anggota
+        var id_anggota=$("#GetIdAnggota").html();
+        ShowDetailInline(id_anggota);
+
+        //Menempelkan id_anggota ke filter put_id_anggota_riwayat_simpanan dan put_id_anggota_riwayat_pinjaman
+        $("#put_id_anggota_riwayat_simpanan").val(id_anggota);
+        $("#put_id_anggota_riwayat_pinjaman").val(id_anggota);
+        $("#put_id_anggota_riwayat_penjualan").val(id_anggota);
+        ShowRiwayatSimpananInline();
+        ShowRiwayatPinjamanInline();
+        ShowRiwayatPenjualanInline();
+
+        //Pagging Riwayat Simpanan
+        $(document).on('click', '#next_button_riwayat_simpanan', function() {
+            var page_now = parseInt($('#put_page_riwayat_simpanan').val(), 10); // Pastikan nilai diambil sebagai angka
+            var next_page = page_now + 1;
+            $('#put_page_riwayat_simpanan').val(next_page);
+            ShowRiwayatSimpananInline();
+        });
+        $(document).on('click', '#prev_button_riwayat_simpanan', function() {
+            var page_now = parseInt($('#put_page_riwayat_simpanan').val(), 10); // Pastikan nilai diambil sebagai angka
+            var next_page = page_now - 1;
+            $('#put_page_riwayat_simpanan').val(next_page);
+            ShowRiwayatSimpananInline();
+        });
+
+        //Pagging Riwayat Pinjaman
+        $(document).on('click', '#next_button_riwayat_pinjaman', function() {
+            var page_now = parseInt($('#put_page_riwayat_pinjaman').val(), 10); // Pastikan nilai diambil sebagai angka
+            var next_page = page_now + 1;
+            $('#put_page_riwayat_pinjaman').val(next_page);
+            ShowRiwayatPinjamanInline();
+        });
+        $(document).on('click', '#prev_button_riwayat_pinjaman', function() {
+            var page_now = parseInt($('#put_page_riwayat_pinjaman').val(), 10); // Pastikan nilai diambil sebagai angka
+            var next_page = page_now - 1;
+            $('#put_page_riwayat_pinjaman').val(next_page);
+            ShowRiwayatPinjamanInline();
+        });
+
+        //Pagging Riwayat Penjualan
+        $(document).on('click', '#next_button_riwayat_penjualan', function() {
+            var page_now = parseInt($('#put_page_riwayat_penjualan').val(), 10); // Pastikan nilai diambil sebagai angka
+            var next_page = page_now + 1;
+            $('#put_page_riwayat_penjualan').val(next_page);
+            ShowRiwayatPenjualanInline();
+        });
+        $(document).on('click', '#prev_button_riwayat_penjualan', function() {
+            var page_now = parseInt($('#put_page_riwayat_penjualan').val(), 10); // Pastikan nilai diambil sebagai angka
+            var next_page = page_now - 1;
+            $('#put_page_riwayat_penjualan').val(next_page);
+            ShowRiwayatPenjualanInline();
+        });
+
+        //Keyword By Riwayat Simpanan
+        $('#keyword_by_riwayat_simpanan').change(function(){
+            var keyword_by = $('#keyword_by_riwayat_simpanan').val();
+            $.ajax({
+                type 	    : 'POST',
+                url 	    : '_Page/Anggota/FormFilterRiwayatSimpanan.php',
+                data 	    :  {keyword_by: keyword_by},
+                success     : function(data){
+                    $('#FormFilterRiwayatSimpanan').html(data);
+                }
+            });
+        });
+
+        //Keyword By Riwayat Pinjaman
+        $('#keyword_by_riwayat_pinjaman').change(function(){
+            var keyword_by = $('#keyword_by_riwayat_pinjaman').val();
+            $.ajax({
+                type 	    : 'POST',
+                url 	    : '_Page/Anggota/FormFilterRiwayatPinjaman.php',
+                data 	    :  {keyword_by: keyword_by},
+                success     : function(data){
+                    $('#FormFilterRiwayatPinjaman').html(data);
+                }
+            });
+        });
+
+        //Keyword By Riwayat Penjualan
+        $('#keyword_by_riwayat_penjualan').change(function(){
+            var keyword_by = $('#keyword_by_riwayat_penjualan').val();
+            $.ajax({
+                type 	    : 'POST',
+                url 	    : '_Page/Anggota/FormFilterRiwayatPenjualan.php',
+                data 	    :  {keyword_by: keyword_by},
+                success     : function(data){
+                    $('#FormFilterRiwayatPenjualan').html(data);
+                }
+            });
+        });
+
+        //Proses Filter Riwayat Simpanan
+        $('#ProsesFilterRiwayatSimpanan').submit(function(){
+            $('#put_page_riwayat_simpanan').val("1");
+            ShowRiwayatSimpananInline();
+            $('#ModalFilterRiwayatSimpanan').modal('hide');
+        });
+
+        //Proses Filter Riwayat Pinjaman
+        $('#ProsesFilterRiwayatPinjaman').submit(function(){
+            $('#put_page_riwayat_pinjaman').val("1");
+            ShowRiwayatPinjamanInline();
+            $('#ModalFilterRiwayatPinjaman').modal('hide');
+        });
+
+        //Proses Filter Riwayat Penjualan
+        $('#ProsesFilterRiwayatPenjualan').submit(function(){
+            $('#put_page_riwayat_penjualan').val("1");
+            ShowRiwayatPenjualanInline();
+            $('#ModalFilterRiwayatPenjualan').modal('hide');
+        });
+    }
 });
 $('#keyword_by').change(function(){
     var keyword_by = $('#keyword_by').val();
-    $('#FormFilter').html('Loading...');
     $.ajax({
         type 	    : 'POST',
         url 	    : '_Page/Anggota/FormFilter.php',
@@ -146,16 +444,30 @@ $('#ProsesEditAnggota').submit(function(){
             $('#NotifikasiEditAnggota').html(data);
             var NotifikasiEditAnggotaBerhasil=$('#NotifikasiEditAnggotaBerhasil').html();
             if(NotifikasiEditAnggotaBerhasil=="Success"){
-                $('#NotifikasiEditAnggota').html('');
-                $("#ProsesEditAnggota")[0].reset();
-                $('#ModalEditAnggota').modal('hide');
-                Swal.fire(
-                    'Success!',
-                    'Edit Anggota Berhasil!',
-                    'success'
-                )
-                //Menampilkan Data
-                filterAndLoadTable();
+                if ($("#GetIdAnggota").length) {
+                    $('#NotifikasiEditAnggota').html('');
+                    $("#ProsesEditAnggota")[0].reset();
+                    $('#ModalEditAnggota').modal('hide');
+                    Swal.fire(
+                        'Success!',
+                        'Edit Anggota Berhasil!',
+                        'success'
+                    )
+                    //Menampilkan Data
+                    var id_anggota=$("#GetIdAnggota").html();
+                    ShowDetailInline(id_anggota);
+                }else{
+                    $('#NotifikasiEditAnggota').html('');
+                    $("#ProsesEditAnggota")[0].reset();
+                    $('#ModalEditAnggota').modal('hide');
+                    Swal.fire(
+                        'Success!',
+                        'Edit Anggota Berhasil!',
+                        'success'
+                    )
+                    //Menampilkan Data
+                    filterAndLoadTable();
+                }
             }
         }
     });
@@ -191,15 +503,29 @@ $('#ProsesUbahFotoAnggota').submit(function(){
             $('#NotifikasiUbahFotoAnggota').html(data);
             var NotifikasiUbahFotoAnggotaBerhasil=$('#NotifikasiUbahFotoAnggotaBerhasil').html();
             if(NotifikasiUbahFotoAnggotaBerhasil=="Success"){
-                $('#NotifikasiUbahFotoAnggota').html('');
-                $('#ModalUbahFotoAnggota').modal('hide');
-                Swal.fire(
-                    'Success!',
-                    'Ubah Foto Anggota Berhasil!',
-                    'success'
-                )
-                //Menampilkan Data
-                filterAndLoadTable();
+
+                if ($("#GetIdAnggota").length) {
+                    $('#NotifikasiUbahFotoAnggota').html('');
+                    $('#ModalUbahFotoAnggota').modal('hide');
+                    Swal.fire(
+                        'Success!',
+                        'Ubah Foto Anggota Berhasil!',
+                        'success'
+                    )
+                    var id_anggota=$("#GetIdAnggota").html();
+                    ShowDetailInline(id_anggota);
+                }else{
+                    $('#NotifikasiUbahFotoAnggota').html('');
+                    $('#ModalUbahFotoAnggota').modal('hide');
+                    Swal.fire(
+                        'Success!',
+                        'Ubah Foto Anggota Berhasil!',
+                        'success'
+                    );
+                    //Menampilkan Data
+                    filterAndLoadTable();
+                }
+                
             }
         }
     });
@@ -235,15 +561,19 @@ $('#ProsesHapusAnggota').submit(function(){
             $('#NotifikasiHapusAnggota').html(data);
             var NotifikasiHapusAnggotaBerhasil=$('#NotifikasiHapusAnggotaBerhasil').html();
             if(NotifikasiHapusAnggotaBerhasil=="Success"){
-                $('#NotifikasiHapusAnggota').html('');
-                $('#ModalHapusAnggota').modal('hide');
-                Swal.fire(
-                    'Success!',
-                    'Hapus Anggota Berhasil!',
-                    'success'
-                )
-                //Menampilkan Data
-                filterAndLoadTable();
+                if ($("#GetIdAnggota").length) {
+                    window.location.href = "index.php?Page=Anggota";
+                }else{
+                    $('#NotifikasiHapusAnggota').html('');
+                    $('#ModalHapusAnggota').modal('hide');
+                    Swal.fire(
+                        'Success!',
+                        'Hapus Anggota Berhasil!',
+                        'success'
+                    )
+                    //Menampilkan Data
+                    filterAndLoadTable();
+                }
             }
         }
     });
@@ -884,4 +1214,526 @@ $('#ModalDeletePermintaanAksesAnggota').on('show.bs.modal', function (e) {
             });
         }
     });
+});
+
+//Modal rekapitulasi Simpanan Anggota
+$('#ModalRekapSiimpananAnggota').on('show.bs.modal', function (e) {
+    var id_anggota = $(e.relatedTarget).data('id');
+    $('#FormRekapSiimpananAnggota').html("Loading...");
+    $.ajax({
+        type 	    : 'POST',
+        url 	    : '_Page/Anggota/FormRekapSiimpananAnggota.php',
+        data        : {id_anggota: id_anggota},
+        success     : function(data){
+            $('#FormRekapSiimpananAnggota').html(data);
+        }
+    });
+});
+
+//Modal Export Riwayat Simpanan Anggota
+$('#ModalExportRiwayatSimpanan').on('show.bs.modal', function (e) {
+
+    //Tangkap id_anggota
+    var id_anggota = $(e.relatedTarget).data('id');
+
+    //Disable Tombol
+    $('ButtonExportRiwayatSimpanan').prop("disabled", true);
+
+    //Buka Data Anggota Dengan AJAX
+    $.ajax({
+        type        : 'POST',
+        url         : '_Page/Anggota/_detail_anggota.php',
+        data        : {id_anggota: id_anggota},
+        dataType    : "json",
+        success: function(response) {
+            if(response.status=="Success"){
+
+                //Apabila Berhasil Enable Tombol
+                $('ButtonExportRiwayatSimpanan').prop("disabled", false);
+
+                //Buka Nama Dan NIP
+                var nip=response.dataset.nip;
+                var nama=response.dataset.nama;
+
+                //Tampilkan Data
+                $('#form_export_riwayat_simpanan').html(`
+                    <input type="hidden" class="form-control" name="id_anggota" value="${id_anggota}">
+                    <div class="row mb-3">
+                        <div class="col-4"><small>Nama Anggota</small></div>
+                        <div class="col-1"><small>:</small></div>
+                        <div class="col-7"><small class="text-muted">${nama}</small></div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4"><small>Nomor Induk</small></div>
+                        <div class="col-1"><small>:</small></div>
+                        <div class="col-7"><small class="text-muted">${nip}</small></div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <small><label for="periode_1_riwayat_simpanan">Periode Awal</label></small>
+                        </div>
+                        <div class="col-1"><small>:</small></div>
+                        <div class="col-7">
+                            <input type="date" class="form-control" name="periode_1" id="periode_1_riwayat_simpanan">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <small><label for="periode_2_riwayat_simpanan">Periode Akhir</label></small>
+                        </div>
+                        <div class="col-1"><small>:</small></div>
+                        <div class="col-7">
+                            <input type="date" class="form-control" name="periode_2" id="periode_2_riwayat_simpanan">
+                        </div>
+                    </div>
+                `);
+            }else{
+                //Apabila Terjadi kesalahan Disable Tombol
+                $('ButtonExportRiwayatSimpanan').prop("disabled", true);
+
+                //Tampilkan Kesalahan
+                $('#form_export_riwayat_simpanan').html('<div class="alert alert-danger">'+response.message+'</div>');
+            }
+        },
+        error: function () {
+            $('#form_export_riwayat_simpanan').html('<div class="alert alert-danger">Terjadi kesalahan pada saat menampilkan detail informasi anggota!</div>');
+            $('ButtonExportRiwayatSimpanan').prop("disabled", true);
+        }
+    });
+});
+
+
+//Modal Detail Pinjaman Anggota
+$('#ModalDetailPinjamanAnggota').on('show.bs.modal', function (e) {
+
+    //Tangkap iid_pinjaman
+    var id_pinjaman = $(e.relatedTarget).data('id');
+
+    //Disable Tombol
+    $('ButtonExportRiwayatSimpanan').prop("disabled", true);
+
+    //Buka Data Pinjaman Dengan AJAX
+    $.ajax({
+        type        : 'POST',
+        url         : '_Page/Pinjaman/_detail_pinjaman.php',
+        data        : {id_pinjaman: id_pinjaman},
+        dataType    : "json",
+        success: function(response) {
+            if(response.status=="Success"){
+
+                //Apabila Berhasil Enable Tombol
+                $('ButtonExportRiwayatPinjaman').prop("disabled", false);
+
+                //Buka tanggal
+                var tanggal=response.dataset.tanggal;
+                var jumlah_pinjaman_rp=response.dataset.jumlah_pinjaman_rp;
+                var rp_jasa_rp=response.dataset.rp_jasa_rp;
+                var angsuran_pokok_rp=response.dataset.angsuran_pokok_rp;
+                var angsuran_total_rp=response.dataset.angsuran_total_rp;
+                var periode_angsuran=response.dataset.periode_angsuran;
+                var status=response.dataset.status;
+
+                //List Angsuran
+                var riwayat_angsuran=response.riwayat_angsuran;
+
+                //Tampilkan Data
+                $('#form_detail_riwayat_pinjaman').html(`
+                    <input type="hidden" class="form-control" name="id_pinjaman" value="${id_pinjaman}">
+                    <div class="row mb-3">
+                        <div class="col-4"><small>Tanggal Pinjaman</small></div>
+                        <div class="col-1"><small>:</small></div>
+                        <div class="col-7"><small class="text-muted">${tanggal}</small></div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4"><small>Jumlah Pinjaman</small></div>
+                        <div class="col-1"><small>:</small></div>
+                        <div class="col-7"><small class="text-muted">${jumlah_pinjaman_rp}</small></div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4"><small>Angsuran Pokok</small></div>
+                        <div class="col-1"><small>:</small></div>
+                        <div class="col-7"><small class="text-muted">${angsuran_pokok_rp}</small></div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4"><small>Jasa</small></div>
+                        <div class="col-1"><small>:</small></div>
+                        <div class="col-7"><small class="text-muted">${rp_jasa_rp}</small></div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4"><small>Jumlah Angsuran</small></div>
+                        <div class="col-1"><small>:</small></div>
+                        <div class="col-7"><small class="text-muted">${angsuran_total_rp}</small></div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4"><small>Periode Angsuran</small></div>
+                        <div class="col-1"><small>:</small></div>
+                        <div class="col-7"><small class="text-muted">${periode_angsuran}</small></div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4"><small>Status</small></div>
+                        <div class="col-1"><small>:</small></div>
+                        <div class="col-7"><small class="text-muted">${status}</small></div>
+                    </div>
+                `);
+
+                //Tampilkan Riwayat Angsuran
+                var riwayat_angsuran = response.riwayat_angsuran;
+                var tableContent = '';
+
+                // Variabel untuk menghitung total
+                var totalPokok = 0;
+                var totalJasa = 0;
+                var totalDenda = 0;
+                var totalJumlah = 0;
+
+                if (riwayat_angsuran.length > 0) {
+                    riwayat_angsuran.forEach(function (item, index) {
+                        // Konversi data ke integer
+                        var pokok = parseInt(item.pokok) || 0;
+                        var jasa = parseInt(item.jasa) || 0;
+                        var denda = parseInt(item.denda) || 0;
+                        var jumlah = parseInt(item.jumlah) || 0;
+
+                        // Tambahkan ke total masing-masing
+                        totalPokok += pokok;
+                        totalJasa += jasa;
+                        totalDenda += denda;
+                        totalJumlah += jumlah;
+
+                        tableContent += `
+                            <tr>
+                                <td><small>${index + 1}</small></td>
+                                <td><small>${item.tanggal_bayar}</small></td>
+                                <td><small>${formatRupiah(pokok)}</small></td>
+                                <td><small>${formatRupiah(jasa)}</small></td>
+                                <td><small>${formatRupiah(denda)}</small></td>
+                                <td><small>${formatRupiah(jumlah)}</small></td>
+                            </tr>
+                        `;
+                    });
+
+                    // Tambahkan baris total di akhir tabel
+                    tableContent += `
+                        <tr>
+                            <th colspan="2" class="text-end"><small><b>TOTAL</b></small></th>
+                            <th><small><b>${formatRupiah(totalPokok)}</b></small></th>
+                            <th><small><b>${formatRupiah(totalJasa)}</b></small></th>
+                            <th><small><b>${formatRupiah(totalDenda)}</b></small></th>
+                            <th><small><b>${formatRupiah(totalJumlah)}</b></small></th>
+                        </tr>
+                    `;
+                } else {
+                    tableContent = `
+                        <tr>
+                            <td colspan="6" class="text-center">
+                                <small class="text-danger">Tidak Ada Data Riwayat Angsuran Yang Ditampilkan</small>
+                            </td>
+                        </tr>
+                    `;
+                }
+
+                $('#table_riwayat_angsuran').html(tableContent);
+            }else{
+                //Apabila Terjadi kesalahan Disable Tombol
+                $('ButtonExportRiwayatPinjaman').prop("disabled", true);
+
+                //Tampilkan Kesalahan
+                $('#form_detail_riwayat_pinjaman').html('<div class="alert alert-danger">'+response.message+'</div>');
+            }
+        },
+        error: function () {
+            $('#form_detail_riwayat_pinjaman').html('<div class="alert alert-danger">Terjadi kesalahan pada saat menampilkan detail informasi anggota!</div>');
+            $('ButtonExportRiwayatPinjaman').prop("disabled", true);
+        }
+    });
+});
+
+
+//Modal Detail
+$('#ModalDetailPenjualan').on('show.bs.modal', function (e) {
+    //Tangkap id_transaksi_jual_beli dari modal detail
+    var id_transaksi_jual_beli = $(e.relatedTarget).data('id');
+    
+    //Buka Detail Barang
+    $.ajax({
+        type 	    : 'POST',
+        url 	    : '_Page/Penjualan/detail_penjualan.php',
+        data        : {id_transaksi_jual_beli: id_transaksi_jual_beli},
+        dataType    : "json",
+        success     : function(response){
+            if(response.status=="Success"){
+
+                var data = response.dataset;
+                var list_rincian = response.list_rincian;
+                
+                //Tempelkan Ke Element
+                $('#FormDetailPenjualan').html(`
+                    <input type="hidden" name="id" value="${id_transaksi_jual_beli}">
+                    <div class="row mb-2">
+                        <div class="col-4"><small>Tanggal</small></div>
+                        <div class="col-8">
+                            <small class="text text-grayish">${data.tanggal}</small>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4"><small>Anggota</small></div>
+                        <div class="col-8">
+                            <a href="javascriipt:void(0);" data-bs-toggle="modal" data-bs-target="#ModalListAnggotaEdit" data-id="${id_transaksi_jual_beli}" data-mode="List">
+                                <small class="text text-grayish">${data.nama_anggota}</small>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4"><small>Kategori</small></div>
+                        <div class="col-8">
+                            <small class="text text-grayish">${data.kategori}</small>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4"><small>Subtotal</small></div>
+                        <div class="col-8">
+                            <small class="text text-grayish">${data.subtotal_rp}</small>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4"><small>PPN</small></div>
+                        <div class="col-8">
+                            <small class="text text-grayish">${data.ppn_rp}</small>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4"><small>Diskon</small></div>
+                        <div class="col-8">
+                            <small class="text text-grayish">${data.diskon_rp}</small>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4"><small>Total</small></div>
+                        <div class="col-8">
+                            <small class="text text-grayish">${data.total_rp}</small>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4"><small>Cash</small></div>
+                        <div class="col-8">
+                            <small class="text text-grayish">${data.cash_rp}</small>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4"><small>Kembalian</small></div>
+                        <div class="col-8">
+                            <small class="text text-grayish">${data.kembalian_rp}</small>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4"><small>Status</small></div>
+                        <div class="col-8">
+                            <small class="text text-grayish">${data.status}</small>
+                        </div>
+                    </div>
+                `);
+                var rincianList = response.list_rincian;
+                var html = "";
+
+                // Inisialisasi total
+                var totalPpn = 0;
+                var totalDiskon = 0;
+                var totalSubtotal = 0;
+
+                if (rincianList.length > 0) {
+                    $.each(rincianList, function(index, item) {
+                        html += `
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>${item.nama_barang}</td>
+                                <td>${item.qty}</td>
+                                <td class="text-end">${item.harga_rp}</td>
+                                <td class="text-end">${item.ppn_rp}</td>
+                                <td class="text-end">${item.diskon_rp}</td>
+                                <td class="text-end">${item.subtotal_rp}</td>
+                            </tr>
+                        `;
+
+                        // Hitung total
+                        totalPpn += parseFloat(item.ppn);
+                        totalDiskon += parseFloat(item.diskon);
+                        totalSubtotal += parseFloat(item.subtotal);
+                    });
+
+                    // Tambahkan baris total di akhir tabel
+                    html += `
+                        <tr class="fw-bold bg-light">
+                            <td colspan="4" class="text-center">Total</td>
+                            <td class="text-end">Rp ${totalPpn.toLocaleString("id-ID")}</td>
+                            <td class="text-end">Rp ${totalDiskon.toLocaleString("id-ID")}</td>
+                            <td class="text-end">Rp ${totalSubtotal.toLocaleString("id-ID")}</td>
+                        </tr>
+                    `;
+                } else {
+                    html = '<tr><td colspan="7" class="text-center">Tidak ada rincian transaksi</td></tr>';
+                }
+
+                // Masukkan ke dalam tabel
+                $("#ListDetailPenjualan").html(html);
+
+                //Enable tombol
+                $('#ButtonDetailPenjualanSelengkapnya').prop("disabled", false);
+            }else{
+                //Tempelkan Notifikasi
+                $('#FormDetailPenjualan').html(
+                    `<div class="alert alert-danger" role="alert">${response.message}</div>`
+                );
+                //Disable tombol
+                $('#ButtonDetailPenjualanSelengkapnya').prop("disabled", true);
+            }
+        },
+        error: function () {
+            //Tempelkan Notifikasi
+            $('#FormDetailPenjualan').html(
+                '<div class="alert alert-danger" role="alert">Terjadi kesalahan pada sistem. Silakan coba lagi.</div>'
+            );
+            //Disable tombol
+            $('#ButtonDetailPenjualanSelengkapnya').prop("disabled", true);
+        },
+    });
+});
+
+//Modal Export Riwayat Transaksi Penjualan
+$('#ModalExportRiwayatPenjualan').on('show.bs.modal', function (e) {
+    //Tangkap id_anggota dari modal detail
+    var id_anggota = $(e.relatedTarget).data('id');
+    
+    //Disable Button
+    $('#ButtonExportPenjualanAnggota').prop("disabled", true);
+
+    //Buka Detail Anggota Dengan AJAX
+    $.ajax({
+        type 	    : 'POST',
+        url 	    : '_Page/Anggota/_detail_anggota.php',
+        data        : {id_anggota: id_anggota},
+        dataType    : "json",
+        success     : function(response){
+            if(response.status=="Success"){
+
+                //Jika Berhasil Enable Button
+                $('#ButtonExportPenjualanAnggota').prop("disabled", false);
+
+                var dataset = response.dataset;
+                
+                //Tempelkan Ke Element
+                $('#FormExportPenjualanAnggota').html(`
+                    <input type="hidden" name="id_anggota" value="${id_anggota}">
+                    <div class="row mb-3">
+                        <div class="col-4"><small>Nama Anggota</small></div>
+                        <div class="col-1"><small>:</small></div>
+                        <div class="col-7">
+                            <small class="text-muted">${dataset.nama}</small>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4"><small>Nomor Induk</small></div>
+                        <div class="col-1"><small>:</small></div>
+                        <div class="col-7">
+                            <small class="text-muted">${dataset.nip}</small>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4"><label for="periode_awal_export"><small>Periode Awal</small></label></div>
+                        <div class="col-1"><small>:</small></div>
+                        <div class="col-7">
+                            <input type="date" name="periode_awal_export" id="periode_awal_export" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4"><label for="periode_akhir_export"><small>Periode Akhir</small></label></div>
+                        <div class="col-1"><small>:</small></div>
+                        <div class="col-7">
+                            <input type="date" name="periode_akhir_export" id="periode_akhir_export" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4"><label for="kategori_data_penjualan"><small>Kategori Data</small></label></div>
+                        <div class="col-1"><small>:</small></div>
+                        <div class="col-7">
+                            <select class="form-control" name="kategori_data_penjualan" id="kategori_data_penjualan">
+                                <option value="">Pilih</option>
+                                <option value="Transaksi">Transaksi</option>
+                                <option value="Rincian">Rincian</option>
+                            </select>
+                        </div>
+                    </div>
+                `);
+
+                //Kosongkan Notifikasi
+                $('#NotifikasiExportPenjualanAnggota').html('');
+
+            }else{
+                //Tempelkan Notifikasi
+                $('#FormExportPenjualanAnggota').html(
+                    `<div class="alert alert-danger" role="alert">${response.message}</div>`
+                );
+
+                //Disable tombol
+                $('#ButtonExportPenjualanAnggota').prop("disabled", true);
+            }
+        },
+        error: function () {
+            //Tempelkan Notifikasi
+            $('#FormExportPenjualanAnggota').html(
+                '<div class="alert alert-danger" role="alert">Terjadi kesalahan pada sistem. Silakan coba lagi.</div>'
+            );
+            //Disable tombol
+            $('#ButtonExportPenjualanAnggota').prop("disabled", true);
+        },
+    });
+});
+
+// Handle form submission
+// Handle form submission
+$("#ProsesExportRiwayatPenjualan").submit(function(e) {
+    e.preventDefault();
+
+    // Get values from the form
+    const periode_awal = $("#periode_awal_export").val();
+    const periode_akhir = $("#periode_akhir_export").val();
+    const kategori_data_penjualan = $("#kategori_data_penjualan").val();
+    const id_anggota = $("input[name='id_anggota']").val();
+
+    // Validate date range
+    if (new Date(periode_awal) > new Date(periode_akhir)) {
+        // Invalid date range, show alert
+        $("#NotifikasiExportPenjualanAnggota").html('<div class="alert alert-danger">Periode Awal tidak boleh lebih besar dari Periode Akhir.</div>');
+        return;
+    }
+
+    // Reset any previous alerts
+    $("#NotifikasiExportPenjualanAnggota").html('');
+
+    // Prepare data for GET request
+    const data = {
+        id_anggota: id_anggota,
+        periode_awal: periode_awal,
+        periode_akhir: periode_akhir,
+        kategori_data_penjualan: kategori_data_penjualan
+    };
+
+    // Determine the appropriate PHP file for the request based on kategori_data_penjualan
+    let url = "";
+    if (kategori_data_penjualan === "Transaksi") {
+        url = "_Page/Anggota/ProsesExportTransaksiAnggota.php";
+    } else if (kategori_data_penjualan === "Rincian") {
+        url = "_Page/Anggota/ProsesExportRincianTransaksiAnggota.php";
+    } else {
+        $("#NotifikasiExportPenjualanAnggota").html('<div class="alert alert-danger">Pilih kategori data terlebih dahulu.</div>');
+        return;
+    }
+
+    // Send data via GET request by constructing a query string
+    const queryString = $.param(data);  // Create a query string from the data object
+
+    // Open the URL in a new tab with the data appended as query parameters
+    window.open(url + '?' + queryString, '_blank');
+
+    // Display success notification
+    $("#NotifikasiExportPenjualanAnggota").html('<div class="alert alert-success">Export berhasil! Halaman baru akan dibuka.</div>');
 });
