@@ -134,6 +134,9 @@
                                 </small>
                             </div>
                             <div class="col-3 mb-3 mt-3 text-end">
+                                <a href="javascript:void(0);" class="btn btn-md btn-outline-dark btn-floating edit_dokumentasi" id="button_edit_dokumentasi" title="Edit Dokumentasi" data-id="">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
                                 <a href="javascript:void(0);" class="btn btn-md btn-dark btn-floating back_to_data" title="Kembali Ke Daftar Dokumentasi">
                                     <i class="bi bi-chevron-left"></i>
                                 </a>

@@ -58,7 +58,7 @@
                 $deskripsi_log="Edit Dokumentasi";
                 $InputLog=addLog($Conn,$SessionIdAkses,$now,$kategori_log,$deskripsi_log);
                 if($InputLog=="Success"){
-                    echo json_encode(['status' => 'Success']);
+                    echo json_encode(['status' => 'Success', 'id_help' => $id_help]);
                 }else{
                     echo json_encode(['status' => 'Error', 'message' => 'Terjadi Kesalahan Pada Saat Menyimpan Log!']);
                 }

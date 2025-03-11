@@ -27,18 +27,27 @@
                 echo json_encode(['status' => 'Error', 'message' => 'Semua kolom harus diisi!']);
                 exit;
             }
+            //Validasi Judul Tidak Boleh Sama
+            $id_help=GetDetailData($Conn, 'help', 'judul', $judul, 'id_help');
 
+            if(!empty($id_help)){
+                echo json_encode(['status' => 'Error', 'message' => 'Judul yang anda gunakan sudah ada!']);
+                exit;
+            }
             // Query Insert ke database
             $sql = "INSERT INTO help (judul, kategori, author, datetime_creat, deskripsi) 
                     VALUES ('$judul', '$kategori', '$author', '$tanggal', '$deskripsi')";
 
             if (mysqli_query($Conn, $sql)) {
+                
+                //Buka id_help
+                $id_help=GetDetailData($Conn, 'help', 'judul', $judul, 'id_help');
                 //Jika Berhasil Insert Log
                 $kategori_log="Dokumentasi";
                 $deskripsi_log="Tambah Dokumentasi";
                 $InputLog=addLog($Conn,$SessionIdAkses,$now,$kategori_log,$deskripsi_log);
                 if($InputLog=="Success"){
-                    echo json_encode(['status' => 'Success']);
+                    echo json_encode(['status' => 'Success', 'id_help' => "$id_help"]);
                 }else{
                     echo json_encode(['status' => 'Error', 'message' => 'Terjadi Kesalahan Pada Saat Menyimpan Log!']);
                 }

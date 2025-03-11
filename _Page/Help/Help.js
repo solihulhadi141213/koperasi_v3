@@ -44,6 +44,9 @@ function ShowDetailDokumentasi(id_help) {
                 $('#put_dokumentasi').html(response.dataset.deskripsi);
                 $('#tanggal_dokumentasi').html(response.dataset.datetime_creat);
                 $('#author_dokumentasi').html(response.dataset.author);
+
+                //Tempelkan id_hel ke tombol edit
+                $("#button_edit_dokumentasi").attr("data-id", id_help);
             }else{
                 Swal.fire(
                     'Opss!',
@@ -227,8 +230,9 @@ $(document).ready(function() {
 
     //Ketika class edit_dokumentasi di click
     $(document).on('click', '.edit_dokumentasi', function(e){
+        console.log(this);
         //Tangkap id_help
-        var id_help = $(this).data('id');
+        var id_help = $(this).attr('data-id');
         ShowEditDokumentasi(id_help);
     });
     
@@ -306,20 +310,23 @@ $(document).ready(function() {
             contentType: false,
             success: function (response) {
                 if (response.status === "Success") {
+                    //Jika berhasil terima id_help
+                    var id_help=response.id_help;
+                    
                     // Tampilkan notifikasi sukses
                     Swal.fire({
                         icon: 'success',
                         title: 'Berhasil!',
                         text: 'Dokumentasi berhasil ditambahkan.',
                         timer: 2000,
-                        showConfirmButton: false
+                        showConfirmButton: true
                     });
 
                     //Reset Form Filter
                     $('#ProsesFilter')[0].reset();
 
-                    // Panggil fungsi ShowData()
-                    ShowData();
+                    // Panggil fungsi ShowDetailDokumentasi(id_help)
+                    ShowDetailDokumentasi(id_help);
 
                     // Reset form setelah sukses
                     $('#ProsesTambahDokumentasi')[0].reset(); // Kosongkan form
@@ -521,14 +528,15 @@ $(document).ready(function() {
                         title: 'Berhasil!',
                         text: 'Dokumentasi berhasil Disimpan.',
                         timer: 2000,
-                        showConfirmButton: false
+                        showConfirmButton: true
                     });
 
                     //Reset Form Filter
                     $('#ProsesFilter')[0].reset();
 
-                    // Panggil fungsi ShowData()
-                    ShowData();
+                    var id_help=response.id_help;
+                    // Panggil fungsi ShowDetailDokumentasi()
+                    ShowDetailDokumentasi(id_help);
 
                     // Reset form setelah sukses
                     $('#ProsesEditDokumentasi')[0].reset(); // Kosongkan form
