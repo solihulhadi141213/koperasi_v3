@@ -38,8 +38,8 @@
                     <div class="card-header">
                         <form action="javascript:void(0);" id="ProsesBatas">
                             <div class="row">
-                                <div class="col-md-8"></div>
-                                <div class="col-md-2 mb-3">
+                                <div class="col-12 col-md-8"></div>
+                                <div class="col-6 col-md-2 mb-3">
                                     <a class="btn btn-md btn-outline-dark btn-rounded btn-block" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="bi bi-three-dots"></i> Opsi Lanjutan
                                     </a>
@@ -64,7 +64,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="col-md-2 mb-3">
+                                <div class="col-6 col-md-2 mb-3">
                                     <button type="button" class="btn btn-md btn-primary btn-block btn-rounded" data-bs-toggle="modal" data-bs-target="#ModalPilihAnggota" title="Tambah Data Pinjaman Baru">
                                         <i class="bi bi-plus-lg"></i> Tambah
                                     </button>

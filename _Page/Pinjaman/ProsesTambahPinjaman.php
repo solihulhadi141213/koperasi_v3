@@ -29,6 +29,8 @@
                             $jumlah_pinjaman=$_POST['jumlah_pinjaman'];
                             $angsuran_pokok=$_POST['angsuran_pokok'];
                             $periode_angsuran=$_POST['periode_angsuran'];
+
+
                             if(empty($_POST['persen_jasa'])){
                                 $persen_jasa="0";
                             }else{
@@ -54,6 +56,13 @@
                             }else{
                                 $sistem_denda=$_POST['sistem_denda'];
                             }
+
+                            if(empty($_POST['id_pinjaman_jenis'])){
+                                $id_pinjaman_jenis="";
+                            }else{
+                                $id_pinjaman_jenis=$_POST['id_pinjaman_jenis'];
+                            }
+
                             $jumlah_pinjaman= str_replace(",", "", $jumlah_pinjaman);
                             $angsuran_pokok= str_replace(",", "", $angsuran_pokok);
                             $periode_angsuran= str_replace(",", "", $periode_angsuran);
@@ -95,6 +104,7 @@
                                                         $angsuran_total=validateAndSanitizeInput($angsuran_total);
                                                         $denda=validateAndSanitizeInput($denda);
                                                         $sistem_denda=validateAndSanitizeInput($sistem_denda);
+                                                        $id_pinjaman_jenis=validateAndSanitizeInput($id_pinjaman_jenis);
                                                         //Buka Data Anggota
                                                         $nip=GetDetailData($Conn,'anggota','id_anggota',$id_anggota,'nip');
                                                         $nama=GetDetailData($Conn,'anggota','id_anggota',$id_anggota,'nama');
@@ -129,6 +139,7 @@
                                                                         $entry="INSERT INTO pinjaman (
                                                                             uuid_pinjaman,
                                                                             id_anggota,
+                                                                            id_pinjaman_jenis,
                                                                             nama,
                                                                             nip,
                                                                             lembaga,
@@ -147,6 +158,7 @@
                                                                         ) VALUES (
                                                                             '$uuid_pinjaman',
                                                                             '$id_anggota',
+                                                                            '$id_pinjaman_jenis',
                                                                             '$nama',
                                                                             '$nip',
                                                                             '$lembaga',

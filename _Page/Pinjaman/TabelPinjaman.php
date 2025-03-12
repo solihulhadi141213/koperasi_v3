@@ -123,7 +123,7 @@
                     <thead>
                         <tr>
                             <td align="center"><b>No</b></td>
-                            <td align="center"><b>Tanggal Pinjaman</b></td>
+                            <td align="center"><b>Tanggal</b></td>
                             <td align="center"><b>Nama & NIP</b></td>
                             <td align="center"><b>Divisi/Unit & Ranking</b></td>
                             <td align="center"><b>Rp Pinjaman</b></td>
@@ -212,8 +212,11 @@
                                             <small class="credit"><?php echo $no; ?></small>
                                         </td>
                                         <td align="left">
-                                            <small class="credit">
-                                                <code class="text-dark"><?php echo $TanggalFormat; ?></code>
+                                            <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#ModalDetailPinjaman" data-id="<?php echo "$id_pinjaman"; ?>">
+                                                <small><?php echo $TanggalFormat; ?></small>
+                                            </a><br>
+                                            <small>
+                                                Tempo Tgl.<?php echo $jatuh_tempo; ?>
                                             </small>
                                         </td>
                                         <td align="left">

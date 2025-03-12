@@ -27,6 +27,8 @@ Aplikasi Koperasi V 3.0.0 adalah sebuah aplikasi open source yang dirancang untu
    - Rekap Simpanan<br>
      Halaman ini berfungsi untuk mempermudah anda melakukan monitoring jumlah simpanan anggota. Sistem dapat menampilkan jumlah simpanan berdasarkan jenis-jenisnya pada masing-masing unit/divisi (untuk koperasi karyawan) dan juga berdasarkan list anggota.
 4. Pinjaman Anggota
+   - Jenis Pinjaman<br>
+     Fitur jenis pinjaman berfungsi untuk menyimpan paket pinjaman yang disediakan koperasi dengan pengaturan persentase jasa dan pengaturan periode angsuran secara khusus. Dengan adanya jenis pinjaman akan mempermudah pengurus koperasi ketika dibuatkan sesi pinjaman, karena akan langsung menyesuaikan dengan pengaturan jenis pinjaman yang telah diibuat. Walaupun demikian, pengurus koperasi masih dapat melakukan perubahan pada sesi pinjaman secara spontan jika dibutuhkan.
    - Sesi Pinjaman<br>
      Setiap data pinjaman anggota, dicatat pada sesi pinjaman. Fitur ini berfungsi mencatat besaran nilai pinjaman anggota, tanggal jatuh tempo, angsuran yang harus di bayar, lama periode angsuran dan status pinjaman anggota (Lunas, Masih Berjalan).
    - Tagihan/Tunggakan<br>
@@ -34,8 +36,10 @@ Aplikasi Koperasi V 3.0.0 adalah sebuah aplikasi open source yang dirancang untu
    - Rekap Pinjaman<br>
      Halaman rekap pinjaman berfungsi untuk menampilkan data rekapitulasi pinjaman anggota berdasarkan periode waktu tertentu. Pada halaman inii terdapat 3 fitur data yang ditampilkan, yang diantaranya adalah : Rekap jumlah data pinjaman secara keseluruhan, rekap data pinjaman berdasarkan unit kerja/ divisi, rekap data pinjaman berdasarkan anggota.
 5. Barang/Inventory
-   - Master Barang
-   - Batch & Expired
+   - Master Barang<br>
+      Halaman master barang berfungsi untuk mencatat semua item barang jualan yang ada. Informasi yang dicatat terdiri dari kode, nama, kategori, stok, satuan, harga beli dan modul tambahan seperti multi harga dan multi satuan. Pada halaman ini anda juga dapat mengatur jenis-jenis harga yang berlaku.
+   - Batch & Expired<br>
+    Halaman Batch & Expired berfungsi untuk mengelola daftar batch barang serta informasi expire date sehingga jumlah barang yang expire dapat dimonitoring dengan mudah.
    - Stock Opename
    - Supplier
 6. Transaksi Operasional

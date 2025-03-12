@@ -82,6 +82,29 @@
         </div>
         <div class="row mb-3">
             <div class="col-md-4">
+                <label for="id_pinjaman_jenis">Jenis Pinjaman</label>
+            </div>
+            <div class="col-md-8">
+                <select name="id_pinjaman_jenis" id="id_pinjaman_jenis" class="form-control">
+                    <option value="">Pilih</option>
+                    <?php
+                        $query_jenis_pinjaman = mysqli_query($Conn, "SELECT*FROM pinjaman_jenis");
+                        while ($data_jenis_pinjaman = mysqli_fetch_array($query_jenis_pinjaman)) {
+                            $id_pinjaman_jenis= $data_jenis_pinjaman['id_pinjaman_jenis'];
+                            $nama_pinjaman= $data_jenis_pinjaman['nama_pinjaman'];
+                            $periode_angsuran= $data_jenis_pinjaman['periode_angsuran'];
+                            $persen_jasa= $data_jenis_pinjaman['persen_jasa'];
+                            echo '
+                                <option value="'.$id_pinjaman_jenis.'">'.$nama_pinjaman.' ('.$persen_jasa.' % / '.$periode_angsuran.' Bulan)</option>
+                            ';
+                        }
+                    ?>
+                </select>
+                <small id="NotifikasiiPilihJenisPinjaman"></small>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4">
                 <label for="jumlah_pinjaman">Rp Pinjaman</label>
             </div>
             <div class="col-md-8">
@@ -301,6 +324,96 @@
                     var jumlah_pinjaman_uang = parseInt(jumlah_pinjaman, 10).toLocaleString('en-US');
                     $('#angsuran_total').val(jumlah_pinjaman_uang);
                 }
+            });
+
+            // Fungsi untuk menghitung Rp Jasa, Rp Angsuran Pokok, dan Rp Angsuran + Jasa
+            function hitungAngsuran() {
+                var persen_jasa = $('#persen_jasa').val();
+                var rawValue = $('#jumlah_pinjaman').val();
+                var periode_angsuran = $('#periode_angsuran').val();
+
+                // Mengisi RP Jasa
+                if (persen_jasa !== 0 && persen_jasa !== "" && rawValue !== 0 && rawValue !== "") {
+                    var jumlah_pinjaman = rawValue.replace(/,/g, '');
+                    var rp_jasa = jumlah_pinjaman * (persen_jasa / 100);
+                    var rp_jasaBulat = Math.round(rp_jasa);
+                    var rp_jasaBulat_uang = parseInt(rp_jasaBulat, 10).toLocaleString('en-US');
+                    $('#rp_jasa').val(rp_jasaBulat_uang);
+                } else {
+                    $('#rp_jasa').val('0');
+                }
+
+                // Mengisi Angsuran Pokok
+                if (periode_angsuran !== 0 && periode_angsuran !== "" && rawValue !== 0 && rawValue !== "") {
+                    var jumlah_pinjaman = rawValue.replace(/,/g, '');
+                    var angsuran_pokok = jumlah_pinjaman / periode_angsuran;
+                    var angsuran_pokokBulat = Math.round(angsuran_pokok);
+                    var angsuran_pokokBulat_uang = parseInt(angsuran_pokokBulat, 10).toLocaleString('en-US');
+                    $('#angsuran_pokok').val(angsuran_pokokBulat_uang);
+                } else {
+                    var jumlah_pinjaman = rawValue.replace(/,/g, '');
+                    var jumlah_pinjaman_uang = parseInt(jumlah_pinjaman, 10).toLocaleString('en-US');
+                    $('#angsuran_pokok').val(jumlah_pinjaman_uang);
+                }
+
+                // Mengisi angsuran_total 
+                if (periode_angsuran !== 0 && periode_angsuran !== "" && rawValue !== 0 && rawValue !== "") {
+                    var jumlah_pinjaman = rawValue.replace(/,/g, '');
+                    var rp_jasa = jumlah_pinjaman * (persen_jasa / 100);
+                    var rp_jasaBulat = Math.round(rp_jasa);
+                    var angsuran_pokok = jumlah_pinjaman / periode_angsuran;
+                    var angsuran_pokokBulat = Math.round(angsuran_pokok);
+                    var angsuran_total = rp_jasaBulat + angsuran_pokokBulat;
+                    var angsuran_total_uang = parseInt(angsuran_total, 10).toLocaleString('en-US');
+                    $('#angsuran_total').val(angsuran_total_uang);
+                } else {
+                    var jumlah_pinjaman = rawValue.replace(/,/g, '');
+                    var jumlah_pinjaman_uang = parseInt(jumlah_pinjaman, 10).toLocaleString('en-US');
+                    $('#angsuran_total').val(jumlah_pinjaman_uang);
+                }
+            }
+
+            // Ketika class akumulasi_pinjaman Diisi Sistem Menghitung Rp Jasa
+            $('.akumulasi_pinjaman').on('input', function() {
+                hitungAngsuran();
+            });
+
+            // Ketika Jenis pinjaman diubah
+            $('#id_pinjaman_jenis').on('change', function() {
+                var id_pinjaman_jenis = $('#id_pinjaman_jenis').val();
+                // Membuka Detail Jenis Pinjaman Dengan AJAX
+                $.ajax({
+                    type: 'POST',
+                    url: '_Page/JenisPinjaman/_detail_jenis_pinjaman.php',
+                    dataType: "json",
+                    data: { id_pinjaman_jenis: id_pinjaman_jenis },
+                    success: function(response) {
+                        if (response.status == "Success") {
+                            var dataset = response.dataset;
+                            var periode_angsuran = dataset.periode_angsuran;
+                            var persen_jasa = dataset.persen_jasa;
+                            var persen_perbulan = (persen_jasa / periode_angsuran).toFixed(2);
+
+                            // Tempelkan ke form
+                            $('#periode_angsuran').val(periode_angsuran);
+                            $('#persen_jasa').val(persen_perbulan);
+
+                            // Hitung ulang angsuran setelah mengubah nilai
+                            hitungAngsuran();
+                        } else {
+                            // Tempelkan Notifikasi
+                            $('#NotifikasiiPilihJenisPinjaman').html(
+                                '<div class="alert alert-danger" role="alert"><small>Terjadi kesalahan pada sistem.<br> Keterangan : ' + response.message + '</small></div>'
+                            );
+                        }
+                    },
+                    error: function() {
+                        // Tempelkan Notifikasi
+                        $('#NotifikasiiPilihJenisPinjaman').html(
+                            '<div class="alert alert-danger" role="alert"><small>Terjadi kesalahan pada saat membuka detail jenis pinjaman</small></div>'
+                        );
+                    },
+                });
             });
         </script>
 <?php
