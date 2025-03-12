@@ -123,7 +123,7 @@
             </div>
             <div class="row mb-3">
                 <div class="col-md-4">
-                    <label for="jumlah_pinjaman">Rp Pinjaman</label>
+                    <label for="jumlah_pinjaman">Jumlah Pinjaman</label>
                 </div>
                 <div class="col-md-8">
                     <input type="text" id="jumlah_pinjaman" name="jumlah_pinjaman" class="form-control format_uang akumulasi_pinjaman" placeholder="Rp" value="<?php echo $jumlah_pinjaman_format; ?>">
@@ -144,7 +144,7 @@
             </div>
             <div class="row mb-3">
                 <div class="col-md-4">
-                    <label for="persen_jasa">% Jasa</label>
+                    <label for="persen_jasa">Margin (%)</label>
                 </div>
                 <div class="col-md-8">
                     <input type="text" id="persen_jasa" name="persen_jasa" class="form-control number-decimal-only akumulasi_pinjaman" placeholder="%" value="<?php echo $persen_jasa; ?>">
@@ -158,7 +158,7 @@
             </div>
             <div class="row mb-3">
                 <div class="col-md-4">
-                    <label for="rp_jasa">Rp Jasa</label>
+                    <label for="rp_jasa">Margin (Rp)</label>
                 </div>
                 <div class="col-md-8">
                     <input type="text" readonly id="rp_jasa" name="rp_jasa" class="form-control format_uang" placeholder="Rp" value="<?php echo $rp_jasa_format; ?>">
@@ -171,7 +171,7 @@
             </div>
             <div class="row mb-3">
                 <div class="col-md-4">
-                    <label for="angsuran_pokok">Rp Angsuran Pokok</label>
+                    <label for="angsuran_pokok">Angsuran Pokok</label>
                 </div>
                 <div class="col-md-8">
                     <input type="text" readonly id="angsuran_pokok" name="angsuran_pokok" class="form-control format_uang" placeholder="Rp" value="<?php echo $angsuran_pokok_format; ?>">
@@ -184,7 +184,7 @@
             </div>
             <div class="row mb-3">
                 <div class="col-md-4">
-                    <label for="angsuran_total">Rp Angsuran + Jasa</label>
+                    <label for="angsuran_total">Angsuran + Jasa</label>
                 </div>
                 <div class="col-md-8">
                     <input type="text" readonly id="angsuran_total" name="angsuran_total" class="form-control format_uang" placeholder="Rp" value="<?php echo $angsuran_total_format; ?>">
@@ -197,7 +197,7 @@
             </div>
             <div class="row mb-3">
                 <div class="col-md-4">
-                    <label for="denda">Rp Denda</label>
+                    <label for="denda">Denda</label>
                 </div>
                 <div class="col-md-8">
                     <input type="text" id="denda" name="denda" class="form-control format_uang" placeholder="Rp" value="<?php echo $denda_format; ?>">

@@ -40,10 +40,21 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
-                            <div class="col-md-8"></div>
-                            <div class="col-md-2">
-                                <a class="btn btn-md btn-outline-dark btn-rounded btn-block" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-three-dots"></i> Opsi Lanjutan
+                            <div class="col-8">
+                                <b class="card-title"># Daftar Barang</b>
+                            </div>
+                            <div class="col-4 text-end">
+                                <button 
+                                type="button" 
+                                class="btn btn-md btn-outline-secondary btn-floating modal_scan_barang" 
+                                data-bs-toggle="tooltip" 
+                                data-bs-placement="top" 
+                                data-bs-custom-class="custom-tooltip" 
+                                data-bs-title="Scan Kode Barang">
+                                    <i class="bi bi-qr-code-scan"></i>
+                                </button>
+                                <a class="btn btn-md btn-outline-dark btn-floating" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="false" title="Opsi Lanjutan">
+                                    <i class="bi bi-three-dots"></i>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" style="">
                                     <li class="dropdown-header text-start">
@@ -70,10 +81,8 @@
                                         </a>
                                     </li>
                                 </ul>
-                            </div>
-                            <div class="col-md-2">
-                                <button type="button" class="btn btn-md btn-primary btn-block btn-rounded" data-bs-toggle="modal" data-bs-target="#ModalTambahBarang" title="Tambah Data Barang">
-                                    <i class="bi bi-plus-lg"></i> Tambah
+                                <button type="button" class="btn btn-md btn-primary btn-floating" data-bs-toggle="modal" data-bs-target="#ModalTambahBarang" title="Tambah Data Barang">
+                                    <i class="bi bi-plus-lg"></i>
                                 </button>
                             </div>
                         </div>

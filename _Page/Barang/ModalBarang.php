@@ -402,7 +402,99 @@
         </div>
     </div>
 </div>
-
+<div class="modal fade" id="ModalDetailKode" tabindex="-1">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <form action="javascript:void(0);" id="ProsesCetakCodeBarang">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark"><i class="bi bi-upc-scan"></i> Kode Barang</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-12" id="PreviewBarcodeKode">
+                            <!-- Preview Barcode Kode akan tampil disini -->
+                        </div>
+                    </div>
+                    <div class="row mb-3 border-1 border-top">
+                        <div class="col-12 mb-2 mt-2"></div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="type_code"><small>Tipe Code</small></label>
+                        </div>
+                        <div class="col-1"><small>:</small></div>
+                        <div class="col-7">
+                            <select name="type_code" id="type_code" class="form-control">
+                                <option value="code128">Barcode (code128)</option>
+                                <option value="code39">Barcode (code39)</option>
+                                <option value="code25">Barcode (code25)</option>
+                                <option value="qrcode">Qrcode</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="tampilkan_nama_barang_for_code"><small>Nama Barang</small></label>
+                        </div>
+                        <div class="col-1"><small>:</small></div>
+                        <div class="col-7">
+                            <select name="tampilkan_nama_barang_for_code" id="tampilkan_nama_barang_for_code" class="form-control">
+                                <option value="Tampilkan">Tampilkan</option>
+                                <option value="Tidak">Tidak</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="kategori_harga_kode"><small>Kategori Harga</small></label>
+                        </div>
+                        <div class="col-1"><small>:</small></div>
+                        <div class="col-7">
+                            <select name="kategori_harga_kode" id="kategori_harga_kode" class="form-control">
+                                <?php
+                                    $query = mysqli_query($Conn, "SELECT*FROM barang_kategori_harga ORDER BY id_barang_kategori_harga DESC");
+                                    while ($data = mysqli_fetch_array($query)) {
+                                        $id_barang_kategori_harga= $data['id_barang_kategori_harga'];
+                                        $kategori_harga= $data['kategori_harga'];
+                                        echo '<option value="'.$id_barang_kategori_harga.'">'.$kategori_harga.'</option>';
+                                    }
+                                ?>
+                                <option value="">Jangan Tampilkan</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="type_file_code"><small>Tipe Cetak</small></label>
+                        </div>
+                        <div class="col-1"><small>:</small></div>
+                        <div class="col-7">
+                            <select name="type_file_code" id="type_file_code" class="form-control">
+                                <option value="Direct">Direct</option>
+                                <option value="Image">Image</option>
+                                <option value="PDF">PDF</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12" id="NotifikasiCetakKode">
+                            <!-- Notifikasi Cetak Code Disni -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success btn-rounded" id="ButtonCetakKode">
+                        <i class="bi bi-printer"></i> Cetak Code
+                    </button>
+                    <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Tutup
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="ModalDetailBarang" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -1173,6 +1265,45 @@
                     <button type="submit" class="btn btn-md btn-success btn-rounded">
                         <i class="bi bi-download"></i> Export
                     </button>
+                    <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Tutup
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalScanBarang" tabindex="-1">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <form action="javascript:void(0);" id="ProsesScanBarang">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark">
+                        <i class="bi bi-qr-code-scan"></i> Scan Barang
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <!-- Form Export Riwayat Transaksi Disini -->
+                            <video id="qr-video" width="100%" height="auto" playsinline></video>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="get_resume_kode_barang">
+                                <small>Kode Barang</small>
+                            </label>
+                        </div>
+                        <div class="col-1"><small>:</small></div>
+                        <div class="col-7">
+                            <input type="text" name="get_resume_kode_barang" id="get_resume_kode_barang" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
                     <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
                         <i class="bi bi-x-circle"></i> Tutup
                     </button>

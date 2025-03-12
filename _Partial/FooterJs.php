@@ -32,3 +32,6 @@
         $( '.format_uang' ).mask('000.000.000.000', {reverse: true});
     })
 </script>
+
+<!-- Scan QR -->
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>

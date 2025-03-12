@@ -230,6 +230,64 @@ function ShowRiwayatTransaksi(id_barang) {
     });
 }
 
+let video = document.getElementById('qr-video');
+let scanning = false;
+let videoStream = null;
+
+function startQRScanner() {
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+        .then(function (stream) {
+            videoStream = stream;
+            video.srcObject = stream;
+            video.setAttribute("playsinline", true); // Agar tidak fullscreen di iOS
+            
+            video.onloadedmetadata = () => {
+                video.play();
+                scanning = true;
+                scanQRCode(); // Mulai scan setelah video siap
+            };
+        })
+        .catch(function (err) {
+            console.error("Error accessing camera: ", err);
+        });
+}
+
+function stopQRScanner() {
+    scanning = false;
+    if (videoStream) {
+        videoStream.getTracks().forEach(track => track.stop());
+    }
+}
+
+function scanQRCode() {
+    if (scanning) {
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        
+        // Cek apakah video sudah siap dengan dimensi valid
+        if (video.videoWidth > 0 && video.videoHeight > 0) {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+            const code = jsQR(imageData.data, canvas.width, canvas.height);
+            
+            if (code) {
+                $('#get_resume_kode_barang').val(code.data);
+                stopQRScanner();
+                // $('#ModalScanBarang').modal('hide');
+            } else {
+                requestAnimationFrame(scanQRCode);
+            }
+        } else {
+            // Tunggu dan coba lagi jika dimensi belum valid
+            requestAnimationFrame(scanQRCode);
+        }
+    }
+}
+
+
 $(document).ready(function() {
     //Menampilkan Data Pertama Kali
     ShowData();
@@ -347,6 +405,22 @@ $(document).ready(function() {
         var next_page = page_now - 1;
         $('#page').val(next_page);
         ShowData(0);
+    });
+
+
+    //Ketika class modal_scan_barang si click
+    $('.modal_scan_barang').click(function(){
+        $('#ModalScanBarang').modal('show');
+    });
+    
+    // Event ketika modal ditampilkan
+    $('#ModalScanBarang').on('shown.bs.modal', function () {
+        startQRScanner();
+    });
+
+    // Event ketika modal ditutup
+    $('#ModalScanBarang').on('hidden.bs.modal', function () {
+        stopQRScanner();
     });
 
     //Modal Kategori Harga
@@ -777,6 +851,143 @@ $(document).ready(function() {
         var id_barang = $(this).data("id");
         $('#ModalDetailBarang').modal('show');
         DetailBarangOnModal(id_barang);
+    });
+
+    //Modal Detail Kode Barang
+    $('#ModalDetailKode').on('show.bs.modal', function (e) {
+        var id_barang= $(e.relatedTarget).data('id');
+
+        //Tangkap Data Dari Form
+        var type_code=$('#type_code').val();
+        var tampilkan_nama_barang_for_code=$('#tampilkan_nama_barang_for_code').val();
+        var kategori_harga_kode=$('#kategori_harga_kode').val();
+        
+        //Kosongkan PreviewBarcodeKode
+        $('#PreviewBarcodeKode').html("");
+        //Sembunyikan Tombol
+        // $('#ButtonCetakKode').hide();
+        $.ajax({
+            type 	    : 'POST',
+            url 	    : '_Page/Barang/detail_kode_barang.php',
+            data        : {id_barang: id_barang, type_code: type_code, tampilkan_nama_barang_for_code: tampilkan_nama_barang_for_code, id_barang_kategori_harga: kategori_harga_kode},
+            success     : function(response){
+                $('#PreviewBarcodeKode').html(response);
+            }
+        });
+
+        //Apabila Kategori Harga Diubah
+        $("#kategori_harga_kode").on("change", function (e) {
+            var type_code=$('#type_code').val();
+            var tampilkan_nama_barang_for_code=$('#tampilkan_nama_barang_for_code').val();
+            var kategori_harga_kode=$('#kategori_harga_kode').val();
+            $.ajax({
+                type 	    : 'POST',
+                url 	    : '_Page/Barang/detail_kode_barang.php',
+                data        : {id_barang: id_barang, type_code: type_code, tampilkan_nama_barang_for_code: tampilkan_nama_barang_for_code, id_barang_kategori_harga: kategori_harga_kode},
+                success     : function(response){
+                    $('#PreviewBarcodeKode').html(response);
+                }
+            });
+        });
+
+        //Apabila tampilkan_nama_barang_for_code Diubah
+        $("#tampilkan_nama_barang_for_code").on("change", function (e) {
+            var type_code=$('#type_code').val();
+            var tampilkan_nama_barang_for_code=$('#tampilkan_nama_barang_for_code').val();
+            var kategori_harga_kode=$('#kategori_harga_kode').val();
+            $.ajax({
+                type 	    : 'POST',
+                url 	    : '_Page/Barang/detail_kode_barang.php',
+                data        : {id_barang: id_barang, type_code: type_code, tampilkan_nama_barang_for_code: tampilkan_nama_barang_for_code, id_barang_kategori_harga: kategori_harga_kode},
+                success     : function(response){
+                    $('#PreviewBarcodeKode').html(response);
+                }
+            });
+        });
+
+        //Apabila type_code Diubah
+        $("#type_code").on("change", function (e) {
+            var type_code=$('#type_code').val();
+            var tampilkan_nama_barang_for_code=$('#tampilkan_nama_barang_for_code').val();
+            var kategori_harga_kode=$('#kategori_harga_kode').val();
+            $.ajax({
+                type 	    : 'POST',
+                url 	    : '_Page/Barang/detail_kode_barang.php',
+                data        : {id_barang: id_barang, type_code: type_code, tampilkan_nama_barang_for_code: tampilkan_nama_barang_for_code, id_barang_kategori_harga: kategori_harga_kode},
+                success     : function(response){
+                    $('#PreviewBarcodeKode').html(response);
+                }
+            });
+        });
+    });
+    function resetButton() {
+        $('#ButtonCetakKode').prop('disabled', false).html('<i class="bi bi-printer"></i> Cetak Code');
+    }
+    $('#ProsesCetakCodeBarang').submit(function(event) {
+        event.preventDefault(); // Mencegah reload halaman
+        
+        var formatCetak = $('#type_file_code').val(); // Ambil format yang dipilih
+        var content = document.getElementById("PreviewBarcodeKode"); // Ambil elemen yang ingin dicetak
+
+        if (!formatCetak) {
+            $('#NotifikasiCetakKode').html('<div class="alert alert-danger">Silakan pilih format cetak!</div>');
+            return;
+        }
+
+        // Tampilkan loading
+        $('#NotifikasiCetakKode').html('<div class="alert alert-info">Sedang memproses cetak...</div>');
+        $('#ButtonCetakKode').prop('disabled', true).html('<i class="bi bi-hourglass-split"></i> Memproses...');
+
+        setTimeout(() => {
+            if (formatCetak === "PDF") {
+                html2canvas(content, { scale: 2 }).then(canvas => {
+                    var imgData = canvas.toDataURL("image/png");
+                    var { jsPDF } = window.jspdf;
+                    var doc = new jsPDF("p", "mm", "a4");
+                    var imgWidth = 190;
+                    var imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+                    doc.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
+                    doc.save("kode_barang.pdf");
+
+                    $('#NotifikasiCetakKode').html('<div class="alert alert-success">Download PDF berhasil!</div>');
+                    resetButton();
+                }).catch(error => {
+                    $('#NotifikasiCetakKode').html('<div class="alert alert-danger">Gagal mencetak PDF!</div>');
+                    resetButton();
+                });
+            } else if (formatCetak === "Image") {
+                html2canvas(content, { scale: 2 }).then(canvas => {
+                    var imgData = canvas.toDataURL("image/png");
+                    var link = document.createElement("a");
+                    link.href = imgData;
+                    link.download = "kode_barang.png";
+                    link.click();
+
+                    $('#NotifikasiCetakKode').html('<div class="alert alert-success">Download gambar berhasil!</div>');
+                    resetButton();
+                }).catch(error => {
+                    $('#NotifikasiCetakKode').html('<div class="alert alert-danger">Gagal mencetak gambar!</div>');
+                    resetButton();
+                });
+            } else if (formatCetak === "Direct") {
+                var printWindow = window.open("", "", "width=800,height=600");
+                printWindow.document.write('<html><head><title>Cetak Nota</title>');
+                printWindow.document.write('<link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css">');
+                printWindow.document.write('</head><body>');
+                printWindow.document.write(content.innerHTML);
+                printWindow.document.write('</body></html>');
+                printWindow.document.close();
+                printWindow.focus();
+
+                setTimeout(() => {
+                    printWindow.print();
+                    printWindow.close();
+                    $('#NotifikasiCetakKode').html('<div class="alert alert-success">Pencetakan berhasil!</div>');
+                    resetButton();
+                }, 1000);
+            }
+        }, 1000);
     });
 
     //Modal Edit Barang

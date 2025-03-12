@@ -104,7 +104,11 @@
                 echo '
                     <tr>
                         <td><small>'.$no.'</small></td>
-                        <td><small>'.$kode_barang.'</small></td>
+                        <td>
+                            <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#ModalDetailKode" data-id="'.$id_barang.'">
+                                <small class="text-info"><i class="bi bi-upc-scan"></i> '.$kode_barang.'</small>
+                            </a>
+                        </td>
                         <td>
                             <a href="javascript:void(0);" class="ModalDetailBarang" data-id="'.$id_barang.'">
                                 <small>'.$nama_barang.'</small>

@@ -35,6 +35,7 @@
                 $ranking=GetDetailData($Conn,'anggota','id_anggota',$id_anggota,'ranking');
 ?>
         <input type="hidden" name="id_anggota" class="form-control" value="<?php echo $id_anggota; ?>">
+        <input type="hidden" name="persen_jasa_pinjaman_jenis" id="persen_jasa_pinjaman_jenis" class="form-control" value="">
         <div class="row mb-3">
             <div class="col-md-4">Nama Anggota</div>
             <div class="col-md-8">
@@ -105,7 +106,7 @@
         </div>
         <div class="row mb-3">
             <div class="col-md-4">
-                <label for="jumlah_pinjaman">Rp Pinjaman</label>
+                <label for="jumlah_pinjaman">Jumlah Pinjaman</label>
             </div>
             <div class="col-md-8">
                 <input type="text" id="jumlah_pinjaman" name="jumlah_pinjaman" class="form-control format_uang akumulasi_pinjaman" placeholder="Rp">
@@ -126,7 +127,7 @@
         </div>
         <div class="row mb-3">
             <div class="col-md-4">
-                <label for="persen_jasa">% Jasa</label>
+                <label for="persen_jasa">Margin (%)</label>
             </div>
             <div class="col-md-8">
                 <input type="text" id="persen_jasa" name="persen_jasa" class="form-control number-decimal-only akumulasi_pinjaman" placeholder="%">
@@ -140,7 +141,7 @@
         </div>
         <div class="row mb-3">
             <div class="col-md-4">
-                <label for="rp_jasa">Rp Jasa</label>
+                <label for="rp_jasa">Margin (Rp)</label>
             </div>
             <div class="col-md-8">
                 <input type="text" readonly id="rp_jasa" name="rp_jasa" class="form-control format_uang" placeholder="Rp">
@@ -153,7 +154,7 @@
         </div>
         <div class="row mb-3">
             <div class="col-md-4">
-                <label for="angsuran_pokok">Rp Angsuran Pokok</label>
+                <label for="angsuran_pokok">Angsuran Pokok</label>
             </div>
             <div class="col-md-8">
                 <input type="text" readonly id="angsuran_pokok" name="angsuran_pokok" class="form-control format_uang" placeholder="Rp">
@@ -166,7 +167,7 @@
         </div>
         <div class="row mb-3">
             <div class="col-md-4">
-                <label for="angsuran_total">Rp Angsuran + Jasa</label>
+                <label for="angsuran_total">Angsuran + Jasa</label>
             </div>
             <div class="col-md-8">
                 <input type="text" readonly id="angsuran_total" name="angsuran_total" class="form-control format_uang" placeholder="Rp">
@@ -179,7 +180,7 @@
         </div>
         <div class="row mb-3">
             <div class="col-md-4">
-                <label for="denda">Rp Denda</label>
+                <label for="denda">Denda</label>
             </div>
             <div class="col-md-8">
                 <input type="text" id="denda" name="denda" class="form-control format_uang" placeholder="Rp">
@@ -397,21 +398,21 @@
                             // Tempelkan ke form
                             $('#periode_angsuran').val(periode_angsuran);
                             $('#persen_jasa').val(persen_perbulan);
+                            $('#persen_jasa_pinjaman_jenis').val(persen_jasa);
 
                             // Hitung ulang angsuran setelah mengubah nilai
                             hitungAngsuran();
-                        } else {
-                            // Tempelkan Notifikasi
-                            $('#NotifikasiiPilihJenisPinjaman').html(
-                                '<div class="alert alert-danger" role="alert"><small>Terjadi kesalahan pada sistem.<br> Keterangan : ' + response.message + '</small></div>'
-                            );
+                        }else{
+                            $('#persen_jasa_pinjaman_jenis').val(0);
                         }
                     },
                     error: function() {
                         // Tempelkan Notifikasi
                         $('#NotifikasiiPilihJenisPinjaman').html(
-                            '<div class="alert alert-danger" role="alert"><small>Terjadi kesalahan pada saat membuka detail jenis pinjaman</small></div>'
+                            '<div class="alert alert-danger mt-3" role="alert"><small>Terjadi kesalahan pada saat membuka detail jenis pinjaman</small></div>'
                         );
+
+                        $('#persen_jasa_pinjaman_jenis').val(0);
                     },
                 });
             });
