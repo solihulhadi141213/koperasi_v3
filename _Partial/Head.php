@@ -20,7 +20,7 @@
 <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
 <link href="assets/vendor/simple-datatables/style.css?v=<?php echo date('YmdHis'); ?>" rel="stylesheet">
 <!-- Template Main CSS File -->
-<link href="assets/css/style.css" rel="stylesheet">
+<link href="assets/css/style.css?v=<?php echo date('YmdHis'); ?>" rel="stylesheet">
 <link href="node_modules/mdb-ui-kit/css/mdb.min.css" rel="stylesheet">
 <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
 <script type="text/javascript" src="node_modules/marked/marked.min.js"></script>

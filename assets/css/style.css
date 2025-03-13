@@ -873,7 +873,10 @@ h6 {
   color: #ff771d;
   background: #ffecdf;
 }
-
+.dashboard .transsaction-card .card-icon {
+  color: #c852e6;
+  background: #f3e0f8;
+}
 /* Activity */
 .dashboard .activity {
   font-size: 14px;

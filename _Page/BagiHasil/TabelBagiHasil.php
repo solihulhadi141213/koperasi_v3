@@ -105,8 +105,8 @@
                 //Format Jumlah SHU
                 $shu_rp = "" . number_format($shu,0,',','.');
 
-                $periode_hitung1=date('d/m/Y',strtotime($periode_hitung1));
-                $periode_hitung2=date('d/m/Y',strtotime($periode_hitung2));
+                $periode_hitung1=date('d/m/y',strtotime($periode_hitung1));
+                $periode_hitung2=date('d/m/y',strtotime($periode_hitung2));
                 
                 //Jumlah Anggota
                 $JumlahRincian = mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM shu_rincian WHERE id_shu_session='$id_shu_session'"));
@@ -131,7 +131,7 @@
                 if(empty($jumlah_jurnal)){
                     $label_jurnal='<span class="badge badge-secondary">NULL</span>';
                 }else{
-                    $label_jurnal='<span class="badge badge-success">'.$jumlah_jurnal.'</span>';
+                    $label_jurnal='<span class="badge badge-primary">'.$jumlah_jurnal.' Record</span>';
                 }
                 //Label Status
                 if($status=="Pending"){
@@ -144,7 +144,7 @@
                         <td><small>'.$no.'</small></td>
                         <td>
                             <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalDetailBagiHasil" data-id="'.$id_shu_session.'">
-                                <small>'.$periode_hitung1.' - '.$periode_hitung2.'</small>
+                                <small><code class="text-primary">'.$periode_hitung1.' - '.$periode_hitung2.'</code></small>
                             </a>
                         </td>
                         <td><small>'.$JumlahRincian.'</small></td>

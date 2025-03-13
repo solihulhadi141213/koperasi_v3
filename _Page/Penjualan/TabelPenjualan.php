@@ -117,9 +117,9 @@
                 $total_rp = "Rp " . number_format($total,0,',','.');
                 //Routing Penjualan
                 if($kategori=="Penjualan"){
-                    $label_kategori='<span class="text text-success">Penjualan</span>';
+                    $label_kategori='<span class="text text-success">PENJUALAN</span>';
                 }else{
-                    $label_kategori='<span class="text text-warning">'.$kategori.'</span>';
+                    $label_kategori='<span class="text text-muted">RETUR</span>';
                 }
                 //Buka nama anggota dari tabel anggota
                 if(empty($data['id_anggota'])){
@@ -134,11 +134,25 @@
                 if($status=="Lunas"){
                     $label_status='<span class="badge badge-success">Lunas</span>';
                 }else{
-                    $label_status='<span class="badge badge-warning">'.$status.'</span>';
+                    if($kategori=="Penjualan"){
+                        $label_status='<span class="badge badge-warning">Piutang</span>';
+                    }else{
+                        $label_status='<span class="badge badge-danger">Utang</span>';
+                    }
                 }
                 //Format tanggal
                 $strtotime=strtotime($tanggal);
                 $TanggalTransaksi=date('d/m/Y H:i', $strtotime);
+
+                //Hitung Jurnal
+                $jml_jurnal = mysqli_num_rows(mysqli_query($Conn, "SELECT id_jurnal FROM jurnal WHERE id_transaksi_jual_beli='$id_transaksi_jual_beli'"));
+                if(empty($jml_jurnal)){
+                    $label_jurnal='<span class="badge badge-light">NULL</span>';
+                }else{
+                    $label_jurnal='<span class="badge badge-info">'.$jml_jurnal.' Record</span>';
+                }
+
+                //Tampilkan Data
                 echo '
                     <tr>
                         <td><small>'.$no.'</small></td>
@@ -155,6 +169,7 @@
                         </td>
                         <td><small>'.$total_rp.'</small></td>
                         <td><small>'.$label_status.'</small></td>
+                        <td><small>'.$label_jurnal.'</small></td>
                         <td>
                             <button type="button" class="btn btn-sm btn-floating btn-outline-secondary" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-three-dots"></i>

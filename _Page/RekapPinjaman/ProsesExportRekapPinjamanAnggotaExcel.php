@@ -23,13 +23,13 @@
     // Header Dokumen Excel
     $sheet->setCellValue('A1', 'LAPORAN POTONGAN ANGSURAN ANGGOTA KOPERASI');
     $sheet->setCellValue('A2', 'PERIODE: ' . ($tahun ? $tahun : 'SEMUA PERIODE'));
-    $sheet->mergeCells('A1:K1');
-    $sheet->mergeCells('A2:K2');
+    $sheet->mergeCells('A1:L1');
+    $sheet->mergeCells('A2:L2');
     $sheet->getStyle('A1:A2')->getFont()->setBold(true);
     $sheet->getStyle('A1:A2')->getAlignment()->setHorizontal('center');
 
     // Header Kolom
-    $headers = ['No', 'Tanggal', 'Anggota', 'Pinjaman', 'Pinjaman + Jasa', 'Lama Angsuran', 'Sudah Bayar', 'Jumlah Bayar (Rp)', 'Sisa Pinjaman', 'Sisa Pinjaman (Rp)', 'Status'];
+    $headers = ['No', 'Tanggal', 'Anggota', 'Jenis Pinjaman', 'Pinjaman', 'Pinjaman + Jasa', 'Lama Angsuran', 'Sudah Bayar', 'Jumlah Bayar (Rp)', 'Sisa Pinjaman', 'Sisa Pinjaman (Rp)', 'Status'];
     $column = 'A';
     foreach ($headers as $header) {
         $sheet->setCellValue($column . '4', $header);
@@ -44,6 +44,15 @@
     $no = 1;
     while ($data = mysqli_fetch_array($query)) {
         $tanggal = date('d/m/Y', strtotime($data['tanggal']));
+        $id_pinjaman_jenis = $data['id_pinjaman_jenis'];
+        if(!empty($id_pinjaman_jenis)){
+            $nama_pinjaman=GetDetailData($Conn, 'pinjaman_jenis', 'id_pinjaman_jenis', $id_pinjaman_jenis, 'nama_pinjaman');
+            if(empty($nama_pinjaman)){
+                $nama_pinjaman="-";
+            }
+        }else{
+            $nama_pinjaman="-";
+        }
         $jumlah_pinjaman = $data['jumlah_pinjaman'];
         $jumlah_pinjaman_jasa = $jumlah_pinjaman + ($data['rp_jasa'] * $data['periode_angsuran']);
 
@@ -64,22 +73,23 @@
         $sheet->setCellValue('A' . $row, $no);
         $sheet->setCellValue('B' . $row, $tanggal);
         $sheet->setCellValue('C' . $row, $data['nama']);
-        $sheet->setCellValue('D' . $row, $jumlah_pinjaman);
-        $sheet->setCellValue('E' . $row, $jumlah_pinjaman_jasa);
-        $sheet->setCellValue('F' . $row, $data['periode_angsuran']);
-        $sheet->setCellValue('G' . $row, $jumlah_data_angsuran);
-        $sheet->setCellValue('H' . $row, $jumlah_angsuran);
-        $sheet->setCellValue('I' . $row, $sisa_pinjaman);
-        $sheet->setCellValue('J' . $row, $sisa_pinjaman_rp);
-        $sheet->setCellValue('K' . $row, $data['status']);
+        $sheet->setCellValue('D' . $row, $nama_pinjaman);
+        $sheet->setCellValue('E' . $row, $jumlah_pinjaman);
+        $sheet->setCellValue('F' . $row, $jumlah_pinjaman_jasa);
+        $sheet->setCellValue('G' . $row, $data['periode_angsuran']);
+        $sheet->setCellValue('H' . $row, $jumlah_data_angsuran);
+        $sheet->setCellValue('I' . $row, $jumlah_angsuran);
+        $sheet->setCellValue('J' . $row, $sisa_pinjaman);
+        $sheet->setCellValue('K' . $row, $sisa_pinjaman_rp);
+        $sheet->setCellValue('L' . $row, $data['status']);
 
         $row++;
         $no++;
     }
 
     // Styling Header
-    $sheet->getStyle('A4:K4')->getFont()->setBold(true);
-    $sheet->getStyle('A4:K4')->getAlignment()->setHorizontal('center');
+    $sheet->getStyle('A4:l4')->getFont()->setBold(true);
+    $sheet->getStyle('A4:l4')->getAlignment()->setHorizontal('center');
 
     // Set Nama File
     $filename = "Rekap_Pinjaman_Anggota_" . ($tahun ? $tahun : "Semua") . ".xlsx";

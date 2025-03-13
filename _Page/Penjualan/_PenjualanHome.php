@@ -74,17 +74,38 @@
                                     <tr>
                                         <th><b>No</b></th>
                                         <th><b>Tanggal</b></th>
-                                        <th><b>Kategori</b></th>
+                                        <th>
+                                            <b>Kategori</b> 
+                                            <a href="javascript:void(0);" 
+                                                data-bs-toggle="tooltip" 
+                                                data-bs-placement="top" 
+                                                data-bs-custom-class="custom-tooltip" 
+                                                data-bs-title="Transaksi Penjualan / Retur Penjualan"
+                                            >
+                                                <i class="bi bi-question-circle"></i>
+                                            </a>
+                                        </th>
                                         <th><b>Anggota</b></th>
                                         <th><b>Jumlah</b></th>
-                                        <th><b>Status</b></th>
+                                        <th>
+                                            <b>Status</b> 
+                                            <a href="javascript:void(0);" 
+                                                data-bs-toggle="tooltip" 
+                                                data-bs-placement="top" 
+                                                data-bs-custom-class="custom-tooltip" 
+                                                data-bs-title="Lunas, Utang, Piutang"
+                                            >
+                                                <i class="bi bi-question-circle"></i>
+                                            </a>
+                                        </th>
+                                        <th><b>Jurnal</b></th>
                                         <th><b>Opsi</b></th>
                                     </tr>
                                 </thead>
                                 <tbody id="TabelPenjualan">
                                     <!-- Data Barang Akan Ditampilkan Disini -->
                                     <tr>
-                                        <td colspan="7" class="text-center text-danger">
+                                        <td colspan="8" class="text-center text-danger">
                                             Tidak Ada Data yang Ditampilkan
                                         </td>
                                     </tr>

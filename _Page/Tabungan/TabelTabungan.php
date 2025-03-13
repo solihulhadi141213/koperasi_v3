@@ -171,7 +171,9 @@
                                     $tanggal= $data['tanggal'];
                                     $kategori= $data['kategori'];
                                     if($kategori=="Penarikan"){
-                                        $LabelKategori='<code class="text text-danger">Penarikan dana simpanan</code>';
+                                        //Cek Nama Simpanan Yang ditarik
+                                        $nama_simpanan=GetDetailData($Conn,'simpanan_jenis','id_simpanan_jenis',$id_simpanan_jenis,'nama_simpanan');
+                                        $LabelKategori='<code class="text text-danger">Penarikan ['.$nama_simpanan.']</code>';
                                     }else{
                                         $LabelKategori='<code class="text text-success">'.$kategori.'</code>';
                                     }

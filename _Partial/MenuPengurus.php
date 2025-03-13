@@ -67,7 +67,7 @@
                 </li>
                 <li>
                     <a href="index.php?Page=SimpananWajib" class="<?php if($PageMenu=="SimpananWajib"){echo "active";} ?>">
-                        <i class="bi bi-circle"></i><span>Simpanan Wajib</span>
+                        <i class="bi bi-circle"></i><span>Simpanan</span>
                     </a>
                 </li>
                 <li>

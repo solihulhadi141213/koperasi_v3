@@ -117,7 +117,7 @@
                 <label for="periode_angsuran">Periode Angsuran</label>
             </div>
             <div class="col-md-8">
-                <input type="text" id="periode_angsuran" name="periode_angsuran" class="form-control akumulasi_pinjaman" placeholder="Bulan">
+                <input type="text" id="periode_angsuran" name="periode_angsuran" class="form-control" placeholder="Bulan">
                 <small class="credit">
                     <code class="text text-grayish">
                         Diisi dengan banyaknya periode angsuran (Bulan).
@@ -415,6 +415,41 @@
                         $('#persen_jasa_pinjaman_jenis').val(0);
                     },
                 });
+            });
+            // Ketika PERIODE ANGSURAN diubah
+            $('#periode_angsuran').on('input', function() {
+                var periode_angsuran = $('#periode_angsuran').val();
+                var persen_jasa_pinjaman_jenis = $('#persen_jasa_pinjaman_jenis').val();
+                if (persen_jasa_pinjaman_jenis !== ""&& persen_jasa_pinjaman_jenis !== 0) {
+                    // Menghitung persen_jasa
+                    var persen_jasa = 0; // default nilai persen_jasa
+                    if (periode_angsuran !== "" && persen_jasa_pinjaman_jenis !== "") {
+                        persen_jasa = parseFloat(persen_jasa_pinjaman_jenis) / parseFloat(periode_angsuran);
+                    }
+                    persen_jasa = persen_jasa.toFixed(2);
+                    $('#persen_jasa').val(persen_jasa);
+                    
+                    // Menghitung Rp Jasa
+                    var rawValue = $('#jumlah_pinjaman').val();
+                    var jumlah_pinjaman = rawValue.replace(/,/g, '');
+                    var rp_jasa = 0; // default nilai rp_jasa
+                    if (jumlah_pinjaman !== "" && !isNaN(jumlah_pinjaman) && persen_jasa !== 0) {
+                        jumlah_pinjaman = parseFloat(jumlah_pinjaman);
+                        rp_jasa = jumlah_pinjaman * (persen_jasa / 100);
+                    }
+                    //Ubah Format
+                    var rp_jasa_format = parseInt(rp_jasa, 10).toLocaleString('en-US');
+                    $('#rp_jasa').val(rp_jasa_format);
+
+                    var angsuran_pokok=$('#angsuran_pokok').val();
+                    var angsuran_pokok = angsuran_pokok.replace(/,/g, '');
+
+                    //Bersihkan
+                    var angsuran_total = parseInt(angsuran_pokok) + parseInt(rp_jasa);
+                    var formatted_angsuran_total = angsuran_total.toLocaleString();
+
+                    $('#angsuran_total').val(formatted_angsuran_total);
+                }
             });
         </script>
 <?php

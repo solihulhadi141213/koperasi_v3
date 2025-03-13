@@ -72,9 +72,9 @@ function toggleFields3() {
     }
 }
 $(document).ready(function() {
-    filterAndLoadTable();
-    filterAndLoadTable2();
-    filterAndLoadTable3();
+    // filterAndLoadTable();
+    // filterAndLoadTable2();
+    // filterAndLoadTable3();
     // Panggil fungsi toggleFields saat halaman dimuat
     toggleFields();
     toggleFields2();

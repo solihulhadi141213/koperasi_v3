@@ -93,23 +93,14 @@
             filterAndLoadTable();
         });
     </script>
-    <div class="row">
-        <div class="col-md-4">
-            <small class="credit">
-                Halaman : <code class="text-grayish"><?php echo "$page/$JmlHalaman"; ?></code>
-            </small><br>
-            <small class="credit">
-                Jumlah Data : <code class="text-grayish"><?php echo "$jml_data"; ?></code>
-            </small>
-        </div>
-    </div>
     <div class="row mb-3">
         <div class="table table-responsive">
             <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
                         <td align="center"><b>No</b></td>
-                        <td align="center"><b>Ref</b></td>
+                        <td align="center"><b>Referensi</b></td>
+                        <td align="center"><b>Tanggal</b></td>
                         <td align="center"><b>Kode</b></td>
                         <td align="center"><b>Akun</b></td>
                         <td align="center"><b>Debet</b></td>
@@ -121,7 +112,7 @@
                     <?php
                         if(empty($jml_data)){
                             echo '<tr>';
-                            echo '  <td colspan="7" class="text-center">';
+                            echo '  <td colspan="8" class="text-center">';
                             echo '      <code class="text-danger">';
                             echo '          Tidak Ada Data Jurnal Yang Dapat Ditampilkan';
                             echo '      </code>';
@@ -152,53 +143,116 @@
                                 $JumlahRow = mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM jurnal WHERE uuid='$uuid' AND kategori='$kategori'"));
                                 //Mencari Referensi
                                 if($kategori=="Angsuran"){
-                                    $tanggal_angsuran=GetDetailData($Conn,'pinjaman_angsuran','uuid_angsuran',$uuid,'tanggal_angsuran');
-                                    $id_pinjaman_angsuran=GetDetailData($Conn,'pinjaman_angsuran','uuid_angsuran',$uuid,'id_pinjaman_angsuran');
-                                    $strtotime=strtotime($tanggal_angsuran);
-                                    $tanggal_angsuran_format=date('d/m/y',$strtotime);
-                                    $Referensi="ANG/$id_pinjaman_angsuran/$tanggal_angsuran_format";
+                                    $Tanggal=GetDetailData($Conn,'pinjaman_angsuran','uuid_angsuran',$uuid,'tanggal_angsuran');
+                                    $Tanggal=date('d/m/Y H:i',strtotime($Tanggal));
+                                    $Referensi='
+                                        <a href="javascript:void(0);">
+                                            <small>
+                                                ANGSURAN <br>['.$Tanggal.']
+                                            </small>
+                                        </a>
+                                    ';
                                 }else{
                                     if($kategori=="Simpanan"){
-                                        $TanggalSimpanan=GetDetailData($Conn,'simpanan','uuid_simpanan',$uuid,'tanggal');
-                                        $id_simpanan=GetDetailData($Conn,'simpanan','uuid_simpanan',$uuid,'id_simpanan');
-                                        $strtotime=strtotime($TanggalSimpanan);
-                                        $TanggalSimpananFormat=date('d/m/y',$strtotime);
-                                        $Referensi="SMP/$id_simpanan/$TanggalSimpananFormat";
+                                        $Tanggal=GetDetailData($Conn,'simpanan','uuid_simpanan',$uuid,'tanggal');
+                                        $Tanggal=date('d/m/Y H:i',strtotime($Tanggal));
+                                        $Referensi='
+                                            <a href="javascript:void(0);">
+                                                <small>
+                                                    SIMPANAN <br>['.$Tanggal.']
+                                                </small>
+                                            </a>
+                                        ';
                                     }else{
                                         if($kategori=="Pinjaman"){
-                                            $TanggalPinjaman=GetDetailData($Conn,'pinjaman','uuid_pinjaman',$uuid,'tanggal');
-                                            $id_pinjaman=GetDetailData($Conn,'pinjaman','uuid_pinjaman',$uuid,'id_pinjaman');
-                                            $strtotime=strtotime($TanggalPinjaman);
-                                            $TanggalPinjamanFormat=date('d/m/y',$strtotime);
-                                            $Referensi="PNJ/$id_pinjaman/$TanggalPinjamanFormat";
+                                            $Tanggal=GetDetailData($Conn,'pinjaman','uuid_pinjaman',$uuid,'tanggal');
+                                            $Tanggal=date('d/m/Y H:i',strtotime($Tanggal));
+                                            $Referensi='
+                                                <a href="javascript:void(0);">
+                                                    <small>
+                                                        PINJAMAN <br>['.$Tanggal.']
+                                                    </small>
+                                                </a>
+                                            ';
                                         }else{
                                             if($kategori=="Transaksi"){
-                                                $TanggalTransaksi=GetDetailData($Conn,'transaksi','uuid_transaksi',$uuid,'tanggal');
-                                                $id_transaksi=GetDetailData($Conn,'transaksi','uuid_transaksi',$uuid,'id_transaksi');
-                                                $strtotime=strtotime($TanggalTransaksi);
-                                                $TanggalTransaksiFormat=date('d/m/y',$strtotime);
-                                                $Referensi="TRNS/$id_transaksi/$TanggalTransaksiFormat";
+                                                $Tanggal=GetDetailData($Conn,'transaksi','uuid_transaksi',$uuid,'tanggal');
+                                                $nama_transaksi = mb_strtoupper(GetDetailData($Conn, 'transaksi', 'uuid_transaksi', $uuid, 'nama_transaksi'), 'UTF-8');
+                                                $Tanggal=date('d/m/Y H:i',strtotime($Tanggal));
+                                                $Referensi='
+                                                    <a href="javascript:void(0);">
+                                                        <small>
+                                                            '.$nama_transaksi.' <br>['.$Tanggal.']
+                                                        </small>
+                                                    </a>
+                                                ';
                                             }else{
                                                 if($kategori=="Bagi Hasil"){
-                                                    $TanggalShu=GetDetailData($Conn,'shu_session','uuid_shu_session',$uuid,'periode_hitung2');
+                                                    $Tanggal=GetDetailData($Conn,'shu_session','uuid_shu_session',$uuid,'periode_hitung2');
                                                     $id_shu_session=GetDetailData($Conn,'shu_session','uuid_shu_session',$uuid,'id_shu_session');
                                                     $strtotime=strtotime($TanggalShu);
                                                     $TanggalShuFormat=date('d/m/y',$strtotime);
                                                     $Referensi="SHU/$id_shu_session/$TanggalShuFormat";
                                                 }else{
-                                                    if($kategori=="Penjualan"||$kategori=="Retur Penjualan"){
-                                                        $TanggalPenjualan=GetDetailData($Conn,'transaksi_jual_beli','id_transaksi_jual_beli',$uuid,'tanggal');
-                                                        $strtotime=strtotime($TanggalPenjualan);
-                                                        $TanggalPenjualanFormat=date('d/m/y',$strtotime);
-                                                        $Referensi="PNJ/$TanggalPenjualanFormat";
+                                                    if($kategori=="Penjualan"){
+                                                        $Tanggal=GetDetailData($Conn,'transaksi_jual_beli','id_transaksi_jual_beli',$uuid,'tanggal');
+                                                        $Tanggal=date('d/m/Y H:i',strtotime($Tanggal));
+                                                        $Referensi='
+                                                            <a href="javascript:void(0);" class="text-success">
+                                                                <small>
+                                                                    PENJUALAN <br>['.$Tanggal.']
+                                                                </small>
+                                                            </a>
+                                                        ';
                                                     }else{
-                                                        if($kategori=="Pembelian"||$kategori=="Retur Pembelian"){
-                                                            $TanggalPembelian=GetDetailData($Conn,'transaksi_jual_beli','id_transaksi_jual_beli',$uuid,'tanggal');
-                                                            $strtotime=strtotime($TanggalPembelian);
-                                                            $TanggalPembelianFormat=date('d/m/y',$strtotime);
-                                                            $Referensi="PMB/$TanggalPembelianFormat";
+                                                        if($kategori=="Retur Penjualan"){
+                                                            $Tanggal=GetDetailData($Conn,'transaksi_jual_beli','id_transaksi_jual_beli',$uuid,'tanggal');
+                                                            $Tanggal=date('d/m/Y H:i',strtotime($Tanggal));
+                                                            $Referensi='
+                                                                <a href="javascript:void(0);" class="text-warning">
+                                                                    <small>
+                                                                        RETUR PENJUALAN <br>['.$Tanggal.']
+                                                                    </small>
+                                                                </a>
+                                                            ';
                                                         }else{
-                                                            $Referensi="None";
+                                                            if($kategori=="Pembelian"){
+                                                                $Tanggal=GetDetailData($Conn,'transaksi_jual_beli','id_transaksi_jual_beli',$uuid,'tanggal');
+                                                                $Tanggal=date('d/m/Y H:i',strtotime($Tanggal));
+                                                                $Referensi='
+                                                                    <a href="javascript:void(0);"  class="text-success">
+                                                                        <small>
+                                                                            PEMBELIAN <br>['.$Tanggal.']
+                                                                        </small>
+                                                                    </a>
+                                                                ';
+                                                            }else{
+                                                                if($kategori=="Retur Pembelian"){
+                                                                    $Tanggal=GetDetailData($Conn,'transaksi_jual_beli','id_transaksi_jual_beli',$uuid,'tanggal');
+                                                                    $Tanggal=date('d/m/Y H:i',strtotime($Tanggal));
+                                                                    $Referensi='
+                                                                        <a href="javascript:void(0);" class="text-warning">
+                                                                            <small>
+                                                                                RETUR PEMBELIAN <br>['.$Tanggal.']
+                                                                            </small>
+                                                                        </a>
+                                                                    ';
+                                                                }else{
+                                                                    if($kategori=="SHU"){
+                                                                        $Tanggal=GetDetailData($Conn,'shu_session','uuid_shu_session',$uuid,'periode_hitung1');
+                                                                        $Tanggal=date('d/m/Y',strtotime($Tanggal));
+                                                                        $Referensi='
+                                                                            <a href="javascript:void(0);" class="text-warning">
+                                                                                <small>
+                                                                                    BAGI HASIL / SHU <br>['.$Tanggal.']
+                                                                                </small>
+                                                                            </a>
+                                                                        ';
+                                                                    }else{
+                                                                        $Referensi="$kategori";
+                                                                    }
+                                                                }
+                                                            }
                                                         }
                                                     }
                                                 }
@@ -210,8 +264,10 @@
                                 <tr>
                                     <td align="center" rowspan="<?php echo $JumlahRow; ?>"><?php echo $no; ?></td>
                                     <td align="left" rowspan="<?php echo $JumlahRow; ?>">
-                                        <?php echo '<code class="text text-dark">' . $Referensi . '</code>'; ?><br>
-                                        <?php echo '<code class="text text-dark">' . $tanggal_jurnal . '</code>'; ?>
+                                        <?php echo '' . $Referensi . ''; ?><br>
+                                    </td>
+                                    <td align="left" rowspan="<?php echo $JumlahRow; ?>">
+                                        <?php echo '<small>' . $tanggal_jurnal . '</small>'; ?>
                                     </td>
                                     <?php
                                         $QrySub = mysqli_query($Conn, "SELECT * FROM jurnal WHERE uuid='$uuid' ORDER BY d_k ASC");

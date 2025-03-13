@@ -2,6 +2,17 @@
     //Jumlah Barang
     $JumlahBarang = mysqli_num_rows(mysqli_query($Conn, "SELECT id_barang FROM barang"));
     $JumlahBarangFormat = "" . number_format($JumlahBarang,0,',','.');
+    //Menghitung jumlah Rupiah barang
+    $sqlBarang = "SELECT SUM(harga_beli * stok_barang) AS total_rupiah FROM barang";
+    $resultBarang = $Conn->query($sqlBarang);
+
+    if ($resultBarang) {
+        $rowBarang= $resultBarang->fetch_assoc();
+        $totalRupiahBarang = $rowBarang['total_rupiah'] ?? 0;
+        $totalRupiahBarang = "Rp " . number_format($totalRupiahBarang,0,',','.');
+    } else {
+        $totalRupiahBarang=$Conn->error;
+    }
     //Jumlah Anggota Aktif
     $JumlahAnggota = mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM anggota WHERE status='Aktif'"));
     $JumlahAnggotaFormat = "" . number_format($JumlahAnggota,0,',','.');
@@ -40,6 +51,11 @@
     $JumlahShu = $SumShu['jumlah_shu'];
     $JumlahShu = "" . number_format($JumlahShu,0,',','.');
 
+    //Jumlah Transaksi
+    $SumTransaksi = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(jumlah) AS jumlah FROM transaksi"));
+    $JumlahTransaksi = $SumTransaksi['jumlah'];
+    $JumlahTransaksi = "Rp " . number_format($JumlahTransaksi,0,',','.');
+
     //Untuk Menampilkan grafik maka dibuat dulu file json
     include "_Page/Dashboard/ProsesHitungSimpanPinjam.php";
 ?>
@@ -59,151 +75,287 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="row">
-                <div class="col-xxl-3 col-md-6 col-6">
-                    <div class="card info-card sales-card">
-                        <div class="card-body">
-                            <h5 class="card-title">Barang</h5>
-                            <div class="d-flex align-items-center">
-                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                    <i class="bi bi-box"></i>
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-xxl-4 col-md-6 col-6">
+                            <div class="card info-card sales-card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Barang</h5>
+                                    <div class="d-flex align-items-center">
+                                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                            <i class="bi bi-box"></i>
+                                        </div>
+                                        <div class="ps-3">
+                                            <?php
+                                                echo '  <span class="text-muted small pt-1 fw-bold">'.$totalRupiahBarang.'</span><br>';
+                                                echo '  <span class="text-muted small pt-2 ps-1">'.$JumlahBarang.' Item</span>';
+                                            ?>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="ps-3">
-                                    <?php
-                                        echo '  <span class="text-muted small pt-1 fw-bold">'.$JumlahBarang.'</span><br>';
-                                        echo '  <span class="text-muted small pt-2 ps-1">Item</span>';
-                                    ?>
+                            </div>
+                        </div>
+                        <div class="col-xxl-4 col-md-6 col-6">
+                            <div class="card info-card sales-card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Anggota</h5>
+                                    <div class="d-flex align-items-center">
+                                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                            <i class="bi bi-people"></i>
+                                        </div>
+                                        <div class="ps-3">
+                                            <?php
+                                                echo '  <span class="text-muted small pt-1 fw-bold">'.$JumlahAnggotaFormat.'</span><br>';
+                                                echo '  <span class="text-muted small pt-2 ps-1">Orang</span>';
+                                            ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xxl-4 col-md-6 col-6">
+                            <div class="card info-card revenue-card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Simpanan</h5>
+                                    <div class="d-flex align-items-center">
+                                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                            <i class="bi bi-cash-coin"></i>
+                                        </div>
+                                        <div class="ps-3">
+                                            <?php
+                                                echo '  <span class="text-muted small pt-1 fw-bold">'.$JumlahSimpananBersih.'</span><br>';
+                                                echo '  <span class="text-muted small pt-2 ps-1">Rp/IDR</span>';
+                                            ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xxl-4 col-md-6 col-6">
+                            <div class="card info-card customers-card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Pinjaman</h5>
+                                    <div class="d-flex align-items-center">
+                                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                            <i class="bi bi-bank"></i>
+                                        </div>
+                                        <div class="ps-3">
+                                            <?php
+                                                echo '  <span class="text-muted small pt-1 fw-bold">'.$JumlahPinjaman.'</span><br>';
+                                                echo '  <span class="text-muted small pt-2 ps-1">Rp/IDR</span>';
+                                            ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xxl-4 col-md-6 col-6">
+                            <div class="card info-card blue-card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Angsuran</h5>
+                                    <div class="d-flex align-items-center">
+                                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                            <i class="bi bi-bank"></i>
+                                        </div>
+                                        <div class="ps-3">
+                                            <?php
+                                                echo '  <span class="text-muted small pt-1 fw-bold">'.$JumlahAngsuran.'</span><br>';
+                                                echo '  <span class="text-muted small pt-2 ps-1">Rp/IDR</span>';
+                                            ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xxl-4 col-md-6 col-6">
+                            <div class="card info-card purple-card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Penjualan</h5>
+                                    <div class="d-flex align-items-center">
+                                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                            <i class="bi bi-cart-dash"></i>
+                                        </div>
+                                        <div class="ps-3">
+                                            <?php
+                                                echo '  <span class="text-muted small pt-1 fw-bold">'.$JumlahPenjualan.'</span><br>';
+                                                echo '  <span class="text-muted small pt-2 ps-1">Rp/IDR</span>';
+                                            ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xxl-4 col-md-6 col-6">
+                            <div class="card info-card customers-card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Pembelian</h5>
+                                    <div class="d-flex align-items-center">
+                                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                            <i class="bi bi-cart-plus"></i>
+                                        </div>
+                                        <div class="ps-3">
+                                            <?php
+                                                echo '  <span class="text-muted small pt-1 fw-bold">'.$JumlahPembelian.'</span><br>';
+                                                echo '  <span class="text-muted small pt-2 ps-1">Rp/IDR</span>';
+                                            ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xxl-4 col-md-6 col-6">
+                            <div class="card info-card revenue-card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Bagi Hasil</h5>
+                                    <div class="d-flex align-items-center">
+                                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                            <i class="bi bi-calculator"></i>
+                                        </div>
+                                        <div class="ps-3">
+                                            <?php
+                                                echo '  <span class="text-muted small pt-1 fw-bold">'.$JumlahShu.'</span><br>';
+                                                echo '  <span class="text-muted small pt-2 ps-1">Rp/IDR</span>';
+                                            ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xxl-4 col-md-6 col-6">
+                            <div class="card info-card transsaction-card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Transaksi Operasional</h5>
+                                    <div class="d-flex align-items-center">
+                                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                            <i class="bi bi-arrow-left-right"></i>
+                                        </div>
+                                        <div class="ps-3">
+                                            <?php
+                                                echo '  <span class="text-muted small pt-1 fw-bold">'.$JumlahTransaksi.'</span><br>';
+                                                echo '  <span class="text-muted small pt-2 ps-1">Rp/IDR</span>';
+                                            ?>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-xxl-3 col-md-6 col-6">
-                    <div class="card info-card sales-card">
-                        <div class="card-body">
-                            <h5 class="card-title">Anggota</h5>
-                            <div class="d-flex align-items-center">
-                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                    <i class="bi bi-people"></i>
-                                </div>
-                                <div class="ps-3">
-                                    <?php
-                                        echo '  <span class="text-muted small pt-1 fw-bold">'.$JumlahAnggotaFormat.'</span><br>';
-                                        echo '  <span class="text-muted small pt-2 ps-1">Orang</span>';
-                                    ?>
-                                </div>
+                <div class="col-md-4">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <b class="card-title"># Pemberitahuan Sistem</b> 
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xxl-3 col-md-6 col-6">
-                    <div class="card info-card revenue-card">
-                        <div class="card-body">
-                            <h5 class="card-title">Simpanan</h5>
-                            <div class="d-flex align-items-center">
-                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                    <i class="bi bi-cash-coin"></i>
-                                </div>
-                                <div class="ps-3">
-                                    <?php
-                                        echo '  <span class="text-muted small pt-1 fw-bold">'.$JumlahSimpananBersih.'</span><br>';
-                                        echo '  <span class="text-muted small pt-2 ps-1">Rp/IDR</span>';
-                                    ?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xxl-3 col-md-6 col-6">
-                    <div class="card info-card customers-card">
-                        <div class="card-body">
-                            <h5 class="card-title">Pinjaman</h5>
-                            <div class="d-flex align-items-center">
-                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                    <i class="bi bi-bank"></i>
-                                </div>
-                                <div class="ps-3">
-                                    <?php
-                                        echo '  <span class="text-muted small pt-1 fw-bold">'.$JumlahPinjaman.'</span><br>';
-                                        echo '  <span class="text-muted small pt-2 ps-1">Rp/IDR</span>';
-                                    ?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xxl-3 col-md-6 col-6">
-                    <div class="card info-card blue-card">
-                        <div class="card-body">
-                            <h5 class="card-title">Angsuran</h5>
-                            <div class="d-flex align-items-center">
-                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                    <i class="bi bi-bank"></i>
-                                </div>
-                                <div class="ps-3">
-                                    <?php
-                                        echo '  <span class="text-muted small pt-1 fw-bold">'.$JumlahAngsuran.'</span><br>';
-                                        echo '  <span class="text-muted small pt-2 ps-1">Rp/IDR</span>';
-                                    ?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xxl-3 col-md-6 col-6">
-                    <div class="card info-card purple-card">
-                        <div class="card-body">
-                            <h5 class="card-title">Penjualan</h5>
-                            <div class="d-flex align-items-center">
-                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                    <i class="bi bi-cart-dash"></i>
-                                </div>
-                                <div class="ps-3">
-                                    <?php
-                                        echo '  <span class="text-muted small pt-1 fw-bold">'.$JumlahPenjualan.'</span><br>';
-                                        echo '  <span class="text-muted small pt-2 ps-1">Rp/IDR</span>';
-                                    ?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xxl-3 col-md-6 col-6">
-                    <div class="card info-card customers-card">
-                        <div class="card-body">
-                            <h5 class="card-title">Pembelian</h5>
-                            <div class="d-flex align-items-center">
-                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                    <i class="bi bi-cart-plus"></i>
-                                </div>
-                                <div class="ps-3">
-                                    <?php
-                                        echo '  <span class="text-muted small pt-1 fw-bold">'.$JumlahPembelian.'</span><br>';
-                                        echo '  <span class="text-muted small pt-2 ps-1">Rp/IDR</span>';
-                                    ?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xxl-3 col-md-6 col-6">
-                    <div class="card info-card revenue-card">
-                        <div class="card-body">
-                            <h5 class="card-title">Bagi Hasil</h5>
-                            <div class="d-flex align-items-center">
-                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                    <i class="bi bi-calculator"></i>
-                                </div>
-                                <div class="ps-3">
-                                    <?php
-                                        echo '  <span class="text-muted small pt-1 fw-bold">'.$JumlahShu.'</span><br>';
-                                        echo '  <span class="text-muted small pt-2 ps-1">Rp/IDR</span>';
-                                    ?>
-                                </div>
+                            <div class="card-body">
+                                <?php
+                                    //Hitung Jumlah Barang Yang Hampir Habis
+                                    $sqlStokMinimum = "SELECT COUNT(*) AS total_minimum FROM barang WHERE stok_barang < stok_minimum";
+                                    $resultMinimum = $Conn->query($sqlStokMinimum);
+                                    $totalMinimum = $resultMinimum->fetch_assoc()['total_minimum'] ?? 0;
+                                    if(!empty($totalMinimum)){
+                                        echo '
+                                            <div class="alert alert-warning mb-3">
+                                                <small>
+                                                    Terdapat '.$totalMinimum.' item barang yang hampir habis.
+                                                </small>
+                                            </div>
+                                        ';
+                                    }else{
+                                        echo '
+                                            <div class="alert alert-success mb-3">
+                                                <small>
+                                                    <i class="bi bi-check"></i> Stok barang dalam keadaan baik.
+                                                </small>
+                                            </div>
+                                        ';
+                                    }
+                                    // Tanggal saat ini dalam format Y-m-d
+                                    $currentDate = date('Y-m-d');
+
+                                    // Query untuk menghitung jumlah item barang yang sudah expired
+                                    $sqlExpired = "SELECT COUNT(*) AS total_expired FROM barang_bacth WHERE reminder_date <= ?";
+                                    $stmt = $Conn->prepare($sqlExpired);
+                                    $stmt->bind_param("s", $currentDate);
+                                    $stmt->execute();
+                                    $resultExpired = $stmt->get_result();
+
+                                    if ($resultExpired) {
+                                        $totalExpired = intval($resultExpired->fetch_assoc()['total_expired'] ?? 0);
+                                        
+                                        if ($totalExpired > 0) {
+                                            echo '
+                                                <div class="alert alert-danger mb-3">
+                                                    <small>
+                                                        <i class="bi bi-exclamation-octagon"></i> Terdapat '.$totalExpired.' item barang expire.
+                                                    </small>
+                                                </div>
+                                            ';
+                                        } else {
+                                            echo '
+                                                <div class="alert alert-success mb-3">
+                                                    <small>
+                                                        <i class="bi bi-check-circle"></i> Tidak ada barang yang expire.
+                                                    </small>
+                                                </div>
+                                            ';
+                                        }
+                                    } else {
+                                        echo '
+                                            <div class="alert alert-danger mb-3">
+                                                <small>
+                                                    <i class="bi bi-x-circle"></i> Gagal mengambil data barang expired.
+                                                </small>
+                                            </div>
+                                        ';
+                                    }
+                                    // Tanggal dan waktu saat ini dalam format Y-m-d H:i:s
+                                    $currentDateTime = date('Y-m-d H:i:s');
+
+                                    // Query untuk menghitung jumlah data yang sudah expired
+                                    $sqlExpiredAccess = "SELECT COUNT(*) AS total_expired FROM akses_login WHERE date_expired > ?";
+                                    $stmt = $Conn->prepare($sqlExpiredAccess);
+                                    $stmt->bind_param("s", $currentDateTime);
+                                    $stmt->execute();
+                                    $resultExpiredAccess = $stmt->get_result();
+
+                                    if ($resultExpiredAccess) {
+                                        $totalExpiredAccess = intval($resultExpiredAccess->fetch_assoc()['total_expired'] ?? 0);
+                                        
+                                        if ($totalExpiredAccess > 0) {
+                                            echo '
+                                                <div class="alert alert-info mb-3">
+                                                    <small>
+                                                        <i class="bi bi-person-circle"></i> Terdapat '.$totalExpiredAccess.' pengguna sedang login.
+                                                    </small>
+                                                </div>
+                                            ';
+                                        } else {
+                                            echo '
+                                                <div class="alert alert-success mb-3">
+                                                    <small>
+                                                        <i class="bi bi-unlock"></i> Tidak ada pengguna yang login.
+                                                    </small>
+                                                </div>
+                                            ';
+                                        }
+                                    } else {
+                                        echo '
+                                            <div class="alert alert-danger mb-3">
+                                                <small>
+                                                    <i class="bi bi-x-circle"></i> Gagal mengambil data akses login yang expired.
+                                                </small>
+                                            </div>
+                                        ';
+                                    }
+                                    $stmt->close();
+                                ?>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            
             <div class="row">
                 <!-- Reports -->
                 <div class="col-md-12">
