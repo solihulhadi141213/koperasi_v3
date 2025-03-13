@@ -21,6 +21,15 @@
             )
         </script>
     <?php } ?>
+    <?php if($NotifikasiSwal=="Ubah Profil Berhasil"){ ?>
+        <script>
+            Swal.fire(
+                'Berhasil!',
+                'Ubah Profil Berhasil!',
+                'success'
+            )
+        </script>
+    <?php } ?>
     <?php if($NotifikasiSwal=="Ubah Foto Profil Berhasil"){ ?>
         <script>
             Swal.fire(
@@ -39,33 +48,6 @@
             )
         </script>
     <?php } ?>
-    <?php if($NotifikasiSwal=="Tambah Transaksi Berhasil"){ ?>
-        <script>
-            Swal.fire(
-                'Berhasil!',
-                'Tambah Transaksi Berhasil!',
-                'success'
-            )
-        </script>
-    <?php } ?>
-    <?php if($NotifikasiSwal=="Tambah Auto Jurnal Berhasil"){ ?>
-        <script>
-            Swal.fire(
-                'Berhasil!',
-                'Tambah Auto Jurnal Berhasil!',
-                'success'
-            )
-        </script>
-    <?php } ?>
-    <?php if($NotifikasiSwal=="Update Auto Jurnal Berhasil"){ ?>
-        <script>
-            Swal.fire(
-                'Berhasil!',
-                'Update Auto Jurnal Berhasil!',
-                'success'
-            )
-        </script>
-    <?php } ?>
     <?php if($NotifikasiSwal=="Simpan Setting General Berhasil"){ ?>
         <script>
             Swal.fire(
@@ -75,11 +57,11 @@
             )
         </script>
     <?php } ?>
-    <?php if($NotifikasiSwal=="Simpan Help Berhasil"){ ?>
+    <?php if($NotifikasiSwal=="Simpan Setting Email Berhasil"){ ?>
         <script>
             Swal.fire(
                 'Berhasil!',
-                'Simpan Help Berhasil!',
+                'Simpan Setting Email Berhasil',
                 'success'
             )
         </script>
@@ -93,11 +75,11 @@
             )
         </script>
     <?php } ?>
-    <?php if($NotifikasiSwal=="Edit Email Anggota Berhasil"){ ?>
+    <?php if($NotifikasiSwal=="Simpan Help Berhasil"){ ?>
         <script>
             Swal.fire(
                 'Berhasil!',
-                'Edit Email Berhasil!',
+                'Simpan Help Berhasil!',
                 'success'
             )
         </script>

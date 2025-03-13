@@ -1,4 +1,4 @@
-<footer id="footer" class="footer landing_background">
+<footer id="footer" class="footer nav_background">
     <div class="copyright text-white">
         &copy; Copyright <strong><span><?php echo "$title_page"; ?></span></strong>. All Rights Reserved 2023
     </div>

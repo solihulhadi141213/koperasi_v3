@@ -32,6 +32,27 @@ function filterAndLoadTable3() {
         }
     });
 }
+function filterAndLoadTable4() {
+    var ProsesFilterSimpananNetto = $('#ProsesFilterSimpananNetto').serialize();
+    $.ajax({
+        type        : 'POST',
+        url         : '_Page/RekapSimpanan/TabelRekapSimpananNetto.php',
+        data        : ProsesFilterSimpananNetto,
+        success: function(data) {
+            $('#TabelSimpananNetto').html(data);
+        }
+    });
+
+    //Menampilkan Judul
+    $.ajax({
+        type        : 'POST',
+        url         : '_Page/RekapSimpanan/TitleRekapSimpananNetto.php',
+        data        : ProsesFilterSimpananNetto,
+        success: function(data) {
+            $('#TitleRekapSimpananNetto').html(data);
+        }
+    });
+}
 function toggleFields() {
     var periode = $('#periode').val();
     if (periode === 'Semua') {
@@ -71,6 +92,19 @@ function toggleFields3() {
         $('#FormBulanAnggota').show();
     }
 }
+function toggleFields4() {
+    var periode = $('#periode_simpanan_netto').val();
+    if (periode === 'Semua') {
+        $('#FormTahunSimpananNetto').hide();
+        $('#FormBulanSimpananNetto').hide();
+    } else if (periode === 'Tahunan') {
+        $('#FormTahunSimpananNetto').show();
+        $('#FormBulanSimpananNetto').hide();
+    } else if (periode === 'Bulanan') {
+        $('#FormTahunSimpananNetto').show();
+        $('#FormBulanSimpananNetto').show();
+    }
+}
 $(document).ready(function() {
     // filterAndLoadTable();
     // filterAndLoadTable2();
@@ -79,6 +113,7 @@ $(document).ready(function() {
     toggleFields();
     toggleFields2();
     toggleFields3();
+    toggleFields4();
     // Panggil fungsi toggleFields saat periode diubah
     $('#periode').change(function() {
         toggleFields();
@@ -88,6 +123,9 @@ $(document).ready(function() {
     });
     $('#periode_anggota').change(function() {
         toggleFields3();
+    });
+    $('#periode_simpanan_netto').change(function() {
+        toggleFields4();
     });
 });
 //Proses Filter Lembaga
@@ -147,6 +185,26 @@ $('#ProsesFilterAnggota').submit(function(){
         }
     });
 });
+//Proses Filter Simpanan Netto
+$('#ProsesFilterSimpananNetto').submit(function(){
+    $('#put_page_simpanan_netto').val(1);
+    $('#ModadlFilterSimpananNetto').modal('hide');
+    filterAndLoadTable4();
+});
+//Pagging Simpanan Netto
+$(document).on('click', '#next_button_simpanan_netto', function() {
+    var page_now = parseInt($('#put_page_simpanan_netto').val(), 10); // Pastikan nilai diambil sebagai angka
+    var next_page = page_now + 1;
+    $('#put_page_simpanan_netto').val(next_page);
+    filterAndLoadTable4(0);
+});
+$(document).on('click', '#prev_button_simpanan_netto', function() {
+    var page_now = parseInt($('#put_page_simpanan_netto').val(), 10); // Pastikan nilai diambil sebagai angka
+    var next_page = page_now - 1;
+    $('#put_page_simpanan_netto').val(next_page);
+    filterAndLoadTable4();
+});
+
 //Modal Cetak Rekap Simpanan
 $('#ModalCetak').on('show.bs.modal', function (e) {
     var ProsesFilter = $('#ProsesFilter').serialize();
@@ -182,6 +240,19 @@ $('#ModalCetak3').on('show.bs.modal', function (e) {
         data: ProsesFilter,
         success: function(data) {
             $('#FormCetakDataRekap3').html(data);
+        }
+    });
+});
+
+//Modal Cetak Rekap Simpanan Anggota (NETTO)
+$('#ModalCetak4').on('show.bs.modal', function (e) {
+    var ProsesFilter = $('#ProsesFilterSimpananNetto').serialize();
+    $.ajax({
+        type: 'POST',
+        url: '_Page/RekapSimpanan/FormCetakDataRekap4.php',
+        data: ProsesFilter,
+        success: function(data) {
+            $('#FormCetakDataRekap4').html(data);
         }
     });
 });

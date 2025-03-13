@@ -126,21 +126,21 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-12">
+                        <div class="row mb-3">
+                            <div class="col-12" id="TitleRekapSimpananNetto">
                                 <div class="alert alert-info">
                                     <small>
                                         <b>Keterangan :</b>
-                                        Informasi jumlah nominal yang ditampilkan pada masing-masing jenis simpanan berikut,
+                                        Informasi jumlah nominal yang ditampilkan pada masing-masing jenis simpanan berikut
                                         merupakan jumlah simpanan yang sudah dikurangi dengan nominal penarikan.
                                     </small>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row mb-3">
                             <div class="col-md-12">
                                 <div class="table table-responsive">
-                                    <table class="table table-bordered table-hover">
+                                    <table class="table table-bordered table-striped table-hover">
                                         <thead>
                                             <tr>
                                                 <td align="center" rowspan="2" valign="middle"><b>No</b></td>
@@ -167,6 +167,23 @@
                                         </tbody>
                                     </table>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-6">
+                                <small id="page_info_simpanan_netto">
+                                    Page 1 Of 100
+                                </small>
+                            </div>
+                            <div class="col-6 text-end">
+                                <button type="button" class="btn btn-sm btn-outline-info btn-floating" id="prev_button_simpanan_netto">
+                                    <i class="bi bi-chevron-left"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-info btn-floating" id="next_button_simpanan_netto">
+                                    <i class="bi bi-chevron-right"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
