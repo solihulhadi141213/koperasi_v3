@@ -1355,3 +1355,53 @@ body .title_page_app {
   width: 100%;     /* Atur lebar sesuai keinginan */
   border-radius: 8px; /* Opsional, untuk sudut membulat */
 }
+
+/* Card dengan Gambar Background */
+#card_jam_menarik {
+  padding: 15px;
+  border-radius: 12px;
+  background: url('../../assets/img/calendar/calendar.jpg') no-repeat center center;
+  background-size: cover;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  border: 2px solid #fff;
+  overflow: hidden;
+}
+
+/* Overlay Gelap di Atas Background */
+#card_jam_menarik::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Overlay hitam transparan */
+  z-index: 1;
+  border-radius: 12px;
+}
+
+/* Tampilan Tanggal */
+#tanggal_menarik {
+  position: relative;
+  z-index: 2;
+  font-size: 1.2rem;
+  color: #fff;
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+/* Tampilan Jam */
+#jam_menarik {
+  position: relative;
+  z-index: 2;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #fff;
+  letter-spacing: 2px;
+  padding: 10px 20px;
+  border-radius: 6px;
+  display: inline-block;
+}

@@ -29,7 +29,7 @@
     $sheet->getStyle('A1:A2')->getAlignment()->setHorizontal('center');
 
     // Header Kolom
-    $headers = ['No', 'Tanggal', 'Anggota', 'Jenis Pinjaman', 'Pinjaman', 'Pinjaman + Jasa', 'Lama Angsuran', 'Sudah Bayar', 'Jumlah Bayar (Rp)', 'Sisa Pinjaman', 'Sisa Pinjaman (Rp)', 'Status'];
+    $headers = ['No', 'Tanggal', 'Anggota', 'Jenis Pinjaman', 'Pinjaman', 'Pinjaman + Jasa', 'Angsuran', 'Lama Angsuran', 'Sudah Bayar', 'Jumlah Bayar (Rp)', 'Sisa Pinjaman', 'Sisa Pinjaman (Rp)', 'Status'];
     $column = 'A';
     foreach ($headers as $header) {
         $sheet->setCellValue($column . '4', $header);
@@ -68,7 +68,9 @@
 
         // Hitung Sisa Pinjaman
         $sisa_pinjaman_rp = $jumlah_pinjaman_jasa - $jumlah_angsuran;
-
+        //Angsuran Total
+        $angsuran_total= $data['angsuran_total'];
+        $angsuran_total = "" . number_format($angsuran_total,0,',','.');
         // Masukkan Data ke Excel
         $sheet->setCellValue('A' . $row, $no);
         $sheet->setCellValue('B' . $row, $tanggal);
@@ -76,20 +78,21 @@
         $sheet->setCellValue('D' . $row, $nama_pinjaman);
         $sheet->setCellValue('E' . $row, $jumlah_pinjaman);
         $sheet->setCellValue('F' . $row, $jumlah_pinjaman_jasa);
-        $sheet->setCellValue('G' . $row, $data['periode_angsuran']);
-        $sheet->setCellValue('H' . $row, $jumlah_data_angsuran);
-        $sheet->setCellValue('I' . $row, $jumlah_angsuran);
-        $sheet->setCellValue('J' . $row, $sisa_pinjaman);
-        $sheet->setCellValue('K' . $row, $sisa_pinjaman_rp);
-        $sheet->setCellValue('L' . $row, $data['status']);
+        $sheet->setCellValue('G' . $row, $angsuran_total);
+        $sheet->setCellValue('H' . $row, $data['periode_angsuran']);
+        $sheet->setCellValue('I' . $row, $jumlah_data_angsuran);
+        $sheet->setCellValue('J' . $row, $jumlah_angsuran);
+        $sheet->setCellValue('K' . $row, $sisa_pinjaman);
+        $sheet->setCellValue('L' . $row, $sisa_pinjaman_rp);
+        $sheet->setCellValue('M' . $row, $data['status']);
 
         $row++;
         $no++;
     }
 
     // Styling Header
-    $sheet->getStyle('A4:l4')->getFont()->setBold(true);
-    $sheet->getStyle('A4:l4')->getAlignment()->setHorizontal('center');
+    $sheet->getStyle('A4:M4')->getFont()->setBold(true);
+    $sheet->getStyle('A4:M4')->getAlignment()->setHorizontal('center');
 
     // Set Nama File
     $filename = "Rekap_Pinjaman_Anggota_" . ($tahun ? $tahun : "Semua") . ".xlsx";

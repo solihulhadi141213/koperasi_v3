@@ -13,8 +13,8 @@ $tahun = isset($_GET['tahun']) ? $_GET['tahun'] : "";
 if($tahun=="Semua"){
     $tahun="";
 }
-// Inisialisasi mPDF
-$mpdf = new Mpdf();
+// Inisialisasi mPDF dengan orientasi landscape
+$mpdf = new Mpdf(['orientation' => 'L']);
 
 // Header PDF
 $html = '
@@ -26,8 +26,10 @@ $html = '
                 <th>No</th>
                 <th>Tanggal</th>
                 <th>Anggota</th>
+                <th>Jenis Pinjaman</th>
                 <th>Pinjaman</th>
                 <th>Pinjaman + Jasa</th>
+                <th>Angsuran</th>
                 <th>Lama Angsuran</th>
                 <th>Sudah Bayar</th>
                 <th>Jumlah Bayar (Rp)</th>
@@ -62,14 +64,24 @@ if (mysqli_num_rows($query) == 0) {
 
         // Hitung Sisa Pinjaman
         $sisa_pinjaman_rp = number_format(($data['jumlah_pinjaman'] + ($data['rp_jasa'] * $data['periode_angsuran'])) - $sum['total'], 0, ',', '.');
-
+        if(empty($data['id_pinjaman_jenis'])){
+            $nama_jenis_pinjaman='<span class="text text-muted">NONE</span>';
+        }else{
+            $id_pinjaman_jenis=$data['id_pinjaman_jenis'];
+            $nama_jenis_pinjaman=GetDetailData($Conn, 'pinjaman_jenis', 'id_pinjaman_jenis', $id_pinjaman_jenis, 'nama_pinjaman');
+        }
+        //Angsuran Total
+        $angsuran_total= $data['angsuran_total'];
+        $angsuran_total = "" . number_format($angsuran_total,0,',','.');
         $html .= '
             <tr>
                 <td align="center">'.$no.'</td>
                 <td>'.$tanggal.'</td>
                 <td>'.$data['nama'].'</td>
+                <td>'.$nama_jenis_pinjaman.'</td>
                 <td align="right">'.$jumlah_pinjaman.'</td>
                 <td align="right">'.$jumlah_pinjaman_jasa.'</td>
+                <td align="right">'.$angsuran_total.'</td>
                 <td align="center">'.$data['periode_angsuran'].'</td>
                 <td align="center">'.$jumlah_data_angsuran.'</td>
                 <td align="right">'.$jumlah_angsuran.'</td>

@@ -1,40 +1,4 @@
 <?php
-    //Jumlah Barang
-    $JumlahBarang = mysqli_num_rows(mysqli_query($Conn, "SELECT id_barang FROM barang"));
-    $JumlahBarangFormat = "" . number_format($JumlahBarang,0,',','.');
-    //Menghitung jumlah Rupiah barang
-    $sqlBarang = "SELECT SUM(harga_beli * stok_barang) AS total_rupiah FROM barang";
-    $resultBarang = $Conn->query($sqlBarang);
-
-    if ($resultBarang) {
-        $rowBarang= $resultBarang->fetch_assoc();
-        $totalRupiahBarang = $rowBarang['total_rupiah'] ?? 0;
-        $totalRupiahBarang = "Rp " . number_format($totalRupiahBarang,0,',','.');
-    } else {
-        $totalRupiahBarang=$Conn->error;
-    }
-    //Jumlah Anggota Aktif
-    $JumlahAnggota = mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM anggota WHERE status='Aktif'"));
-    $JumlahAnggotaFormat = "" . number_format($JumlahAnggota,0,',','.');
-    //Jumlah Simpanan Bersih
-    $SumSimpananKotor = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(jumlah) AS jumlah FROM simpanan WHERE kategori!='Penarikan'"));
-    $JumlahSimpananKotor = $SumSimpananKotor['jumlah'];
-    //Penarikan Simpanan
-    $SumPenarikan = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(jumlah) AS jumlah FROM simpanan WHERE kategori='Penarikan'"));
-    $JumlahPenarikan = $SumPenarikan['jumlah'];
-    //Jumlah Simpanan Bersih
-    $JumlahSimpananBersih=$JumlahSimpananKotor-$JumlahPenarikan;
-    $JumlahSimpananBersih = "" . number_format($JumlahSimpananBersih,0,',','.');
-
-    //Jumlah Pinjaman
-    $SumPinjaman = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(jumlah_pinjaman) AS jumlah_pinjaman FROM pinjaman"));
-    $JumlahPinjaman = $SumPinjaman['jumlah_pinjaman'];
-    $JumlahPinjaman = "" . number_format($JumlahPinjaman,0,',','.');
-
-    //Jumlah Angsuran
-    $SumAngsuran = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(jumlah) AS jumlah FROM pinjaman_angsuran"));
-    $JumlahAngsuran = $SumAngsuran['jumlah'];
-    $JumlahAngsuran = "" . number_format($JumlahAngsuran,0,',','.');
 
     //Jumlah Penjualan
     $SumPenjualan = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(total) AS jumlah_penjualan FROM transaksi_jual_beli WHERE kategori='Penjualan'"));
@@ -73,6 +37,11 @@
 </div>
 <section class="section dashboard">
     <div class="row">
+        <div class="col-md-12" id="notifikasi_proses">
+            <!-- Kejadian Kegagalan Menampilkan Data Akan Ditampilkan Disini -->
+        </div>
+    </div>
+    <div class="row">
         <div class="col-lg-12">
             <div class="row">
                 <div class="col-md-8">
@@ -86,10 +55,8 @@
                                             <i class="bi bi-box"></i>
                                         </div>
                                         <div class="ps-3">
-                                            <?php
-                                                echo '  <span class="text-muted small pt-1 fw-bold">'.$totalRupiahBarang.'</span><br>';
-                                                echo '  <span class="text-muted small pt-2 ps-1">'.$JumlahBarang.' Item</span>';
-                                            ?>
+                                            <span class="text-muted small pt-1 fw-bold" id="put_count_rp_barang"></span><br>
+                                            <span class="text-muted small pt-2 ps-1" id="put_count_item_barang"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -99,15 +66,21 @@
                             <div class="card info-card sales-card">
                                 <div class="card-body">
                                     <h5 class="card-title">Anggota</h5>
-                                    <div class="d-flex align-items-center">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <!-- Icon -->
                                         <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                             <i class="bi bi-people"></i>
                                         </div>
-                                        <div class="ps-3">
-                                            <?php
-                                                echo '  <span class="text-muted small pt-1 fw-bold">'.$JumlahAnggotaFormat.'</span><br>';
-                                                echo '  <span class="text-muted small pt-2 ps-1">Orang</span>';
-                                            ?>
+                                        <!-- Data Info -->
+                                        <div>
+                                            <div class="d-flex">
+                                                <span class="text-success small pt-2" style="width: 60px;">Aktif</span>
+                                                <span class="text-muted small pt-2" id="put_anggota_aktif">2.500</span>
+                                            </div>
+                                            <div class="d-flex">
+                                                <span class="text-danger small pt-2" style="width: 60px;">Keluar</span>
+                                                <span class="text-muted small pt-2" id="put_anggota_keluar">3.500</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -117,15 +90,27 @@
                             <div class="card info-card revenue-card">
                                 <div class="card-body">
                                     <h5 class="card-title">Simpanan</h5>
-                                    <div class="d-flex align-items-center">
+                                    <div class="d-flex align-items-center gap-3">
                                         <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                             <i class="bi bi-cash-coin"></i>
                                         </div>
                                         <div class="ps-3">
-                                            <?php
-                                                echo '  <span class="text-muted small pt-1 fw-bold">'.$JumlahSimpananBersih.'</span><br>';
-                                                echo '  <span class="text-muted small pt-2 ps-1">Rp/IDR</span>';
-                                            ?>
+                                            <span class="text-info small pt-2 ps-1" 
+                                                data-bs-toggle="tooltip" 
+                                                data-bs-placement="top" 
+                                                data-bs-custom-class="custom-tooltip" 
+                                                data-bs-title="Jumlah Simpanan Anggota Setelah Dikurangi Penarikan" 
+                                                id="put_simpanan_anggota">
+                                                <!-- Menampilkan Simpanan Anggota -->
+                                            </span><br>
+                                            <span class="text-warning small pt-2 ps-1" 
+                                                data-bs-toggle="tooltip" 
+                                                data-bs-placement="top" 
+                                                data-bs-custom-class="custom-tooltip" 
+                                                data-bs-title="Jumlah Total Penarikan Dana Simpanan" 
+                                                id="put_penarikan_dana">
+                                                <!-- Menampilkan Penarikan Dana Anggota -->
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -139,11 +124,22 @@
                                         <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                             <i class="bi bi-bank"></i>
                                         </div>
+
                                         <div class="ps-3">
-                                            <?php
-                                                echo '  <span class="text-muted small pt-1 fw-bold">'.$JumlahPinjaman.'</span><br>';
-                                                echo '  <span class="text-muted small pt-2 ps-1">Rp/IDR</span>';
-                                            ?>
+                                            <span class="text-dark small pt-2 ps-1"  
+                                                data-bs-toggle="tooltip" 
+                                                data-bs-placement="top" 
+                                                data-bs-custom-class="custom-tooltip" 
+                                                data-bs-title="Jumlah Total Pinjaman Anggota Yang Belum Lunas"  
+                                                id="put_pinjaman_anggota">
+                                            </span><br>
+                                            <span class="text-muted small pt-2 ps-1" 
+                                                data-bs-toggle="tooltip" 
+                                                data-bs-placement="top" 
+                                                data-bs-custom-class="custom-tooltip" 
+                                                data-bs-title="Jumlah Sesi Pinjaman Belum Lunas" 
+                                                id="put_sesi_pinjaman">
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -158,10 +154,20 @@
                                             <i class="bi bi-bank"></i>
                                         </div>
                                         <div class="ps-3">
-                                            <?php
-                                                echo '  <span class="text-muted small pt-1 fw-bold">'.$JumlahAngsuran.'</span><br>';
-                                                echo '  <span class="text-muted small pt-2 ps-1">Rp/IDR</span>';
-                                            ?>
+                                            <span class="text-muted small pt-2 ps-1"  
+                                                data-bs-toggle="tooltip" 
+                                                data-bs-placement="top" 
+                                                data-bs-custom-class="custom-tooltip" 
+                                                data-bs-title="Jumlah Nominal Angsuran Masuk" 
+                                                id="put_nominal_angsuran">
+                                            </span><br>
+                                            <span class="text-muted small pt-2 ps-1"  
+                                                data-bs-toggle="tooltip" 
+                                                data-bs-placement="top" 
+                                                data-bs-custom-class="custom-tooltip" 
+                                                data-bs-title="Jumlah Record Angsuran Masuk" 
+                                                id="put_record_angsuran">
+                                            </span><br>
                                         </div>
                                     </div>
                                 </div>
@@ -243,6 +249,12 @@
                 </div>
                 <div class="col-md-4">
                     <div class="col-12">
+                        <div class="card" id="card_jam_menarik">
+                            <div class="card-body">
+                                <div id="tanggal_menarik"></div>
+                                <div id="jam_menarik">00:00:00</div>
+                            </div>
+                        </div>
                         <div class="card">
                             <div class="card-header">
                                 <b class="card-title"># Pemberitahuan Sistem</b> 
@@ -255,7 +267,7 @@
                                     $totalMinimum = $resultMinimum->fetch_assoc()['total_minimum'] ?? 0;
                                     if(!empty($totalMinimum)){
                                         echo '
-                                            <div class="alert alert-warning mb-3">
+                                            <div class="alert alert-warning mb-3 alert-dismissible fade show">
                                                 <small>
                                                     Terdapat '.$totalMinimum.' item barang yang hampir habis.
                                                 </small>
@@ -263,7 +275,7 @@
                                         ';
                                     }else{
                                         echo '
-                                            <div class="alert alert-success mb-3">
+                                            <div class="alert alert-success mb-3 alert-dismissible fade show">
                                                 <small>
                                                     <i class="bi bi-check"></i> Stok barang dalam keadaan baik.
                                                 </small>
@@ -285,7 +297,7 @@
                                         
                                         if ($totalExpired > 0) {
                                             echo '
-                                                <div class="alert alert-danger mb-3">
+                                                <div class="alert alert-danger mb-3 alert-dismissible fade show">
                                                     <small>
                                                         <i class="bi bi-exclamation-octagon"></i> Terdapat '.$totalExpired.' item barang expire.
                                                     </small>
@@ -293,7 +305,7 @@
                                             ';
                                         } else {
                                             echo '
-                                                <div class="alert alert-success mb-3">
+                                                <div class="alert alert-success mb-3 alert-dismissible fade show">
                                                     <small>
                                                         <i class="bi bi-check-circle"></i> Tidak ada barang yang expire.
                                                     </small>
@@ -302,7 +314,7 @@
                                         }
                                     } else {
                                         echo '
-                                            <div class="alert alert-danger mb-3">
+                                            <div class="alert alert-danger mb-3 alert-dismissible fade show">
                                                 <small>
                                                     <i class="bi bi-x-circle"></i> Gagal mengambil data barang expired.
                                                 </small>
@@ -324,7 +336,7 @@
                                         
                                         if ($totalExpiredAccess > 0) {
                                             echo '
-                                                <div class="alert alert-info mb-3">
+                                                <div class="alert alert-info mb-3 alert-dismissible fade show">
                                                     <small>
                                                         <i class="bi bi-person-circle"></i> Terdapat '.$totalExpiredAccess.' pengguna sedang login.
                                                     </small>
@@ -332,7 +344,7 @@
                                             ';
                                         } else {
                                             echo '
-                                                <div class="alert alert-success mb-3">
+                                                <div class="alert alert-success mb-3 alert-dismissible fade show">
                                                     <small>
                                                         <i class="bi bi-unlock"></i> Tidak ada pengguna yang login.
                                                     </small>
@@ -341,7 +353,7 @@
                                         }
                                     } else {
                                         echo '
-                                            <div class="alert alert-danger mb-3">
+                                            <div class="alert alert-danger mb-3 alert-dismissible fade show">
                                                 <small>
                                                     <i class="bi bi-x-circle"></i> Gagal mengambil data akses login yang expired.
                                                 </small>

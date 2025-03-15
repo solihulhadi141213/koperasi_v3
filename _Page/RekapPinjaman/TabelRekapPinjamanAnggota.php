@@ -53,8 +53,10 @@
                             <th><b>No</b></th>
                             <th><b>Tanggal</b></th>
                             <th><b>Anggota</b></th>
+                            <th><b>Jenis Pinjaman</b></th>
                             <th><b>Pinjaman</b></th>
                             <th><b>Pinjaman + Jasa</b></th>
+                            <th><b>Angsuran</b></th>
                             <th><b>Lama Angsuran</b></th>
                             <th><b>Sudah Bayar</b></th>
                             <th><b>Jumlah Bayar (Rp)</b></th>
@@ -69,7 +71,7 @@
                             if(empty($jml_data)){
                                 echo '
                                     <tr>
-                                        <td colspan="11" class="text-center">
+                                        <td colspan="13" class="text-center">
                                             <span class="text-danger">Belum Ada Data Pinjaman Yang Ditampilkan</span>
                                         </td>
                                     </tr>
@@ -81,6 +83,7 @@
                                     $id_pinjaman= $data['id_pinjaman'];
                                     $uuid_pinjaman= $data['uuid_pinjaman'];
                                     $id_anggota= $data['id_anggota'];
+                                    $id_pinjaman_jenis= $data['id_pinjaman_jenis'];
                                     $nama= $data['nama'];
                                     $nip= $data['nip'];
                                     $lembaga= $data['lembaga'];
@@ -91,6 +94,7 @@
                                     $rp_jasa= $data['rp_jasa'];
                                     $status= $data['status'];
                                     $periode_angsuran= $data['periode_angsuran'];
+                                    $angsuran_total= $data['angsuran_total'];
 
                                     //Format tanggal
                                     $strtotime=strtotime($tanggal);
@@ -124,13 +128,23 @@
                                     //Hiutng Sisa Pinjaman
                                     $sisa_pinjaman_rp=$jumlah_pinjaman_jasa-$JumlahAngsuran;
                                     $sisa_pinjaman_rp_format = "" . number_format($sisa_pinjaman_rp,0,',','.');
+                                    //Buka Jenis Pinjaman
+                                    if(empty($id_pinjaman_jenis)){
+                                        $nama_jenis_pinjaman='<span class="text text-muted">NONE</span>';
+                                    }else{
+                                        $nama_jenis_pinjaman=GetDetailData($Conn, 'pinjaman_jenis', 'id_pinjaman_jenis', $id_pinjaman_jenis, 'nama_pinjaman');
+                                    }
+                                    //Format Angsuran Total
+                                    $angsuran_total = "" . number_format($angsuran_total,0,',','.');
                                     echo '
                                         <tr>
                                             <td><small>'.$no.'</small></td>
                                             <td><small>'.$TanggalFormat.'</small></td>
                                             <td><small>'.$nama.'</small></td>
+                                            <td><small>'.$nama_jenis_pinjaman.'</small></td>
                                             <td><small>'.$jumlah_pinjaman_format.'</small></td>
                                             <td><small>'.$jumlah_pinjaman_jasa_format.'</small></td>
+                                            <td><small>'.$angsuran_total.'</small></td>
                                             <td><small>'.$periode_angsuran.'</small></td>
                                             <td><small>'.$JumlahDataAngsuran.'</small></td>
                                             <td><small>'.$JumlahAngsuranFormat.'</small></td>

@@ -446,7 +446,7 @@
 
                     //Bersihkan
                     var angsuran_total = parseInt(angsuran_pokok) + parseInt(rp_jasa);
-                    var formatted_angsuran_total = angsuran_total.toLocaleString();
+                    var formatted_angsuran_total = parseInt(angsuran_total, 10).toLocaleString('en-US');
 
                     $('#angsuran_total').val(formatted_angsuran_total);
                 }

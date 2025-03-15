@@ -162,6 +162,7 @@
                                     $id_pinjaman= $data['id_pinjaman'];
                                     $uuid_pinjaman= $data['uuid_pinjaman'];
                                     $id_anggota= $data['id_anggota'];
+                                    $id_pinjaman_jenis= $data['id_pinjaman_jenis'];
                                     $nama= $data['nama'];
                                     $nip= $data['nip'];
                                     $lembaga= $data['lembaga'];
@@ -206,6 +207,9 @@
                                     }else{
                                         $LabelAngsuran='<code class="text text-grayish">'.$JumlahDataAngsuran.' Record</code>';
                                     }
+
+                                    //Buka Jenis Pinjaman
+                                    $nama_jenis_pinjaman=GetDetailData($Conn, 'pinjaman_jenis', 'id_pinjaman_jenis', $id_pinjaman_jenis, 'nama_pinjaman');
                         ?>
                                     <tr>
                                         <td align="center">
@@ -237,7 +241,7 @@
                                             <small class="credit">
                                                 <?php 
                                                     echo "$jumlah_pinjaman_format <br>"; 
-                                                    echo "$LabelJurnal"; 
+                                                    echo '<small class="text-muted">'.$nama_jenis_pinjaman.'</small>'; 
                                                 ?>
                                             </small>
                                         </td>
