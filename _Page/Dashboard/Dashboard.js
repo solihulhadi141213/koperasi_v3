@@ -56,7 +56,7 @@ function CountOfSimpanan() {
             }
         },
         error: function() {
-            $('#notifikasi_proses').hide().html('<div class="alert alert-danger"><small>Terjadi Kesalahan Pada Sistem Saat Menghitung Anggota!</small></div>').fadeIn(500);
+            $('#notifikasi_proses').hide().html('<div class="alert alert-danger"><small>Terjadi Kesalahan Pada Sistem Saat Menghitung Simpanan!</small></div>').fadeIn(500);
         },
     });
 }
@@ -77,7 +77,7 @@ function CountOfPinjaman() {
             }
         },
         error: function() {
-            $('#notifikasi_proses').hide().html('<div class="alert alert-danger"><small>Terjadi Kesalahan Pada Sistem Saat Menghitung Anggota!</small></div>').fadeIn(500);
+            $('#notifikasi_proses').hide().html('<div class="alert alert-danger"><small>Terjadi Kesalahan Pada Sistem Saat Menghitung Pinjaman!</small></div>').fadeIn(500);
         },
     });
 }
@@ -91,13 +91,137 @@ function CountOfAngsuran() {
             if (response.status == "Success") {
                 $('#put_nominal_angsuran').hide().html('<i class="bi bi-coin"></i> '+response.put_nominal_angsuran+'').fadeIn(500);
                 $('#put_record_angsuran').hide().html('<i class="bi bi-table"></i> '+response.put_record_angsuran+'').fadeIn(500);
+                CountOfPenjualan();
             } else {
                 $('#notifikasi_proses').hide().html('<div class="alert alert-danger"><small>' + response.message + '</small></div>').fadeIn(500);
             }
         },
         error: function() {
-            $('#notifikasi_proses').hide().html('<div class="alert alert-danger"><small>Terjadi Kesalahan Pada Sistem Saat Menghitung Anggota!</small></div>').fadeIn(500);
+            $('#notifikasi_proses').hide().html('<div class="alert alert-danger"><small>Terjadi Kesalahan Pada Sistem Saat Menghitung Angsuran!</small></div>').fadeIn(500);
         },
+    });
+}
+// Fungsi Untuk Menampilkan Data Penjualan
+function CountOfPenjualan() {
+    $.ajax({
+        type: 'POST',
+        url: '_Page/Dashboard/CountOfPenjualan.php',
+        dataType: "json",
+        success: function(response) {
+            if (response.status == "Success") {
+                $('#put_nominal_penjualan').hide().html('<i class="bi bi-coin"></i> '+response.put_nominal_penjualan+'').fadeIn(500);
+                $('#put_record_penjualan').hide().html('<i class="bi bi-table"></i> ('+response.put_record_penjualan+')').fadeIn(500);
+                CountOfPembelian();
+            } else {
+                $('#notifikasi_proses').hide().html('<div class="alert alert-danger"><small>' + response.message + '</small></div>').fadeIn(500);
+            }
+        },
+        error: function() {
+            $('#notifikasi_proses').hide().html('<div class="alert alert-danger"><small>Terjadi Kesalahan Pada Sistem Saat Menghitung Penjualan!</small></div>').fadeIn(500);
+        },
+    });
+}
+// Fungsi Untuk Menampilkan Data Pembelan
+function CountOfPembelian() {
+    $.ajax({
+        type: 'POST',
+        url: '_Page/Dashboard/CountOfPembelian.php',
+        dataType: "json",
+        success: function(response) {
+            if (response.status == "Success") {
+                $('#put_nominal_pembelian').hide().html('<i class="bi bi-coin"></i> '+response.put_nominal_pembelian+'').fadeIn(500);
+                $('#put_record_pembelian').hide().html('<i class="bi bi-table"></i> ('+response.put_record_pembelian+')').fadeIn(500);
+                CountOfBagiHasil();
+            } else {
+                $('#notifikasi_proses').hide().html('<div class="alert alert-danger"><small>' + response.message + '</small></div>').fadeIn(500);
+            }
+        },
+        error: function() {
+            $('#notifikasi_proses').hide().html('<div class="alert alert-danger"><small>Terjadi Kesalahan Pada Sistem Saat Menghitung Penjualan!</small></div>').fadeIn(500);
+        },
+    });
+}
+// Fungsi Untuk Menampilkan Data Bagi Hasil
+function CountOfBagiHasil() {
+    $.ajax({
+        type: 'POST',
+        url: '_Page/Dashboard/CountOfBagiHasil.php',
+        dataType: "json",
+        success: function(response) {
+            if (response.status == "Success") {
+                $('#put_nominal_bagi_hasil').hide().html('<i class="bi bi-coin"></i> '+response.put_nominal_bagi_hasil+'').fadeIn(500);
+                $('#put_record_bagii_hasil').hide().html('<i class="bi bi-table"></i> ('+response.put_record_bagii_hasil+')').fadeIn(500);
+                CountOfTransaksiOperasional();
+            } else {
+                $('#notifikasi_proses').hide().html('<div class="alert alert-danger"><small>' + response.message + '</small></div>').fadeIn(500);
+            }
+        },
+        error: function() {
+            $('#notifikasi_proses').hide().html('<div class="alert alert-danger"><small>Terjadi Kesalahan Pada Sistem Saat Menghitung Penjualan!</small></div>').fadeIn(500);
+        },
+    });
+}
+// Fungsi Untuk Menampilkan Data Transaksi Operasional
+function CountOfTransaksiOperasional() {
+    $.ajax({
+        type: 'POST',
+        url: '_Page/Dashboard/CountOfTransaksiOperasional.php',
+        dataType: "json",
+        success: function(response) {
+            if (response.status == "Success") {
+                $('#put_nominal_transaksi').hide().html('<i class="bi bi-coin"></i> '+response.put_nominal_transaksi+'').fadeIn(500);
+                $('#put_record_transaksi').hide().html('<i class="bi bi-table"></i> ('+response.put_record_transaksi+')').fadeIn(500);
+                ShowPemberitahuanSistem();
+            } else {
+                $('#notifikasi_proses').hide().html('<div class="alert alert-danger"><small>' + response.message + '</small></div>').fadeIn(500);
+            }
+        },
+        error: function() {
+            $('#notifikasi_proses').hide().html('<div class="alert alert-danger"><small>Terjadi Kesalahan Pada Sistem Saat Menghitung Penjualan!</small></div>').fadeIn(500);
+        },
+    });
+}
+// Fungsi Untuk Menampilkan Pemberitahuan Sistem
+function ShowPemberitahuanSistem() {
+    $.ajax({
+        type: 'POST',
+        url: '_Page/Dashboard/ShowPemberitahuanSistem.php',
+        success: function(response) {
+            $('#ShowPemberitahuanSistem').hide().html(response).fadeIn(500);
+            ShowAnggotaTerbaru();
+        }
+    });
+}
+// Fungsi Untuk Menampilkan Anggota Terbaru
+function ShowAnggotaTerbaru() {
+    $.ajax({
+        type: 'POST',
+        url: '_Page/Dashboard/ShowAnggotaTerbaru.php',
+        success: function(response) {
+            $('#ShowAnggotaTerbaru').hide().html(response).fadeIn(500);
+            ShowSimpananTerbaru();
+        }
+    });
+}
+// Fungsi Untuk Menampilkan Simpanan Terbaru
+function ShowSimpananTerbaru() {
+    $.ajax({
+        type: 'POST',
+        url: '_Page/Dashboard/ShowSimpananTerbaru.php',
+        success: function(response) {
+            $('#ShowSimpananTerbaru').hide().html(response).fadeIn(500);
+            ShowPinjamanTerbaru();
+        }
+    });
+}
+// Fungsi Untuk Menampilkan Pinjaman Terbaru
+function ShowPinjamanTerbaru() {
+    $.ajax({
+        type: 'POST',
+        url: '_Page/Dashboard/ShowPinjamanTerbaru.php',
+        success: function(response) {
+            $('#ShowPinjamanTerbaru').hide().html(response).fadeIn(500);
+        }
     });
 }
 // Fungsi Untuk Menampilkan Grafik
@@ -173,9 +297,10 @@ function tampilkanTanggal() {
 }
 
 $(document).ready(function () {
+    //Menampilkan Data Pertama Kali
     CountOfBarang();
     ShowGrafikSiimpanPinjam();
-
+    //Jam Menarik
     tampilkanTanggal(); // Tampilkan tanggal saat halaman dimuat
     tampilkanJam();     // Tampilkan jam pertama kali
     setInterval(tampilkanJam, 1000); // Perbarui jam setiap detik

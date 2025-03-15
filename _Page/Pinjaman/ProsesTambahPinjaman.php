@@ -135,74 +135,57 @@
                                                                     if(empty($KodeKredit)){
                                                                         echo '<code class="text-danger">Pengaturan Auto Jurnal Kredit Tidak Valid</code>';
                                                                     }else{
-                                                                        //Melakukan input data
-                                                                        $entry="INSERT INTO pinjaman (
-                                                                            uuid_pinjaman,
-                                                                            id_anggota,
-                                                                            id_pinjaman_jenis,
-                                                                            nama,
-                                                                            nip,
-                                                                            lembaga,
-                                                                            ranking,
-                                                                            tanggal,
-                                                                            jatuh_tempo,
-                                                                            denda,
-                                                                            sistem_denda,
-                                                                            jumlah_pinjaman,
-                                                                            persen_jasa,
-                                                                            rp_jasa,
-                                                                            angsuran_pokok,
-                                                                            angsuran_total,
-                                                                            periode_angsuran,
-                                                                            status
-                                                                        ) VALUES (
-                                                                            '$uuid_pinjaman',
-                                                                            '$id_anggota',
-                                                                            '$id_pinjaman_jenis',
-                                                                            '$nama',
-                                                                            '$nip',
-                                                                            '$lembaga',
-                                                                            '$ranking',
-                                                                            '$tanggal',
-                                                                            '$jatuh_tempo',
-                                                                            '$denda',
-                                                                            '$sistem_denda',
-                                                                            '$jumlah_pinjaman',
-                                                                            '$persen_jasa',
-                                                                            '$rp_jasa',
-                                                                            '$angsuran_pokok',
-                                                                            '$angsuran_total',
-                                                                            '$periode_angsuran',
-                                                                            '$status'
-                                                                        )";
-                                                                        $Input=mysqli_query($Conn, $entry);
-                                                                        if($Input){
-                                                                            //Cari id_pinjaman
-                                                                            $id_pinjaman=GetDetailData($Conn,'pinjaman','uuid_pinjaman',$uuid_pinjaman,'id_pinjaman');
-                                                                            //Simpan Ke Jurnal Kredit
-                                                                            $EntryDataKredit="INSERT INTO jurnal (
-                                                                                kategori,
-                                                                                uuid,
-                                                                                id_pinjaman,
+                                                                        //Periksa Apakah Anggota Bersangkutan Sudah Punya Pinjaman Yang belum Lunas
+                                                                        $PinjamanBelumLunas= mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM pinjaman WHERE id_anggota='$id_anggota' AND status!='Lunas'"));
+                                                                        if(!empty($PinjamanBelumLunas)){
+                                                                            echo '<code class="text-danger">Anggota Tersebut Masih Memiliki Piinjaman Yang Belum Lunas!</code>'; 
+                                                                        }else{
+                                                                            //Melakukan input data
+                                                                            $entry="INSERT INTO pinjaman (
+                                                                                uuid_pinjaman,
+                                                                                id_anggota,
+                                                                                id_pinjaman_jenis,
+                                                                                nama,
+                                                                                nip,
+                                                                                lembaga,
+                                                                                ranking,
                                                                                 tanggal,
-                                                                                kode_perkiraan,
-                                                                                nama_perkiraan,
-                                                                                d_k,
-                                                                                nilai
+                                                                                jatuh_tempo,
+                                                                                denda,
+                                                                                sistem_denda,
+                                                                                jumlah_pinjaman,
+                                                                                persen_jasa,
+                                                                                rp_jasa,
+                                                                                angsuran_pokok,
+                                                                                angsuran_total,
+                                                                                periode_angsuran,
+                                                                                status
                                                                             ) VALUES (
-                                                                                'Pinjaman',
                                                                                 '$uuid_pinjaman',
-                                                                                '$id_pinjaman',
+                                                                                '$id_anggota',
+                                                                                '$id_pinjaman_jenis',
+                                                                                '$nama',
+                                                                                '$nip',
+                                                                                '$lembaga',
+                                                                                '$ranking',
                                                                                 '$tanggal',
-                                                                                '$KodeKredit',
-                                                                                '$kredit_name',
-                                                                                'K',
-                                                                                '$jumlah_pinjaman'
+                                                                                '$jatuh_tempo',
+                                                                                '$denda',
+                                                                                '$sistem_denda',
+                                                                                '$jumlah_pinjaman',
+                                                                                '$persen_jasa',
+                                                                                '$rp_jasa',
+                                                                                '$angsuran_pokok',
+                                                                                '$angsuran_total',
+                                                                                '$periode_angsuran',
+                                                                                '$status'
                                                                             )";
-                                                                            $InputDataKredit=mysqli_query($Conn, $EntryDataKredit);
-                                                                            if($InputDataKredit){
-                                                                                //Simpan Ke Jurnal Debet
-                                                                                $EntryDataDebet="INSERT INTO jurnal (
+                                                                            $Input=mysqli_query($Conn, $entry);
+                                                                            if($Input){
+                                                                                //Cari id_pinjaman
+                                                                                $id_pinjaman=GetDetailData($Conn,'pinjaman','uuid_pinjaman',$uuid_pinjaman,'id_pinjaman');
+                                                                                //Simpan Ke Jurnal Kredit
+                                                                                $EntryDataKredit="INSERT INTO jurnal (
                                                                                     kategori,
                                                                                     uuid,
                                                                                     id_pinjaman,
@@ -216,25 +199,48 @@
                                                                                     '$uuid_pinjaman',
                                                                                     '$id_pinjaman',
                                                                                     '$tanggal',
-                                                                                    '$KodeDebet',
-                                                                                    '$debet_name',
-                                                                                    'D',
+                                                                                    '$KodeKredit',
+                                                                                    '$kredit_name',
+                                                                                    'K',
                                                                                     '$jumlah_pinjaman'
                                                                                 )";
-                                                                                $InputDataDebet=mysqli_query($Conn, $EntryDataDebet);
-                                                                                if($InputDataDebet){
-                                                                                    $KategoriLog="Pinjaman";
-                                                                                    $KeteranganLog="Tambah Pinjaman Berhasil    ";
-                                                                                    include "../../_Config/InputLog.php";
-                                                                                    echo '<div class="text-success" id="NotifikasiTambahPinjamanBerhasil">Success</div>';
+                                                                                $InputDataKredit=mysqli_query($Conn, $EntryDataKredit);
+                                                                                if($InputDataKredit){
+                                                                                    //Simpan Ke Jurnal Debet
+                                                                                    $EntryDataDebet="INSERT INTO jurnal (
+                                                                                        kategori,
+                                                                                        uuid,
+                                                                                        id_pinjaman,
+                                                                                        tanggal,
+                                                                                        kode_perkiraan,
+                                                                                        nama_perkiraan,
+                                                                                        d_k,
+                                                                                        nilai
+                                                                                    ) VALUES (
+                                                                                        'Pinjaman',
+                                                                                        '$uuid_pinjaman',
+                                                                                        '$id_pinjaman',
+                                                                                        '$tanggal',
+                                                                                        '$KodeDebet',
+                                                                                        '$debet_name',
+                                                                                        'D',
+                                                                                        '$jumlah_pinjaman'
+                                                                                    )";
+                                                                                    $InputDataDebet=mysqli_query($Conn, $EntryDataDebet);
+                                                                                    if($InputDataDebet){
+                                                                                        $KategoriLog="Pinjaman";
+                                                                                        $KeteranganLog="Tambah Pinjaman Berhasil    ";
+                                                                                        include "../../_Config/InputLog.php";
+                                                                                        echo '<div class="text-success" id="NotifikasiTambahPinjamanBerhasil">Success</div>';
+                                                                                    }else{
+                                                                                        echo '<div class="text-danger">Terjadi kesalahan pada saat menyimpan data jurnal Debet!!</div>';
+                                                                                    }
                                                                                 }else{
-                                                                                    echo '<div class="text-danger">Terjadi kesalahan pada saat menyimpan data jurnal Debet!!</div>';
+                                                                                    echo '<div class="text-danger">Terjadi kesalahan pada saat menyimpan data jurnal Kredit!!</div>';
                                                                                 }
                                                                             }else{
-                                                                                echo '<div class="text-danger">Terjadi kesalahan pada saat menyimpan data jurnal Kredit!!</div>';
+                                                                                echo '<code class="text-danger">Terjadi kesalahan pada saat menyimpan data simpanan</code>';
                                                                             }
-                                                                        }else{
-                                                                            echo '<code class="text-danger">Terjadi kesalahan pada saat menyimpan data simpanan</code>';
                                                                         }
                                                                     }
                                                                 }
