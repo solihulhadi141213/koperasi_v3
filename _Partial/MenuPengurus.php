@@ -72,7 +72,7 @@
                 </li>
                 <li>
                     <a href="index.php?Page=Tabungan" class="<?php if($PageMenu=="Tabungan"){echo "active";} ?>">
-                        <i class="bi bi-circle"></i><span>Log Simpanan</span>
+                        <i class="bi bi-circle"></i><span>Log Simpanan & Penarikan</span>
                     </a>
                 </li>
                 <li>

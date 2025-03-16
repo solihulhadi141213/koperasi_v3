@@ -402,6 +402,17 @@
 
                             // Hitung ulang angsuran setelah mengubah nilai
                             hitungAngsuran();
+
+                            //Menangkap jumlah pinjaman
+                            var jumlah_pinjaman=$('#jumlah_pinjaman').val();
+                            var jumlah_pinjaman = jumlah_pinjaman.replace(/,/g, '');
+                            //Menghitung Angsuran Pokok
+                            var angsuran_pokok=jumlah_pinjaman/periode_angsuran;
+                            //Bulatkan hasilnya
+                            var angsuran_pokok_bulat = Math.round(angsuran_pokok);
+                            var angsuran_pokok_bulat = parseInt(angsuran_pokok_bulat, 10).toLocaleString('en-US');
+                            //Tempelkan hasilnya
+                            $('#angsuran_pokok').val(angsuran_pokok_bulat);
                         }else{
                             $('#persen_jasa_pinjaman_jenis').val(0);
                         }
@@ -449,6 +460,20 @@
                     var formatted_angsuran_total = parseInt(angsuran_total, 10).toLocaleString('en-US');
 
                     $('#angsuran_total').val(formatted_angsuran_total);
+                }
+                if(persen_jasa_pinjaman_jenis=="" || persen_jasa_pinjaman_jenis==0){
+                    var persen_jasa = 0;
+                    var jumlah_pinjaman = $('#jumlah_pinjaman').val();
+                    var jumlah_pinjaman = jumlah_pinjaman.replace(/,/g, '');
+                    var periode_angsuran = $('#periode_angsuran').val();
+                    var periode_angsuran = periode_angsuran.replace(/,/g, '');
+                    var angsuran_pokok = parseFloat(jumlah_pinjaman) / parseFloat(periode_angsuran);
+
+                    //Format data
+                    var angsuran_pokok_format = parseInt(angsuran_pokok, 10).toLocaleString('en-US');
+                    //Tempelkan
+                    $('#angsuran_pokok').val(angsuran_pokok_format);
+                    $('#angsuran_total').val(angsuran_pokok_format);
                 }
             });
         </script>

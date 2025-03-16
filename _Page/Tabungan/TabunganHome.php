@@ -8,13 +8,13 @@
     <div class="pagetitle">
         <h1>
             <a href="">
-                <i class="bi bi-wallet"></i> Log Simpanan</a>
+                <i class="bi bi-wallet"></i> Log Simpanan & Penarikan</a>
             </a>
         </h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
-                <li class="breadcrumb-item active"> Log Simpanan</li>
+                <li class="breadcrumb-item active"> Log Simpanan & Penarikan</li>
             </ol>
         </nav>
     </div>

@@ -93,7 +93,6 @@
                                                     }else{
                                                         //Bersihkan Variabel
                                                         $id_anggota=validateAndSanitizeInput($id_anggota);
-                                                        $nama=validateAndSanitizeInput($nama);
                                                         $tanggal=validateAndSanitizeInput($tanggal);
                                                         $jatuh_tempo=validateAndSanitizeInput($jatuh_tempo);
                                                         $jumlah_pinjaman=validateAndSanitizeInput($jumlah_pinjaman);
@@ -111,7 +110,7 @@
                                                         $lembaga=GetDetailData($Conn,'anggota','id_anggota',$id_anggota,'lembaga');
                                                         $ranking=GetDetailData($Conn,'anggota','id_anggota',$id_anggota,'ranking');
                                                         //Validasi Duplikasi Data
-                                                        $ValidasiDataDuplikat= mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM pinjaman WHERE id_anggota='$id_anggota' AND tanggal_pinjaman='$tanggal_pinjaman' AND jumlah_pinjaman='$jumlah_pinjaman'"));
+                                                        $ValidasiDataDuplikat= mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM pinjaman WHERE id_anggota='$id_anggota' AND tanggal='$tanggal' AND jumlah_pinjaman='$jumlah_pinjaman'"));
                                                         if(!empty($ValidasiDataDuplikat)){
                                                             echo '<div class="text-danger">Data Tersebut Sudah Ada!!</div>';
                                                         }else{
@@ -136,7 +135,7 @@
                                                                         echo '<code class="text-danger">Pengaturan Auto Jurnal Kredit Tidak Valid</code>';
                                                                     }else{
                                                                         //Periksa Apakah Anggota Bersangkutan Sudah Punya Pinjaman Yang belum Lunas
-                                                                        $PinjamanBelumLunas= mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM pinjaman WHERE id_anggota='$id_anggota' AND status!='Lunas'"));
+                                                                        $PinjamanBelumLunas= mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM pinjaman WHERE id_anggota='$id_anggota' AND id_pinjaman_jenis='$id_pinjaman_jenis' AND status!='Lunas'"));
                                                                         if(!empty($PinjamanBelumLunas)){
                                                                             echo '<code class="text-danger">Anggota Tersebut Masih Memiliki Piinjaman Yang Belum Lunas!</code>'; 
                                                                         }else{

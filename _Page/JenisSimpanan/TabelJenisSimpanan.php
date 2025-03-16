@@ -35,9 +35,9 @@
                 $nama_perkiraan_kredit=GetDetailData($Conn,'akun_perkiraan','id_perkiraan',$id_perkiraan_kredit,'nama');
                 //Label Rutin
                 if(empty($rutin)){
-                    $LabelRutin='<span class="text text-danger">Sukarela</span>';
+                    $LabelRutin='<div class="badge badge-danger">Sukarela</div>';
                 }else{
-                    $LabelRutin='<span class="text text-success">Rutin/Wajib</span>';
+                    $LabelRutin='<div class="badge badge-success">Rutin/Wajib</div>';
                 }
                 $NominalRp = "Rp " . number_format($nominal,0,',','.');
                 echo '

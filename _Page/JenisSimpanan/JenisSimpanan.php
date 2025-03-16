@@ -68,7 +68,7 @@
                     </div>
                     <div class="card-footer">
                         <small>
-                            Keterangan : <code>Menghapus data jenis simpanan akan menghapus data simpanan anggtoa. Gunakan fitur ini secara bijak.</code>
+                            * Keterangan : <small class="text text-muted">Menghapus data jenis simpanan akan menghapus data simpanan anggtoa. Gunakan fitur ini secara bijak.</small>
                         </small>
                     </div>
                 </div>
