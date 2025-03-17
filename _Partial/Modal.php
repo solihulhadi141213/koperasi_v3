@@ -17,6 +17,7 @@
             "Tagihan"               => "_Page/Tagihan/ModalTagihan.php",
             "RekapSimpanan"         => "_Page/RekapSimpanan/ModalRekapSimpanan.php",
             "RekapPinjaman"         => "_Page/RekapPinjaman/ModalRekapPinjaman.php",
+            "PotonganAnggota"       => "_Page/PotonganAnggota/ModalPotonganAnggota.php",
             "Barang"                => "_Page/Barang/ModalBarang.php",
             "BarangExpired"         => "_Page/BarangExpired/ModalBarangExpired.php",
             "StockOpename"          => "_Page/StockOpename/ModalStockOpename.php",

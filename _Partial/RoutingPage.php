@@ -16,6 +16,7 @@
             "RekapSimpanan"     =>  "_Page/RekapSimpanan/RekapSimpanan.php",
             "Tagihan"           =>  "_Page/Tagihan/Tagihan.php",
             "RekapPinjaman"     =>  "_Page/RekapPinjaman/RekapPinjaman.php",
+            "PotonganAnggota"   =>  "_Page/PotonganAnggota/PotonganAnggota.php",
             "JenisTransaksi"    =>  "_Page/JenisTransaksi/JenisTransaksi.php",
             "Transaksi"         =>  "_Page/Transaksi/Transaksi.php",
             "RekapTransaksi"    =>  "_Page/RekapTransaksi/RekapTransaksi.php",

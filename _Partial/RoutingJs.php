@@ -22,6 +22,7 @@
             "Pinjaman"                  => "_Page/Pinjaman/Pinjaman.js",
             "Tagihan"                   => "_Page/Tagihan/Tagihan.js",
             "RekapPinjaman"             => "_Page/RekapPinjaman/RekapPinjaman.js",
+            "PotonganAnggota"           => "_Page/PotonganAnggota/PotonganAnggota.js",
             "Barang"                    => "_Page/Barang/Barang.js",
             "BarangExpired"             => "_Page/BarangExpired/BarangExpired.js",
             "StockOpename"              => "_Page/StockOpename/StockOpename.js",
