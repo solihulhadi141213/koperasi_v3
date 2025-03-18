@@ -144,34 +144,29 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-4">
-                            <label for="periode_1">
+                            <label for="periode">
                                 <small>
-                                    Periode Awal
+                                    Periode Data 
+                                    <a href="javascript:void(0);" 
+                                        data-bs-toggle="tooltip" 
+                                        data-bs-placement="top" 
+                                        data-bs-custom-class="custom-tooltip" 
+                                        data-bs-title="Periode Akhir Buku Perhitungan Potongan Anggota"
+                                    >
+                                        <i class="bi bi-question-circle"></i>
+                                    </a>
                                 </small>
                             </label>
                         </div>
                         <div class="col-1"><small>:</small></div>
                         <div class="col-7">
-                            <input type="date" name="periode_1" id="periode_1" class="form-control" value="<?php echo $tanggal_sebulan_kebelakang; ?>">
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-4">
-                            <label for="periode_2">
-                                <small>
-                                    Periode Akhir
-                                </small>
-                            </label>
-                        </div>
-                        <div class="col-1"><small>:</small></div>
-                        <div class="col-7">
-                            <input type="date" name="periode_2" id="periode_2" class="form-control" value="<?php echo $tanggal_sekarang; ?>">
+                            <input type="date" name="periode" id="periode" class="form-control" value="<?php echo date('Y-m-d'); ?>">
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success btn-rounded">
-                        <i class="bi bi-save"></i> Filter
+                        <i class="bi bi-filter"></i> Filter
                     </button>
                     <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
                         <i class="bi bi-x-circle"></i> Tutup
@@ -198,7 +193,7 @@
                             <!-- Detail Potongan Akan Ditampilkan Disini -->
                         </div>
                     </div>
-                    <div class="row mb-3">
+                    <div class="row mb-3 border-bottom border-1">
                         <div class="col-12" id="NotifikasiCetak">
                             <!-- Notifikasi Cetak Akan Ditampilkan Disini -->
                         </div>
@@ -221,6 +216,60 @@
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success btn-rounded" id="ButtonCetak">
+                        <i class="bi bi-printer"></i> Cetak Rincian
+                    </button>
+                    <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Tutup
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalDetailPotonganMulti" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form action="javascript:void(0);" id="ProsesCetakDetailPotonganMulti">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark">
+                        <i class="bi bi-info-circle"></i> Detail Potongan Anggota
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-12 pre-scrollable" style="max-height: 600px; overflow-y: auto; background-color: #f8f9fa;">
+                            <div class="row">
+                                <div class="col-12" id="FormDetailPotonganMulti">
+                                    <!-- Detail Potongan Akan Ditampilkan Disini -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3 border-bottom border-1">
+                        <div class="col-12" id="NotifikasiCetakMulti">
+                            <!-- Notifikasi Cetak Akan Ditampilkan Disini -->
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="tipe_cetak_multi">
+                                <small>Format/Type</small>
+                            </label>
+                        </div>
+                        <div class="col-1"><small>:</small></div>
+                        <div class="col-7">
+                            <select name="tipe_cetak_multi" id="tipe_cetak_multi" class="form-control">
+                                <option value="Direct">Direct (HTML)</option>
+                                <option value="PDF">PDF</option>
+                                <option value="Image">Image</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success btn-rounded" id="ButtonCetakMulti">
                         <i class="bi bi-printer"></i> Cetak Rincian
                     </button>
                     <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">

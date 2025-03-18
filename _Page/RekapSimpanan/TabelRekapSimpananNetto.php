@@ -97,15 +97,16 @@
         echo '</tr>';
         $no++;
     }
-
-    echo '<tr>';
-    echo '  <td></td>';
-    echo '  <td><small><b>JUMLAH TOTAL</b></small></td>';
-    foreach ($totalSaldo as $total) {
-        echo '  <td align="right"><small><b>'.number_format($total, 0, ',', '.').'</b></small></td>';
+    if($JmlHalaman==$page){
+        echo '<tr>';
+        echo '  <td></td>';
+        echo '  <td><small><b>JUMLAH TOTAL</b></small></td>';
+        foreach ($totalSaldo as $total) {
+            echo '  <td align="right"><small><b>'.number_format($total, 0, ',', '.').'</b></small></td>';
+        }
+        echo '  <td align="right"><small><b>'.number_format($grandTotalSaldo, 0, ',', '.').'</b></small></td>';
+        echo '</tr>';
     }
-    echo '  <td align="right"><small><b>'.number_format($grandTotalSaldo, 0, ',', '.').'</b></small></td>';
-    echo '</tr>';
 ?>
 
 <script>

@@ -53,37 +53,47 @@
                         </form>
                     </div>
                     <div class="card-body">
-                        <div class="table table-responsive">
-                            <table class="table table-bordered table-striped table-hover">
-                                <thead>
-                                    <tr>
-                                        <th valign="middle" rowspan="2"><b>No</b></th>
-                                        <th valign="middle" rowspan="2"><b>Nama Anggota</b></th>
-                                        <th valign="middle" rowspan="2"><b>No.Induk</b></th>
-                                        <th class="text-center" colspan="<?php echo "$jumlah_jenis_pinjaman"; ?>"><b>Potongan/Jenis Pinjaman</b></th>
-                                        <th valign="middle" rowspan="2"><b>Pembelian</b></th>
-                                        <th valign="middle" rowspan="2"><b>Jumlah Potongan</b></th>
-                                    </tr>
-                                    <tr>
-                                        <?php
-                                            $query = mysqli_query($Conn, "SELECT*FROM pinjaman_jenis ORDER BY id_pinjaman_jenis ASC");
-                                            while ($data = mysqli_fetch_array($query)) {
-                                                $id_pinjaman_jenis= $data['id_pinjaman_jenis'];
-                                                $nama_pinjaman= $data['nama_pinjaman'];
-                                                echo '<td class="text-center"><b><small>'.$nama_pinjaman.'</small></b></td>';
-                                            }
-                                        ?>
-                                    </tr>
-                                </thead>
-                                <tbody id="TabelPotonganAnggota">
-                                    <tr>
-                                        <td colspan="<?php echo $colspan; ?>" class="text text-center">
-                                            <small class="text-danger">Tidak Ada Data Potongan Anggota Yang Ditampilkan</small>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        <form action="javascript:void(0);" id="ProsesDetailMulti">
+                            <input type="hidden" name="periode" id="put_periode" value="">
+                            <div class="table table-responsive mb-3">
+                                <table class="table table-bordered table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th valign="middle" rowspan="2"><b>No</b></th>
+                                            <th valign="middle" rowspan="2"><b>Nama Anggota</b></th>
+                                            <th valign="middle" rowspan="2"><b>No.Induk</b></th>
+                                            <th class="text-center" colspan="<?php echo "$jumlah_jenis_pinjaman"; ?>"><b>Potongan/Jenis Pinjaman</b></th>
+                                            <th valign="middle" rowspan="2"><b>Pembelian</b></th>
+                                            <th valign="middle" rowspan="2"><b>Jumlah Potongan</b></th>
+                                        </tr>
+                                        <tr>
+                                            <?php
+                                                $query = mysqli_query($Conn, "SELECT*FROM pinjaman_jenis ORDER BY id_pinjaman_jenis ASC");
+                                                while ($data = mysqli_fetch_array($query)) {
+                                                    $id_pinjaman_jenis= $data['id_pinjaman_jenis'];
+                                                    $nama_pinjaman= $data['nama_pinjaman'];
+                                                    echo '<td class="text-center"><b><small>'.$nama_pinjaman.'</small></b></td>';
+                                                }
+                                            ?>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="TabelPotonganAnggota">
+                                        <tr>
+                                            <td colspan="<?php echo $colspan; ?>" class="text text-center">
+                                                <small class="text-danger">Tidak Ada Data Potongan Anggota Yang Ditampilkan</small>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-sm btn-outline-info" id="ButtonCetakMulti">
+                                        <i class="bi bi-printer"></i> Preview
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                     <div class="card-footer">
                         <div class="row">
