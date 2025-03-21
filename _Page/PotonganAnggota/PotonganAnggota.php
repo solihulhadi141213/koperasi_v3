@@ -40,12 +40,15 @@
                     <div class="card-header">
                         <form action="javascript:void(0);" id="ProsesBatas">
                             <div class="row">
-                                <div class="col-10 mb-3">
+                                <div class="col-9 mb-3">
                                     <b class="card-title"># Daftar Potongan Anggota</b><br>
                                     <small>Periode : <span id="put_periode_data" class="text text-muted"></span></small>
                                 </div>
-                                <div class="col-2 mb-3 text-end">
-                                    <button type="button" class="btn btn-md btn-outline-secondary btn-floating" data-bs-toggle="modal" data-bs-target="#ModalFilter">
+                                <div class="col-3 mb-3 text-end">
+                                    <button type="button" class="btn btn-md btn-outline-secondary btn-floating" data-bs-toggle="modal" data-bs-target="#ModalDownload">
+                                        <i class="bi bi-download"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-md btn-secondary btn-floating" data-bs-toggle="modal" data-bs-target="#ModalFilter">
                                         <i class="bi bi-filter"></i>
                                     </button>
                                 </div>
@@ -59,7 +62,9 @@
                                 <table class="table table-bordered table-striped table-hover">
                                     <thead>
                                         <tr>
-                                            <th valign="middle" rowspan="2"><b>No</b></th>
+                                            <th valign="middle" rowspan="2">
+                                                <input class="form-check-input" type="checkbox" id="check_all" name="check_all" value="pilih">
+                                            </th>
                                             <th valign="middle" rowspan="2"><b>Nama Anggota</b></th>
                                             <th valign="middle" rowspan="2"><b>No.Induk</b></th>
                                             <th class="text-center" colspan="<?php echo "$jumlah_jenis_pinjaman"; ?>"><b>Potongan/Jenis Pinjaman</b></th>

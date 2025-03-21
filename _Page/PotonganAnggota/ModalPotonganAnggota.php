@@ -118,6 +118,7 @@
                                 <option value="nip">Nomor Induk</option>
                                 <option value="nama">Nama Anggota</option>
                                 <option value="status">Status Anggota</option>
+                                <option value="jp">Jumlah Potongan</option>
                             </select>
                         </div>
                     </div>
@@ -271,6 +272,55 @@
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success btn-rounded" id="ButtonCetakMulti">
                         <i class="bi bi-printer"></i> Cetak Rincian
+                    </button>
+                    <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Tutup
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalDownload" tabindex="-1">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <form action="_Page/PotonganAnggota/ProsesDownloadPotonganAnggota.php" method="POST" target="_blank" id="ProsesDownload">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark">
+                        <i class="bi bi-download"></i> Download Potongan Anggota
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-12" id="FormDownload">
+                            <!-- Form Download Akan Ditampilkan Disini -->
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-12" id="NotifikasiDownload">
+                            <!-- Notifikasi Download Akan Ditampilkan Disini -->
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4">
+                            <label for="tipe_download">
+                                <small>Mode Data</small>
+                            </label>
+                        </div>
+                        <div class="col-1"><small>:</small></div>
+                        <div class="col-7">
+                            <select name="tipe_download" id="tipe_download" class="form-control">
+                                <option value="Draft">Draft</option>
+                                <option value="Table">Table</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success btn-rounded" id="ButtonDownload">
+                        <i class="bi bi-download"></i> Download
                     </button>
                     <button type="button" class="btn btn-dark btn-rounded" data-bs-dismiss="modal">
                         <i class="bi bi-x-circle"></i> Tutup

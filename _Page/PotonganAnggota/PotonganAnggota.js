@@ -250,4 +250,25 @@ $(document).ready(function() {
     function resetButton2() {
         $('#ButtonCetakMulti').prop('disabled', false).html('<i class="bi bi-printer"></i> Cetak');
     }
+
+    //Modal Detail Potongan
+    $('#ModalDownload').on('show.bs.modal', function (e) {
+        var periode= $('#periode').val();
+
+        //Loading
+        $('#FormDownload').html('Loading...');
+
+        //Tampikan Dalam Ajax
+        $.ajax({
+            type 	    : 'POST',
+            url 	    : '_Page/PotonganAnggota/FormDownload.php',
+            data 	    :  {
+                periode     : periode
+            },
+            success     : function(data){
+                $('#FormDownload').html(data);
+                $('#NotifikasiDownload').html("");
+            }
+        });
+    });
 });

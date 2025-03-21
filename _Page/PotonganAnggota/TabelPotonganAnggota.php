@@ -4,8 +4,8 @@
     include "../../_Config/GlobalFunction.php";
     include "../../_Config/Session.php";
     //Hitung Jumlah Jenis Simpanan
-    $jumlah_jenis_simpanan=mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM simpanan_jenis"));
-    $colspan=$jumlah_jenis_simpanan+5;
+    $jumlah_pinjaman_jenis=mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM pinjaman_jenis"));
+    $colspan=$jumlah_pinjaman_jenis+5;
 
     //inisiasi Variabe;
     $JmlHalaman=0;
@@ -77,7 +77,12 @@
                 if(empty($keyword)){
                     $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_anggota FROM anggota"));
                 }else{
-                    $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_anggota FROM anggota WHERE $keyword_by like '%$keyword%'"));
+                    if($keyword_by=="jp"){
+                        $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_anggota FROM anggota"));
+                    }else{
+                        $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_anggota FROM anggota WHERE $keyword_by like '%$keyword%'"));
+                    }
+                    
                 }
             }
             if(empty($jml_data)){
@@ -101,7 +106,12 @@
                     if(empty($keyword)){
                         $query = mysqli_query($Conn, "SELECT*FROM anggota ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
                     }else{
-                        $query = mysqli_query($Conn, "SELECT*FROM anggota WHERE $keyword_by like '%$keyword%' ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
+                        if($keyword_by=="jp"){
+                            $query = mysqli_query($Conn, "SELECT*FROM anggota ORDER BY $OrderBy $ShortBy");
+                        }else{
+                            $query = mysqli_query($Conn, "SELECT*FROM anggota WHERE $keyword_by like '%$keyword%' ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
+                        }
+                        
                     }
                 }
                 while ($data = mysqli_fetch_array($query)) {
@@ -115,30 +125,8 @@
                         $label_status_anggota='<span class="badge badge-danger text-primary">'.$nama.'</span>';
                     }
                     //Menghitung Jumlah Angsuran
-
-                    echo '<tr>';
-                    echo '  
-                        <td>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="id_anggota" name="id_anggota[]" value="'.$id_anggota.'">
-                            </div>
-                        </td>
-                    ';
-                    echo '  
-                        <td>
-                            <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#ModalDetailPotongan" data-id="'.$id_anggota.'" data-periode="'.$periode.'">
-                                '.$label_status_anggota.'
-                            </a>
-                        </td>
-                    ';
-                    echo '  
-                        <td>
-                            <small>
-                                <small class="text text-muted">'.$nip.'</small>
-                            </small>
-                        </td>
-                    ';
                     $jumlah_total_potongan_angsuran=0;
+                    $arry_angsuran_total=[];
                     $QryPinjaman = mysqli_query($Conn, "SELECT id_pinjaman_jenis FROM pinjaman_jenis ORDER BY id_pinjaman_jenis ASC");
                     while ($DataPinjaman = mysqli_fetch_array($QryPinjaman)) {
                         $id_pinjaman_jenis= $DataPinjaman['id_pinjaman_jenis'];
@@ -147,8 +135,7 @@
                         $QrySesiPinjaman = $Conn->prepare("SELECT * FROM pinjaman WHERE id_pinjaman_jenis = ? AND id_anggota = ? AND status!='Lunas' AND tanggal<= ?");
                         $QrySesiPinjaman->bind_param("iis", $id_pinjaman_jenis, $id_anggota, $periode);
                         if (!$QrySesiPinjaman->execute()) {
-                            $error=$Conn->error;
-                            echo '<td><small class="text-danger">'.$error.'</small></td>';
+                            $angsuran_total_rp=$Conn->error;
                             $jumlah_total_potongan_angsuran=$jumlah_total_potongan_angsuran+0;
                         }else{
                             $ResultSesiPinjaman = $QrySesiPinjaman->get_result();
@@ -163,8 +150,10 @@
                             }
                             $jumlah_total_potongan_angsuran=$jumlah_total_potongan_angsuran+$angsuran_total;
                             $angsuran_total_rp = "Rp " . number_format($angsuran_total,0,',','.');
-                            echo '<td class="text-end"><small class="text-muted">'.$angsuran_total_rp.'</small></td>';
                         }
+                        $arry_angsuran_total[]=[
+                            "angsuran_total_rp"=>$angsuran_total_rp
+                        ];
                     }
                     //Menghitung Jumlah Pembelian Anggota Yang Belum Lunas
                     $SumPenjualan = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(total) AS total FROM transaksi_jual_beli WHERE id_anggota='$id_anggota' AND kategori='Penjualan' AND status='Kredit' AND tanggal<='$periode'"));
@@ -178,9 +167,68 @@
                     //Akumulasikan
                     $jumlah_total_potongan_anggota=$jumlah_penjualan_anggota+$jumlah_total_potongan_angsuran;
                     $jumlah_total_potongan_anggota_rp = "Rp " . number_format($jumlah_total_potongan_anggota,0,',','.');
-                    echo '  <td class="text-end"><small class="text-muted">'.$jumlah_penjualan_anggota_rp.'</small></td>';
-                    echo '  <td class="text-end"><small>'.$jumlah_total_potongan_anggota_rp.'</small></td>';
-                    echo '</tr>';
+
+                    if($keyword_by=="jp"){
+                        if($keyword==$jumlah_penjualan_anggota){
+                            echo '<tr>';
+                            echo '  
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input pilih_anggota" type="checkbox" id="id_anggota" name="id_anggota[]" value="'.$id_anggota.'">
+                                    </div>
+                                </td>
+                            ';
+                            echo '  
+                                <td>
+                                    <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#ModalDetailPotongan" data-id="'.$id_anggota.'" data-periode="'.$periode.'">
+                                        '.$label_status_anggota.'
+                                    </a>
+                                </td>
+                            ';
+                            echo '  
+                                <td>
+                                    <small>
+                                        <small class="text text-muted">'.$nip.'</small>
+                                    </small>
+                                </td>
+                            ';
+                            foreach ($arry_angsuran_total as $angsuran_list) {
+                                echo '<td class="text-end"><small class="text-muted">'.$angsuran_list['angsuran_total_rp'].'</small></td>';
+                            }
+                            echo '  <td class="text-end"><small class="text-muted">'.$jumlah_penjualan_anggota_rp.'</small></td>';
+                            echo '  <td class="text-end"><small>'.$jumlah_total_potongan_anggota_rp.'</small></td>';
+                            echo '</tr>';
+                        }
+                    }else{
+                        echo '<tr>';
+                        echo '  
+                            <td>
+                                <div class="form-check">
+                                    <input class="form-check-input pilih_anggota" type="checkbox" id="id_anggota" name="id_anggota[]" value="'.$id_anggota.'">
+                                </div>
+                            </td>
+                        ';
+                        echo '  
+                            <td>
+                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#ModalDetailPotongan" data-id="'.$id_anggota.'" data-periode="'.$periode.'">
+                                    '.$label_status_anggota.'
+                                </a>
+                            </td>
+                        ';
+                        echo '  
+                            <td>
+                                <small>
+                                    <small class="text text-muted">'.$nip.'</small>
+                                </small>
+                            </td>
+                        ';
+                        foreach ($arry_angsuran_total as $angsuran_list) {
+                            echo '<td class="text-end"><small class="text-muted">'.$angsuran_list['angsuran_total_rp'].'</small></td>';
+                        }
+                        echo '  <td class="text-end"><small class="text-muted">'.$jumlah_penjualan_anggota_rp.'</small></td>';
+                        echo '  <td class="text-end"><small>'.$jumlah_total_potongan_anggota_rp.'</small></td>';
+                        echo '</tr>';
+                    }
                     $no++;
                 }
                 $JmlHalaman = ceil($jml_data/$batas); 
@@ -209,7 +257,24 @@
         $('#next_button').prop('disabled', false);
     }
 
-    $('.form-check-input').on('change', function() {
+    $('.pilih_anggota').on('change', function() {
+        var count = $('.form-check-input:checked').length;
+        if (count > 0) {
+            $('#ButtonCetakMulti').html('<i class="bi bi-printer"></i> Preview (' + count + ')');
+        } else {
+            $('#ButtonCetakMulti').html('<i class="bi bi-printer"></i> Preview');
+        }
+
+        if ($(".pilih_anggota:checked").length === $(".pilih_anggota").length) {
+            $("#check_all").prop("checked", true);
+        } else {
+            $("#check_all").prop("checked", false);
+        }
+    });
+
+    $("#check_all").on("change", function () {
+        $(".pilih_anggota").prop("checked", $(this).prop("checked"));
+
         var count = $('.form-check-input:checked').length;
         if (count > 0) {
             $('#ButtonCetakMulti').html('<i class="bi bi-printer"></i> Preview (' + count + ')');
@@ -217,4 +282,5 @@
             $('#ButtonCetakMulti').html('<i class="bi bi-printer"></i> Preview');
         }
     });
+
 </script>

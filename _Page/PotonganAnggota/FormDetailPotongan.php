@@ -209,16 +209,18 @@
                                         <td align="right"><small>'.$jumlah_penjualan_anggota_rp.'</small></td>
                                     </tr>
                     ';
-
+                    $total_potongan=$total_potongan+$jumlah_penjualan_anggota;
                     $total_potongan_rp = "Rp " . number_format($total_potongan,0,',','.');
+
+                    $total_sisa_angsuran=$total_sisa_angsuran+$jumlah_penjualan_anggota;
                     $total_sisa_angsuran_rp = "Rp " . number_format($total_sisa_angsuran,0,',','.');
                     echo '
                                     <tr>
                                         <td><small></small></td>
                                         <td><small><b>TOTAL</b></small></td>
-                                        <td><small><b>'.$total_potongan_rp.'</b></small></td>
-                                        <td><small>-</small></td>
-                                        <td><small><b>'.$total_sisa_angsuran_rp.'</b></small></td>
+                                        <td align="right"><small><b>'.$total_potongan_rp.'</b></small></td>
+                                        <td align="right"><small>-</small></td>
+                                        <td align="right"><small><b>'.$total_sisa_angsuran_rp.'</b></small></td>
                                     </tr>
                     ';
                     echo '              </tbody>';
