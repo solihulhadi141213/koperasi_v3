@@ -69,7 +69,7 @@
             <label for="nominal_edit">Nominal</label>
         </div>
         <div class="col-md-8">
-            <input type="text" name="nominal" id="nominal_edit" class="form-control" value="<?php echo $nominal; ?>">
+            <input type="text" name="nominal" id="nominal_edit" class="form-control form-money" value="<?php echo $nominal; ?>">
         </div>
     </div>
     <div class="row mb-3">

@@ -55,6 +55,18 @@
             $Qry->close();
             $deskripsi=htmlspecialchars_decode($Data['deskripsi']);
             $deskripsi = str_replace(["\r\n", "\r", "\n"], ' ', $deskripsi);
+            $kategori=$Data['kategori'];
+            //Menampilkan List Artikel Lain Yang Berhubungan
+            $artikel_lainnya=[];
+            $query_artikel_lain = mysqli_query($Conn, "SELECT id_help, judul FROM help WHERE kategori='$kategori' ORDER BY judul ASC");
+            while ($data_artikel_lain = mysqli_fetch_array($query_artikel_lain)) {
+                $id_help= $data_artikel_lain['id_help'];
+                $judul= $data_artikel_lain['judul'];
+                $artikel_lainnya[] = [
+                    "id_help" => $data_artikel_lain['id_help'],
+                    "judul" => $data_artikel_lain['judul'],
+                ];
+            }
             //Buat Variabel
             $dataset = [
                 "id_help" => $Data['id_help'],
@@ -63,7 +75,8 @@
                 "kategori" => $Data['kategori'],
                 "deskripsi_script" =>$Data['deskripsi'],
                 "deskripsi" =>$deskripsi,
-                "datetime_creat" => $Data['datetime_creat']
+                "datetime_creat" => $Data['datetime_creat'],
+                "artikel_lainnya" => $artikel_lainnya,
             ];
 
             //Buat Arry Response

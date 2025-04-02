@@ -45,7 +45,7 @@
                             <label for="nominal">Nominal</label>
                         </div>
                         <div class="col-md-8">
-                            <input type="text" name="nominal" id="nominal" class="form-control">
+                            <input type="text" name="nominal" id="nominal" class="form-control form-money">
                         </div>
                     </div>
                     <div class="row mb-3">

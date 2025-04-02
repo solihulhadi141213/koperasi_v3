@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 02, 2025 at 08:44 AM
+-- Generation Time: Apr 02, 2025 at 09:07 PM
 -- Server version: 9.1.0
 -- PHP Version: 7.4.33
 
@@ -32,9 +32,9 @@ CREATE TABLE IF NOT EXISTS `akses` (
   `id_akses` int NOT NULL AUTO_INCREMENT,
   `nama_akses` text NOT NULL,
   `kontak_akses` varchar(20) DEFAULT NULL,
-  `email_akses` text NOT NULL,
+  `email_akses` varchar(225) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `password` text NOT NULL,
-  `image_akses` text,
+  `image_akses` char(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   `akses` varchar(20) NOT NULL,
   `datetime_daftar` datetime NOT NULL,
   `datetime_update` datetime NOT NULL,
@@ -51,7 +51,8 @@ DROP TABLE IF EXISTS `akses_entitas`;
 CREATE TABLE IF NOT EXISTS `akses_entitas` (
   `uuid_akses_entitas` varchar(32) NOT NULL,
   `akses` varchar(20) NOT NULL,
-  `keterangan` text NOT NULL
+  `keterangan` text NOT NULL,
+  PRIMARY KEY (`uuid_akses_entitas`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -64,8 +65,8 @@ DROP TABLE IF EXISTS `akses_fitur`;
 CREATE TABLE IF NOT EXISTS `akses_fitur` (
   `id_akses_fitur` int NOT NULL AUTO_INCREMENT,
   `kode` varchar(32) NOT NULL,
-  `nama` text NOT NULL,
-  `kategori` text NOT NULL,
+  `nama` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `kategori` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `keterangan` text NOT NULL,
   PRIMARY KEY (`id_akses_fitur`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -81,8 +82,10 @@ CREATE TABLE IF NOT EXISTS `akses_ijin` (
   `id_akses` int NOT NULL,
   `id_akses_fitur` int NOT NULL,
   `kode` varchar(32) NOT NULL,
-  `nama` text NOT NULL,
-  `kategori` text NOT NULL
+  `nama` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `kategori` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  KEY `id_akses` (`id_akses`),
+  KEY `id_akses_fitur` (`id_akses_fitur`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -97,7 +100,8 @@ CREATE TABLE IF NOT EXISTS `akses_login` (
   `kategori` varchar(10) NOT NULL COMMENT 'Anggota/Pengurus',
   `token` varchar(32) NOT NULL,
   `date_creat` datetime NOT NULL,
-  `date_expired` datetime NOT NULL
+  `date_expired` datetime NOT NULL,
+  KEY `id_akses` (`id_akses`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -111,7 +115,9 @@ CREATE TABLE IF NOT EXISTS `akses_referensi` (
   `id_akses_referensi` int NOT NULL AUTO_INCREMENT,
   `uuid_akses_entitas` varchar(32) NOT NULL,
   `id_akses_fitur` int NOT NULL,
-  PRIMARY KEY (`id_akses_referensi`)
+  PRIMARY KEY (`id_akses_referensi`),
+  KEY `uuid_akses_entitas` (`uuid_akses_entitas`),
+  KEY `id_akses_fitur` (`id_akses_fitur`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -356,9 +362,12 @@ CREATE TABLE IF NOT EXISTS `jurnal` (
   `id_jurnal` int NOT NULL AUTO_INCREMENT,
   `kategori` varchar(30) DEFAULT NULL COMMENT 'Simpanan, Penarikan, Transaksi, Pinjaman, Angsuran, ',
   `uuid` char(36) NOT NULL,
+  `id_transaksi` int DEFAULT NULL,
   `id_pinjaman` int DEFAULT NULL,
   `id_pinjaman_angsuran` int DEFAULT NULL,
+  `id_simpanan` int DEFAULT NULL,
   `id_transaksi_jual_beli` char(36) DEFAULT NULL,
+  `id_shu_session` int DEFAULT NULL,
   `tanggal` date NOT NULL COMMENT 'tanggal transaksi',
   `kode_perkiraan` varchar(20) NOT NULL,
   `nama_perkiraan` text NOT NULL,
@@ -367,7 +376,10 @@ CREATE TABLE IF NOT EXISTS `jurnal` (
   PRIMARY KEY (`id_jurnal`),
   KEY `id_pinjaman` (`id_pinjaman`),
   KEY `id_pinjaman_angsuran` (`id_pinjaman_angsuran`),
-  KEY `id_transaksi_jual_beli` (`id_transaksi_jual_beli`)
+  KEY `id_transaksi_jual_beli` (`id_transaksi_jual_beli`),
+  KEY `id_shu_session` (`id_shu_session`),
+  KEY `id_transaksi` (`id_transaksi`),
+  KEY `id_simpanan` (`id_simpanan`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -383,7 +395,8 @@ CREATE TABLE IF NOT EXISTS `log` (
   `datetime_log` varchar(25) NOT NULL,
   `kategori_log` varchar(20) NOT NULL,
   `deskripsi_log` text NOT NULL,
-  PRIMARY KEY (`id_log`)
+  PRIMARY KEY (`id_log`),
+  KEY `id_akses` (`id_akses`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -537,10 +550,26 @@ CREATE TABLE IF NOT EXISTS `setting_autojurnal` (
 DROP TABLE IF EXISTS `setting_autojurnal_jual_beli`;
 CREATE TABLE IF NOT EXISTS `setting_autojurnal_jual_beli` (
   `id_autojurnal_jual_beli` int NOT NULL AUTO_INCREMENT,
+  `kategori` varchar(15) NOT NULL,
   `debet` int DEFAULT NULL,
   `kredit` int DEFAULT NULL,
   `utang_piutang` int DEFAULT NULL,
   PRIMARY KEY (`id_autojurnal_jual_beli`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `setting_autojurnal_shu`
+--
+
+DROP TABLE IF EXISTS `setting_autojurnal_shu`;
+CREATE TABLE IF NOT EXISTS `setting_autojurnal_shu` (
+  `id_setting_autojurnal_shu` int NOT NULL AUTO_INCREMENT,
+  `id_perkiraan_debet` int NOT NULL,
+  `id_perkiraan_kredit` int NOT NULL,
+  `komponen` varchar(15) NOT NULL,
+  PRIMARY KEY (`id_setting_autojurnal_shu`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -598,6 +627,7 @@ CREATE TABLE IF NOT EXISTS `shu_rincian` (
   `id_shu_session` int DEFAULT NULL,
   `id_anggota` int DEFAULT NULL,
   `nama_anggota` text,
+  `nip` varchar(32) DEFAULT NULL,
   `simpanan` int DEFAULT NULL,
   `pinjaman` int DEFAULT NULL,
   `penjualan` int DEFAULT NULL,
@@ -621,20 +651,15 @@ DROP TABLE IF EXISTS `shu_session`;
 CREATE TABLE IF NOT EXISTS `shu_session` (
   `id_shu_session` int NOT NULL AUTO_INCREMENT,
   `uuid_shu_session` char(36) NOT NULL,
-  `sesi_shu` varchar(30) NOT NULL,
   `periode_hitung1` varchar(30) NOT NULL,
   `periode_hitung2` varchar(30) NOT NULL,
-  `modal_anggota` int DEFAULT NULL,
-  `penjualan` int DEFAULT NULL,
-  `pinjaman` int DEFAULT NULL,
-  `jasa_modal_anggota` int DEFAULT NULL,
-  `laba_penjualan` int DEFAULT NULL,
-  `jasa_pinjaman` int DEFAULT NULL,
-  `persen_usaha` int DEFAULT NULL,
-  `persen_modal` int DEFAULT NULL,
-  `persen_pinjaman` int DEFAULT NULL,
-  `alokasi_hitung` int DEFAULT NULL,
-  `alokasi_nyata` int DEFAULT NULL,
+  `total_penjualan` int DEFAULT NULL,
+  `total_simpanan` int DEFAULT NULL,
+  `total_pinjaman` int DEFAULT NULL,
+  `persen_penjualan` decimal(10,2) DEFAULT NULL,
+  `persen_simpanan` decimal(10,2) DEFAULT NULL,
+  `persen_pinjaman` decimal(10,2) DEFAULT NULL,
+  `shu` int DEFAULT NULL,
   `status` varchar(20) NOT NULL COMMENT 'Pending, Realisasi',
   PRIMARY KEY (`id_shu_session`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -921,6 +946,26 @@ CREATE TABLE IF NOT EXISTS `transaksi_setting` (
 --
 
 --
+-- Constraints for table `akses_ijin`
+--
+ALTER TABLE `akses_ijin`
+  ADD CONSTRAINT `ijin_to_akses` FOREIGN KEY (`id_akses`) REFERENCES `akses` (`id_akses`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ijin_to_fitur` FOREIGN KEY (`id_akses_fitur`) REFERENCES `akses_fitur` (`id_akses_fitur`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `akses_login`
+--
+ALTER TABLE `akses_login`
+  ADD CONSTRAINT `login_to_akses` FOREIGN KEY (`id_akses`) REFERENCES `akses` (`id_akses`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `akses_referensi`
+--
+ALTER TABLE `akses_referensi`
+  ADD CONSTRAINT `referensi_to_entitas` FOREIGN KEY (`uuid_akses_entitas`) REFERENCES `akses_entitas` (`uuid_akses_entitas`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `referensi_to_fitur` FOREIGN KEY (`id_akses_fitur`) REFERENCES `akses_fitur` (`id_akses_fitur`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `barang_bacth`
 --
 ALTER TABLE `barang_bacth`
@@ -950,7 +995,16 @@ ALTER TABLE `barang_satuan`
 --
 ALTER TABLE `jurnal`
   ADD CONSTRAINT `jurnal_to_angsuran` FOREIGN KEY (`id_pinjaman_angsuran`) REFERENCES `pinjaman_angsuran` (`id_pinjaman_angsuran`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `jurnal_to_pinjaman` FOREIGN KEY (`id_pinjaman`) REFERENCES `pinjaman` (`id_pinjaman`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `jurnal_to_pinjaman` FOREIGN KEY (`id_pinjaman`) REFERENCES `pinjaman` (`id_pinjaman`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `jurnal_to_shu` FOREIGN KEY (`id_shu_session`) REFERENCES `jurnal` (`id_jurnal`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `jurnal_to_simpanan` FOREIGN KEY (`id_simpanan`) REFERENCES `simpanan` (`id_simpanan`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `jurnal_to_transaksi` FOREIGN KEY (`id_transaksi`) REFERENCES `transaksi` (`id_transaksi`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `log`
+--
+ALTER TABLE `log`
+  ADD CONSTRAINT `log_to_akses` FOREIGN KEY (`id_akses`) REFERENCES `akses` (`id_akses`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `pinjaman`

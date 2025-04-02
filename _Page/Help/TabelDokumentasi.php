@@ -14,7 +14,7 @@
     if(empty($SessionIdAkses)){
         echo '
             <tr>
-                <td colspan="4" class="text-center text-danger">
+                <td colspan="6" class="text-center text-danger">
                     Sesi Akses Sudah Berakhir! Silahkan Login Ulang
                 </td>
             </tr>
@@ -74,7 +74,7 @@
         if(empty($jml_data)){
             echo '
                 <tr>
-                    <td colspan="4" class="text-center text-danger">
+                    <td colspan="6" class="text-center text-danger">
                         Tidak Ada Data Dokumentasi Yang Ditemukan.
                     </td>
                 </tr>
@@ -135,6 +135,8 @@
                 }else{
                     $label_tombol_hapus='';
                 }
+                $datetime_update= $data['datetime_update'];
+                $datetime_update_format=date('d/m/Y',strtotime($datetime_update));
                 echo '
                     <tr>
                         <td><small>'.$no.'</small></td>
@@ -144,6 +146,8 @@
                             </small>
                         </td>
                         <td><small class="text-muted">'.$kategori.'</small></td>
+                        <td><small class="text-muted">'.$datetime_update_format.'</small></td>
+                        <td><small class="text-muted"><span class="badge badge-primary"><i class="bi bi-person-circle"></i> '.$author.'</span></small></td>
                         <td>
                             <button type="button" class="btn btn-sm btn-floating btn-outline-secondary" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-three-dots"></i>

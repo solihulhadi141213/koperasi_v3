@@ -71,12 +71,14 @@
                                                 <th><b>No</b></th>
                                                 <th><b>Judul Dokumentasi</b></th>
                                                 <th><b>Kategori</b></th>
+                                                <th><b>Update</b></th>
+                                                <th><b>Author</b></th>
                                                 <th><b>Opsi</b></th>
                                             </tr>
                                         </thead>
                                         <tbody id="TabelDokumentasi">
                                             <tr>
-                                                <td colspan="4" class="text-center">
+                                                <td colspan="6" class="text-center">
                                                     <small class="text-danger">Belum Ada Data Bantuan Yang Ditampilkan</small>
                                                 </td>
                                             </tr>
@@ -107,10 +109,21 @@
                 </div>
                 <div class="card">
                     <div class="card-header">
-                        <b class="card-title"># Tentang Aplikasi</b>
+                        <b class="card-title"># Dokumentasi (Readme.md)</b>
                     </div>
-                    <div class="card-body" id="show_readme">
-                        <!-- Konten Readme Disini -->
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-12 text-center">
+                                <button type="button" id="show_hide_documentation" class="btn btn-lg btn-rounded btn-outline-info">
+                                    <i class="bi bi-eye"></i> Tampilkan Konten
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-12" id="show_hide_readme">
+                                <!-- Konten Readme Disini -->
+                            </div>
+                        </div>
                     </div>
                     <div class="card-footer">
                         <small class="text-muted">
@@ -122,7 +135,7 @@
         </div>
         <div class="row" id="ShowDetail">
             <div class="col-lg-12">
-                <div class="card">
+                <div class="card mb-3">
                     <div class="card-header">
                         <div class="row mb-3">
                             <div class="col-9 mb-3 mt-3">
@@ -161,11 +174,26 @@
                         </div>
                     </div>
                 </div>
+                <div class="card">
+                    <div class="card-header">
+                        <b class="card-title">
+                            <i class="bi bi-tags"></i>Artikel Lainnya
+                        </b>
+                    </div>
+                    <div class="card-body" id="list_artikel_lainnya">
+                        <!-- Menampilkan List Artikel Lainnya Yang Berkaitan -->
+                         <ol>
+                            <li>
+                                <a href="javascript:void(0);" class="detail_dokumentasi" data-id="[id_help disini]">Judul Artikel 1</a>
+                            </li>
+                         </ol>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row" id="ShowTambahDokumentasi">
             <div class="col-lg-12">
-                <form action="javascript:void(0);" id="ProsesTambahDokumentasi">
+                <form action="javascript:void(0);" id="ProsesTambahDokumentasi" autocomplete="off">
                     <div class="card">
                         <div class="card-header">
                             <div class="row mb-3">

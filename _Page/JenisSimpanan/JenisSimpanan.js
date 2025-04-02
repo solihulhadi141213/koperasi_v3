@@ -7,7 +7,52 @@ function filterAndLoadTable() {
         }
     });
 }
+//Fungsi Untuk Format Rupiah
+function formatRupiah(angka) {
+    return 'Rp ' + parseFloat(angka).toLocaleString('id-ID', { minimumFractionDigits: 0 });
+}
+
+// Fungsi untuk memproses input pada elemen dengan class form-money
+function processInput(event) {
+    let input = event.target;
+    let originalValue = input.value;
+
+    // Hilangkan titik dari nilai asli untuk penghitungan
+    let rawValue = originalValue.replace(/\./g, "");
+
+    // Format nilai input
+    let formattedValue = formatMoney(rawValue);
+
+    // Update nilai input dengan nilai yang telah diformat
+    input.value = formattedValue;
+}
+
+// Fungsi untuk memformat angka menjadi format ribuan
+function formatMoney(value) {
+    if (!value) return ""; // Jika kosong, kembalikan string kosong
+    // Hilangkan karakter selain angka
+    value = value.toString().replace(/[^0-9]/g, "");
+    // Tambahkan pemisah ribuan (titik)
+    return value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
+// Fungsi untuk menginisialisasi elemen form-money
+function initializeMoneyInputs() {
+    const moneyInputs = document.querySelectorAll(".form-money");
+    moneyInputs.forEach(function (input) {
+        // Format nilai awal jika sudah ada
+        input.value = formatMoney(input.value);
+
+        // Pastikan input diformat dengan benar
+        input.removeEventListener("input", processInput); // Menghapus event listener sebelumnya
+        input.addEventListener("input", processInput);
+    });
+}
+
+
+
 $(document).ready(function() {
+    initializeMoneyInputs();
     filterAndLoadTable();
     $('#form_nominal').hide();
 });
@@ -20,12 +65,12 @@ $('#rutin').change(function(){
         $('#form_nominal').hide();
     }
 });
-$('#nominal').on('keypress', function(e) {
-    // Hanya mengizinkan angka (0-9)
-    if (e.which < 48 || e.which > 57) {
-        e.preventDefault();
-    }
-});
+// $('#nominal').on('keypress', function(e) {
+//     // Hanya mengizinkan angka (0-9)
+//     if (e.which < 48 || e.which > 57) {
+//         e.preventDefault();
+//     }
+// });
 //Proses Tambah Jenis Simpanan
 $('#ProsesTambahJenisSimpanan').submit(function(){
     $('#NotifikasiTambahJenisSimpanan').html('<div class="spinner-border text-secondary" role="status"><span class="sr-only"></span></div>');
@@ -81,6 +126,7 @@ $('#ModalEditJenisSimpanan').on('show.bs.modal', function (e) {
         success     : function(data){
             $('#FormEditJenisSimpanan').html(data);
             $('#NotifikasiEditJenisSimpanan').html('');
+            initializeMoneyInputs();
         }
     });
 });

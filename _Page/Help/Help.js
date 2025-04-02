@@ -24,6 +24,7 @@ function ShowTambahDokumentasi() {
 }
 
 //Fungsi Untuk Menampilkan Halaman Detail Dokumentasi
+//Fungsi Untuk Menampilkan Halaman Detail Dokumentasi
 function ShowDetailDokumentasi(id_help) {
     //Ambil Detail Dokumentasi dengan Ajax
     $.ajax({
@@ -38,14 +39,24 @@ function ShowDetailDokumentasi(id_help) {
                 $('#ShowTambahDokumentasi').hide();
                 $('#ShowEditDokumentasi').hide();
                
-                //Tempelkan Data Pada Element
+                // Tempelkan Data Pada Element
                 $('#put_judul_dokumentasi').html(response.dataset.judul);
                 $('#put_kategori_dokumentasi').html(response.dataset.kategori);
                 $('#put_dokumentasi').html(response.dataset.deskripsi);
                 $('#tanggal_dokumentasi').html(response.dataset.datetime_creat);
                 $('#author_dokumentasi').html(response.dataset.author);
 
-                //Tempelkan id_hel ke tombol edit
+                // Menampilkan List Artikel Lainnya
+                var artikelLainnyaHTML = '<ol>';
+                $.each(response.dataset.artikel_lainnya, function(index, artikel) {
+                    artikelLainnyaHTML += '<li><a href="javascript:void(0);" class="detail_dokumentasi" data-id="' + artikel.id_help + '">' + artikel.judul + '</a></li>';
+                });
+                artikelLainnyaHTML += '</ol>';
+
+                // Tempelkan List Artikel Lainnya
+                $('#list_artikel_lainnya').html(artikelLainnyaHTML);
+
+                // Tempelkan id_help ke tombol edit
                 $("#button_edit_dokumentasi").attr("data-id", id_help);
             }else{
                 Swal.fire(
@@ -64,6 +75,7 @@ function ShowDetailDokumentasi(id_help) {
         },
     });
 }
+
 
 //Fungsi Untuk Menampilkan Halaman Edit Dokumentasi
 function ShowEditDokumentasi(id_help) {
@@ -160,23 +172,31 @@ $(document).ready(function() {
     //Menampilkan Data Pertama Kali
     ShowData();
     
-    //Menampilkan readme
-    $.get('README.md', function(data) {
-        const htmlContent = marked.parse(data);
-        $('#show_readme').html(htmlContent);
-
-        // Pastikan CSS diterapkan setelah gambar dimuat
-        $('#show_readme img').on('load', function() {
-            $(this).css({
-                'width': '90%',
-                'max-width': '100%',
-                'height': 'auto',
-                'border-radius': '8px'
+    //Kontrol Untuk Menampilkan readme.md
+    let isReadmeVisible = false;
+    $('#show_hide_documentation').click(function() {
+        if (!isReadmeVisible) {
+            // Load README.md content
+            $.get('README.md', function(data) {
+                const htmlContent = marked.parse(data);
+                $('#show_hide_readme').html(htmlContent).slideDown();
+            }).fail(function() {
+                $('#show_hide_readme').html('<p>Failed to load README.md</p>').slideDown();
             });
-        });
-    }).fail(function() {
-        $('#show_readme').html('<p>Failed to load README.md</p>');
+
+            // Change button icon and text
+            $(this).html('<i class="bi bi-eye-slash"></i> Sembunyikan Konten');
+        } else {
+            // Hide content
+            $('#show_hide_readme').slideUp();
+
+            // Change button icon and text
+            $(this).html('<i class="bi bi-eye"></i> Tampilkan Konten');
+        }
+
+        isReadmeVisible = !isReadmeVisible;
     });
+    
     //Ketika KeywordBy Diubah
     $('#keyword_by').change(function(){
         var keyword_by = $('#keyword_by').val();

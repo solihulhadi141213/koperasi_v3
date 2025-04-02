@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 02, 2025 at 11:50 AM
+-- Generation Time: Apr 02, 2025 at 09:08 PM
 -- Server version: 9.1.0
 -- PHP Version: 7.4.33
 
@@ -32,9 +32,9 @@ CREATE TABLE IF NOT EXISTS `akses` (
   `id_akses` int NOT NULL AUTO_INCREMENT,
   `nama_akses` text NOT NULL,
   `kontak_akses` varchar(20) DEFAULT NULL,
-  `email_akses` text NOT NULL,
+  `email_akses` varchar(225) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `password` text NOT NULL,
-  `image_akses` text,
+  `image_akses` char(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   `akses` varchar(20) NOT NULL,
   `datetime_daftar` datetime NOT NULL,
   `datetime_update` datetime NOT NULL,
@@ -61,7 +61,8 @@ DROP TABLE IF EXISTS `akses_entitas`;
 CREATE TABLE IF NOT EXISTS `akses_entitas` (
   `uuid_akses_entitas` varchar(32) NOT NULL,
   `akses` varchar(20) NOT NULL,
-  `keterangan` text NOT NULL
+  `keterangan` text NOT NULL,
+  PRIMARY KEY (`uuid_akses_entitas`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -82,11 +83,11 @@ DROP TABLE IF EXISTS `akses_fitur`;
 CREATE TABLE IF NOT EXISTS `akses_fitur` (
   `id_akses_fitur` int NOT NULL AUTO_INCREMENT,
   `kode` varchar(32) NOT NULL,
-  `nama` text NOT NULL,
-  `kategori` text NOT NULL,
+  `nama` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `kategori` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `keterangan` text NOT NULL,
   PRIMARY KEY (`id_akses_fitur`)
-) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=85 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `akses_fitur`
@@ -140,7 +141,10 @@ INSERT INTO `akses_fitur` (`id_akses_fitur`, `kode`, `nama`, `kategori`, `ketera
 (77, 'hBjWkLMFofA8QHRz8C7', 'Tambah Pembelian', 'Pembelian', 'Halaman untuk menambah transaksi pembelian'),
 (78, 'va9SiDMNXdRPjqLeVcX', 'Detail Pembelian', 'Pembelian', 'Halaman untuk melihat detail pembelian'),
 (79, 'ungKMcHQ0OvFgMhS1y8', 'Rekap Jual Beli', 'Transaksi', 'Halaman Untuk Menampilkan Rekap Jual Beli'),
-(80, 'gw5VTLLVsrfg63nfEWX', 'Utang Piutang', 'Transaksi', 'Halaman untuk menampilkan utang-piutang transaksi');
+(80, 'gw5VTLLVsrfg63nfEWX', 'Utang Piutang', 'Transaksi', 'Halaman untuk menampilkan utang-piutang transaksi'),
+(81, 'WeXKEzh9uvvyJRCwJGX', 'Detail Anggota', 'Anggota', 'Halaman untuk melihat anggota'),
+(82, 'xMAQQmh4DYnyd3JG26J', 'Hapus Konten Bantuan', 'Bantuan', 'Fitur hapus bantuan'),
+(83, 'MqOJHVudKBTAhgjU0xl', 'Lihat Detail Bantuan', 'Bantuan', 'Halaman detail bantuan');
 
 -- --------------------------------------------------------
 
@@ -153,8 +157,10 @@ CREATE TABLE IF NOT EXISTS `akses_ijin` (
   `id_akses` int NOT NULL,
   `id_akses_fitur` int NOT NULL,
   `kode` varchar(32) NOT NULL,
-  `nama` text NOT NULL,
-  `kategori` text NOT NULL
+  `nama` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `kategori` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  KEY `id_akses` (`id_akses`),
+  KEY `id_akses_fitur` (`id_akses_fitur`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -259,11 +265,14 @@ INSERT INTO `akses_ijin` (`id_akses`, `id_akses_fitur`, `kode`, `nama`, `kategor
 (1, 40, 'rA8MRFArw1qPeVySjAC', 'Fitur Aplikasi', 'Akses'),
 (1, 41, 'hNtci80mXl9jwCj19pI', 'Halaman Entitas Akses', 'Akses'),
 (1, 54, 'TQ4YLRadAceDvjmoKIN', 'Anggota Keluar Masuk', 'Anggota'),
+(1, 81, 'WeXKEzh9uvvyJRCwJGX', 'Detail Anggota', 'Anggota'),
 (1, 42, 'oWpF1xPn8dLgRi8hRJx', 'Halaman Anggota', 'Anggota'),
 (1, 55, 'HdQ2YaxtqY2JL5QnQdS', 'Rekap Anggota', 'Anggota'),
 (1, 48, 'QbQ4qF57AzCEp5qG0KG', 'Form Tambah Bantuan', 'Bantuan'),
 (1, 49, 'GA4iqizxbIlTU5mMo0W', 'Halaman Edit Bantuan', 'Bantuan'),
+(1, 82, 'xMAQQmh4DYnyd3JG26J', 'Hapus Konten Bantuan', 'Bantuan'),
 (1, 47, '5MH1cfu7LzOpalmhbT2', 'Kelola Data Bantuan', 'Bantuan'),
+(1, 83, 'MqOJHVudKBTAhgjU0xl', 'Lihat Detail Bantuan', 'Bantuan'),
 (1, 69, 'sPkDxRYJPn1A8K24ki2', 'Barang', 'Barang'),
 (1, 70, 'YyU3kA2xi9HqU1EMuTm', 'Batch dan Expired', 'Barang'),
 (1, 71, 'PLj70Mfj5dhUUvjZqnd', 'Stock Opename', 'Barang'),
@@ -314,7 +323,8 @@ CREATE TABLE IF NOT EXISTS `akses_login` (
   `kategori` varchar(10) NOT NULL COMMENT 'Anggota/Pengurus',
   `token` varchar(32) NOT NULL,
   `date_creat` datetime NOT NULL,
-  `date_expired` datetime NOT NULL
+  `date_expired` datetime NOT NULL,
+  KEY `id_akses` (`id_akses`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -324,7 +334,7 @@ CREATE TABLE IF NOT EXISTS `akses_login` (
 INSERT INTO `akses_login` (`id_akses`, `kategori`, `token`, `date_creat`, `date_expired`) VALUES
 (5, 'Pengurus', '6be034775796342467670d3eaf8351f2', '2025-02-25 06:14:01', '2025-02-25 08:13:08'),
 (6, 'Pengurus', 'ea5e56384fde76e479d35ad725c068fd', '2025-02-26 00:53:56', '2025-02-26 02:21:57'),
-(1, 'Pengurus', '587ffd919efce549b4d078eedac69038', '2025-04-02 18:25:55', '2025-04-02 19:49:49');
+(1, 'Pengurus', '0627592a52270e6d0683812f41c48795', '2025-04-03 00:15:45', '2025-04-03 04:22:39');
 
 -- --------------------------------------------------------
 
@@ -337,8 +347,10 @@ CREATE TABLE IF NOT EXISTS `akses_referensi` (
   `id_akses_referensi` int NOT NULL AUTO_INCREMENT,
   `uuid_akses_entitas` varchar(32) NOT NULL,
   `id_akses_fitur` int NOT NULL,
-  PRIMARY KEY (`id_akses_referensi`)
-) ENGINE=InnoDB AUTO_INCREMENT=887 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id_akses_referensi`),
+  KEY `uuid_akses_entitas` (`uuid_akses_entitas`),
+  KEY `id_akses_fitur` (`id_akses_fitur`)
+) ENGINE=InnoDB AUTO_INCREMENT=987 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `akses_referensi`
@@ -352,54 +364,57 @@ INSERT INTO `akses_referensi` (`id_akses_referensi`, `uuid_akses_entitas`, `id_a
 (5, 'x5MHSyAQsnniwnwgYqho6hTwKRhxgOXU', 38),
 (6, 'x5MHSyAQsnniwnwgYqho6hTwKRhxgOXU', 44),
 (7, 'x5MHSyAQsnniwnwgYqho6hTwKRhxgOXU', 43),
-(839, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 35),
-(840, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 32),
-(841, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 31),
-(842, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 40),
-(843, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 41),
-(844, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 54),
-(845, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 42),
-(846, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 55),
-(847, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 48),
-(848, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 49),
-(849, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 47),
-(850, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 69),
-(851, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 70),
-(852, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 71),
-(853, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 64),
-(854, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 63),
-(855, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 50),
-(856, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 52),
-(857, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 45),
-(858, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 53),
-(859, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 68),
-(860, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 67),
-(861, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 78),
-(862, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 76),
-(863, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 77),
-(864, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 39),
-(865, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 66),
-(866, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 34),
-(867, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 65),
-(868, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 36),
-(869, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 37),
-(870, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 38),
-(871, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 74),
-(872, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 72),
-(873, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 73),
-(874, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 44),
-(875, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 75),
-(876, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 59),
-(877, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 46),
-(878, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 43),
-(879, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 56),
-(880, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 58),
-(881, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 57),
-(882, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 61),
-(883, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 60),
-(884, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 79),
-(885, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 62),
-(886, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 80);
+(936, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 35),
+(937, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 32),
+(938, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 31),
+(939, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 40),
+(940, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 41),
+(941, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 54),
+(942, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 81),
+(943, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 42),
+(944, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 55),
+(945, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 48),
+(946, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 49),
+(947, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 82),
+(948, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 47),
+(949, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 83),
+(950, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 69),
+(951, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 70),
+(952, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 71),
+(953, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 64),
+(954, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 63),
+(955, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 50),
+(956, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 52),
+(957, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 45),
+(958, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 53),
+(959, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 68),
+(960, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 67),
+(961, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 78),
+(962, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 76),
+(963, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 77),
+(964, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 39),
+(965, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 66),
+(966, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 34),
+(967, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 65),
+(968, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 36),
+(969, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 37),
+(970, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 38),
+(971, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 74),
+(972, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 72),
+(973, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 73),
+(974, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 44),
+(975, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 75),
+(976, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 59),
+(977, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 46),
+(978, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 43),
+(979, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 56),
+(980, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 58),
+(981, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 57),
+(982, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 61),
+(983, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 60),
+(984, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 79),
+(985, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 62),
+(986, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 80);
 
 -- --------------------------------------------------------
 
@@ -964,8 +979,10 @@ CREATE TABLE IF NOT EXISTS `jurnal` (
   `id_jurnal` int NOT NULL AUTO_INCREMENT,
   `kategori` varchar(30) DEFAULT NULL COMMENT 'Simpanan, Penarikan, Transaksi, Pinjaman, Angsuran, ',
   `uuid` char(36) NOT NULL,
+  `id_transaksi` int DEFAULT NULL,
   `id_pinjaman` int DEFAULT NULL,
   `id_pinjaman_angsuran` int DEFAULT NULL,
+  `id_simpanan` int DEFAULT NULL,
   `id_transaksi_jual_beli` char(36) DEFAULT NULL,
   `id_shu_session` int DEFAULT NULL,
   `tanggal` date NOT NULL COMMENT 'tanggal transaksi',
@@ -977,26 +994,80 @@ CREATE TABLE IF NOT EXISTS `jurnal` (
   KEY `id_pinjaman` (`id_pinjaman`),
   KEY `id_pinjaman_angsuran` (`id_pinjaman_angsuran`),
   KEY `id_transaksi_jual_beli` (`id_transaksi_jual_beli`),
-  KEY `id_shu_session` (`id_shu_session`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+  KEY `id_shu_session` (`id_shu_session`),
+  KEY `id_transaksi` (`id_transaksi`),
+  KEY `id_simpanan` (`id_simpanan`)
+) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `jurnal`
 --
 
-INSERT INTO `jurnal` (`id_jurnal`, `kategori`, `uuid`, `id_pinjaman`, `id_pinjaman_angsuran`, `id_transaksi_jual_beli`, `id_shu_session`, `tanggal`, `kode_perkiraan`, `nama_perkiraan`, `d_k`, `nilai`) VALUES
-(1, 'Pinjaman', '1UYjtSkUTWu1lBLEdM2w9fGVrgTkX1soIz7S', 26, NULL, NULL, NULL, '2025-04-02', '1.1.1.3', 'Kas Berangkas ', 'K', 10000000),
-(2, 'Pinjaman', '1UYjtSkUTWu1lBLEdM2w9fGVrgTkX1soIz7S', 26, NULL, NULL, NULL, '2025-04-02', '1.1.3.4', 'Pinjaman Anggota', 'D', 10000000),
-(3, 'Angsuran', 'C34JffjFNbXrFOZioIXO4GA97aQUuINJHF09', NULL, 631, NULL, NULL, '2025-04-02', '1.1.3.4', 'Pinjaman Anggota ', 'K', 1000000),
-(4, 'Angsuran', 'C34JffjFNbXrFOZioIXO4GA97aQUuINJHF09', NULL, 631, NULL, NULL, '2025-04-02', '1.1.1.1.1', 'Kas Brangkas', 'D', 1100000),
-(5, 'Angsuran', 'C34JffjFNbXrFOZioIXO4GA97aQUuINJHF09', NULL, 631, NULL, NULL, '2025-04-02', '4.1', 'Pendapatan Jasa ', 'K', 100000),
-(6, 'Penjualan', '5hNgU66pOv6D3zEeeZD72QgE0PlYp7VzqHrn', NULL, NULL, '5hNgU66pOv6D3zEeeZD72QgE0PlYp7VzqHrn', NULL, '2025-04-02', '1.1.1.1.1', 'Kas Brangkas', 'D', 120000),
-(7, 'Penjualan', '5hNgU66pOv6D3zEeeZD72QgE0PlYp7VzqHrn', NULL, NULL, '5hNgU66pOv6D3zEeeZD72QgE0PlYp7VzqHrn', NULL, '2025-04-02', '5.4', 'Beban Lainnya', 'K', 120000),
-(8, 'Pembelian', 'g8UmVFGyESzGcVnGHD5VxpFCQbYMfncMJL81', NULL, NULL, 'g8UmVFGyESzGcVnGHD5VxpFCQbYMfncMJL81', NULL, '2025-04-02', '5.4', 'Beban Lainnya', 'D', 0),
-(9, 'Pembelian', 'g8UmVFGyESzGcVnGHD5VxpFCQbYMfncMJL81', NULL, NULL, 'g8UmVFGyESzGcVnGHD5VxpFCQbYMfncMJL81', NULL, '2025-04-02', '1.1.1.3', 'Kas Berangkas', 'K', 2500),
-(10, 'Pembelian', 'g8UmVFGyESzGcVnGHD5VxpFCQbYMfncMJL81', NULL, NULL, 'g8UmVFGyESzGcVnGHD5VxpFCQbYMfncMJL81', NULL, '2025-04-02', '2.1.1', 'Hutang Usaha', 'D', 2500),
-(11, 'Pembelian', 'iww8VSRzyRde7DO4CZiCDhyoIdoKAIj3SrHf', NULL, NULL, 'iww8VSRzyRde7DO4CZiCDhyoIdoKAIj3SrHf', NULL, '2025-04-02', '5.4', 'Beban Lainnya', 'D', 110000),
-(12, 'Pembelian', 'iww8VSRzyRde7DO4CZiCDhyoIdoKAIj3SrHf', NULL, NULL, 'iww8VSRzyRde7DO4CZiCDhyoIdoKAIj3SrHf', NULL, '2025-04-02', '1.1.1.3', 'Kas Berangkas', 'K', 110000);
+INSERT INTO `jurnal` (`id_jurnal`, `kategori`, `uuid`, `id_transaksi`, `id_pinjaman`, `id_pinjaman_angsuran`, `id_simpanan`, `id_transaksi_jual_beli`, `id_shu_session`, `tanggal`, `kode_perkiraan`, `nama_perkiraan`, `d_k`, `nilai`) VALUES
+(1, 'Pinjaman', '1UYjtSkUTWu1lBLEdM2w9fGVrgTkX1soIz7S', NULL, 26, NULL, NULL, NULL, NULL, '2025-04-02', '1.1.1.3', 'Kas Berangkas ', 'K', 10000000),
+(2, 'Pinjaman', '1UYjtSkUTWu1lBLEdM2w9fGVrgTkX1soIz7S', NULL, 26, NULL, NULL, NULL, NULL, '2025-04-02', '1.1.3.4', 'Pinjaman Anggota', 'D', 10000000),
+(3, 'Angsuran', 'C34JffjFNbXrFOZioIXO4GA97aQUuINJHF09', NULL, NULL, 631, NULL, NULL, NULL, '2025-04-02', '1.1.3.4', 'Pinjaman Anggota ', 'K', 1000000),
+(4, 'Angsuran', 'C34JffjFNbXrFOZioIXO4GA97aQUuINJHF09', NULL, NULL, 631, NULL, NULL, NULL, '2025-04-02', '1.1.1.1.1', 'Kas Brangkas', 'D', 1100000),
+(5, 'Angsuran', 'C34JffjFNbXrFOZioIXO4GA97aQUuINJHF09', NULL, NULL, 631, NULL, NULL, NULL, '2025-04-02', '4.1', 'Pendapatan Jasa ', 'K', 100000),
+(6, 'Penjualan', '5hNgU66pOv6D3zEeeZD72QgE0PlYp7VzqHrn', NULL, NULL, NULL, NULL, '5hNgU66pOv6D3zEeeZD72QgE0PlYp7VzqHrn', NULL, '2025-04-02', '1.1.1.1.1', 'Kas Brangkas', 'D', 120000),
+(7, 'Penjualan', '5hNgU66pOv6D3zEeeZD72QgE0PlYp7VzqHrn', NULL, NULL, NULL, NULL, '5hNgU66pOv6D3zEeeZD72QgE0PlYp7VzqHrn', NULL, '2025-04-02', '5.4', 'Beban Lainnya', 'K', 120000),
+(8, 'Pembelian', 'g8UmVFGyESzGcVnGHD5VxpFCQbYMfncMJL81', NULL, NULL, NULL, NULL, 'g8UmVFGyESzGcVnGHD5VxpFCQbYMfncMJL81', NULL, '2025-04-02', '5.4', 'Beban Lainnya', 'D', 0),
+(9, 'Pembelian', 'g8UmVFGyESzGcVnGHD5VxpFCQbYMfncMJL81', NULL, NULL, NULL, NULL, 'g8UmVFGyESzGcVnGHD5VxpFCQbYMfncMJL81', NULL, '2025-04-02', '1.1.1.3', 'Kas Berangkas', 'K', 2500),
+(10, 'Pembelian', 'g8UmVFGyESzGcVnGHD5VxpFCQbYMfncMJL81', NULL, NULL, NULL, NULL, 'g8UmVFGyESzGcVnGHD5VxpFCQbYMfncMJL81', NULL, '2025-04-02', '2.1.1', 'Hutang Usaha', 'D', 2500),
+(11, 'Pembelian', 'iww8VSRzyRde7DO4CZiCDhyoIdoKAIj3SrHf', NULL, NULL, NULL, NULL, 'iww8VSRzyRde7DO4CZiCDhyoIdoKAIj3SrHf', NULL, '2025-04-02', '5.4', 'Beban Lainnya', 'D', 110000),
+(12, 'Pembelian', 'iww8VSRzyRde7DO4CZiCDhyoIdoKAIj3SrHf', NULL, NULL, NULL, NULL, 'iww8VSRzyRde7DO4CZiCDhyoIdoKAIj3SrHf', NULL, '2025-04-02', '1.1.1.3', 'Kas Berangkas', 'K', 110000),
+(13, 'Transaksi', '67606352644125568139520743013373', 22, NULL, NULL, NULL, NULL, NULL, '2025-04-03', '5.1.4', 'Beban PBB', 'D', 100000),
+(14, 'Transaksi', '67606352644125568139520743013373', 22, NULL, NULL, NULL, NULL, NULL, '2025-04-03', '1.1.1.2.3', 'Kas Bank Mandiri', 'K', 100000),
+(15, 'Transaksi', '92085391979233568469181179157482', 23, NULL, NULL, NULL, NULL, NULL, '2025-04-03', '5.3.4', 'Beban Utilitas', 'D', 20000),
+(16, 'Transaksi', '92085391979233568469181179157482', 23, NULL, NULL, NULL, NULL, NULL, '2025-04-03', '1.1.1.3', 'Kas Berangkas', 'K', 20000),
+(17, 'SHU', 'H9bd9QAbzDbn7vsiYJICiZ9UD9PR1fZmKp9g', NULL, NULL, NULL, NULL, NULL, 6, '2025-04-03', '5.4', 'Beban Lainnya', 'D', 10500005),
+(18, 'SHU', 'H9bd9QAbzDbn7vsiYJICiZ9UD9PR1fZmKp9g', NULL, NULL, NULL, NULL, NULL, 6, '2025-04-03', '2.2', 'Kewajiban Pembayaran Prive Investor', 'K', 10500005),
+(19, 'SHU', 'H9bd9QAbzDbn7vsiYJICiZ9UD9PR1fZmKp9g', NULL, NULL, NULL, NULL, NULL, 6, '2025-04-03', '2.2', 'Kewajiban Pembayaran Prive Investor', 'D', 10500005),
+(20, 'SHU', 'H9bd9QAbzDbn7vsiYJICiZ9UD9PR1fZmKp9g', NULL, NULL, NULL, NULL, NULL, 6, '2025-04-03', '5.4', 'Beban Lainnya', 'K', 10500005),
+(21, 'Simpanan', 'TXrcG3WUbkSW5xVlWmr5FuarHaQ8qGFgqky1', NULL, NULL, NULL, 443, NULL, NULL, '2025-04-03', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
+(22, 'Simpanan', 'TXrcG3WUbkSW5xVlWmr5FuarHaQ8qGFgqky1', NULL, NULL, NULL, 443, NULL, NULL, '2025-04-03', '2.3', 'Simpanan Anggota', 'K', 100000),
+(63, 'Simpanan', 'ZwqQ3NqbkQyvI2PJjy0Yq48RJG6TarnGv2Ct', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
+(64, 'Simpanan', 'ZwqQ3NqbkQyvI2PJjy0Yq48RJG6TarnGv2Ct', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
+(65, 'Simpanan', 'e2xWnXwmzSK1L2M2Bnr9f9o4DDlZs3iLsBO6', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
+(66, 'Simpanan', 'e2xWnXwmzSK1L2M2Bnr9f9o4DDlZs3iLsBO6', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
+(67, 'Simpanan', 'RAsFeQVUmIXfXx9x1GllyD1retvra3q6vvWd', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
+(68, 'Simpanan', 'RAsFeQVUmIXfXx9x1GllyD1retvra3q6vvWd', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
+(69, 'Simpanan', 'rYdJ5jH9khKp4ynnKNR0vP63Ne1gszuZP4mA', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
+(70, 'Simpanan', 'rYdJ5jH9khKp4ynnKNR0vP63Ne1gszuZP4mA', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
+(71, 'Simpanan', 'FpkYJPGo2dpNnVZVlXDDHPkbdEINTOegElZn', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
+(72, 'Simpanan', 'FpkYJPGo2dpNnVZVlXDDHPkbdEINTOegElZn', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
+(73, 'Simpanan', 'kfZa0P3G4YxuzQO2BJh5u55nTByUmDDd2xnf', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
+(74, 'Simpanan', 'kfZa0P3G4YxuzQO2BJh5u55nTByUmDDd2xnf', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
+(75, 'Simpanan', 'Hf09BsPhFlTdZPz2UQHNKJfLbScWbsUTD0Ud', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
+(76, 'Simpanan', 'Hf09BsPhFlTdZPz2UQHNKJfLbScWbsUTD0Ud', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
+(77, 'Simpanan', 'NzBzyrV2Wu1IZjUHrJ0IcnBKb03wFhkVn4v3', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
+(78, 'Simpanan', 'NzBzyrV2Wu1IZjUHrJ0IcnBKb03wFhkVn4v3', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
+(79, 'Simpanan', 'DxdFlO7Azm1iIAm7GSNgwJQ6iLdoqrLvuHuG', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
+(80, 'Simpanan', 'DxdFlO7Azm1iIAm7GSNgwJQ6iLdoqrLvuHuG', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
+(81, 'Simpanan', 'XGC0Ugs7VLBb66JB0NI9HOCGKMh8PV5CQMHj', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
+(82, 'Simpanan', 'XGC0Ugs7VLBb66JB0NI9HOCGKMh8PV5CQMHj', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
+(83, 'Simpanan', 'tPyKinoqvzrXAeRLeEzet8kBXAP9ecOhhuIS', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
+(84, 'Simpanan', 'tPyKinoqvzrXAeRLeEzet8kBXAP9ecOhhuIS', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
+(85, 'Simpanan', 'gVNTbUlFUCHcpjxZlOC232j4X7fiPZNeUXw6', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
+(86, 'Simpanan', 'gVNTbUlFUCHcpjxZlOC232j4X7fiPZNeUXw6', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
+(87, 'Simpanan', 'oA1LOTPWqACRPcV4HgFDG1ZjNygqfIhocsqB', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
+(88, 'Simpanan', 'oA1LOTPWqACRPcV4HgFDG1ZjNygqfIhocsqB', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
+(89, 'Simpanan', 'v2rYs1ic27mjlAoOnntLt9gf9RZkROG3tzHP', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
+(90, 'Simpanan', 'v2rYs1ic27mjlAoOnntLt9gf9RZkROG3tzHP', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
+(91, 'Simpanan', 'M6gIBKEgQJQvm8wqOE7vCkj5jJCKAk6XEv5B', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
+(92, 'Simpanan', 'M6gIBKEgQJQvm8wqOE7vCkj5jJCKAk6XEv5B', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
+(93, 'Simpanan', 'fu1cXGnCtRwmZpJmtrcGpgch2kI63cuTxVNv', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
+(94, 'Simpanan', 'fu1cXGnCtRwmZpJmtrcGpgch2kI63cuTxVNv', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
+(95, 'Simpanan', 'yGLDXB5U6P71yvXECdtZTaReOJt5RIPvkVfp', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
+(96, 'Simpanan', 'yGLDXB5U6P71yvXECdtZTaReOJt5RIPvkVfp', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
+(97, 'Simpanan', 'oFa4hKU7U5K711zikDjX5MadijSTb8s4bfOZ', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
+(98, 'Simpanan', 'oFa4hKU7U5K711zikDjX5MadijSTb8s4bfOZ', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
+(99, 'Simpanan', 'CCP6HLpE4IDSYMbvIVSfjvFjzrohgXoliio7', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
+(100, 'Simpanan', 'CCP6HLpE4IDSYMbvIVSfjvFjzrohgXoliio7', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
+(101, 'Simpanan', 'y7UTMc97WhSkFokdRg9CySTk5payzUEIEhaf', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
+(102, 'Simpanan', 'y7UTMc97WhSkFokdRg9CySTk5payzUEIEhaf', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
+(103, 'Simpanan', 'U4KnPyBcMDcwmDml17nKTuJI1i7M8LClt8Um', NULL, NULL, NULL, 464, NULL, NULL, '2025-04-03', '2.3', 'Simpanan Anggota', 'D', 100000),
+(104, 'Simpanan', 'U4KnPyBcMDcwmDml17nKTuJI1i7M8LClt8Um', NULL, NULL, NULL, 464, NULL, NULL, '2025-04-03', '1.1.1.3', 'Kas Berangkas', 'K', 100000);
 
 -- --------------------------------------------------------
 
@@ -1011,8 +1082,9 @@ CREATE TABLE IF NOT EXISTS `log` (
   `datetime_log` varchar(25) NOT NULL,
   `kategori_log` varchar(20) NOT NULL,
   `deskripsi_log` text NOT NULL,
-  PRIMARY KEY (`id_log`)
-) ENGINE=InnoDB AUTO_INCREMENT=520 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id_log`),
+  KEY `id_akses` (`id_akses`)
+) ENGINE=InnoDB AUTO_INCREMENT=533 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `log`
@@ -1537,7 +1609,20 @@ INSERT INTO `log` (`id_log`, `id_akses`, `datetime_log`, `kategori_log`, `deskri
 (516, 1, '2025-04-02 18:48:55', 'SHU', 'Edit SHU'),
 (517, 1, '2025-04-02 18:48:59', 'SHU', 'Hapus SHU'),
 (518, 1, '2025-04-02 18:49:03', 'SHU', 'Hapus SHU'),
-(519, 1, '2025-04-02 18:49:07', 'SHU', 'Hapus SHU');
+(519, 1, '2025-04-02 18:49:07', 'SHU', 'Hapus SHU'),
+(520, 1, '2025-04-02 18:56:54', 'SHU', 'Tambah SHU'),
+(521, 1, '2025-04-03 00:24:51', 'SHU', 'Update Status SHU'),
+(522, 1, '2025-04-03 00:28:33', 'Log Simpanan', 'Tambah Penarikan'),
+(523, 1, '2025-04-03 00:29:28', 'Simpanan Wajib', 'Tambah Simpanan Wajib'),
+(524, 1, '2025-04-03 00:29:35', 'Simpanan Wajib', 'Tambah Simpanan Wajib'),
+(525, 1, '2025-04-03 00:30:35', 'Log Simpanan', 'Tambah Penarikan'),
+(526, 1, '2025-04-03 00:40:06', 'Akses', 'Input Fitur Akses'),
+(527, 1, '2025-04-03 00:40:17', 'Entitas Akses', 'Edit Entitas Akses'),
+(528, 1, '2025-04-03 01:09:29', 'Akses', 'Input Fitur Akses'),
+(529, 1, '2025-04-03 01:10:27', 'Akses', 'Input Fitur Akses'),
+(530, 1, '2025-04-03 01:10:40', 'Entitas Akses', 'Edit Entitas Akses'),
+(531, 1, '2025-04-03 02:03:00', 'Akses', 'Input Fitur Akses'),
+(532, 1, '2025-04-03 02:03:17', 'Fitur Akses', 'Hapus Fitur Akses');
 
 -- --------------------------------------------------------
 
@@ -1839,7 +1924,7 @@ CREATE TABLE IF NOT EXISTS `shu_rincian` (
   KEY `id_shu_session` (`id_shu_session`),
   KEY `id_anggota` (`id_anggota`),
   KEY `id_anggota_2` (`id_anggota`)
-) ENGINE=InnoDB AUTO_INCREMENT=863 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=883 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `shu_rincian`
@@ -1983,7 +2068,27 @@ INSERT INTO `shu_rincian` (`id_shu_rincian`, `id_shu_session`, `id_anggota`, `na
 (859, 5, 22, 'Aruna Parasilva', '123122221', 1100000, 0, 0, 50, 0, 0, 50),
 (860, 5, 23, 'Tri Heru', '1111111111111', 1100000, 0, 0, 50, 0, 0, 50),
 (861, 5, 24, 'Sugito', '2222222222', 1100000, 0, 0, 50, 0, 0, 50),
-(862, 5, 25, 'Ulya Handayani', '2024/07/Contoh-20', 900000, 0, 0, 41, 0, 0, 41);
+(862, 5, 25, 'Ulya Handayani', '2024/07/Contoh-20', 900000, 0, 0, 41, 0, 0, 41),
+(863, 6, 1, 'Adam Saputra', '2024/07/Contoh-01', 2170000, 10000000, 372600, 166838, 4500000, 3000000, 7666838),
+(864, 6, 2, 'Budi Santoso', '2024/07/Contoh-02', 2100000, 0, 0, 161456, 0, 0, 161456),
+(865, 6, 3, 'Citra Dewi', '2024/07/Contoh-111', 2100000, 0, 0, 161456, 0, 0, 161456),
+(866, 6, 5, 'Eka Prasetyo', '2024/07/Contoh-05', 2100000, 0, 0, 161456, 0, 0, 161456),
+(867, 6, 6, 'Farah Amalia', '2024/07/Contoh-06', 2100000, 0, 0, 161456, 0, 0, 161456),
+(868, 6, 7, 'Guntur Wibowo', '2024/07/Contoh-07', 2100000, 0, 0, 161456, 0, 0, 161456),
+(869, 6, 9, 'Indah Permatasari', '2024/07/Contoh-09', 2100000, 0, 0, 161456, 0, 0, 161456),
+(870, 6, 10, 'Joko Susanto', '2024/07/Contoh-10', 2100000, 0, 0, 161456, 0, 0, 161456),
+(871, 6, 11, 'Karina Putri', '2024/07/Contoh-11', 2250000, 0, 0, 172988, 0, 0, 172988),
+(872, 6, 12, 'Leo Pradipta', '2024/07/Contoh-12', 2100000, 0, 0, 161456, 0, 0, 161456),
+(873, 6, 13, 'Maya Sari', '2024/07/Contoh-13', 2100000, 0, 0, 161456, 0, 0, 161456),
+(874, 6, 14, 'Nanda Kusuma', '2024/07/Contoh-14', 2100000, 0, 0, 161456, 0, 0, 161456),
+(875, 6, 15, 'Oki Pratama', '2024/07/Contoh-15', 2100000, 0, 0, 161456, 0, 0, 161456),
+(876, 6, 16, 'Putri Ayu', '2024/07/Contoh-16', 2100000, 0, 0, 161456, 0, 0, 161456),
+(877, 6, 18, 'Sinta Maharani', '2024/07/Contoh-18', 2100000, 0, 0, 161456, 0, 0, 161456),
+(878, 6, 19, 'Tio Nugroho', '2024/07/Contoh-19', 2100000, 0, 0, 161456, 0, 0, 161456),
+(879, 6, 22, 'Aruna Parasilva', '123122221', 2100000, 0, 0, 161456, 0, 0, 161456),
+(880, 6, 23, 'Tri Heru', '1111111111111', 1100000, 0, 0, 84572, 0, 0, 84572),
+(881, 6, 24, 'Sugito', '2222222222', 1100000, 0, 0, 84572, 0, 0, 84572),
+(882, 6, 25, 'Ulya Handayani', '2024/07/Contoh-20', 900000, 0, 0, 69195, 0, 0, 69195);
 
 -- --------------------------------------------------------
 
@@ -2006,7 +2111,14 @@ CREATE TABLE IF NOT EXISTS `shu_session` (
   `shu` int DEFAULT NULL,
   `status` varchar(20) NOT NULL COMMENT 'Pending, Realisasi',
   PRIMARY KEY (`id_shu_session`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `shu_session`
+--
+
+INSERT INTO `shu_session` (`id_shu_session`, `uuid_shu_session`, `periode_hitung1`, `periode_hitung2`, `total_penjualan`, `total_simpanan`, `total_pinjaman`, `persen_penjualan`, `persen_simpanan`, `persen_pinjaman`, `shu`, `status`) VALUES
+(6, 'H9bd9QAbzDbn7vsiYJICiZ9UD9PR1fZmKp9g', '2024-05-01', '2025-04-02', 372600, 39020000, 10000000, 20.00, 20.00, 30.00, 15000000, 'Realisasi');
 
 -- --------------------------------------------------------
 
@@ -2032,7 +2144,7 @@ CREATE TABLE IF NOT EXISTS `simpanan` (
   `jumlah` int NOT NULL,
   PRIMARY KEY (`id_simpanan`),
   KEY `id_anggota` (`id_anggota`)
-) ENGINE=InnoDB AUTO_INCREMENT=442 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=465 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `simpanan`
@@ -2384,7 +2496,30 @@ INSERT INTO `simpanan` (`id_simpanan`, `uuid_simpanan`, `id_anggota`, `id_akses`
 (438, 'qskO6s0YowkaCQFs6m6OxMGBooE9mK9nX617', 22, 1, 1, 1, '123122221', 'Aruna Parasilva', 'GIS', 1, '2025-05-01', 'Simpanan Wajib', '', 200000),
 (439, 'fI8klELjxZdm917eqE8looyMx3bpWWORDI3P', 23, 1, 1, 1, '1111111111111', 'Tri Heru', 'GIS', 1, '2025-05-01', 'Simpanan Wajib', '', 200000),
 (440, 'hptdJwX24naCtPfw0lnvGv07fYCY0cxXusdV', 24, 1, 1, 1, '2222222222', 'Sugito', 'GIS', 1, '2025-05-01', 'Simpanan Wajib', '', 200000),
-(441, 'cKYFY6aDD7bceeO44g3Au0jeuUkytvf6vMF1', 25, 1, 1, 1, '2024/07/Contoh-20', 'Ulya Handayani', 'Lembaga B', 2, '2025-05-01', 'Simpanan Wajib', '', 200000);
+(441, 'cKYFY6aDD7bceeO44g3Au0jeuUkytvf6vMF1', 25, 1, 1, 1, '2024/07/Contoh-20', 'Ulya Handayani', 'Lembaga B', 2, '2025-05-01', 'Simpanan Wajib', '', 200000),
+(442, 'sDzjWr2w9gm9Mipq9Nc2pTLJFRBqASnPJP99', 1, 1, 3, 1, '2024/07/Contoh-01', 'Adam Saputra', 'GIS', 1, '2025-04-03', 'Simpanan Suka rela(Tabungan)', '', 100000),
+(443, 'TXrcG3WUbkSW5xVlWmr5FuarHaQ8qGFgqky1', 1, 1, 3, 1, '2024/07/Contoh-01', 'Adam Saputra', 'GIS', 1, '2025-04-03', 'Simpanan Suka rela(Tabungan)', '', 100000),
+(444, 'ZwqQ3NqbkQyvI2PJjy0Yq48RJG6TarnGv2Ct', 1, 1, 4, 1, '2024/07/Contoh-01', 'Adam Saputra', 'GIS', 1, '2024-10-01', 'Simpanan Pokok', '', 100000),
+(445, 'e2xWnXwmzSK1L2M2Bnr9f9o4DDlZs3iLsBO6', 2, 1, 4, 1, '2024/07/Contoh-02', 'Budi Santoso', 'GIS', 1, '2024-10-01', 'Simpanan Pokok', '', 100000),
+(446, 'RAsFeQVUmIXfXx9x1GllyD1retvra3q6vvWd', 3, 1, 4, 1, '2024/07/Contoh-111', 'Citra Dewi', 'GIS', 1, '2024-10-01', 'Simpanan Pokok', '', 100000),
+(447, 'rYdJ5jH9khKp4ynnKNR0vP63Ne1gszuZP4mA', 5, 1, 4, 1, '2024/07/Contoh-05', 'Eka Prasetyo', 'GIS', 1, '2024-10-01', 'Simpanan Pokok', '', 100000),
+(448, 'FpkYJPGo2dpNnVZVlXDDHPkbdEINTOegElZn', 6, 1, 4, 1, '2024/07/Contoh-06', 'Farah Amalia', 'GIS', 2, '2024-10-01', 'Simpanan Pokok', '', 100000),
+(449, 'kfZa0P3G4YxuzQO2BJh5u55nTByUmDDd2xnf', 7, 1, 4, 1, '2024/07/Contoh-07', 'Guntur Wibowo', 'GIS', 2, '2024-10-01', 'Simpanan Pokok', '', 100000),
+(450, 'Hf09BsPhFlTdZPz2UQHNKJfLbScWbsUTD0Ud', 9, 1, 4, 1, '2024/07/Contoh-09', 'Indah Permatasari', 'GIS', 2, '2024-10-01', 'Simpanan Pokok', '', 100000),
+(451, 'NzBzyrV2Wu1IZjUHrJ0IcnBKb03wFhkVn4v3', 10, 1, 4, 1, '2024/07/Contoh-10', 'Joko Susanto', 'GIS', 2, '2024-10-01', 'Simpanan Pokok', '', 100000),
+(452, 'DxdFlO7Azm1iIAm7GSNgwJQ6iLdoqrLvuHuG', 11, 1, 4, 1, '2024/07/Contoh-11', 'Karina Putri', 'GIS', 1, '2024-10-01', 'Simpanan Pokok', '', 100000),
+(453, 'XGC0Ugs7VLBb66JB0NI9HOCGKMh8PV5CQMHj', 12, 1, 4, 1, '2024/07/Contoh-12', 'Leo Pradipta', 'GIS', 1, '2024-10-01', 'Simpanan Pokok', '', 100000),
+(454, 'tPyKinoqvzrXAeRLeEzet8kBXAP9ecOhhuIS', 13, 1, 4, 1, '2024/07/Contoh-13', 'Maya Sari', 'GIS', 1, '2024-10-01', 'Simpanan Pokok', '', 100000),
+(455, 'gVNTbUlFUCHcpjxZlOC232j4X7fiPZNeUXw6', 14, 1, 4, 1, '2024/07/Contoh-14', 'Nanda Kusuma', 'GIS', 1, '2024-10-01', 'Simpanan Pokok', '', 100000),
+(456, 'oA1LOTPWqACRPcV4HgFDG1ZjNygqfIhocsqB', 15, 1, 4, 1, '2024/07/Contoh-15', 'Oki Pratama', 'GIS', 1, '2024-10-01', 'Simpanan Pokok', '', 100000),
+(457, 'v2rYs1ic27mjlAoOnntLt9gf9RZkROG3tzHP', 16, 1, 4, 1, '2024/07/Contoh-16', 'Putri Ayu', 'GIS', 2, '2024-10-01', 'Simpanan Pokok', '', 100000),
+(458, 'M6gIBKEgQJQvm8wqOE7vCkj5jJCKAk6XEv5B', 18, 1, 4, 1, '2024/07/Contoh-18', 'Sinta Maharani', 'GIS', 2, '2024-10-01', 'Simpanan Pokok', '', 100000),
+(459, 'fu1cXGnCtRwmZpJmtrcGpgch2kI63cuTxVNv', 19, 1, 4, 1, '2024/07/Contoh-19', 'Tio Nugroho', 'GIS', 2, '2024-10-01', 'Simpanan Pokok', '', 100000),
+(460, 'yGLDXB5U6P71yvXECdtZTaReOJt5RIPvkVfp', 22, 1, 4, 1, '123122221', 'Aruna Parasilva', 'GIS', 1, '2024-10-01', 'Simpanan Pokok', '', 100000),
+(461, 'oFa4hKU7U5K711zikDjX5MadijSTb8s4bfOZ', 23, 1, 4, 1, '1111111111111', 'Tri Heru', 'GIS', 1, '2024-10-01', 'Simpanan Pokok', '', 100000),
+(462, 'CCP6HLpE4IDSYMbvIVSfjvFjzrohgXoliio7', 24, 1, 4, 1, '2222222222', 'Sugito', 'GIS', 1, '2024-10-01', 'Simpanan Pokok', '', 100000),
+(463, 'y7UTMc97WhSkFokdRg9CySTk5payzUEIEhaf', 25, 1, 4, 1, '2024/07/Contoh-20', 'Ulya Handayani', 'Lembaga B', 2, '2024-10-01', 'Simpanan Pokok', '', 100000),
+(464, 'U4KnPyBcMDcwmDml17nKTuJI1i7M8LClt8Um', 1, 1, 4, 0, '2024/07/Contoh-01', 'Adam Saputra', 'GIS', 1, '2025-04-03', 'Penarikan', '', 100000);
 
 -- --------------------------------------------------------
 
@@ -2402,16 +2537,17 @@ CREATE TABLE IF NOT EXISTS `simpanan_jenis` (
   `id_perkiraan_debet` int NOT NULL,
   `id_perkiraan_kredit` int NOT NULL,
   PRIMARY KEY (`id_simpanan_jenis`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `simpanan_jenis`
 --
 
 INSERT INTO `simpanan_jenis` (`id_simpanan_jenis`, `nama_simpanan`, `keterangan`, `rutin`, `nominal`, `id_perkiraan_debet`, `id_perkiraan_kredit`) VALUES
-(1, 'Simpanan Wajib', '', 1, 200000, 154, 163),
-(3, 'Simpanan Suka rela(Tabungan)', 'Simpanan anggota atas dasar suka rela', 1, 100000, 154, 163),
-(4, 'Simpanan Pokok', 'Simpanan yang wajib masuk pada saat pertama kali menjadi anggota', 1, 100000, 154, 163);
+(1, 'Simpanan Wajib', '', 1, 300000, 154, 163),
+(3, 'Simpanan Suka rela(Tabungan)', 'Simpanan anggota atas dasar suka rela', 0, 0, 154, 163),
+(4, 'Simpanan Pokok', 'Simpanan yang wajib masuk pada saat pertama kali menjadi anggota', 1, 100000, 154, 163),
+(7, 'Simpanan Penghasilan', 'Simpanan yang berasal dari jumlah penghasilan', 0, 0, 155, 160);
 
 -- --------------------------------------------------------
 
@@ -2525,7 +2661,7 @@ CREATE TABLE IF NOT EXISTS `transaksi` (
   `status` varchar(7) DEFAULT NULL COMMENT 'Lunas, Utang, Piutang',
   PRIMARY KEY (`id_transaksi`),
   KEY `id_transaksi_jenis` (`id_transaksi_jenis`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `transaksi`
@@ -2538,7 +2674,9 @@ INSERT INTO `transaksi` (`id_transaksi`, `uuid_transaksi`, `id_transaksi_jenis`,
 (17, 'PPjFbUTUEkyWeJV5IdFoWId4egCKUaJ9', 3, 'ATK', 'Beban Perlengkapan', '2024-08-11 05:35:56', 15000, 15000, 'Lunas'),
 (18, 'U6D6GAHo5GiWv9MacJW2XkfypHkTWfjS', 2, 'Gaji Staf', 'Gaji', '2024-01-05 01:37:03', 6500000, 6500000, 'Lunas'),
 (19, 'thGcnhcCxs1LHBiPwK3hGw6Ke4uiefNb', 3, 'ATK', 'Beban Perlengkapan', '2024-09-19 21:42:13', 100000, 100000, 'Lunas'),
-(20, 'Gr8BmHaXT5wckhNtesyo0BMT2ox9q88y', 3, 'ATK', 'Beban Perlengkapan', '2025-02-22 01:48:27', 65000, 65000, 'Lunas');
+(20, 'Gr8BmHaXT5wckhNtesyo0BMT2ox9q88y', 3, 'ATK', 'Beban Perlengkapan', '2025-02-22 01:48:27', 65000, 65000, 'Lunas'),
+(22, '67606352644125568139520743013373', 5, 'Beban Pajak Penghasilan', 'Beban Pajak', '2025-04-03 00:19:51', 100000, 100000, 'Lunas'),
+(23, '92085391979233568469181179157482', 3, 'Beban ATK', 'Beban Perlengkapan', '2025-04-03 00:22:39', 20000, 20000, 'Lunas');
 
 -- --------------------------------------------------------
 
@@ -2579,16 +2717,18 @@ CREATE TABLE IF NOT EXISTS `transaksi_jenis` (
   `id_akun_debet` int DEFAULT NULL COMMENT 'Akun perkiraan di lajur debet',
   `id_akun_kredit` int NOT NULL COMMENT 'Akun perkiraan di lajur kredit',
   PRIMARY KEY (`id_transaksi_jenis`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `transaksi_jenis`
 --
 
 INSERT INTO `transaksi_jenis` (`id_transaksi_jenis`, `nama`, `kategori`, `deskripsi`, `id_akun_debet`, `id_akun_kredit`) VALUES
-(1, 'Listrik dan Air', 'Biaya Operasional Kantor', 'Pembayaran iuran listrik dan air kantor', 114, 155),
-(2, 'Gaji Staf', 'Gaji', 'Pembayaran gaji staf bulanan', 80, 152),
-(3, 'ATK', 'Beban Perlengkapan', 'Pembelian ATK sepoerti pencil, pena, tinta dll', 98, 135);
+(1, 'Beban Listrik dan Air', 'Biaya Operasional Kantor', 'Pembayaran iuran listrik dan air kantor', 114, 155),
+(2, 'Beban Gaji Staf', 'Beban Gaji', 'Pembayaran gaji staf bulanan', 80, 152),
+(3, 'Beban ATK', 'Beban Perlengkapan', 'Pembelian ATK sepoerti pencil, pena, tinta dll', 98, 135),
+(4, 'Beban Pajak PBB', 'Beban Pajak', 'Pajak bumi bangunan kantor koperasi', 83, 152),
+(5, 'Beban Pajak Penghasilan', 'Beban Pajak', 'Pembayaran Pajak Penghasilan', 83, 152);
 
 -- --------------------------------------------------------
 
@@ -2776,6 +2916,26 @@ INSERT INTO `transaksi_setting` (`id_transaksi_setting`, `id_akses`, `ppn`, `ppn
 --
 
 --
+-- Constraints for table `akses_ijin`
+--
+ALTER TABLE `akses_ijin`
+  ADD CONSTRAINT `ijin_to_akses` FOREIGN KEY (`id_akses`) REFERENCES `akses` (`id_akses`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ijin_to_fitur` FOREIGN KEY (`id_akses_fitur`) REFERENCES `akses_fitur` (`id_akses_fitur`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `akses_login`
+--
+ALTER TABLE `akses_login`
+  ADD CONSTRAINT `login_to_akses` FOREIGN KEY (`id_akses`) REFERENCES `akses` (`id_akses`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `akses_referensi`
+--
+ALTER TABLE `akses_referensi`
+  ADD CONSTRAINT `referensi_to_entitas` FOREIGN KEY (`uuid_akses_entitas`) REFERENCES `akses_entitas` (`uuid_akses_entitas`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `referensi_to_fitur` FOREIGN KEY (`id_akses_fitur`) REFERENCES `akses_fitur` (`id_akses_fitur`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `barang_bacth`
 --
 ALTER TABLE `barang_bacth`
@@ -2806,7 +2966,15 @@ ALTER TABLE `barang_satuan`
 ALTER TABLE `jurnal`
   ADD CONSTRAINT `jurnal_to_angsuran` FOREIGN KEY (`id_pinjaman_angsuran`) REFERENCES `pinjaman_angsuran` (`id_pinjaman_angsuran`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `jurnal_to_pinjaman` FOREIGN KEY (`id_pinjaman`) REFERENCES `pinjaman` (`id_pinjaman`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `jurnal_to_shu` FOREIGN KEY (`id_shu_session`) REFERENCES `jurnal` (`id_jurnal`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `jurnal_to_shu` FOREIGN KEY (`id_shu_session`) REFERENCES `jurnal` (`id_jurnal`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `jurnal_to_simpanan` FOREIGN KEY (`id_simpanan`) REFERENCES `simpanan` (`id_simpanan`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `jurnal_to_transaksi` FOREIGN KEY (`id_transaksi`) REFERENCES `transaksi` (`id_transaksi`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `log`
+--
+ALTER TABLE `log`
+  ADD CONSTRAINT `log_to_akses` FOREIGN KEY (`id_akses`) REFERENCES `akses` (`id_akses`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `pinjaman`

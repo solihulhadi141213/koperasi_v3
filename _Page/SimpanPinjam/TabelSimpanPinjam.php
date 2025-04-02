@@ -73,11 +73,11 @@
                             <?php
                                 if($periode=="Tahun"){
                                     echo '<b>LAPORAN SIMPAN PINJAM</b><br>';
-                                    echo '<b>Lembaga : '.$lembaga.'</b><br>';
+                                    echo '<b>Unit/Divisi : '.$lembaga.'</b><br>';
                                     echo '<span>Periode Tahun '.$tahun.'</span><br>';
                                 }else{
                                     echo '<b>LAPORAN SIMPAN PINJAM</b><br>';
-                                    echo '<b>Lembaga : '.$lembaga.'</b><br>';
+                                    echo '<b>Unit/Divisi : '.$lembaga.'</b><br>';
                                     echo '<span>Periode Bulan '.$NamaBulan.' '.$tahun.'</span><br>';
                                 }
                                 

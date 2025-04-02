@@ -34,7 +34,7 @@
                             if(empty($_POST['nominal'])){
                                 $nominal=0;
                             }else{
-                                $nominal=$_POST['nominal'];
+                                $nominal = str_replace('.', '', $_POST['nominal']);
                             }
                         }
                         if(empty($_POST['keterangan'])){
