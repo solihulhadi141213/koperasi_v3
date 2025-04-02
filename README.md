@@ -40,7 +40,8 @@ Aplikasi Koperasi V 3.0.0 adalah sebuah aplikasi open source yang dirancang untu
       Halaman master barang berfungsi untuk mencatat semua item barang jualan yang ada. Informasi yang dicatat terdiri dari kode, nama, kategori, stok, satuan, harga beli dan modul tambahan seperti multi harga dan multi satuan. Pada halaman ini anda juga dapat mengatur jenis-jenis harga yang berlaku.
    - Batch & Expired<br>
     Halaman Batch & Expired berfungsi untuk mengelola daftar batch barang serta informasi expire date sehingga jumlah barang yang expire dapat dimonitoring dengan mudah.
-   - Stock Opename
+   - Stock Opename<br>
+   Menambahkan fitur stock opename pada data barang
    - Supplier
 6. Transaksi Operasional
    - Kategori Operasional
