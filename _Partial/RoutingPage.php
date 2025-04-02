@@ -23,6 +23,7 @@
             "Penjualan"         =>  "_Page/Penjualan/Penjualan.php",
             "Pembelian"         =>  "_Page/Pembelian/Pembelian.php",
             "RekapJualBeli"     =>  "_Page/RekapJualBeli/RekapJualBeli.php",
+            "UtangPiutang"      =>  "_Page/UtangPiutang/UtangPiutang.php",
             "Version"           =>  "_Page/Version/Version.php",
             "SettingGeneral"    =>  "_Page/SettingGeneral/SettingGeneral.php",
             "EntitasAkses"      =>  "_Page/EntitasAkses/EntitasAkses.php",

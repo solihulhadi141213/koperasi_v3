@@ -452,13 +452,13 @@
                     var rp_jasa_format = parseInt(rp_jasa, 10).toLocaleString('en-US');
                     $('#rp_jasa').val(rp_jasa_format);
 
-                    var angsuran_pokok=$('#angsuran_pokok').val();
-                    var angsuran_pokok = angsuran_pokok.replace(/,/g, '');
-
+                    var angsuran_pokok=parseFloat(jumlah_pinjaman/periode_angsuran);
+                    var angsuran_pokok_format = parseInt(angsuran_pokok, 10).toLocaleString('en-US');
                     //Bersihkan
                     var angsuran_total = parseInt(angsuran_pokok) + parseInt(rp_jasa);
                     var formatted_angsuran_total = parseInt(angsuran_total, 10).toLocaleString('en-US');
-
+                    //Tempelkan Angsuran Pokok dan angsuran total
+                    $('#angsuran_pokok').val(angsuran_pokok_format);
                     $('#angsuran_total').val(formatted_angsuran_total);
                 }
                 if(persen_jasa_pinjaman_jenis=="" || persen_jasa_pinjaman_jenis==0){

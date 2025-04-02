@@ -141,9 +141,9 @@
                                                                         }else{
                                                                             //Melakukan input data
                                                                             $entry="INSERT INTO pinjaman (
+                                                                                id_pinjaman_jenis, 
                                                                                 uuid_pinjaman,
                                                                                 id_anggota,
-                                                                                id_pinjaman_jenis,
                                                                                 nama,
                                                                                 nip,
                                                                                 lembaga,
@@ -160,9 +160,9 @@
                                                                                 periode_angsuran,
                                                                                 status
                                                                             ) VALUES (
+                                                                                '$id_pinjaman_jenis',
                                                                                 '$uuid_pinjaman',
                                                                                 '$id_anggota',
-                                                                                '$id_pinjaman_jenis',
                                                                                 '$nama',
                                                                                 '$nip',
                                                                                 '$lembaga',
@@ -238,7 +238,8 @@
                                                                                     echo '<div class="text-danger">Terjadi kesalahan pada saat menyimpan data jurnal Kredit!!</div>';
                                                                                 }
                                                                             }else{
-                                                                                echo '<code class="text-danger">Terjadi kesalahan pada saat menyimpan data simpanan</code>';
+                                                                                echo '<code class="text-danger">Terjadi kesalahan pada saat menyimpan data pinjaman</code><br>';
+                                                                                echo "Error: " . $entry . "<br>" . mysqli_error($Conn);
                                                                             }
                                                                         }
                                                                     }

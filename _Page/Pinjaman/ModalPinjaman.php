@@ -222,7 +222,7 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-12 text-center">
-                            <a href="javascript:void(0);" id="HitungSimulasi" data-id="Show">
+                            <a href="javascript:void(0);" id="HitungSimulasi" class="btn btn-md btn-outline-info btn-rounded">
                                 <i class="bi bi-chevron-down"></i> Lihat simulasi angsuran
                             </a>
                         </div>

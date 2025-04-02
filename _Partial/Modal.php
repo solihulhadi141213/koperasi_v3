@@ -29,6 +29,7 @@
             "Pembelian"             => "_Page/Pembelian/ModalPembelian.php",
             "Pembelian"             => "_Page/Pembelian/ModalPembelian.php",
             "RekapJualBeli"         => "_Page/RekapJualBeli/ModalRekapJualBeli.php",
+            "UtangPiutang"          => "_Page/UtangPiutang/ModalUtangPiutang.php",
             "SettingGeneral"        => "_Page/SettingGeneral/ModalSettingGeneral.php",
             "Tabungan"              => "_Page/Tabungan/ModalTabungan.php",
             "JenisPinjaman"         => "_Page/JenisPinjaman/ModalJenisPinjaman.php",

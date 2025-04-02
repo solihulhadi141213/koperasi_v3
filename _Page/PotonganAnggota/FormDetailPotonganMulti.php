@@ -213,8 +213,8 @@
                                         </tr>
                         ';
 
-                        $total_potongan_rp = "Rp " . number_format($total_potongan,0,',','.');
-                        $total_sisa_angsuran_rp = "Rp " . number_format($total_sisa_angsuran,0,',','.');
+                        $total_potongan_rp = "Rp " . number_format($total_potongan+$jumlah_penjualan_anggota,0,',','.');
+                        $total_sisa_angsuran_rp = "Rp " . number_format($total_sisa_angsuran+$jumlah_penjualan_anggota,0,',','.');
                         echo '
                                         <tr>
                                             <td><small></small></td>

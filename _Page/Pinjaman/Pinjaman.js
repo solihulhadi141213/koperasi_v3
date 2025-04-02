@@ -147,29 +147,21 @@ $('#ModalTambahPinjaman').on('show.bs.modal', function (e) {
 });
 $('#HitungSimulasi').click(function(){
     //menangkap data-id
-    var dataId = $(this).data('id');
-    if(dataId=="Show"){
-        $(this).data('id', 'Hide');
-        var form = $('#ProsesTambahPinjaman')[0];
-        var data = new FormData(form);
-        $.ajax({
-            type 	    : 'POST',
-            url 	    : '_Page/Pinjaman/SimulasiPinjaman.php',
-            data 	    :  data,
-            cache       : false,
-            processData : false,
-            contentType : false,
-            enctype     : 'multipart/form-data',
-            success     : function(data){
-                $('#SimulasiPinjaman').html(data);
-            }
-        });
-        $('#HitungSimulasi').html('<i class="bi bi-chevron-up"></i> Tutup simulasi angsuran');
-    }else{
-        $(this).data('id', 'Show');
-        $('#SimulasiPinjaman').html("");
-        $('#HitungSimulasi').html('<i class="bi bi-chevron-down"></i> Lihat simulasi angsuran');
-    }
+    $(this).data('id', 'Hide');
+    var form = $('#ProsesTambahPinjaman')[0];
+    var data = new FormData(form);
+    $.ajax({
+        type 	    : 'POST',
+        url 	    : '_Page/Pinjaman/SimulasiPinjaman.php',
+        data 	    :  data,
+        cache       : false,
+        processData : false,
+        contentType : false,
+        enctype     : 'multipart/form-data',
+        success     : function(data){
+            $('#SimulasiPinjaman').html(data);
+        }
+    });
 });
 //Proses Tambah Pinjaman
 $('#ProsesTambahPinjaman').submit(function(){

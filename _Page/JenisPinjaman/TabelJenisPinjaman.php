@@ -118,12 +118,12 @@
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalEditJenisPinjaman" data-id="'.$id_pinjaman_jenis.'">
-                                        <i class="bi bi-pencil"></i> Edit Barang
+                                        <i class="bi bi-pencil"></i> Edit Jenis Pinjaman
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalHapusJenisPinjaman" data-id="'.$id_pinjaman_jenis.'">
-                                        <i class="bi bi-trash"></i> Hapus Barang
+                                        <i class="bi bi-trash"></i> Hapus Jenis Pinjaman
                                     </a>
                                 </li>
                             </ul>

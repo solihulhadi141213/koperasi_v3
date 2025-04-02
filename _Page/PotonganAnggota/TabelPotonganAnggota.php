@@ -170,6 +170,39 @@
 
                     if($keyword_by=="jp"){
                         if($keyword==$jumlah_penjualan_anggota){
+                            if(!empty($jumlah_total_potongan_anggota)){
+                                echo '<tr>';
+                                echo '  
+                                    <td>
+                                        <div class="form-check">
+                                            <input class="form-check-input pilih_anggota" type="checkbox" id="id_anggota" name="id_anggota[]" value="'.$id_anggota.'">
+                                        </div>
+                                    </td>
+                                ';
+                                echo '  
+                                    <td>
+                                        <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#ModalDetailPotongan" data-id="'.$id_anggota.'" data-periode="'.$periode.'">
+                                            '.$label_status_anggota.'
+                                        </a>
+                                    </td>
+                                ';
+                                echo '  
+                                    <td>
+                                        <small>
+                                            <small class="text text-muted">'.$nip.'</small>
+                                        </small>
+                                    </td>
+                                ';
+                                foreach ($arry_angsuran_total as $angsuran_list) {
+                                    echo '<td class="text-end"><small class="text-muted">'.$angsuran_list['angsuran_total_rp'].'</small></td>';
+                                }
+                                echo '  <td class="text-end"><small class="text-muted">'.$jumlah_penjualan_anggota_rp.'</small></td>';
+                                echo '  <td class="text-end"><small>'.$jumlah_total_potongan_anggota_rp.'</small></td>';
+                                echo '</tr>';
+                            }
+                        }
+                    }else{
+                        if(!empty($jumlah_total_potongan_anggota)){
                             echo '<tr>';
                             echo '  
                                 <td>
@@ -199,35 +232,6 @@
                             echo '  <td class="text-end"><small>'.$jumlah_total_potongan_anggota_rp.'</small></td>';
                             echo '</tr>';
                         }
-                    }else{
-                        echo '<tr>';
-                        echo '  
-                            <td>
-                                <div class="form-check">
-                                    <input class="form-check-input pilih_anggota" type="checkbox" id="id_anggota" name="id_anggota[]" value="'.$id_anggota.'">
-                                </div>
-                            </td>
-                        ';
-                        echo '  
-                            <td>
-                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#ModalDetailPotongan" data-id="'.$id_anggota.'" data-periode="'.$periode.'">
-                                    '.$label_status_anggota.'
-                                </a>
-                            </td>
-                        ';
-                        echo '  
-                            <td>
-                                <small>
-                                    <small class="text text-muted">'.$nip.'</small>
-                                </small>
-                            </td>
-                        ';
-                        foreach ($arry_angsuran_total as $angsuran_list) {
-                            echo '<td class="text-end"><small class="text-muted">'.$angsuran_list['angsuran_total_rp'].'</small></td>';
-                        }
-                        echo '  <td class="text-end"><small class="text-muted">'.$jumlah_penjualan_anggota_rp.'</small></td>';
-                        echo '  <td class="text-end"><small>'.$jumlah_total_potongan_anggota_rp.'</small></td>';
-                        echo '</tr>';
                     }
                     $no++;
                 }

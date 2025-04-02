@@ -693,7 +693,7 @@
                             // Penjualan dan Pembelian Pembelian Kredit
                             $kode_perkiraan_1=$kode_akun_debet;
                             $nama_perkiraan_1=$nama_akun_debet;
-                            $nilai_1=$tagihan;
+                            $nilai_1=0;
     
                             $kode_perkiraan_2=$kode_akun_kredit;
                             $nama_perkiraan_2=$nama_akun_kredit;

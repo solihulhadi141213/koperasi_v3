@@ -168,11 +168,11 @@
             </ul>
         </li>
         <li class="nav-item">
-            <a class="nav-link <?php if($PageMenu=="Penjualan"||$PageMenu=="Pembelian"||$PageMenu=="RekapJualBeli"){echo "";}else{echo "collapsed";} ?>" data-bs-target="#transaksi_jual_beli-nav" data-bs-toggle="collapse" href="javascript:void(0);">
+            <a class="nav-link <?php if($PageMenu=="Penjualan"||$PageMenu=="Pembelian"||$PageMenu=="RekapJualBeli"||$PageMenu=="UtangPiutang"){echo "";}else{echo "collapsed";} ?>" data-bs-target="#transaksi_jual_beli-nav" data-bs-toggle="collapse" href="javascript:void(0);">
                 <i class="bi bi-cart-check"></i>
                 <span>Transaksi Jual Beli</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="transaksi_jual_beli-nav" class="nav-content collapse <?php if($PageMenu=="Penjualan"||$PageMenu=="Pembelian"||$PageMenu=="RekapJualBeli"){echo "show";} ?>" data-bs-parent="#sidebar-nav">
+            <ul id="transaksi_jual_beli-nav" class="nav-content collapse <?php if($PageMenu=="Penjualan"||$PageMenu=="Pembelian"||$PageMenu=="RekapJualBeli"||$PageMenu=="UtangPiutang"){echo "show";} ?>" data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="index.php?Page=Penjualan" class="<?php if($PageMenu=="Penjualan"){echo "active";} ?>">
                         <i class="bi bi-circle"></i><span>Transaksi Penjualan</span>
@@ -186,6 +186,11 @@
                 <li>
                     <a href="index.php?Page=RekapJualBeli" class="<?php if($PageMenu=="RekapJualBeli"){echo "active";} ?>">
                         <i class="bi bi-circle"></i><span>Rekap Jual/Beli</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="index.php?Page=UtangPiutang" class="<?php if($PageMenu=="UtangPiutang"){echo "active";} ?>">
+                        <i class="bi bi-circle"></i><span>Utang/Piutang</span>
                     </a>
                 </li>
             </ul>
