@@ -295,10 +295,18 @@ function tampilkanTanggal() {
     
     $('#tanggal_menarik').text(tanggal);
 }
-
+// Fungsi Untuk Menampilkan Kalendaer
+function show_calendar() {
+    var calendarEl = document.getElementById('show_calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth'
+    });
+    calendar.render();
+}
 $(document).ready(function () {
     //Menampilkan Data Pertama Kali
     CountOfBarang();
+    show_calendar();
     ShowGrafikSiimpanPinjam();
     //Jam Menarik
     tampilkanTanggal(); // Tampilkan tanggal saat halaman dimuat

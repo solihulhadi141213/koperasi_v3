@@ -19,6 +19,10 @@
 <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
 <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
 <link href="assets/vendor/simple-datatables/style.css?v=<?php echo date('YmdHis'); ?>" rel="stylesheet">
+
+<!-- Calendar -->
+<script src='assets/fullcalendar-6.1.17/dist/index.global.min.js'></script>
+
 <!-- Template Main CSS File -->
 <link href="assets/css/style.css?v=<?php echo date('YmdHis'); ?>" rel="stylesheet">
 <link href="node_modules/mdb-ui-kit/css/mdb.min.css" rel="stylesheet">

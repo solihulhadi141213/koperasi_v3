@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 02, 2025 at 09:08 PM
+-- Generation Time: Apr 07, 2025 at 03:11 PM
 -- Server version: 9.1.0
 -- PHP Version: 7.4.33
 
@@ -334,7 +334,7 @@ CREATE TABLE IF NOT EXISTS `akses_login` (
 INSERT INTO `akses_login` (`id_akses`, `kategori`, `token`, `date_creat`, `date_expired`) VALUES
 (5, 'Pengurus', '6be034775796342467670d3eaf8351f2', '2025-02-25 06:14:01', '2025-02-25 08:13:08'),
 (6, 'Pengurus', 'ea5e56384fde76e479d35ad725c068fd', '2025-02-26 00:53:56', '2025-02-26 02:21:57'),
-(1, 'Pengurus', '0627592a52270e6d0683812f41c48795', '2025-04-03 00:15:45', '2025-04-03 04:22:39');
+(1, 'Pengurus', '0627592a52270e6d0683812f41c48795', '2025-04-03 00:15:45', '2025-04-03 06:01:07');
 
 -- --------------------------------------------------------
 
