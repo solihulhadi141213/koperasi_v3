@@ -51,10 +51,15 @@
                         )";
                         $HasilInputDataPerkiraan=mysqli_query($Conn, $InputDataPerkiraan);
                         if($HasilInputDataPerkiraan){
-                            $KategoriLog="Akun Perkiraan";
-                            $KeteranganLog="Tambah Akun Perkiraan";
-                            include "../../_Config/InputLog.php";
-                            echo '<small class="text-success" id="NotifikasiTambahAkunPerkiraanUtamaBerhasil">Success</small>';
+                            $kategori_log="Akun Perkiraan";
+                            $deskripsi_log="Tambah Akun Perkiraan";
+                            $InputLog=addLog($Conn,$SessionIdAkses,$now,$kategori_log,$deskripsi_log);
+                            if($InputLog=="Success"){
+                                echo '<small class="text-success" id="NotifikasiTambahAkunPerkiraanUtamaBerhasil">Success</small>';
+                            }else{
+                                echo '<small class="text-danger">Terjadi kesalahan pada saat menyimpan log.</small>';
+                            }
+                            
                         }else{
                             echo '<small class="text-danger">Terjadi kesalahan pada saat menyimpan data.</small>';
                         }

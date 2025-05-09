@@ -36,17 +36,31 @@
                 $saldo_normal=GetDetailData($Conn,'akun_perkiraan','id_perkiraan',$id_perkiraan,'saldo_normal');
                 //Mencari Kode Akun Di Atasnya
                 if($level=="1"){
-                    $KodeAtas="";
+                    $KodeAtas="$kode";
+                    $lastPart =""; 
                 }else{
                     $LevelAtas=$level-1;
                     $KodeAtas=GetDetailData($Conn,'akun_perkiraan','id_perkiraan',$id_perkiraan,'kd'.$LevelAtas.'');
                     $parts = explode('.', $kode); // Memisahkan string menjadi array
-                    $lastPart = end($parts); 
+                    if(!empty(end($parts))){
+                        $lastPart = end($parts); 
+                    }else{
+                        $lastPart =""; 
+                    }
+                    
                 }
                 //Cek Punya Anak Akun Atau Tidak
                 $JumlahAnakAkun=mysqli_num_rows(mysqli_query($Conn, "SELECT * FROM akun_perkiraan WHERE level>'$level' AND kd$level='$kode'"));
 ?>
                 <input type="hidden" name="id_perkiraan" value="<?php echo "$id_perkiraan"; ?>">
+                <div class="row">
+                    <div class="col-4">
+                        Level
+                    </div>
+                    <div class="col-8">
+                        <?php echo $level;?>
+                    </div>
+                </div>
                 <div class="row mb-3">
                     <div class="col-md-4">
                         <label for="kode">Kode Akun</label>
@@ -54,7 +68,7 @@
                     <div class="col-md-8">
                         <div class="input-group">
                             <?php
-                                if($level!=="1"){
+                                if($level!==1){
                             ?>
                                 <input type="text" readonly name="kode_induk" id="kode_induk" class="form-control" value="<?php echo "$KodeAtas."; ?>" required>
                                 <input type="text" <?php if(!empty($JumlahAnakAkun)){echo "readonly";} ?> name="kode" id="kode" class="form-control" value="<?php echo "$lastPart"; ?>" required>

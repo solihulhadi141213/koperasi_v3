@@ -1,16 +1,41 @@
-//Fungsi Menampilkan Data Transaksi
+// Fungsi Menampilkan Data Transaksi
 function ShowData() {
     var ProsesFilter = $('#ProsesFilter').serialize();
-    $('#TabelPenjualan').html('<tr><td class="text-center">Loading...</td></tr>');
+    $('#TabelPenjualan').fadeOut(200, function() {
+        $(this).html('<tr><td class="text-center">Loading...</td></tr>').fadeIn(200);
+    });
+
     $.ajax({
-        type    : 'POST',
-        url     : '_Page/Penjualan/TabelPenjualan.php',
-        data    : ProsesFilter,
+        type: 'POST',
+        url: '_Page/Penjualan/TabelPenjualan.php',
+        data: ProsesFilter,
         success: function(data) {
-            $('#TabelPenjualan').html(data);
+            $('#TabelPenjualan').fadeOut(200, function() {
+                $(this).html(data).fadeIn(200);
+            });
         }
     });
 }
+
+// Fungsi Menampilkan Data Laba Penjualan
+function ShowDataLaba() {
+    var ProsesFilterLaba = $('#ProsesFilterLaba').serialize();
+    $('#TabelLabaPenjualan').fadeOut(200, function() {
+        $(this).html('<tr><td class="text-center">Loading...</td></tr>').fadeIn(200);
+    });
+
+    $.ajax({
+        type: 'POST',
+        url: '_Page/Penjualan/TabelLabaPenjualan.php',
+        data: ProsesFilterLaba,
+        success: function(data) {
+            $('#TabelLabaPenjualan').fadeOut(200, function() {
+                $(this).html(data).fadeIn(200);
+            });
+        }
+    });
+}
+
 //Fungsi Menampilkan Data Rincian Bulk
 function ShowDataBulk(get_kategori_transaksi) {
     $('#TabelPenjualanBulk')
@@ -493,7 +518,52 @@ $(document).ready(function() {
     if ($("#TabelPenjualan").length) {
         ShowData();
     }
+    if ($("#TabelLabaPenjualan").length) {
+        ShowDataLaba();
 
+        //Ketika Filter Di Submit
+        $("#ProsesFilterLaba").on("submit", function (e) {
+            //Reset Halaman
+            $('#page_laba').val(1);
+            
+            //Tampilkan Data
+            ShowDataLaba();
+
+            //Tutup Modal
+            $('#ModalFilterLaba').modal('hide');
+        });
+
+        //Event Listener Ketika keyword_by diubah
+        $('#keyword_by_laba').change(function(){
+            var keyword_by = $('#keyword_by_laba').val();
+            $.ajax({
+                type 	    : 'POST',
+                url 	    : '_Page/Penjualan/FormFilterKeywordLaba.php',
+                data 	    :  {keyword_by: keyword_by},
+                success     : function(data){
+                    $('#FormFilterKeywordLaba').html(data);
+                }
+            });
+        });
+
+        //Event listener ketika proses export
+        $("#ProsesExportLaba").on("submit", function (e) {
+        
+            var periode_1 = $('#periode_1_laba').val();
+            var periode_2 = $('#periode_2_laba').val();
+            var type_data = $('#type_data_laba').val();
+            // Bangun URL dengan parameter
+            var url = '_Page/Penjualan/ProsesExportLaba.php?' + 
+            'periode_1=' + encodeURIComponent(periode_1) + 
+            '&periode_2=' + encodeURIComponent(periode_2) + 
+            '&type_data=' + encodeURIComponent(type_data);
+
+            // Buka tab baru dengan URL tersebut
+            window.open(url, '_blank');
+        });
+
+    }
+   
     //Detail Transaksi Inline
     if ($("#get_id_transaksi_jual_beli_detail").length) {
         var id_transaksi_jual_beli=$('#get_id_transaksi_jual_beli_detail').html();
@@ -537,6 +607,20 @@ $(document).ready(function() {
         var next_page = page_now - 1;
         $('#page').val(next_page);
         ShowData();
+    });
+
+    //PAGGING LABA
+    $(document).on('click', '#next_button_laba', function() {
+        var page_now = parseInt($('#page_laba').val(), 10); // Pastikan nilai diambil sebagai angka
+        var next_page = page_now + 1;
+        $('#page_laba').val(next_page);
+        ShowDataLaba();
+    });
+    $(document).on('click', '#prev_button_laba', function() {
+        var page_now = parseInt($('#page_laba').val(), 10); // Pastikan nilai diambil sebagai angka
+        var next_page = page_now - 1;
+        $('#page_laba').val(next_page);
+        ShowDataLaba();
     });
 
     //Modal Export

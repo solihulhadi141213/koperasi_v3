@@ -101,12 +101,16 @@
             while ($row = $result->fetch_assoc()) {
                 // Format harga agar lebih rapi
                 $harga_multi = $row['harga'];
+                $selisih = $harga_multi-$harga_beli;
+                $persen_laba = ($selisih/$harga_beli)*100;
+                $persen_laba = round($persen_laba);
                 $harga_multi_format = number_format($row['harga'], 0, ',', '.');
 
                 // Masukkan ke dalam array multi_harga
                 $multi_harga[] = [
                     "kategori_harga" => $row['kategori_harga'],
                     "harga" => $harga_multi,
+                    "persen_laba" => $persen_laba,
                     "harga_format" => $harga_multi_format,
                 ];
             }

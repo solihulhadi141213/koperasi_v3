@@ -94,7 +94,7 @@ function DetailBarangOnModal(id_barang) {
                 $.each(multi_harga, function (index, item) {
                     var row = `<div class="row mb-2">
                                 <div class="col-4"><small>${item.kategori_harga}</small></div>
-                                <div class="col-8"><small><code class="text-grayish">Rp ${item.harga_format}</code></small></div>
+                                <div class="col-8"><small><code class="text-grayish">Rp ${item.harga_format} (${item.persen_laba} %)</code></small></div>
                             </div>`;
                     $("#informasi_multi_harga").append(row);
                 });

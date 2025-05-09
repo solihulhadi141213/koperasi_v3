@@ -628,6 +628,8 @@
                     $id_autojurnal_jual_beli=$Data['id_autojurnal_jual_beli'];
                     $akun_debet =$Data['debet'];
                     $akun_kredit =$Data['kredit'];
+                    $akun_hpp =$Data['hpp'];
+                    $akun_persediaan =$Data['persediaan'];
                     $akun_utang_piutang =$Data['utang_piutang'];
 
                     //Buka Akun Debet
@@ -787,6 +789,632 @@
                         }
                     }else{
                         $validasi_auto_jurnal="Terjadi Kesalahan Pada Saat Menyimpan Jurnal Ke 1 ($kategori, $id_transaksi_jual_beli, $tanggal, $kode_perkiraan_1, $nama_perkiraan_1, $nilai_1)";
+                    }
+                }
+            }
+        }
+        return $validasi_auto_jurnal;
+    }
+
+    //Fungsi Auto Jurnal Khusus Untuk Penjualan
+    function AutoJurnalPenjualan($Conn, $kategori, $tanggal, $id_transaksi_jual_beli, $tagihan, $pembayaran, $total_hpp, $status){
+
+        //Buka Setting Auto Jurnal
+        $kategori_auto_jurnal="Penjualan";
+        $Qry = $Conn->prepare("SELECT * FROM setting_autojurnal_jual_beli WHERE kategori = ?");
+        if ($Qry === false) {
+            $validasi_auto_jurnal="Query Preparation Failed: " . $Conn->error;
+        }else{
+            
+            // Bind parameter
+            $Qry->bind_param("s", $kategori_auto_jurnal);
+            
+            // Eksekusi query
+            if (!$Qry->execute()) {
+                $validasi_auto_jurnal="Query Execution Failed: " . $Qry->error;
+            }else{
+                
+                // Mengambil hasil
+                $Result = $Qry->get_result();
+                $Data = $Result->fetch_assoc();
+            
+                // Menutup statement
+                $Qry->close();
+            
+                // Mengembalikan hasil
+                if (empty($Data['id_autojurnal_jual_beli'])) {
+                    //Apabiila Tidak Ada Auto Jurnal Maka Success
+                    $validasi_auto_jurnal="Success";
+                } else {
+                    //Buat Variabel
+                    $id_autojurnal_jual_beli=$Data['id_autojurnal_jual_beli'];
+                    $akun_debet =$Data['debet'];
+                    $akun_kredit =$Data['kredit'];
+                    $akun_hpp =$Data['hpp'];
+                    $akun_persediaan =$Data['persediaan'];
+                    $akun_utang_piutang =$Data['utang_piutang'];
+
+                    //Buka Akun Debet
+                    $id_akun_debet=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_debet, 'id_perkiraan');
+                    $kode_akun_debet=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_debet, 'kode');
+                    $nama_akun_debet=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_debet, 'nama');
+
+                    //Buka Akun Kredit
+                    $id_akun_kredit=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_kredit, 'id_perkiraan');
+                    $kode_akun_kredit=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_kredit, 'kode');
+                    $nama_akun_kredit=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_kredit, 'nama');
+
+                    //Buka Akun HPP
+                    $id_akun_hpp=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_hpp, 'id_perkiraan');
+                    $kode_akun_hpp=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_hpp, 'kode');
+                    $nama_akun_hpp=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_hpp, 'nama');
+
+                    //Buka Akun HPP
+                    $id_akun_persediaan=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_persediaan, 'id_perkiraan');
+                    $kode_akun_persediaan=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_persediaan, 'kode');
+                    $nama_akun_persediaan=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_persediaan, 'nama');
+
+                    //Buka Akun Utang Piutang
+                    $id_akun_utang_piutang=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_utang_piutang, 'id_perkiraan');
+                    $kode_akun_utang_piutang=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_utang_piutang, 'kode');
+                    $nama_akun_utang_piutang=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_utang_piutang, 'nama');
+
+                    //Atur Berdasarkan Status Transaksi
+                    if($status=="Lunas"){
+                        //Apabila Status Transaksi Lunas
+
+                        //Entry Akun Kas
+                        $entry1="INSERT INTO jurnal (
+                            kategori,
+                            uuid,
+                            id_transaksi_jual_beli,
+                            tanggal,
+                            kode_perkiraan,
+                            nama_perkiraan,
+                            d_k,
+                            nilai
+                        ) VALUES (
+                            '$kategori',
+                            '$id_transaksi_jual_beli',
+                            '$id_transaksi_jual_beli',
+                            '$tanggal',
+                            '$kode_akun_debet',
+                            '$nama_akun_debet',
+                            'D',
+                            '$tagihan'
+                        )";
+                        $Input1=mysqli_query($Conn, $entry1);
+                        if($Input1){
+
+                            //Entry Akun Pendapatan Penjualan
+                            $entry2="INSERT INTO jurnal (
+                                kategori,
+                                uuid,
+                                id_transaksi_jual_beli,
+                                tanggal,
+                                kode_perkiraan,
+                                nama_perkiraan,
+                                d_k,
+                                nilai
+                            ) VALUES (
+                                '$kategori',
+                                '$id_transaksi_jual_beli',
+                                '$id_transaksi_jual_beli',
+                                '$tanggal',
+                                '$kode_akun_kredit',
+                                '$nama_akun_kredit',
+                                'K',
+                                '$tagihan'
+                            )";
+                            $Input2=mysqli_query($Conn, $entry2);
+                            if($Input2){
+
+                                //Entry Akun HPP
+                                $entry3="INSERT INTO jurnal (
+                                    kategori,
+                                    uuid,
+                                    id_transaksi_jual_beli,
+                                    tanggal,
+                                    kode_perkiraan,
+                                    nama_perkiraan,
+                                    d_k,
+                                    nilai
+                                ) VALUES (
+                                    '$kategori',
+                                    '$id_transaksi_jual_beli',
+                                    '$id_transaksi_jual_beli',
+                                    '$tanggal',
+                                    '$kode_akun_hpp',
+                                    '$nama_akun_hpp',
+                                    'D',
+                                    '$total_hpp'
+                                )";
+                                $Input3=mysqli_query($Conn, $entry3);
+                                if($Input3){
+                                    
+                                    //Entry Akun persediaan Barang
+                                    $entry4="INSERT INTO jurnal (
+                                        kategori,
+                                        uuid,
+                                        id_transaksi_jual_beli,
+                                        tanggal,
+                                        kode_perkiraan,
+                                        nama_perkiraan,
+                                        d_k,
+                                        nilai
+                                    ) VALUES (
+                                        '$kategori',
+                                        '$id_transaksi_jual_beli',
+                                        '$id_transaksi_jual_beli',
+                                        '$tanggal',
+                                        '$kode_akun_persediaan',
+                                        '$nama_akun_persediaan',
+                                        'K',
+                                        '$total_hpp'
+                                    )";
+                                    $Input4=mysqli_query($Conn, $entry4);
+                                    if($Input4){
+                                        $validasi_auto_jurnal="Success";
+                                    }else{
+                                        $validasi_auto_jurnal="Terjadi Kesalahan Pada Saat Menyimpan Auto Jurnal Akun Persediaan";
+                                    }
+                                }else{
+                                    $validasi_auto_jurnal="Terjadi Kesalahan Pada Saat Menyimpan Auto Jurnal Akun HPP";
+                                }
+                            }else{
+                                $validasi_auto_jurnal="Terjadi Kesalahan Pada Saat Menyimpan Auto Jurnal Akun Pendapatan Penjualan";
+                            }
+                        }else{
+                            $validasi_auto_jurnal="Terjadi Kesalahan Pada Saat Menyimpan Auto Jurnal Kas";
+                        }
+                        
+                    }else{
+                       //Apabila Status Transaksi Piutang
+                       $nominal_piutang=$tagihan-$pembayaran;
+
+                       //Entry Akun Kas
+                        $entry1="INSERT INTO jurnal (
+                            kategori,
+                            uuid,
+                            id_transaksi_jual_beli,
+                            tanggal,
+                            kode_perkiraan,
+                            nama_perkiraan,
+                            d_k,
+                            nilai
+                        ) VALUES (
+                            '$kategori',
+                            '$id_transaksi_jual_beli',
+                            '$id_transaksi_jual_beli',
+                            '$tanggal',
+                            '$kode_akun_debet',
+                            '$nama_akun_debet',
+                            'D',
+                            '$pembayaran'
+                        )";
+                        $Input1=mysqli_query($Conn, $entry1);
+                        if($Input1){
+
+                            //Entry Akun Pendapatan Penjualan
+                            $entry2="INSERT INTO jurnal (
+                                kategori,
+                                uuid,
+                                id_transaksi_jual_beli,
+                                tanggal,
+                                kode_perkiraan,
+                                nama_perkiraan,
+                                d_k,
+                                nilai
+                            ) VALUES (
+                                '$kategori',
+                                '$id_transaksi_jual_beli',
+                                '$id_transaksi_jual_beli',
+                                '$tanggal',
+                                '$kode_akun_kredit',
+                                '$nama_akun_kredit',
+                                'K',
+                                '$tagihan'
+                            )";
+                            $Input2=mysqli_query($Conn, $entry2);
+                            if($Input2){
+
+                                //Entry Akun HPP
+                                $entry3="INSERT INTO jurnal (
+                                    kategori,
+                                    uuid,
+                                    id_transaksi_jual_beli,
+                                    tanggal,
+                                    kode_perkiraan,
+                                    nama_perkiraan,
+                                    d_k,
+                                    nilai
+                                ) VALUES (
+                                    '$kategori',
+                                    '$id_transaksi_jual_beli',
+                                    '$id_transaksi_jual_beli',
+                                    '$tanggal',
+                                    '$kode_akun_hpp',
+                                    '$nama_akun_hpp',
+                                    'D',
+                                    '$total_hpp'
+                                )";
+                                $Input3=mysqli_query($Conn, $entry3);
+                                if($Input3){
+                                    
+                                    //Entry Akun persediaan Barang
+                                    $entry4="INSERT INTO jurnal (
+                                        kategori,
+                                        uuid,
+                                        id_transaksi_jual_beli,
+                                        tanggal,
+                                        kode_perkiraan,
+                                        nama_perkiraan,
+                                        d_k,
+                                        nilai
+                                    ) VALUES (
+                                        '$kategori',
+                                        '$id_transaksi_jual_beli',
+                                        '$id_transaksi_jual_beli',
+                                        '$tanggal',
+                                        '$kode_akun_persediaan',
+                                        '$nama_akun_persediaan',
+                                        'K',
+                                        '$total_hpp'
+                                    )";
+                                    $Input4=mysqli_query($Conn, $entry4);
+                                    if($Input4){
+                                        
+                                        //Entry Akun Piutang
+                                        $entry5="INSERT INTO jurnal (
+                                            kategori,
+                                            uuid,
+                                            id_transaksi_jual_beli,
+                                            tanggal,
+                                            kode_perkiraan,
+                                            nama_perkiraan,
+                                            d_k,
+                                            nilai
+                                        ) VALUES (
+                                            '$kategori',
+                                            '$id_transaksi_jual_beli',
+                                            '$id_transaksi_jual_beli',
+                                            '$tanggal',
+                                            '$kode_akun_utang_piutang',
+                                            '$nama_akun_utang_piutang',
+                                            'D',
+                                            '$nominal_piutang'
+                                        )";
+                                        $Input5=mysqli_query($Conn, $entry5);
+                                        if($Input5){
+                                            $validasi_auto_jurnal="Success";
+                                        }else{
+                                            $validasi_auto_jurnal="Terjadi Kesalahan Pada Saat Menyimpan Auto Jurnal Akun Piutang";
+                                        }
+                                    }else{
+                                        $validasi_auto_jurnal="Terjadi Kesalahan Pada Saat Menyimpan Auto Jurnal Akun Persediaan";
+                                    }
+                                }else{
+                                    $validasi_auto_jurnal="Terjadi Kesalahan Pada Saat Menyimpan Auto Jurnal Akun HPP";
+                                }
+                            }else{
+                                $validasi_auto_jurnal="Terjadi Kesalahan Pada Saat Menyimpan Auto Jurnal Akun Pendapatan Penjualan";
+                            }
+                        }else{
+                            $validasi_auto_jurnal="Terjadi Kesalahan Pada Saat Menyimpan Auto Jurnal Kas";
+                        }
+                    }
+                }
+            }
+        }
+        return $validasi_auto_jurnal;
+    }
+
+    //Auto Jurnal Untuk Retur Penjualan
+    function AutoJurnalReturPenjualan($Conn, $kategori, $tanggal, $id_transaksi_jual_beli, $tagihan, $pembayaran, $total_hpp, $status){
+
+        //Buka Setting Auto Jurnal
+        $kategori_auto_jurnal="Penjualan";
+        $Qry = $Conn->prepare("SELECT * FROM setting_autojurnal_jual_beli WHERE kategori = ?");
+        if ($Qry === false) {
+            $validasi_auto_jurnal="Query Preparation Failed: " . $Conn->error;
+        }else{
+            
+            // Bind parameter
+            $Qry->bind_param("s", $kategori_auto_jurnal);
+            
+            // Eksekusi query
+            if (!$Qry->execute()) {
+                $validasi_auto_jurnal="Query Execution Failed: " . $Qry->error;
+            }else{
+                
+                // Mengambil hasil
+                $Result = $Qry->get_result();
+                $Data = $Result->fetch_assoc();
+            
+                // Menutup statement
+                $Qry->close();
+            
+                // Mengembalikan hasil
+                if (empty($Data['id_autojurnal_jual_beli'])) {
+                    //Apabiila Tidak Ada Auto Jurnal Maka Success
+                    $validasi_auto_jurnal="Success";
+                } else {
+                    //Buat Variabel
+                    $id_autojurnal_jual_beli=$Data['id_autojurnal_jual_beli'];
+                    $akun_debet =$Data['debet'];
+                    $akun_kredit =$Data['kredit'];
+                    $akun_hpp =$Data['hpp'];
+                    $akun_persediaan =$Data['persediaan'];
+                    $akun_utang_piutang =$Data['utang_piutang'];
+
+                    //Buka Akun Debet
+                    $id_akun_debet=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_debet, 'id_perkiraan');
+                    $kode_akun_debet=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_debet, 'kode');
+                    $nama_akun_debet=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_debet, 'nama');
+
+                    //Buka Akun Kredit
+                    $id_akun_kredit=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_kredit, 'id_perkiraan');
+                    $kode_akun_kredit=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_kredit, 'kode');
+                    $nama_akun_kredit=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_kredit, 'nama');
+
+                    //Buka Akun HPP
+                    $id_akun_hpp=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_hpp, 'id_perkiraan');
+                    $kode_akun_hpp=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_hpp, 'kode');
+                    $nama_akun_hpp=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_hpp, 'nama');
+
+                    //Buka Akun HPP
+                    $id_akun_persediaan=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_persediaan, 'id_perkiraan');
+                    $kode_akun_persediaan=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_persediaan, 'kode');
+                    $nama_akun_persediaan=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_persediaan, 'nama');
+
+                    //Buka Akun Utang Piutang
+                    $id_akun_utang_piutang=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_utang_piutang, 'id_perkiraan');
+                    $kode_akun_utang_piutang=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_utang_piutang, 'kode');
+                    $nama_akun_utang_piutang=GetDetailData($Conn, 'akun_perkiraan', 'id_perkiraan', $akun_utang_piutang, 'nama');
+
+                    //Atur Berdasarkan Status Transaksi
+                    if($status=="Lunas"){
+                        //Apabila Status Transaksi Lunas
+
+                        //Entry Akun Kas
+                        $entry1="INSERT INTO jurnal (
+                            kategori,
+                            uuid,
+                            id_transaksi_jual_beli,
+                            tanggal,
+                            kode_perkiraan,
+                            nama_perkiraan,
+                            d_k,
+                            nilai
+                        ) VALUES (
+                            '$kategori',
+                            '$id_transaksi_jual_beli',
+                            '$id_transaksi_jual_beli',
+                            '$tanggal',
+                            '$kode_akun_debet',
+                            '$nama_akun_debet',
+                            'K',
+                            '$tagihan'
+                        )";
+                        $Input1=mysqli_query($Conn, $entry1);
+                        if($Input1){
+
+                            //Entry Akun Pendapatan Penjualan
+                            $entry2="INSERT INTO jurnal (
+                                kategori,
+                                uuid,
+                                id_transaksi_jual_beli,
+                                tanggal,
+                                kode_perkiraan,
+                                nama_perkiraan,
+                                d_k,
+                                nilai
+                            ) VALUES (
+                                '$kategori',
+                                '$id_transaksi_jual_beli',
+                                '$id_transaksi_jual_beli',
+                                '$tanggal',
+                                '$kode_akun_kredit',
+                                '$nama_akun_kredit',
+                                'D',
+                                '$tagihan'
+                            )";
+                            $Input2=mysqli_query($Conn, $entry2);
+                            if($Input2){
+
+                                //Entry Akun HPP
+                                $entry3="INSERT INTO jurnal (
+                                    kategori,
+                                    uuid,
+                                    id_transaksi_jual_beli,
+                                    tanggal,
+                                    kode_perkiraan,
+                                    nama_perkiraan,
+                                    d_k,
+                                    nilai
+                                ) VALUES (
+                                    '$kategori',
+                                    '$id_transaksi_jual_beli',
+                                    '$id_transaksi_jual_beli',
+                                    '$tanggal',
+                                    '$kode_akun_hpp',
+                                    '$nama_akun_hpp',
+                                    'K',
+                                    '$total_hpp'
+                                )";
+                                $Input3=mysqli_query($Conn, $entry3);
+                                if($Input3){
+                                    
+                                    //Entry Akun persediaan Barang
+                                    $entry4="INSERT INTO jurnal (
+                                        kategori,
+                                        uuid,
+                                        id_transaksi_jual_beli,
+                                        tanggal,
+                                        kode_perkiraan,
+                                        nama_perkiraan,
+                                        d_k,
+                                        nilai
+                                    ) VALUES (
+                                        '$kategori',
+                                        '$id_transaksi_jual_beli',
+                                        '$id_transaksi_jual_beli',
+                                        '$tanggal',
+                                        '$kode_akun_persediaan',
+                                        '$nama_akun_persediaan',
+                                        'D',
+                                        '$total_hpp'
+                                    )";
+                                    $Input4=mysqli_query($Conn, $entry4);
+                                    if($Input4){
+                                        $validasi_auto_jurnal="Success";
+                                    }else{
+                                        $validasi_auto_jurnal="Terjadi Kesalahan Pada Saat Menyimpan Auto Jurnal Akun Persediaan";
+                                    }
+                                }else{
+                                    $validasi_auto_jurnal="Terjadi Kesalahan Pada Saat Menyimpan Auto Jurnal Akun HPP";
+                                }
+                            }else{
+                                $validasi_auto_jurnal="Terjadi Kesalahan Pada Saat Menyimpan Auto Jurnal Akun Pendapatan Penjualan";
+                            }
+                        }else{
+                            $validasi_auto_jurnal="Terjadi Kesalahan Pada Saat Menyimpan Auto Jurnal Kas";
+                        }
+                        
+                    }else{
+                       //Apabila Status Transaksi Piutang
+                       $nominal_piutang=$tagihan-$pembayaran;
+
+                       //Entry Akun Kas
+                        $entry1="INSERT INTO jurnal (
+                            kategori,
+                            uuid,
+                            id_transaksi_jual_beli,
+                            tanggal,
+                            kode_perkiraan,
+                            nama_perkiraan,
+                            d_k,
+                            nilai
+                        ) VALUES (
+                            '$kategori',
+                            '$id_transaksi_jual_beli',
+                            '$id_transaksi_jual_beli',
+                            '$tanggal',
+                            '$kode_akun_debet',
+                            '$nama_akun_debet',
+                            'K',
+                            '$pembayaran'
+                        )";
+                        $Input1=mysqli_query($Conn, $entry1);
+                        if($Input1){
+
+                            //Entry Akun Pendapatan Penjualan
+                            $entry2="INSERT INTO jurnal (
+                                kategori,
+                                uuid,
+                                id_transaksi_jual_beli,
+                                tanggal,
+                                kode_perkiraan,
+                                nama_perkiraan,
+                                d_k,
+                                nilai
+                            ) VALUES (
+                                '$kategori',
+                                '$id_transaksi_jual_beli',
+                                '$id_transaksi_jual_beli',
+                                '$tanggal',
+                                '$kode_akun_kredit',
+                                '$nama_akun_kredit',
+                                'D',
+                                '$tagihan'
+                            )";
+                            $Input2=mysqli_query($Conn, $entry2);
+                            if($Input2){
+
+                                //Entry Akun HPP
+                                $entry3="INSERT INTO jurnal (
+                                    kategori,
+                                    uuid,
+                                    id_transaksi_jual_beli,
+                                    tanggal,
+                                    kode_perkiraan,
+                                    nama_perkiraan,
+                                    d_k,
+                                    nilai
+                                ) VALUES (
+                                    '$kategori',
+                                    '$id_transaksi_jual_beli',
+                                    '$id_transaksi_jual_beli',
+                                    '$tanggal',
+                                    '$kode_akun_hpp',
+                                    '$nama_akun_hpp',
+                                    'K',
+                                    '$total_hpp'
+                                )";
+                                $Input3=mysqli_query($Conn, $entry3);
+                                if($Input3){
+                                    
+                                    //Entry Akun persediaan Barang
+                                    $entry4="INSERT INTO jurnal (
+                                        kategori,
+                                        uuid,
+                                        id_transaksi_jual_beli,
+                                        tanggal,
+                                        kode_perkiraan,
+                                        nama_perkiraan,
+                                        d_k,
+                                        nilai
+                                    ) VALUES (
+                                        '$kategori',
+                                        '$id_transaksi_jual_beli',
+                                        '$id_transaksi_jual_beli',
+                                        '$tanggal',
+                                        '$kode_akun_persediaan',
+                                        '$nama_akun_persediaan',
+                                        'D',
+                                        '$total_hpp'
+                                    )";
+                                    $Input4=mysqli_query($Conn, $entry4);
+                                    if($Input4){
+                                        
+                                        //Entry Akun Piutang
+                                        $entry5="INSERT INTO jurnal (
+                                            kategori,
+                                            uuid,
+                                            id_transaksi_jual_beli,
+                                            tanggal,
+                                            kode_perkiraan,
+                                            nama_perkiraan,
+                                            d_k,
+                                            nilai
+                                        ) VALUES (
+                                            '$kategori',
+                                            '$id_transaksi_jual_beli',
+                                            '$id_transaksi_jual_beli',
+                                            '$tanggal',
+                                            '$kode_akun_utang_piutang',
+                                            '$nama_akun_utang_piutang',
+                                            'K',
+                                            '$nominal_piutang'
+                                        )";
+                                        $Input5=mysqli_query($Conn, $entry5);
+                                        if($Input5){
+                                            $validasi_auto_jurnal="Success";
+                                        }else{
+                                            $validasi_auto_jurnal="Terjadi Kesalahan Pada Saat Menyimpan Auto Jurnal Akun Piutang";
+                                        }
+                                    }else{
+                                        $validasi_auto_jurnal="Terjadi Kesalahan Pada Saat Menyimpan Auto Jurnal Akun Persediaan";
+                                    }
+                                }else{
+                                    $validasi_auto_jurnal="Terjadi Kesalahan Pada Saat Menyimpan Auto Jurnal Akun HPP";
+                                }
+                            }else{
+                                $validasi_auto_jurnal="Terjadi Kesalahan Pada Saat Menyimpan Auto Jurnal Akun Pendapatan Penjualan";
+                            }
+                        }else{
+                            $validasi_auto_jurnal="Terjadi Kesalahan Pada Saat Menyimpan Auto Jurnal Kas";
+                        }
                     }
                 }
             }

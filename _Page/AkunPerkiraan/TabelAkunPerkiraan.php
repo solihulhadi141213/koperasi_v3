@@ -36,7 +36,7 @@
         }else{
 ?>
     <div class="table-responsive">
-        <table class="table table-hover table-bordered">
+        <table class="table table-hover table-bordered table-striped">
             <thead>
                 <tr>
                     <td align="center"><b>No</b></td>
@@ -50,7 +50,17 @@
             <tbody>
                 <?php
                     $no = 1;
-                    $query = mysqli_query($Conn, "SELECT*FROM akun_perkiraan ORDER BY kode ASC");
+                    $query = mysqli_query($Conn, "
+                        SELECT * FROM akun_perkiraan
+                        ORDER BY
+                            CAST(SUBSTRING_INDEX(kode, '.', 1) AS UNSIGNED),
+                            IF(CHAR_LENGTH(kode) - CHAR_LENGTH(REPLACE(kode, '.', '')) >= 1,
+                                CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(kode, '.', 2), '.', -1) AS UNSIGNED), 0),
+                            IF(CHAR_LENGTH(kode) - CHAR_LENGTH(REPLACE(kode, '.', '')) >= 2,
+                                CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(kode, '.', 3), '.', -1) AS UNSIGNED), 0),
+                            IF(CHAR_LENGTH(kode) - CHAR_LENGTH(REPLACE(kode, '.', '')) >= 3,
+                                CAST(SUBSTRING_INDEX(kode, '.', -1) AS UNSIGNED), 0)
+                    ");
                     while ($data = mysqli_fetch_array($query)) {
                         $id_perkiraan = $data['id_perkiraan'];
                         $kode_perkiraan = $data['kode'];
@@ -73,14 +83,27 @@
                             </td>    
                             <?php 
                                 if($level_perkiraan=="1"){
-                                    echo '<td align="left" colspan="'.$level_akun_max.'">'.$kode_perkiraan.'. '.$nama_perkiraan.'</td>';
+                                    echo '<td align="left" colspan="'.$level_akun_max.'"><b>'.$kode_perkiraan.'. '.$nama_perkiraan.'</b></td>';
                                 }else{
                                     $JumlahKolomKosong=$level_perkiraan-1;
                                     for ($i = 0; $i < $JumlahKolomKosong; $i++) {
                                         echo '<td align="left"></td>';
                                     }
                                     $JumlahColspan=$level_akun_max- $JumlahKolomKosong;
-                                    echo '<td align="left" colspan="'.$JumlahColspan.'">'.$kode_perkiraan.'. '.$nama_perkiraan.'</td>';
+                                    if($level_perkiraan=="2"){
+                                        echo '<td align="left" colspan="'.$JumlahColspan.'">'.$kode_perkiraan.'. '.$nama_perkiraan.'</td>';
+                                    }else{
+                                        if($level_perkiraan=="3"){
+                                            echo '<td align="left" colspan="'.$JumlahColspan.'"><small>'.$kode_perkiraan.'. '.$nama_perkiraan.'</small></td>';
+                                        }else{
+                                            if($level_perkiraan=="4"){
+                                                echo '<td align="left" colspan="'.$JumlahColspan.'"><small class="text text-muted">'.$kode_perkiraan.'. '.$nama_perkiraan.'</small></td>';
+                                            }else{
+                                                echo '<td align="left" colspan="'.$JumlahColspan.'"><small class="text text-danger">'.$kode_perkiraan.'. '.$nama_perkiraan.'</small></td>';
+                                            }
+                                        }
+                                    }
+                                    
                                 }
                             ?>    
                             <td class="text-center" align="center">
@@ -101,7 +124,7 @@
                                 </small>
                             </td>
                             <td class="text-center" align="center">
-                                <a class="btn btn-sm btn-outline-dark btn-rounded" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="btn btn-sm btn-outline-dark btn-floating" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bi bi-three-dots"></i>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" style="">
@@ -113,11 +136,13 @@
                                             <i class="bi bi-info-circle"></i> Detail
                                         </a>
                                     </li>
-                                    <li>
-                                        <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalTambahAkunPerkiraanAnak" data-id="<?php echo "$id_perkiraan"; ?>">
-                                            <i class="bi bi-plus"></i> Tambah Akun
-                                        </a>
-                                    </li>
+                                    <?php if($level_perkiraan<4){ ?>
+                                        <li>
+                                            <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalTambahAkunPerkiraanAnak" data-id="<?php echo "$id_perkiraan"; ?>">
+                                                <i class="bi bi-plus"></i> Tambah Akun
+                                            </a>
+                                        </li>
+                                    <?php } ?>
                                     <li>
                                         <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalEditAkun" data-id="<?php echo "$id_perkiraan"; ?>">
                                             <i class="bi bi-pencil"></i> Ubah

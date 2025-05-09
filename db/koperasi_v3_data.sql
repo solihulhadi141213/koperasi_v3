@@ -1758,7 +1758,7 @@ CREATE TABLE IF NOT EXISTS `pinjaman_jenis` (
   `periode_angsuran` int NOT NULL,
   `persen_jasa` decimal(10,2) NOT NULL,
   PRIMARY KEY (`id_pinjaman_jenis`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `pinjaman_jenis`
@@ -1810,7 +1810,7 @@ CREATE TABLE IF NOT EXISTS `setting_autojurnal_jual_beli` (
   `kredit` int DEFAULT NULL,
   `utang_piutang` int DEFAULT NULL,
   PRIMARY KEY (`id_autojurnal_jual_beli`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `setting_autojurnal_jual_beli`
@@ -1833,7 +1833,7 @@ CREATE TABLE IF NOT EXISTS `setting_autojurnal_shu` (
   `id_perkiraan_kredit` int NOT NULL,
   `komponen` varchar(15) NOT NULL,
   PRIMARY KEY (`id_setting_autojurnal_shu`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `setting_autojurnal_shu`

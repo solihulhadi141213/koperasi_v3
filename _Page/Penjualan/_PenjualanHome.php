@@ -39,8 +39,12 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
-                            <div class="col-md-8"></div>
-                            <div class="col-md-2">
+                            <div class="col-md-8 mb-2">
+                                <b class="card-title"> 
+                                    <i class="bi bi-table"></i> Transaksi Penjualan
+                                </b>
+                            </div>
+                            <div class="col-6 col-sm-6 col-md-2 mb-2">
                                 <a class="btn btn-md btn-outline-dark btn-rounded btn-block" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bi bi-three-dots"></i> Opsi Lanjutan
                                 </a>
@@ -60,7 +64,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-6 col-sm-6 col-md-2 mb-2">
                                 <button type="button" class="btn btn-md btn-primary btn-block btn-rounded" data-bs-toggle="modal" data-bs-target="#ModalTambahTransaksiPenjualan" title="Tambah Transaksi Penjualan">
                                     <i class="bi bi-plus-lg"></i> Tambah
                                 </button>
@@ -125,6 +129,89 @@
                                     <i class="bi bi-chevron-left"></i>
                                 </button>
                                 <button type="button" class="btn btn-sm btn-outline-info btn-floating" id="next_button">
+                                    <i class="bi bi-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Tabel Untuk Menampilkan Laba -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-10 mb-2">
+                                <b class="card-title"> 
+                                    <i class="bi bi-table"></i> Estimasi Laba Penjualan
+                                </b>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-2 mb-2">
+                                <a class="btn btn-md btn-outline-dark btn-rounded btn-block" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-three-dots"></i> Opsi Lanjutan
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" style="">
+                                    <li class="dropdown-header text-start">
+                                        <h6>Option</h6>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalFilterLaba">
+                                            <i class="bi bi-funnel"></i> Filter
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalExportLaba">
+                                            <i class="bi bi-cloud-arrow-down"></i> Export
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="tabel table-responsive">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th><b>No</b></th>
+                                        <th><b>Tgl</b></th>
+                                        <th><b>Kategori</b></th>
+                                        <th><b>Uraian</b></th>
+                                        <th><b>H.Beli</b></th>
+                                        <th><b>H.Jual</b></th>
+                                        <th><b>QTY</b></th>
+                                        <th><b>PPN</b></th>
+                                        <th><b>DSC</b></th>
+                                        <th><b>Subtotal</b></th>
+                                        <th><b>HPP</b></th>
+                                        <th><b>Margin</b></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="TabelLabaPenjualan">
+                                    <!-- Data Barang Akan Ditampilkan Disini -->
+                                    <tr>
+                                        <td colspan="12" class="text-center text-danger">
+                                            Tidak Ada Data yang Ditampilkan
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-6">
+                                <small id="page_info_laba">
+                                    Page 1 Of 100
+                                </small>
+                            </div>
+                            <div class="col-6 text-end">
+                                <button type="button" class="btn btn-sm btn-outline-info btn-floating" id="prev_button_laba">
+                                    <i class="bi bi-chevron-left"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-info btn-floating" id="next_button_laba">
                                     <i class="bi bi-chevron-right"></i>
                                 </button>
                             </div>

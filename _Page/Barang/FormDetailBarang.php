@@ -87,13 +87,17 @@
                         //Buka Barang Harga
                         $QryHarga = mysqli_query($Conn,"SELECT * FROM barang_harga WHERE id_barang='$id_barang' AND kategori_harga='$kategori_harga'")or die(mysqli_error($Conn));
                         $DataHarga = mysqli_fetch_array($QryHarga);
-                        $harga= $DataHarga['harga'];
-                        $HargaRp = "Rp " . number_format($harga,0,',','.');
+                        $harga_multi= $DataHarga['harga'];
+                        $HargaRp = "Rp " . number_format($harga_multi,0,',','.');
+
+                        $selisih = $harga_multi-$harga_beli;
+                        $persen_laba = ($selisih/$harga_beli)*100;
+                        $persen_laba = round($persen_laba);
                 ?>
                     <tr>
                         <td><b><?php echo "$kategori_harga"; ?></b></td>
                         <td><b>:</b></td>
-                        <td><?php echo "$HargaRp"; ?></td>
+                        <td><?php echo "$HargaRp ($persen_laba%)"; ?></td>
                     </tr>
                 <?php } ?>
             </table>

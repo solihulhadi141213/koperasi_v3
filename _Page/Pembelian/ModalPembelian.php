@@ -301,7 +301,7 @@
                         <div class="col-6">
                             <label for="id_barang_kategori_harga_scan">Kategori Harga</label>
                             <select name="id_barang_kategori_harga" id="id_barang_kategori_harga_scan" class="form-control">
-                                <option value="">Harga Jual</option>
+                                <option value="">Harga Beli</option>
                             </select>
                         </div>
                     </div>

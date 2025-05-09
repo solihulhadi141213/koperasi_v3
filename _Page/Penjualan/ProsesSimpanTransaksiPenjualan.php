@@ -164,6 +164,8 @@
 
                         //Jika Berhasil Input transaksi bulk ke transaksi rincian
                         $jumlah_error=0;
+                        $error_item = [];
+                        $item_no=1;
                         $query = mysqli_query($Conn, "SELECT*FROM transaksi_bulk WHERE id_akses='$SessionIdAkses' AND kategori='$kategori_transaksi' ORDER BY id_transaksi_bulk DESC");
                         while ($data = mysqli_fetch_array($query)) {
                             $id_transaksi_bulk= $data['id_transaksi_bulk'];
@@ -178,6 +180,11 @@
                             $diskon= $data['diskon'];
                             $subtotal= $data['subtotal'];
 
+                            //Buka Harga Beli Barang
+                            $harga_beli=GetDetailData($Conn, 'barang', 'id_barang', $id_barang, 'harga_beli');
+                            if(empty($harga_beli)){
+                                $harga_beli=0;
+                            }
                             //Simpan Data ke tabel transaksi_jual_beli_rincian
                             $query2 = "INSERT INTO transaksi_jual_beli_rincian (
                                 id_transaksi_jual_beli,
@@ -185,23 +192,26 @@
                                 nama_barang,
                                 satuan,
                                 qty,
+                                hpp,
                                 harga,
                                 ppn,
                                 diskon,
                                 subtotal
-                            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                             // Persiapkan statement ke 2
                             $stmt2 = mysqli_prepare($Conn, $query2);
                             if (!$stmt2) {
                                 $jumlah_error=$jumlah_error+1;
+                                $error_item[]="Error Statment in item $item_no";
                             }else{
                                 // Bind parameter ke statement
-                                mysqli_stmt_bind_param($stmt2, "sisssssss", 
+                                mysqli_stmt_bind_param($stmt2, "sissssssss", 
                                     $id_transaksi_jual_beli, 
                                     $id_barang, 
                                     $nama_barang, 
                                     $satuan, 
                                     $qty, 
+                                    $harga_beli, 
                                     $harga, 
                                     $ppn,
                                     $diskon,
@@ -229,10 +239,21 @@
                                         $konversi_multi=GetDetailData($Conn, 'barang_satuan', 'satuan_multi', $satuan, 'konversi_multi');
                                         if(!empty($konversi_multi)){
                                             $qty=$qty*($konversi_multi/$konversi);
-                                            $stok_barang=$stok_barang_lama-$qty;
+
+                                            //Update Stok Untuk kategori Penjualan
+                                            if($kategori_transaksi=="Penjualan"){
+                                                $stok_barang=$stok_barang_lama-$qty;
+                                            }else{
+                                                $stok_barang=$stok_barang_lama+$qty;
+                                            }
+                                            
                                         }else{
                                             //Jika satuan yang digunakan adalah utama
-                                            $stok_barang=$stok_barang_lama-$qty;
+                                            if($kategori_transaksi=="Penjualan"){
+                                                $stok_barang=$stok_barang_lama-$qty;
+                                            }else{
+                                                $stok_barang=$stok_barang_lama+$qty;
+                                            }
                                         }
 
                                         //Proses Update
@@ -243,29 +264,55 @@
                                             $jumlah_error=$jumlah_error+0;
                                         }else{
                                             $jumlah_error=$jumlah_error+1;
+                                            $error_item[]="Error Update in item $item_no";
                                         }
                                     }else{
                                         $jumlah_error=$jumlah_error+1;
+                                        $error_item[]="Error Delete in item $item_no";
                                     }
                                 }else{
                                     $jumlah_error=$jumlah_error+1;
+                                    $error_item[]="Error Input in item $item_no";
                                 }
                             }
-
+                            $item_no++;
                         }
-
+                        $error_item_list=implode(',', $error_item);
                         //Jika Ada Error
                         if(!empty($jumlah_error)){
                             $response = [
                                 "status" => "Error",
-                                "message" => "Ada Beberapa Item Barang Yang Gagal Ditangani"
+                                "message" => "Ada Beberapa Item Barang Yang Gagal Ditangani.Data :  $error_item_list"
                             ];
                         }else{
 
                             //Format tanggal
                             $tanggal_jurnal=date('Y-m-d',strtotime($tanggal));
-                            //Simpan Auto Jurnal
-                            $auto_jurnal=AutoJurnalJualBeli($Conn, $kategori_transaksi, $tanggal_jurnal, $id_transaksi_jual_beli, $total, $cash, $status);
+
+                            //Hitung HPP Penjualan
+                            $query_hpp = "SELECT SUM(hpp * qty) AS total_hpp 
+                                    FROM transaksi_jual_beli_rincian 
+                                    WHERE id_transaksi_jual_beli = ?";
+
+                            // Siapkan statement
+                            $stmt_hpp = $Conn->prepare($query_hpp);
+                            $stmt_hpp->bind_param("s", $id_transaksi_jual_beli); // "s" untuk tipe string
+
+                            // stmt_hpp statement
+                            $stmt_hpp->execute();
+
+                            // Ambil hasil
+                            $result_hpp = $stmt_hpp->get_result();
+                            $row_hpp = $result_hpp->fetch_assoc();
+                            $total_hpp = $row_hpp['total_hpp'] ?? 0;
+                            
+                            //Simpan Auto Jurnal Berdasarkan Kategori Transaksi
+                            if($kategori_transaksi=="Penjualan"){
+                                $auto_jurnal=AutoJurnalPenjualan($Conn, $kategori_transaksi, $tanggal_jurnal, $id_transaksi_jual_beli, $total, $cash, $total_hpp, $status);
+                            }else{
+                                $auto_jurnal=AutoJurnalReturPenjualan($Conn, $kategori_transaksi, $tanggal_jurnal, $id_transaksi_jual_beli, $total, $cash, $total_hpp, $status);
+                            }
+                            
                             if($auto_jurnal!=="Success"){
                                 $response = [
                                     "status" => "Error",

@@ -35,7 +35,11 @@
                         $Data = $Result->fetch_assoc();
                         $Qry->close();
                         //Buat Variabel
-                        $harga=$Data['harga'];
+                        if(!empty($Data['harga'])){
+                            $harga=$Data['harga'];
+                        }else{
+                            $harga=0;
+                        }
                         $harga = ceil($harga);
                         
                         echo '<div class="row mb-3">';
