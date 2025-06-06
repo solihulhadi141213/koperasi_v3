@@ -79,6 +79,12 @@
                 $stmt->execute();
                 $result_rincian = $stmt->get_result();
 
+                //Hitung sisa pembayaran
+                $sql_angsuran = "SELECT SUM(jumlah) as total_jumlah FROM transaksi_pembayaran WHERE id_transaksi_jual_beli='$id_transaksi_jual_beli'";
+                $result_angsuran = $Conn->query($sql_angsuran);
+                $total_angsuran = ($result_angsuran && $result_angsuran->num_rows > 0) ? $result_angsuran->fetch_assoc()["total_jumlah"] : 0;
+                $sisa_tunggakan = $total - ($cash + $total_angsuran);
+
                 while ($data_rincian = $result_rincian->fetch_assoc()) {
                     $list_rincian[] = [
                         "id_transaksi_jual_beli_rincian" => $data_rincian['id_transaksi_jual_beli_rincian'],
@@ -130,6 +136,7 @@
                     "diskon" => $diskon,
                     "diskon_rp" => $diskon_rp,
                     "total" => $total,
+                    "sisa_tunggakan" => $sisa_tunggakan,
                     "total_rp" => $total_rp,
                     "cash" => $cash,
                     "cash_rp" => $cash_rp,

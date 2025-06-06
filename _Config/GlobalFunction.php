@@ -1452,4 +1452,154 @@
         
         return $result;
     }
+
+    //Fungsi Untuk Insert Journal Satu-persatu
+    function InsertParsialJournal($Conn, $kategori, $uuid, $index_colum, $tanggal, $id_akun, $d_k, $nilai) {
+        // Validasi input dasar
+        if (!is_numeric($nilai)) {
+            return "Nilai harus berupa angka";
+        }
+
+        // 1. Verifikasi akun perkiraan ada
+        $Qry = $Conn->prepare("SELECT id_perkiraan, kode, nama FROM akun_perkiraan WHERE id_perkiraan = ?");
+        if ($Qry === false) {
+            return "Error persiapan query akun: " . $Conn->error;
+        }
+        
+        $Qry->bind_param("i", $id_akun);
+        
+        if (!$Qry->execute()) {
+            $error = $Conn->error;
+            $Qry->close();
+            return "Error eksekusi query akun: $error";
+        }
+        
+        $Result = $Qry->get_result();
+        $Data = $Result->fetch_assoc();
+        $Qry->close();
+        $Result->close();
+        
+        if (empty($Data['id_perkiraan'])) {
+            return "Akun perkiraan tidak ditemukan";
+        }
+
+        // 2. Persiapkan query INSERT untuk jurnal
+        // $index_colum adalah nama kolom dinamis (mis: id_transaksi) yang akan diisi dengan $uuid
+        $query = "INSERT INTO jurnal (
+            kategori,
+            uuid,
+            $index_colum,
+            tanggal,
+            kode_perkiraan,
+            nama_perkiraan,
+            d_k,
+            nilai
+        ) VALUES (
+            ?, ?, ?, ?, ?, ?, ?, ?
+        )";
+
+        $stmt = $Conn->prepare($query);
+        if ($stmt === false) {
+            return "Error persiapan query jurnal: " . $Conn->error;
+        }
+
+        // Bind parameter:
+        // 1. kategori
+        // 2. uuid
+        // 3. uuid (untuk nilai kolom dinamis $index_colum)
+        // 4. tanggal
+        // 5. kode_akun
+        // 6. nama_akun
+        // 7. d_k
+        // 8. nilai
+        $stmt->bind_param(
+            "sssssssd",  
+            $kategori,
+            $uuid,
+            $uuid,
+            $tanggal,
+            $Data['kode'],
+            $Data['nama'],
+            $d_k,
+            $nilai
+        );
+
+        $success = $stmt->execute();
+        $error = $success ? "" : $Conn->error;
+        $stmt->close();
+        
+        return $success ? "Success" : "Gagal menyimpan jurnal: $error";
+    }
+
+    //Fungsi Untuk Insert Journal Satu-persatu
+    function InsertParsialJournalPembayaran($Conn, $kategori, $id_transaksi_jual_beli, $id_transaksi_pembayaran, $tanggal, $id_akun, $d_k, $nilai) {
+        // Validasi input dasar
+        if (!is_numeric($nilai)) {
+            return "Nilai harus berupa angka";
+        }
+
+        // 1. Verifikasi akun perkiraan ada
+        $Qry = $Conn->prepare("SELECT id_perkiraan, kode, nama FROM akun_perkiraan WHERE id_perkiraan = ?");
+        if ($Qry === false) {
+            return "Error persiapan query akun: " . $Conn->error;
+        }
+        
+        $Qry->bind_param("i", $id_akun);
+        
+        if (!$Qry->execute()) {
+            $error = $Conn->error;
+            $Qry->close();
+            return "Error eksekusi query akun: $error";
+        }
+        
+        $Result = $Qry->get_result();
+        $Data = $Result->fetch_assoc();
+        $Qry->close();
+        $Result->close();
+        
+        if (empty($Data['id_perkiraan'])) {
+            return "Akun perkiraan tidak ditemukan";
+        }
+
+        // 2. Persiapkan query INSERT untuk jurnal
+        // $index_colum adalah nama kolom dinamis (mis: id_transaksi) yang akan diisi dengan $uuid
+        $query = "INSERT INTO jurnal (
+            kategori,
+            uuid,
+            id_transaksi_jual_beli,
+            id_transaksi_pembayaran,
+            tanggal,
+            kode_perkiraan,
+            nama_perkiraan,
+            d_k,
+            nilai
+        ) VALUES (
+            ?, ?, ?, ?, ?, ?, ?, ?, ?
+        )";
+
+        $stmt = $Conn->prepare($query);
+        if ($stmt === false) {
+            return "Error persiapan query jurnal: " . $Conn->error;
+        }
+
+        // Bind parameter:
+        $stmt->bind_param(
+            "ssssssssd",  
+            $kategori,
+            $id_transaksi_jual_beli,
+            $id_transaksi_jual_beli,
+            $id_transaksi_pembayaran,
+            $tanggal,
+            $Data['kode'],
+            $Data['nama'],
+            $d_k,
+            $nilai
+        );
+
+        $success = $stmt->execute();
+        $error = $success ? "" : $Conn->error;
+        $stmt->close();
+        
+        return $success ? "Success" : "Gagal menyimpan jurnal: $error";
+    }
 ?>

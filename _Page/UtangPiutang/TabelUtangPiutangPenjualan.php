@@ -9,7 +9,7 @@
     if(empty($SessionIdAkses)){
         echo '
             <tr>
-                <td colspan="8" class="text-center text-danger">
+                <td colspan="10" class="text-center text-danger">
                     Sesi Akses Sudah Berakhir! Silahkan Login Ulang
                 </td>
             </tr>
@@ -55,13 +55,13 @@
         }
         if(empty($keyword_by)){
             if(empty($keyword)){
-                $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_transaksi_jual_beli FROM transaksi_jual_beli WHERE (kategori='Penjualan' OR kategori='Retur Penjualan') AND (status='Kredit')"));
+                $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_transaksi_jual_beli FROM transaksi_jual_beli WHERE status='Kredit'"));
             }else{
-                $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_transaksi_jual_beli FROM transaksi_jual_beli WHERE (kategori='Penjualan' OR kategori='Retur Penjualan') AND (tanggal like '%$keyword%' OR status like '%$keyword%') AND (status='Kredit')"));
+                $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_transaksi_jual_beli FROM transaksi_jual_beli WHERE (tanggal like '%$keyword%' OR kategori like '%$keyword%') AND (status='Kredit')"));
             }
         }else{
             if(empty($keyword)){
-                $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_transaksi_jual_beli FROM transaksi_jual_beli WHERE (kategori='Penjualan' OR kategori='Retur Penjualan') AND (status='Kredit')"));
+                $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_transaksi_jual_beli FROM transaksi_jual_beli WHERE status='Kredit'"));
             }else{
                 if ($keyword_by == "nama") {
                     // Jika pencarian berdasarkan nama anggota
@@ -71,14 +71,14 @@
                         WHERE (tjb.kategori='Penjualan' OR tjb.kategori='Retur Penjualan') AND a.nama LIKE '%$keyword%'"));
                 } else {
                     // Jika pencarian berdasarkan kolom lain di transaksi_jual_beli
-                    $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_transaksi_jual_beli FROM transaksi_jual_beli WHERE (kategori='Penjualan' OR kategori='Retur Penjualan') AND ($keyword_by LIKE '%$keyword%') AND (status='Kredit')"));
+                    $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_transaksi_jual_beli FROM transaksi_jual_beli WHERE ($keyword_by LIKE '%$keyword%') AND (status='Kredit')"));
                 }
             }
         }
         if(empty($jml_data)){
             echo '
                 <tr>
-                    <td colspan="8" class="text-center text-danger">
+                    <td colspan="10" class="text-center text-danger">
                         Tidak Ada Data Yang Ditampilkan.
                     </td>
                 </tr>
@@ -88,13 +88,13 @@
             //KONDISI PENGATURAN MASING FILTER
             if(empty($keyword_by)){
                 if(empty($keyword)){
-                    $query = mysqli_query($Conn, "SELECT*FROM transaksi_jual_beli WHERE (kategori='Penjualan' OR kategori='Retur Penjualan') AND (status='Kredit') ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
+                    $query = mysqli_query($Conn, "SELECT*FROM transaksi_jual_beli WHERE status='Kredit' ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
                 }else{
-                    $query = mysqli_query($Conn, "SELECT*FROM transaksi_jual_beli WHERE (kategori='Penjualan' OR kategori='Retur Penjualan') AND (kategori like '%$keyword%' OR tanggal like '%$keyword%' OR status like '%$keyword%') AND (status='Kredit') ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
+                    $query = mysqli_query($Conn, "SELECT*FROM transaksi_jual_beli WHERE (kategori like '%$keyword%' OR tanggal like '%$keyword%') AND (status='Kredit') ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
                 }
             }else{
                 if(empty($keyword)){
-                    $query = mysqli_query($Conn, "SELECT*FROM transaksi_jual_beli WHERE (kategori='Penjualan' OR kategori='Retur Penjualan') AND (status='Kredit') ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
+                    $query = mysqli_query($Conn, "SELECT*FROM transaksi_jual_beli WHERE status='Kredit' ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
                 }else{
                     if ($keyword_by == "nama") {
                         $query = mysqli_query($Conn, "SELECT tjb.*, a.nama 
@@ -104,7 +104,7 @@
                         ORDER BY $OrderBy $ShortBy 
                         LIMIT $posisi, $batas");
                     }else{
-                        $query = mysqli_query($Conn, "SELECT*FROM transaksi_jual_beli WHERE (kategori='Penjualan' OR kategori='Retur Penjualan') AND ($keyword_by LIKE '%$keyword%') AND (status='Kredit') ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
+                        $query = mysqli_query($Conn, "SELECT*FROM transaksi_jual_beli WHERE ($keyword_by LIKE '%$keyword%') AND (status='Kredit') ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
                     }
                 }
             }
@@ -113,13 +113,32 @@
                 $kategori= $data['kategori'];
                 $tanggal= $data['tanggal'];
                 $total= $data['total'];
+                $cash= $data['cash'];
                 $status= $data['status'];
                 $total_rp = "Rp " . number_format($total,0,',','.');
+                $cash_rp = "Rp " . number_format($cash,0,',','.');
                 //Routing Penjualan
                 if($kategori=="Penjualan"){
-                    $label_kategori='<small class="text text-success">Penjualan</small>';
+                    $label_kategori='<code class="text text-primary">Penjualan</code>';
+                    $label_status='<span class="badge badge-success">Piutang</span>';
                 }else{
-                    $label_kategori='<small class="text text-muted">Retur</small>';
+                    if($kategori=="Retur Penjualan"){
+                        $label_kategori='<code class="text text-info">Ret.Penjualan</code>';
+                        $label_status='<span class="badge badge-danger">Utang</span>';
+                    }else{
+                        if($kategori=="Pembelian"){
+                            $label_kategori='<code class="text text-warning">Pembelian</code>';
+                            $label_status='<span class="badge badge-danger">Utang</span>';
+                        }else{
+                            if($kategori=="Retur Pembelian"){
+                                $label_kategori='<code class="text text-danger">Ret.Pembelian</code>';
+                                $label_status='<span class="badge badge-success">Piutang</span>';
+                            }else{
+                                $label_kategori='<code class="text text-muted">None</code>';
+                                $label_status='<span class="badge badge-dark">None</span>';
+                            }
+                        }
+                    }
                 }
                 //Buka nama anggota dari tabel anggota
                 if(empty($data['id_anggota'])){
@@ -130,19 +149,25 @@
                     $nama_anggota=GetDetailData($Conn, 'anggota', 'id_anggota', $id_anggota, 'nama');
                 }
                 
-                //Routing status
-                if($status=="Lunas"){
-                    $label_status='<span class="badge badge-success">Lunas</span>';
-                }else{
-                    if($kategori=="Penjualan"){
-                        $label_status='<span class="badge badge-warning">Piutang</span>';
-                    }else{
-                        $label_status='<span class="badge badge-danger">Utang</span>';
-                    }
-                }
                 //Format tanggal
                 $strtotime=strtotime($tanggal);
-                $TanggalTransaksi=date('d/m/Y H:i', $strtotime);
+                $TanggalTransaksi=date('d/m/Y', $strtotime);
+
+                //Hitung Jumlah Pembayaran
+                $sql_angsuran = "SELECT SUM(jumlah) as total_jumlah FROM  transaksi_pembayaran  WHERE id_transaksi_jual_beli='$id_transaksi_jual_beli'";
+                $result_angsuran = $Conn->query($sql_angsuran);
+                if ($result_angsuran->num_rows > 0) {
+                    // Ambil hasil
+                    $row_angsuran = $result_angsuran->fetch_assoc();
+                    $total_angsuran = $row_angsuran["total_jumlah"];
+                } else {
+                    $total_angsuran=0;
+                }
+                $total_angsuran_rp = "Rp " . number_format($total_angsuran,0,',','.');
+
+                //Hitung Sisa/Selisish
+                $sisa_pembayaran=$total-$cash-$total_angsuran;
+                $sisa_pembayaran_rp = "Rp " . number_format($sisa_pembayaran,0,',','.');
 
                 //Tampilkan Data
                 echo '
@@ -155,14 +180,19 @@
                                 <small>'.$TanggalTransaksi.'</small>
                             </a>
                         </td>
-                        <td><small>'.$label_kategori.'</small></td>
                         <td>
-                            <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#ModalDetailAnggota" data-id="'.$id_anggota.'" data-mode="List">
-                                <small class="text text-muted">'.$nama_anggota.'</small>
+                            <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#ModalDetailAnggota" data-id="'.$id_anggota.'" data-mode="List" class="text-success text-decoration-underline">
+                                <small class="text text-success">
+                                    <i>'.$nama_anggota.'</i>
+                                </small>
                             </a>
                         </td>
+                        <td>'.$label_kategori.'</td>
                         <td><small>'.$total_rp.'</small></td>
-                        <td><small>'.$label_status.'</small></td>
+                        <td><small>'.$cash_rp.'</small></td>
+                        <td><small>'.$total_angsuran_rp.'</small></td>
+                        <td><small>'.$sisa_pembayaran_rp.'</small></td>
+                        <td>'.$label_status.'</td>
                         <td>
                             <button type="button" class="btn btn-sm btn-floating btn-success" data-bs-toggle="modal" data-bs-target="#ModalPembayaranPiutangPenjualan" data-id="'.$id_transaksi_jual_beli.'" title="Bayar Piutang Penjualan">
                                 <i class="bi bi-check"></i>
