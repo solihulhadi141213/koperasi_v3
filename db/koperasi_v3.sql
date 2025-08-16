@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 07, 2025 at 03:11 PM
+-- Generation Time: Aug 16, 2025 at 04:51 PM
 -- Server version: 9.1.0
--- PHP Version: 7.4.33
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -30,10 +30,10 @@ SET time_zone = "+00:00";
 DROP TABLE IF EXISTS `akses`;
 CREATE TABLE IF NOT EXISTS `akses` (
   `id_akses` int NOT NULL AUTO_INCREMENT,
-  `nama_akses` text NOT NULL,
+  `nama_akses` mediumtext NOT NULL,
   `kontak_akses` varchar(20) DEFAULT NULL,
   `email_akses` varchar(225) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  `password` text NOT NULL,
+  `password` mediumtext NOT NULL,
   `image_akses` char(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   `akses` varchar(20) NOT NULL,
   `datetime_daftar` datetime NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `akses` (
 --
 
 INSERT INTO `akses` (`id_akses`, `nama_akses`, `kontak_akses`, `email_akses`, `password`, `image_akses`, `akses`, `datetime_daftar`, `datetime_update`) VALUES
-(1, 'Solihul Hadi', '6289601154723', 'dhiforester@gmail.com', 'f4a3229c9c5f1bdd9c6a6791080791b7', '9bf5b8e474a5927eb87d5084a85b5a.jpg', 'Admin', '2022-08-29 11:10:06', '2025-02-21 17:33:58'),
+(1, 'Solihul Hadi', '6289601154723', 'dhiforester@gmail.com', 'f4a3229c9c5f1bdd9c6a6791080791b7', '0c18712d1ac1bd4df2285ff40a8dda.jpg', 'Admin', '2022-08-29 11:10:06', '2025-07-27 20:16:20'),
 (4, 'Anita', '6289601154724', 'animaryani@gmail.com', '1ebc7a02439687420f4f18ebe6bd03ac', '64ffa523717340c164e75f3f74302f.png', 'Sekretaris', '2024-07-12 01:23:54', '2025-02-26 01:00:22'),
 (5, 'solihul Hadi', '0218374847', 'solihulhadi141213@gmail.com', 'a2cc01a152da09c1ad15b345e430ed7d', '', 'Admin', '2025-02-22 17:32:35', '2025-02-22 17:32:35'),
 (6, 'Tri heru Purnomo', '085217731586', 'Triheruafsheen@gmail.com', '7541c1d97e0a4f594a493d6a197a059b', '', 'Admin', '2025-02-25 07:13:08', '2025-02-25 07:13:08');
@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `akses_fitur` (
   `kategori` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `keterangan` text NOT NULL,
   PRIMARY KEY (`id_akses_fitur`)
-) ENGINE=InnoDB AUTO_INCREMENT=85 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `akses_fitur`
@@ -98,17 +98,12 @@ INSERT INTO `akses_fitur` (`id_akses_fitur`, `kode`, `nama`, `kategori`, `ketera
 (32, 'FGPgsQeVDKPGoQPNGJH', 'Akun Pengguna', 'Akses', 'Halaman untuk mengelola pengguna aplikasi'),
 (34, 'rfLn8WEkAqzC1gu5z45', 'Email Gateway', 'Pengaturan', 'Halaman untuk mengatur setting email'),
 (35, 'QcDypIyCg8tX76Zzs2I', 'Akses Token', 'Akses', 'Halaman untuk mengelola token akses oleh admin'),
-(36, 'mU0dghJfZr6GFXAazZ8', 'Komponen Gaji', 'Penggajian', 'Halaman untuk mengelola komponen gaji'),
-(37, 'RAkbS0nrHV10GVxnvXy', 'Peride Gaji', 'Penggajian', 'Kella data periode penggajian'),
-(38, 'wY4kURZ8cjrjjtUiAhH', 'Potongan Gaji', 'Penggajian', 'Halaman untuk mengelola potongan gaji karyawan'),
 (39, 'gd7YgKyL1WMQctJLgaq', 'API Key', 'Pengaturan', 'Halaman untuk mengelola API Key'),
 (40, 'rA8MRFArw1qPeVySjAC', 'Fitur Aplikasi', 'Akses', 'Halaman untuk mengelola data fitur aplikasi'),
 (41, 'hNtci80mXl9jwCj19pI', 'Halaman Entitas Akses', 'Akses', 'Halaman utama entitas akses'),
 (42, 'oWpF1xPn8dLgRi8hRJx', 'Halaman Anggota', 'Anggota', 'Halaman utama anggota'),
 (43, 'n77olEDwon5RO3RYQPD', 'Halaman Simpanan', 'Simpanan', 'Halaman utama simpanan'),
-(44, 'JxjfFOxUHimcP0WXqy0', 'Halaman pinjaman', 'Pinjaman', 'Halaman utama pinjaman\r\n'),
 (45, 'N6O5Qc64hOEhPQukZSh', 'Laba Rugi', 'Laporan', 'Halaman utama laporan'),
-(46, 'X61viKZwNQuNrQ1Vrrg', 'Tagihan', 'Pinjaman', 'Halaman utama tagihan'),
 (47, '5MH1cfu7LzOpalmhbT2', 'Kelola Data Bantuan', 'Bantuan', 'Halaman untuk mengelola data bantuan untuk pengguna aplikasi'),
 (48, 'QbQ4qF57AzCEp5qG0KG', 'Form Tambah Bantuan', 'Bantuan', 'Halaman form untuk menambahkan konten bantuan'),
 (49, 'GA4iqizxbIlTU5mMo0W', 'Halaman Edit Bantuan', 'Bantuan', 'Fitur/Halaman untuk form edit bantuan'),
@@ -120,7 +115,6 @@ INSERT INTO `akses_fitur` (`id_akses_fitur`, `kode`, `nama`, `kategori`, `ketera
 (56, 'TruxAyhHOhvTrVYs6No', 'Jenis Simpanan', 'Simpanan', 'Halaman untuk kelola jenis simpanan'),
 (57, 'dG22CVGrX1KNMQpn7Se', 'Simpanan Wajib', 'Simpanan', 'Menampilkan data simpanan wajib'),
 (58, '0uITsO9Ci4O394dsIyu', 'Rekap Simpanan', 'Simpanan', 'Halaman rekap simpanan'),
-(59, 'hAhdWGrGGtjeMqhAAtD', 'Rekap Pinjaman', 'Pinjaman', 'Halaman rekap pinjaman'),
 (60, 'vC4W81sLCdsIGabUEMi', 'Jenis Transaksi', 'Transaksi', 'Halaman kelola jenis transaksi'),
 (61, 'RZufXfHVLW9f0EsjYSB', 'Data Transaksi', 'Transaksi', 'Menampilkan Data Transaksi'),
 (62, 'w8xdO79t7kdEeyBSxLJ', 'Rekap Transaksi', 'Transaksi', 'Rekap Transaksi'),
@@ -136,7 +130,6 @@ INSERT INTO `akses_fitur` (`id_akses_fitur`, `kode`, `nama`, `kategori`, `ketera
 (72, 'AQKs9kSv0Bph4ycGNUj', 'Penjualan', 'Penjualan', 'Halaman untuk mengelola data transaksi penjualan'),
 (73, 'hE3ordTLe9KBwSRO3t5', 'Tambah Penjualan', 'Penjualan', 'Halaman mandiri untuk menambahkan data transaksi penjualan'),
 (74, 'Ay1ssiaoRqiK70E9HM6', 'Detail Transaksi Penjualan', 'Penjualan', 'Halaman yang menampilkan data detail transaksi'),
-(75, 'UQsVaygjqekgPYZWHpM', 'Jenis Pinjaman', 'Pinjaman', 'Mengelola jenis pinjaman'),
 (76, 'LTBuBzSi7njYRiLe6la', 'Halaman Pembelian', 'Pembelian', 'Halaman untuk mencatat pembelian'),
 (77, 'hBjWkLMFofA8QHRz8C7', 'Tambah Pembelian', 'Pembelian', 'Halaman untuk menambah transaksi pembelian'),
 (78, 'va9SiDMNXdRPjqLeVcX', 'Detail Pembelian', 'Pembelian', 'Halaman untuk melihat detail pembelian'),
@@ -144,7 +137,12 @@ INSERT INTO `akses_fitur` (`id_akses_fitur`, `kode`, `nama`, `kategori`, `ketera
 (80, 'gw5VTLLVsrfg63nfEWX', 'Utang Piutang', 'Transaksi', 'Halaman untuk menampilkan utang-piutang transaksi'),
 (81, 'WeXKEzh9uvvyJRCwJGX', 'Detail Anggota', 'Anggota', 'Halaman untuk melihat anggota'),
 (82, 'xMAQQmh4DYnyd3JG26J', 'Hapus Konten Bantuan', 'Bantuan', 'Fitur hapus bantuan'),
-(83, 'MqOJHVudKBTAhgjU0xl', 'Lihat Detail Bantuan', 'Bantuan', 'Halaman detail bantuan');
+(83, 'MqOJHVudKBTAhgjU0xl', 'Lihat Detail Bantuan', 'Bantuan', 'Halaman detail bantuan'),
+(86, 'UQsVaygjqekgPYZWHpM', 'Jenis Pinjaman', 'Pinjaman', 'Kelola jenis pinjaman koperasi'),
+(87, 'JxjfFOxUHimcP0WXqy0', 'Sesi Pinjaman', 'Pinjaman', 'Halaman kelola sesi pinjaman'),
+(88, 'X61viKZwNQuNrQ1Vrrg', 'Tagihan-Tunggakan', 'Pinjaman', 'Kelola data tagihan anggota'),
+(89, 'hAhdWGrGGtjeMqhAAtD', 'Rekap Pinjaman', 'Pinjaman', 'Halaman untuk kelola pinjaman'),
+(90, 'kCyHHVWW9k8DFPVshNm', 'Potongan Anggota', 'Pinjaman', 'Kelola potongan anggota');
 
 -- --------------------------------------------------------
 
@@ -170,53 +168,7 @@ CREATE TABLE IF NOT EXISTS `akses_ijin` (
 INSERT INTO `akses_ijin` (`id_akses`, `id_akses_fitur`, `kode`, `nama`, `kategori`) VALUES
 (4, 42, 'oWpF1xPn8dLgRi8hRJx', 'Halaman Anggota', 'Anggota'),
 (4, 45, 'N6O5Qc64hOEhPQukZSh', 'Laba Rugi', 'Laporan'),
-(4, 36, 'mU0dghJfZr6GFXAazZ8', 'Komponen Gaji', 'Penggajian'),
-(4, 37, 'RAkbS0nrHV10GVxnvXy', 'Peride Gaji', 'Penggajian'),
-(4, 38, 'wY4kURZ8cjrjjtUiAhH', 'Potongan Gaji', 'Penggajian'),
-(4, 44, 'JxjfFOxUHimcP0WXqy0', 'Halaman pinjaman', 'Pinjaman'),
 (4, 43, 'n77olEDwon5RO3RYQPD', 'Halaman Simpanan', 'Simpanan'),
-(6, 35, 'QcDypIyCg8tX76Zzs2I', 'Akses Token', 'Akses'),
-(6, 32, 'FGPgsQeVDKPGoQPNGJH', 'Akun Pengguna', 'Akses'),
-(6, 31, '8KbdfArJ7UmoX916kO7', 'Entitas Akses', 'Akses'),
-(6, 40, 'rA8MRFArw1qPeVySjAC', 'Fitur Aplikasi', 'Akses'),
-(6, 41, 'hNtci80mXl9jwCj19pI', 'Halaman Entitas Akses', 'Akses'),
-(6, 54, 'TQ4YLRadAceDvjmoKIN', 'Anggota Keluar Masuk', 'Anggota'),
-(6, 42, 'oWpF1xPn8dLgRi8hRJx', 'Halaman Anggota', 'Anggota'),
-(6, 55, 'HdQ2YaxtqY2JL5QnQdS', 'Rekap Anggota', 'Anggota'),
-(6, 48, 'QbQ4qF57AzCEp5qG0KG', 'Form Tambah Bantuan', 'Bantuan'),
-(6, 49, 'GA4iqizxbIlTU5mMo0W', 'Halaman Edit Bantuan', 'Bantuan'),
-(6, 47, '5MH1cfu7LzOpalmhbT2', 'Kelola Data Bantuan', 'Bantuan'),
-(6, 69, 'sPkDxRYJPn1A8K24ki2', 'Barang', 'Barang'),
-(6, 70, 'YyU3kA2xi9HqU1EMuTm', 'Batch dan Expired', 'Barang'),
-(6, 71, 'PLj70Mfj5dhUUvjZqnd', 'Stock Opename', 'Barang'),
-(6, 64, 'TiBoTS2YqPyx6IhtTKA', 'Akun Perkiraan', 'Keuangan'),
-(6, 63, 'ihTHNu1ROJ28tpP2LlH', 'Bagi Hasil', 'Keuangan'),
-(6, 50, 'VTouzOD2eM57Onno1Ql', 'Jurnal', 'Keuangan'),
-(6, 52, 'n6quFiiDojCgimfkCT7', 'Buku Besar', 'Laporan'),
-(6, 45, 'N6O5Qc64hOEhPQukZSh', 'Laba Rugi', 'Laporan'),
-(6, 53, 'incMmh5yyCmCs4IwCYz', 'Neraca Saldo', 'Laporan'),
-(6, 68, 'PXbSX4aNtpkqrcEBmyG', 'Riwayat Anggota', 'Laporan'),
-(6, 67, 'bKPVUZqfF6PCQk3ydzY', 'Simpan Pinjam', 'Laporan'),
-(6, 39, 'gd7YgKyL1WMQctJLgaq', 'API Key', 'Pengaturan'),
-(6, 66, 'eQhEWIf1fV6xwMNr8J9', 'Auto Jurnal', 'Pengaturan'),
-(6, 34, 'rfLn8WEkAqzC1gu5z45', 'Email Gateway', 'Pengaturan'),
-(6, 65, 'qLECdqLVgBMjV0BXHUC', 'Pengaturan Umum', 'Pengaturan'),
-(6, 36, 'mU0dghJfZr6GFXAazZ8', 'Komponen Gaji', 'Penggajian'),
-(6, 37, 'RAkbS0nrHV10GVxnvXy', 'Peride Gaji', 'Penggajian'),
-(6, 38, 'wY4kURZ8cjrjjtUiAhH', 'Potongan Gaji', 'Penggajian'),
-(6, 44, 'JxjfFOxUHimcP0WXqy0', 'Halaman pinjaman', 'Pinjaman'),
-(6, 59, 'hAhdWGrGGtjeMqhAAtD', 'Rekap Pinjaman', 'Pinjaman'),
-(6, 46, 'X61viKZwNQuNrQ1Vrrg', 'Tagihan', 'Pinjaman'),
-(6, 43, 'n77olEDwon5RO3RYQPD', 'Halaman Simpanan', 'Simpanan'),
-(6, 56, 'TruxAyhHOhvTrVYs6No', 'Jenis Simpanan', 'Simpanan'),
-(6, 58, '0uITsO9Ci4O394dsIyu', 'Rekap Simpanan', 'Simpanan'),
-(6, 57, 'dG22CVGrX1KNMQpn7Se', 'Simpanan Wajib', 'Simpanan'),
-(6, 61, 'RZufXfHVLW9f0EsjYSB', 'Data Transaksi', 'Transaksi'),
-(6, 74, 'Ay1ssiaoRqiK70E9HM6', 'Detail Transaksi Penjualan', 'Penjualan'),
-(6, 60, 'vC4W81sLCdsIGabUEMi', 'Jenis Transaksi', 'Transaksi'),
-(6, 72, 'AQKs9kSv0Bph4ycGNUj', 'Penjualan', 'Penjualan'),
-(6, 62, 'w8xdO79t7kdEeyBSxLJ', 'Rekap Transaksi', 'Transaksi'),
-(6, 73, 'hE3ordTLe9KBwSRO3t5', 'Tambah Penjualan', 'Penjualan'),
 (5, 35, 'QcDypIyCg8tX76Zzs2I', 'Akses Token', 'Akses'),
 (5, 32, 'FGPgsQeVDKPGoQPNGJH', 'Akun Pengguna', 'Akses'),
 (5, 31, '8KbdfArJ7UmoX916kO7', 'Entitas Akses', 'Akses'),
@@ -243,12 +195,6 @@ INSERT INTO `akses_ijin` (`id_akses`, `id_akses_fitur`, `kode`, `nama`, `kategor
 (5, 66, 'eQhEWIf1fV6xwMNr8J9', 'Auto Jurnal', 'Pengaturan'),
 (5, 34, 'rfLn8WEkAqzC1gu5z45', 'Email Gateway', 'Pengaturan'),
 (5, 65, 'qLECdqLVgBMjV0BXHUC', 'Pengaturan Umum', 'Pengaturan'),
-(5, 36, 'mU0dghJfZr6GFXAazZ8', 'Komponen Gaji', 'Penggajian'),
-(5, 37, 'RAkbS0nrHV10GVxnvXy', 'Peride Gaji', 'Penggajian'),
-(5, 38, 'wY4kURZ8cjrjjtUiAhH', 'Potongan Gaji', 'Penggajian'),
-(5, 44, 'JxjfFOxUHimcP0WXqy0', 'Halaman pinjaman', 'Pinjaman'),
-(5, 59, 'hAhdWGrGGtjeMqhAAtD', 'Rekap Pinjaman', 'Pinjaman'),
-(5, 46, 'X61viKZwNQuNrQ1Vrrg', 'Tagihan', 'Pinjaman'),
 (5, 43, 'n77olEDwon5RO3RYQPD', 'Halaman Simpanan', 'Simpanan'),
 (5, 56, 'TruxAyhHOhvTrVYs6No', 'Jenis Simpanan', 'Simpanan'),
 (5, 58, '0uITsO9Ci4O394dsIyu', 'Rekap Simpanan', 'Simpanan'),
@@ -259,6 +205,50 @@ INSERT INTO `akses_ijin` (`id_akses`, `id_akses_fitur`, `kode`, `nama`, `kategor
 (5, 72, 'AQKs9kSv0Bph4ycGNUj', 'Penjualan', 'Penjualan'),
 (5, 62, 'w8xdO79t7kdEeyBSxLJ', 'Rekap Transaksi', 'Transaksi'),
 (5, 73, 'hE3ordTLe9KBwSRO3t5', 'Tambah Penjualan', 'Penjualan'),
+(6, 35, 'QcDypIyCg8tX76Zzs2I', 'Akses Token', 'Akses'),
+(6, 32, 'FGPgsQeVDKPGoQPNGJH', 'Akun Pengguna', 'Akses'),
+(6, 31, '8KbdfArJ7UmoX916kO7', 'Entitas Akses', 'Akses'),
+(6, 40, 'rA8MRFArw1qPeVySjAC', 'Fitur Aplikasi', 'Akses'),
+(6, 41, 'hNtci80mXl9jwCj19pI', 'Halaman Entitas Akses', 'Akses'),
+(6, 54, 'TQ4YLRadAceDvjmoKIN', 'Anggota Keluar Masuk', 'Anggota'),
+(6, 81, 'WeXKEzh9uvvyJRCwJGX', 'Detail Anggota', 'Anggota'),
+(6, 42, 'oWpF1xPn8dLgRi8hRJx', 'Halaman Anggota', 'Anggota'),
+(6, 55, 'HdQ2YaxtqY2JL5QnQdS', 'Rekap Anggota', 'Anggota'),
+(6, 48, 'QbQ4qF57AzCEp5qG0KG', 'Form Tambah Bantuan', 'Bantuan'),
+(6, 49, 'GA4iqizxbIlTU5mMo0W', 'Halaman Edit Bantuan', 'Bantuan'),
+(6, 82, 'xMAQQmh4DYnyd3JG26J', 'Hapus Konten Bantuan', 'Bantuan'),
+(6, 47, '5MH1cfu7LzOpalmhbT2', 'Kelola Data Bantuan', 'Bantuan'),
+(6, 83, 'MqOJHVudKBTAhgjU0xl', 'Lihat Detail Bantuan', 'Bantuan'),
+(6, 69, 'sPkDxRYJPn1A8K24ki2', 'Barang', 'Barang'),
+(6, 70, 'YyU3kA2xi9HqU1EMuTm', 'Batch dan Expired', 'Barang'),
+(6, 71, 'PLj70Mfj5dhUUvjZqnd', 'Stock Opename', 'Barang'),
+(6, 64, 'TiBoTS2YqPyx6IhtTKA', 'Akun Perkiraan', 'Keuangan'),
+(6, 63, 'ihTHNu1ROJ28tpP2LlH', 'Bagi Hasil', 'Keuangan'),
+(6, 50, 'VTouzOD2eM57Onno1Ql', 'Jurnal', 'Keuangan'),
+(6, 52, 'n6quFiiDojCgimfkCT7', 'Buku Besar', 'Laporan'),
+(6, 45, 'N6O5Qc64hOEhPQukZSh', 'Laba Rugi', 'Laporan'),
+(6, 53, 'incMmh5yyCmCs4IwCYz', 'Neraca Saldo', 'Laporan'),
+(6, 68, 'PXbSX4aNtpkqrcEBmyG', 'Riwayat Anggota', 'Laporan'),
+(6, 67, 'bKPVUZqfF6PCQk3ydzY', 'Simpan Pinjam', 'Laporan'),
+(6, 78, 'va9SiDMNXdRPjqLeVcX', 'Detail Pembelian', 'Pembelian'),
+(6, 76, 'LTBuBzSi7njYRiLe6la', 'Halaman Pembelian', 'Pembelian'),
+(6, 77, 'hBjWkLMFofA8QHRz8C7', 'Tambah Pembelian', 'Pembelian'),
+(6, 39, 'gd7YgKyL1WMQctJLgaq', 'API Key', 'Pengaturan'),
+(6, 66, 'eQhEWIf1fV6xwMNr8J9', 'Auto Jurnal', 'Pengaturan'),
+(6, 34, 'rfLn8WEkAqzC1gu5z45', 'Email Gateway', 'Pengaturan'),
+(6, 65, 'qLECdqLVgBMjV0BXHUC', 'Pengaturan Umum', 'Pengaturan'),
+(6, 74, 'Ay1ssiaoRqiK70E9HM6', 'Detail Transaksi Penjualan', 'Penjualan'),
+(6, 72, 'AQKs9kSv0Bph4ycGNUj', 'Penjualan', 'Penjualan'),
+(6, 73, 'hE3ordTLe9KBwSRO3t5', 'Tambah Penjualan', 'Penjualan'),
+(6, 43, 'n77olEDwon5RO3RYQPD', 'Halaman Simpanan', 'Simpanan'),
+(6, 56, 'TruxAyhHOhvTrVYs6No', 'Jenis Simpanan', 'Simpanan'),
+(6, 58, '0uITsO9Ci4O394dsIyu', 'Rekap Simpanan', 'Simpanan'),
+(6, 57, 'dG22CVGrX1KNMQpn7Se', 'Simpanan Wajib', 'Simpanan'),
+(6, 61, 'RZufXfHVLW9f0EsjYSB', 'Data Transaksi', 'Transaksi'),
+(6, 60, 'vC4W81sLCdsIGabUEMi', 'Jenis Transaksi', 'Transaksi'),
+(6, 79, 'ungKMcHQ0OvFgMhS1y8', 'Rekap Jual Beli', 'Transaksi'),
+(6, 62, 'w8xdO79t7kdEeyBSxLJ', 'Rekap Transaksi', 'Transaksi'),
+(6, 80, 'gw5VTLLVsrfg63nfEWX', 'Utang Piutang', 'Transaksi'),
 (1, 35, 'QcDypIyCg8tX76Zzs2I', 'Akses Token', 'Akses'),
 (1, 32, 'FGPgsQeVDKPGoQPNGJH', 'Akun Pengguna', 'Akses'),
 (1, 31, '8KbdfArJ7UmoX916kO7', 'Entitas Akses', 'Akses'),
@@ -291,16 +281,14 @@ INSERT INTO `akses_ijin` (`id_akses`, `id_akses_fitur`, `kode`, `nama`, `kategor
 (1, 66, 'eQhEWIf1fV6xwMNr8J9', 'Auto Jurnal', 'Pengaturan'),
 (1, 34, 'rfLn8WEkAqzC1gu5z45', 'Email Gateway', 'Pengaturan'),
 (1, 65, 'qLECdqLVgBMjV0BXHUC', 'Pengaturan Umum', 'Pengaturan'),
-(1, 36, 'mU0dghJfZr6GFXAazZ8', 'Komponen Gaji', 'Penggajian'),
-(1, 37, 'RAkbS0nrHV10GVxnvXy', 'Peride Gaji', 'Penggajian'),
-(1, 38, 'wY4kURZ8cjrjjtUiAhH', 'Potongan Gaji', 'Penggajian'),
 (1, 74, 'Ay1ssiaoRqiK70E9HM6', 'Detail Transaksi Penjualan', 'Penjualan'),
 (1, 72, 'AQKs9kSv0Bph4ycGNUj', 'Penjualan', 'Penjualan'),
 (1, 73, 'hE3ordTLe9KBwSRO3t5', 'Tambah Penjualan', 'Penjualan'),
-(1, 44, 'JxjfFOxUHimcP0WXqy0', 'Halaman pinjaman', 'Pinjaman'),
-(1, 75, 'UQsVaygjqekgPYZWHpM', 'Jenis Pinjaman', 'Pinjaman'),
-(1, 59, 'hAhdWGrGGtjeMqhAAtD', 'Rekap Pinjaman', 'Pinjaman'),
-(1, 46, 'X61viKZwNQuNrQ1Vrrg', 'Tagihan', 'Pinjaman'),
+(1, 86, 'UQsVaygjqekgPYZWHpM', 'Jenis Pinjaman', 'Pinjaman'),
+(1, 90, 'kCyHHVWW9k8DFPVshNm', 'Potongan Anggota', 'Pinjaman'),
+(1, 89, 'hAhdWGrGGtjeMqhAAtD', 'Rekap Pinjaman', 'Pinjaman'),
+(1, 87, 'JxjfFOxUHimcP0WXqy0', 'Sesi Pinjaman', 'Pinjaman'),
+(1, 88, 'X61viKZwNQuNrQ1Vrrg', 'Tagihan-Tunggakan', 'Pinjaman'),
 (1, 43, 'n77olEDwon5RO3RYQPD', 'Halaman Simpanan', 'Simpanan'),
 (1, 56, 'TruxAyhHOhvTrVYs6No', 'Jenis Simpanan', 'Simpanan'),
 (1, 58, '0uITsO9Ci4O394dsIyu', 'Rekap Simpanan', 'Simpanan'),
@@ -333,8 +321,9 @@ CREATE TABLE IF NOT EXISTS `akses_login` (
 
 INSERT INTO `akses_login` (`id_akses`, `kategori`, `token`, `date_creat`, `date_expired`) VALUES
 (5, 'Pengurus', '6be034775796342467670d3eaf8351f2', '2025-02-25 06:14:01', '2025-02-25 08:13:08'),
-(6, 'Pengurus', 'ea5e56384fde76e479d35ad725c068fd', '2025-02-26 00:53:56', '2025-02-26 02:21:57'),
-(1, 'Pengurus', '0627592a52270e6d0683812f41c48795', '2025-04-03 00:15:45', '2025-04-03 06:01:07');
+(24, 'Anggota', 'b9ce962c31280745ded0ee9230fd0131', '2025-06-13 21:02:38', '2025-06-13 22:02:38'),
+(6, 'Pengurus', '48ef4cd0b1ac815d2571993ec3ae4339', '2025-08-01 15:46:43', '2025-08-01 16:47:10'),
+(1, 'Pengurus', 'aa77cee79284e3b3c1d0b9cb77ba10ac', '2025-08-16 23:14:27', '2025-08-17 00:36:53');
 
 -- --------------------------------------------------------
 
@@ -350,7 +339,7 @@ CREATE TABLE IF NOT EXISTS `akses_referensi` (
   PRIMARY KEY (`id_akses_referensi`),
   KEY `uuid_akses_entitas` (`uuid_akses_entitas`),
   KEY `id_akses_fitur` (`id_akses_fitur`)
-) ENGINE=InnoDB AUTO_INCREMENT=987 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1039 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `akses_referensi`
@@ -359,62 +348,51 @@ CREATE TABLE IF NOT EXISTS `akses_referensi` (
 INSERT INTO `akses_referensi` (`id_akses_referensi`, `uuid_akses_entitas`, `id_akses_fitur`) VALUES
 (1, 'x5MHSyAQsnniwnwgYqho6hTwKRhxgOXU', 42),
 (2, 'x5MHSyAQsnniwnwgYqho6hTwKRhxgOXU', 45),
-(3, 'x5MHSyAQsnniwnwgYqho6hTwKRhxgOXU', 36),
-(4, 'x5MHSyAQsnniwnwgYqho6hTwKRhxgOXU', 37),
-(5, 'x5MHSyAQsnniwnwgYqho6hTwKRhxgOXU', 38),
-(6, 'x5MHSyAQsnniwnwgYqho6hTwKRhxgOXU', 44),
 (7, 'x5MHSyAQsnniwnwgYqho6hTwKRhxgOXU', 43),
-(936, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 35),
-(937, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 32),
-(938, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 31),
-(939, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 40),
-(940, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 41),
-(941, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 54),
-(942, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 81),
-(943, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 42),
-(944, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 55),
-(945, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 48),
-(946, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 49),
-(947, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 82),
-(948, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 47),
-(949, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 83),
-(950, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 69),
-(951, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 70),
-(952, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 71),
-(953, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 64),
-(954, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 63),
-(955, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 50),
-(956, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 52),
-(957, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 45),
-(958, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 53),
-(959, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 68),
-(960, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 67),
-(961, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 78),
-(962, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 76),
-(963, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 77),
-(964, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 39),
-(965, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 66),
-(966, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 34),
-(967, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 65),
-(968, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 36),
-(969, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 37),
-(970, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 38),
-(971, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 74),
-(972, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 72),
-(973, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 73),
-(974, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 44),
-(975, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 75),
-(976, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 59),
-(977, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 46),
-(978, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 43),
-(979, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 56),
-(980, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 58),
-(981, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 57),
-(982, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 61),
-(983, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 60),
-(984, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 79),
-(985, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 62),
-(986, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 80);
+(987, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 35),
+(988, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 32),
+(989, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 31),
+(990, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 40),
+(991, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 41),
+(992, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 54),
+(993, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 81),
+(994, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 42),
+(995, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 55),
+(996, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 48),
+(997, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 49),
+(998, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 82),
+(999, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 47),
+(1000, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 83),
+(1001, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 69),
+(1002, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 70),
+(1003, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 71),
+(1004, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 64),
+(1005, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 63),
+(1006, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 50),
+(1007, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 52),
+(1008, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 45),
+(1009, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 53),
+(1010, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 68),
+(1011, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 67),
+(1012, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 78),
+(1013, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 76),
+(1014, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 77),
+(1015, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 39),
+(1016, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 66),
+(1017, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 34),
+(1018, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 65),
+(1022, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 74),
+(1023, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 72),
+(1024, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 73),
+(1030, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 43),
+(1031, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 56),
+(1032, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 58),
+(1033, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 57),
+(1034, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 61),
+(1035, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 60),
+(1036, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 79),
+(1037, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 62),
+(1038, 'hkobwSGykIYhh3AZGNJqhzeohg7k9ORA', 80);
 
 -- --------------------------------------------------------
 
@@ -457,7 +435,7 @@ CREATE TABLE IF NOT EXISTS `akun_perkiraan` (
   `kd4` varchar(25) DEFAULT NULL,
   `kd5` varchar(25) DEFAULT NULL,
   PRIMARY KEY (`id_perkiraan`)
-) ENGINE=InnoDB AUTO_INCREMENT=164 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=218 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `akun_perkiraan`
@@ -468,67 +446,72 @@ INSERT INTO `akun_perkiraan` (`id_perkiraan`, `kode`, `nama`, `level`, `saldo_no
 (2, '2', 'Kewajiban', 1, 'Kredit', '2', NULL, NULL, NULL, NULL),
 (3, '3', 'Ekuitas', 1, 'Kredit', '3', NULL, NULL, NULL, NULL),
 (4, '4', 'Pendapatan', 1, 'Kredit', '4', NULL, NULL, NULL, NULL),
-(17, '5', 'Beban Usaha', 1, 'Debet', '5', NULL, NULL, NULL, NULL),
+(17, '5', 'Beban', 1, 'Debet', '5', NULL, NULL, NULL, NULL),
 (18, '1.1', 'Aset Lancar', 2, 'Debet', '1', '1.1', NULL, NULL, NULL),
 (23, '1.2', 'Aset Tetap', 2, 'Debet', '1', '1.2', NULL, NULL, NULL),
-(25, '1.2.2', 'Gedung Dan Bangunan', 3, 'Debet', '1', '1.2', '1.2.2', NULL, NULL),
-(27, '2.1', 'Kewajiban Jangka Pendek', 2, 'Kredit', '2', '2.1', NULL, NULL, NULL),
-(28, '2.1.1', 'Hutang Usaha', 3, 'Kredit', '2', '2.1', '2.1.1', NULL, NULL),
-(29, '2.1.2', 'Hutang Pajak', 3, 'Kredit', '2', '2.1', '2.1.2', NULL, NULL),
-(30, '3.1', 'Ekuitas Awal', 2, 'Kredit', '3', '3.1', NULL, NULL, NULL),
-(31, '3.2', 'Surplus Dan Defisit', 2, 'Kredit', '3', '3.2', NULL, NULL, NULL),
-(36, '5.1', 'Beban Administrasi Dan Umum', 2, 'Debet', '5', '5.1', NULL, NULL, NULL),
-(38, '5.3', 'Beban Operasional', 2, 'Debet', '5', '5.3', NULL, NULL, NULL),
-(65, '1.2.4', 'Jalan Dan Jaringan', 3, 'Debet', '1', '1.2', '1.2.4', NULL, NULL),
-(66, '1.2.4.1', 'Jaringan Listrik', 4, 'Debet', '1', '1.2', '1.2.4', '1.2.4.1', NULL),
+(30, '3.1', 'Cadangan Beban Pajak', 2, 'Kredit', '3', '3.1', NULL, NULL, NULL),
 (73, '1.3', 'Aset Lainnya', 2, 'Debet', '1', '1.3', NULL, NULL, NULL),
-(77, '2.1.3', 'Hutang Lainnya', 3, 'Kredit', '2', '2.1', '2.1.3', NULL, NULL),
-(78, '3.2.1', 'Surplus Dan Defisit Tahun Lalu', 3, 'Kredit', '3', '3.2', '3.2.1', NULL, NULL),
-(79, '3.2.2', 'Surplus Dan Defisit Tahun Berjalan', 3, 'Kredit', '3', '3.2', '3.2.2', NULL, NULL),
-(80, '5.1.1', 'Beban Gaji', 3, 'Debet', '5', '5.1', '5.1.1', NULL, NULL),
-(81, '5.1.2', 'Beban Adm. Kendaraan', 3, 'Debet', '5', '5.1', '5.1.2', NULL, NULL),
-(82, '5.1.3', 'Beban Asuransi', 3, 'Debet', '5', '5.1', '5.1.3', NULL, NULL),
-(83, '5.1.4', 'Beban PBB', 3, 'Debet', '5', '5.1', '5.1.4', NULL, NULL),
-(84, '5.1.5', 'Beban Restribusi', 3, 'Debet', '5', '5.1', '5.1.5', NULL, NULL),
-(85, '5.1.6', 'Beban Diklat', 3, 'Debet', '5', '5.1', '5.1.6', NULL, NULL),
-(86, '5.1.7', 'Perizinan', 3, 'Debet', '5', '5.1', '5.1.7', NULL, NULL),
-(87, '5.1.8', 'Pajak Air', 3, 'Debet', '5', '5.1', '5.1.8', NULL, NULL),
-(95, '5.3.1', 'Beban Pembelian Koran', 3, 'Debet', '5', '5.3', '5.3.1', NULL, NULL),
-(96, '5.3.2', 'Beban Air Minum', 3, 'Debet', '5', '5.3', '5.3.2', NULL, NULL),
-(98, '5.3.4', 'Beban Utilitas', 3, 'Debet', '5', '5.3', '5.3.4', NULL, NULL),
-(100, '5.3.6', 'Beban Konsumsi', 3, 'Debet', '5', '5.3', '5.3.6', NULL, NULL),
-(101, '5.3.7', 'Beban Pemeliharaan Kendaraan', 3, 'Debet', '5', '5.3', '5.3.7', NULL, NULL),
-(102, '5.3.8', 'Beban Pemeliharaan Bangunan', 3, 'Debet', '5', '5.3', '5.3.8', NULL, NULL),
-(105, '5.3.10', 'Beban Pemeliharaan Alat Kantor', 3, 'Debet', '5', '5.3', '5.3.10', NULL, NULL),
-(110, '5.3.11', 'Beban Penyusutan Bangunan', 3, 'Debet', '5', '5.3', '5.3.11', NULL, NULL),
-(111, '5.3.12', 'Beban Penyusutan Alat Belajar', 3, 'Debet', '5', '5.3', '5.3.12', NULL, NULL),
-(112, '5.3.13', 'Penyusutan Kendaraan', 3, 'Debet', '5', '5.3', '5.3.13', NULL, NULL),
-(113, '5.3.14', 'Beban Promosi', 3, 'Debet', '5', '5.3', '5.3.14', NULL, NULL),
-(114, '5.3.15', 'Beban Listrik', 3, 'Debet', '5', '5.3', '5.3.15', NULL, NULL),
-(119, '5.4', 'Beban Lainnya', 2, 'Debet', '5', '5.4', NULL, NULL, NULL),
 (120, '1.1.1', 'kas', 3, 'Debet', '1', '1.1', '1.1.1', NULL, NULL),
-(121, '1.1.1.1', 'Kas Kecil', 4, 'Debet', '1', '1.1', '1.1.1', '1.1.1.1', NULL),
-(122, '1.1.1.2', 'Kas Bank', 4, 'Debet', '1', '1.1', '1.1.1', '1.1.1.2', NULL),
-(123, '1.2.4.2', 'Lahan/Tanah', 4, 'Debet', '1', '1.2', '1.2.4', '1.2.4.2', NULL),
-(125, '1.1.2', 'Persediaan Peralatan', 3, 'Debet', '1', '1.1', '1.1.2', NULL, NULL),
-(130, '1.3.1', 'Aset Saham Di Perusahaan Lain', 3, 'Debet', '1', '1.3', '1.3.1', NULL, NULL),
-(131, '1.3.2', 'Aset Sisa BHP', 3, 'Debet', '1', '1.3', '1.3.2', NULL, NULL),
-(133, '2.2', 'Kewajiban Pembayaran Prive Investor', 2, 'Kredit', '2', '2.2', NULL, NULL, NULL),
-(134, '1.3.3', 'Aset Lainnya', 3, 'Debet', '1', '1.3', '1.3.3', NULL, NULL),
-(135, '1.1.1.3', 'Kas Berangkas', 4, 'Debet', '1', '1.1', '1.1.1', '1.1.1.3', NULL),
-(136, '1.1.3', 'Piutang usaha', 3, 'Debet', '1', '1.1', '1.1.3', NULL, NULL),
-(147, '5.3.14.1', 'Beban Promosi Iklan Digital', 4, 'Debet', '5', '5.3', '5.3.14', '5.3.14.1', NULL),
-(148, '5.3.14.2', 'Beban Promosi Iklan Koran', 4, 'Debet', '5', '5.3', '5.3.14', '5.3.14.2', NULL),
-(149, '1.1.1.2.1', 'Kas Bank BRI', 5, 'Debet', '1', '1.1', '1.1.1', '1.1.1.2', '1.1.1.2.1'),
-(151, '1.1.1.2.2', 'Kas Bank Central Asia', 5, 'Debet', '1', '1.1', '1.1.1', '1.1.1.2', '1.1.1.2.2'),
-(152, '1.1.1.2.3', 'Kas Bank Mandiri', 5, 'Debet', '1', '1.1', '1.1.1', '1.1.1.2', '1.1.1.2.3'),
-(154, '1.1.1.2.5', 'Kas Bank Jabar', 5, 'Debet', '1', '1.1', '1.1.1', '1.1.1.2', '1.1.1.2.5'),
-(155, '1.1.1.1.1', 'Kas Brangkas', 5, 'Debet', '1', '1.1', '1.1.1', '1.1.1.1', '1.1.1.1.1'),
-(159, '1.1.1.1.2', 'Kas Kecil Keuangan', 5, 'Debet', '1', '1.1', '1.1.1', '1.1.1.1', '1.1.1.1.2'),
-(160, '4.1', 'Pendapatan Jasa', 2, 'Kredit', '4', '4.1', NULL, NULL, NULL),
-(161, '4.2', 'Pendapatan Denda', 2, 'Kredit', '4', '4.2', NULL, NULL, NULL),
-(162, '1.1.3.4', 'Pinjaman Anggota', 4, 'Debet', '1', '1.1', '1.1.3', '1.1.3.4', NULL),
-(163, '2.3', 'Simpanan Anggota', 2, 'Kredit', '2', '2.3', NULL, NULL, NULL);
+(121, '1.1.1.1', 'Kas Utama', 4, 'Debet', '1', '1.1', '1.1.1', '1.1.1.1', NULL),
+(122, '1.1.1.2', 'Kas Pembantu', 4, 'Debet', '1', '1.1', '1.1.1', '1.1.1.2', NULL),
+(125, '1.1.2', 'Persediaan', 3, 'Debet', '1', '1.1', '1.1.2', NULL, NULL),
+(135, '1.1.1.3', 'Kas Bank BJB Syariah', 4, 'Debet', '1', '1.1', '1.1.1', '1.1.1.3', NULL),
+(136, '1.1.3', 'Piutang', 3, 'Debet', '1', '1.1', '1.1.3', NULL, NULL),
+(160, '4.1', 'Pendapatan Bagi Hasil', 2, 'Kredit', '4', '4.1', NULL, NULL, NULL),
+(161, '4.2', 'Pendapatan Margin dari Pembiayaan', 2, 'Kredit', '4', '4.2', NULL, NULL, NULL),
+(162, '1.1.3.1', 'Piutang Pinjaman Reguler', 4, 'Debet', '1', '1.1', '1.1.3', '1.1.3.4', NULL),
+(164, '4.3', 'Pendapatan Lainnya', 2, 'Kredit', '4', '4.3', NULL, NULL, NULL),
+(165, '1.1.3.2', 'Piutang Pinjaman Insidentil', 4, 'Debet', '1', '1.1', '1.1.3', '1.1.3.2', NULL),
+(166, '1.1.3.3', 'Piutang Pembiayaan Konsumtif', 4, 'Debet', '1', '1.1', '1.1.3', '1.1.3.3', NULL),
+(167, '1.1.3.4', 'Piutang Pembiayaan Konsumtif Non Anggota', 4, 'Debet', '1', '1.1', '1.1.3', '1.1.3.4', NULL),
+(168, '1.1.3.5', 'Piutang Pembiayaan Lainnya', 4, 'Debet', '1', '1.1', '1.1.3', '1.1.3.5', NULL),
+(169, '1.1.3.6', 'Piutang Barang Dagang Sembako', 4, 'Debet', '1', '1.1', '1.1.3', '1.1.3.6', NULL),
+(170, '1.1.3.7', 'Piutang Barang Dagang Snack &amp; Minuman', 4, 'Debet', '1', '1.1', '1.1.3', '1.1.3.7', NULL),
+(171, '1.1.3.8', 'Piutang Barang Dagang Air Galon', 4, 'Debet', '1', '1.1', '1.1.3', '1.1.3.8', NULL),
+(172, '1.1.3.9', 'Piutang Lainnya', 4, 'Debet', '1', '1.1', '1.1.3', '1.1.3.9', NULL),
+(173, '1.1.2.1', 'Persediaan Barang Konsumtif', 4, 'Debet', '1', '1.1', '1.1.2', '1.1.2.1', NULL),
+(174, '1.1.2.2', 'Persediaan Barang Konsumtif Non Anggota', 4, 'Debet', '1', '1.1', '1.1.2', '1.1.2.2', NULL),
+(175, '1.1.2.3', 'Persediaan Barang Sembako', 4, 'Debet', '1', '1.1', '1.1.2', '1.1.2.3', NULL),
+(176, '1.1.2.4', 'Persediaan Barang Snack &amp; Minuman', 4, 'Debet', '1', '1.1', '1.1.2', '1.1.2.4', NULL),
+(177, '1.1.2.5', 'Persediaan Barang Air Galon', 4, 'Debet', '1', '1.1', '1.1.2', '1.1.2.5', NULL),
+(178, '1.1.2.6', 'Persediaan Barang Meterai', 4, 'Debet', '1', '1.1', '1.1.2', '1.1.2.6', NULL),
+(179, '1.1.2.7', 'Persediaan Barang Lainnya', 4, 'Debet', '1', '1.1', '1.1.2', '1.1.2.7', NULL),
+(182, '6', 'Kontra Assets', 1, 'Kredit', '6', NULL, NULL, NULL, NULL),
+(183, '6.1', 'Akumulasi Penyusutan Peralatan', 2, 'Kredit', '6', '6.1', NULL, NULL, NULL),
+(184, '1.1.4', 'Pajak dibayar dimuka PPH 4 Ayat 2', 3, 'Debet', '1', '1.1', '1.1.4', NULL, NULL),
+(185, '2.1', 'Kewajiban Lancar', 2, 'Kredit', '2', '2.1', NULL, NULL, NULL),
+(186, '2.2', 'Modal', 2, 'Kredit', '2', '2.2', NULL, NULL, NULL),
+(187, '2.1.1', 'Pembelian', 3, 'Kredit', '2', '2.1', '2.1.1', NULL, NULL),
+(188, '2.1.2', 'Pembelian Konsumtif', 3, 'Kredit', '2', '2.1', '2.1.2', NULL, NULL),
+(189, '2.1.3', 'Pembelian Konsumtif Non Anggota', 3, 'Kredit', '2', '2.1', '2.1.3', NULL, NULL),
+(190, '2.1.4', 'Pembelian Sembako', 3, 'Kredit', '2', '2.1', '2.1.4', NULL, NULL),
+(191, '2.1.5', 'Pembelian Snack &amp; Minuman', 3, 'Kredit', '2', '2.1', '2.1.5', NULL, NULL),
+(192, '2.1.6', 'Pembelian Air Galon', 3, 'Kredit', '2', '2.1', '2.1.6', NULL, NULL),
+(193, '2.1.7', 'Pembelian Meterai', 3, 'Kredit', '2', '2.1', '2.1.7', NULL, NULL),
+(194, '2.1.8', 'Pembelian Lainnya', 3, 'Kredit', '2', '2.1', '2.1.8', NULL, NULL),
+(195, '2.1.9', 'Retur Pembelian', 3, 'Kredit', '2', '2.1', '2.1.9', NULL, NULL),
+(196, '2.2.1', 'Simpanan Pokok', 3, 'Kredit', '2', '2.2', '2.2.1', NULL, NULL),
+(197, '2.2.2', 'Simpanan Wajib', 3, 'Kredit', '2', '2.2', '2.2.2', NULL, NULL),
+(198, '2.2.3', 'Simpanan Lain', 3, 'Kredit', '2', '2.2', '2.2.3', NULL, NULL),
+(199, '2.2.4', 'Tabungan Anggota', 3, 'Kredit', '2', '2.2', '2.2.4', NULL, NULL),
+(200, '2.2.5', 'Titipan Anggota', 3, 'Kredit', '2', '2.2', '2.2.5', NULL, NULL),
+(201, '5.1', 'Biaya Perlengkapan', 2, 'Debet', '5', '5.1', NULL, NULL, NULL),
+(202, '5.2', 'Biaya Kesejahteraan', 2, 'Debet', '5', '5.2', NULL, NULL, NULL),
+(203, '5.3', 'Biaya Komunikasi', 2, 'Debet', '5', '5.3', NULL, NULL, NULL),
+(204, '5.4', 'Biaya Administrasi', 2, 'Debet', '5', '5.4', NULL, NULL, NULL),
+(205, '5.5', 'Biaya Kirim', 2, 'Debet', '5', '5.5', NULL, NULL, NULL),
+(206, '5.6', 'Biaya Transportasi', 2, 'Debet', '5', '5.6', NULL, NULL, NULL),
+(207, '5.7', 'Beban Pajak', 2, 'Debet', '5', '5.7', NULL, NULL, NULL),
+(208, '5.8', 'Biaya Lain Lain', 2, 'Debet', '5', '5.8', NULL, NULL, NULL),
+(209, '5.9', 'Beban Penyusutan Peralatan', 2, 'Debet', '5', '5.9', NULL, NULL, NULL),
+(210, '3.2', 'Cadangan Dana Kerugian Koperasi', 2, 'Kredit', '3', '3.2', NULL, NULL, NULL),
+(211, '3.3', 'Cadangan Dana Pendidikan Koperasi', 2, 'Kredit', '3', '3.3', NULL, NULL, NULL),
+(212, '3.4', 'Cadangan Dana Sosial &amp; Pembangunan', 2, 'Kredit', '3', '3.4', NULL, NULL, NULL),
+(213, '4.4', 'Pendapatan Bagi Hasil Bank', 2, 'Kredit', '4', '4.4', NULL, NULL, NULL),
+(214, '5.10', 'HPP Barang', 2, 'Debet', '5', '5.10', NULL, NULL, NULL),
+(215, '4.5', 'Pendapatan Penjualan', 2, 'Kredit', '4', '4.5', NULL, NULL, NULL),
+(216, '2.1.10', 'Utang Pembelian', 3, 'Kredit', '2', '2.1', '2.1.10', NULL, NULL),
+(217, '1.1.3.10', 'Piutang Penjualan', 4, 'Debet', '1', '1.1', '1.1.3', '1.1.3.10', NULL);
 
 -- --------------------------------------------------------
 
@@ -606,10 +589,10 @@ CREATE TABLE IF NOT EXISTS `auto_jurnal` (
 --
 
 INSERT INTO `auto_jurnal` (`id_auto_jurnal`, `kategori_transaksi`, `debet_id`, `debet_name`, `kredit_id`, `kredit_name`) VALUES
-(5, 'Simpanan', 135, 'Kas Berangkas', 163, 'Simpanan Anggota'),
-(6, 'Penarikan', 163, 'Simpanan Anggota', 135, 'Kas Berangkas'),
-(7, 'Pinjaman', 162, 'Pinjaman Anggota', 135, 'Kas Berangkas '),
-(8, 'Angsuran', 155, 'Kas Brangkas', 162, 'Pinjaman Anggota ');
+(5, 'Simpanan', 135, 'Kas Bank BJB Syariah', 0, ''),
+(6, 'Penarikan', 0, '', 135, 'Kas Bank BJB Syariah'),
+(7, 'Pinjaman', 166, 'Piutang Pembiayaan Konsumtif', 135, 'Kas Bank BJB Syariah'),
+(8, 'Angsuran', 0, '', 166, 'Piutang Pembiayaan Konsumtif');
 
 -- --------------------------------------------------------
 
@@ -632,8 +615,8 @@ CREATE TABLE IF NOT EXISTS `auto_jurnal_angsuran` (
 --
 
 INSERT INTO `auto_jurnal_angsuran` (`id_auto_jurnal_angsuran`, `komponen`, `id_perkiraan`, `kode`, `nama`) VALUES
-(1, 'Jasa', 160, '4.1', 'Pendapatan Jasa '),
-(2, 'Denda', 161, '4.2', 'Pendapatan Denda ');
+(1, 'Jasa', 160, '4.1', 'Pendapatan Bagi Hasil'),
+(2, 'Denda', 161, '4.2', 'Pendapatan Margin dari Pembiayaan');
 
 -- --------------------------------------------------------
 
@@ -741,23 +724,23 @@ INSERT INTO `barang` (`id_barang`, `kode_barang`, `nama_barang`, `kategori_baran
 (87, '8999999036690', 'Lux Magical Spell 80g', 'KC', 'BH', 1.00, 2800.00, 100.00, 0.00),
 (88, '8999999036676', 'Lux Aqua Delight 80g', 'KC', 'BH', 1.00, 2800.00, 100.00, 0.00),
 (89, '8999999036638', 'Lux Velvet Jasmine 80g', 'KC', 'BH', 1.00, 2800.00, 100.00, 0.00),
-(91, '8999999034153', 'Blue Band Serbaguna 200g', 'MKN', 'PCS', 1.00, 6733333.00, 109.00, 0.00),
+(91, '8999999034153', 'Blue Band Serbaguna 200g', 'MKN', 'PCS', 1.00, 17000.00, 109.00, 0.00),
 (92, '8999999033200', 'Lifebuoy Anti - Dandruff 70ml', 'BC', 'BTL', 1.00, 6850.00, 100.00, 0.00),
 (93, '8999999033163', 'Lifebuoy Strong & Shiny 70 ml', 'BC', 'BTL', 1.00, 6850.00, 100.00, 0.00),
 (94, '8999999033125', 'Lifebuoy Anti Hair Fall 70ml', 'BC', 'BTL', 1.00, 6850.00, 100.00, 0.00),
 (95, '8999999027605', 'Clear Complete Soft Care 10ml Unisex', 'Lainnya', 'pcs', 1.00, 783125.00, 100.00, 0.00),
 (96, '8999999027278', 'Lifebuoy Lemon Fresh 250ml', 'BC', 'REF', 1.00, 13150.00, 100.00, 0.00),
 (97, '8999999027261', 'Lifebuoy Lemon Fresh 450ml', 'BC', 'REF', 1.00, 21700.00, 100.00, 0.00),
-(98, '8999999027049', 'Lifebuoy Hairfall Trmt 9ml', 'BC', 'RCG', 1.00, 2250.00, 96.00, 0.00),
+(98, '8999999027049', 'Lifebuoy Hairfall Trmt 9ml', 'BC', 'RCG', 1.00, 2250.00, -21.00, 0.00),
 (99, '6676', 'Pulsa Tree 5000', 'Pulsa', 'Rp', 1.00, 5000.00, 100.00, 0.00),
-(100, '2345654631', 'Pulsa Telkomsel 5000', 'Pulsa', 'Rp', 1.00, 5000.00, 200.00, 0.00),
-(101, '7765652326', 'Rinso Pewangi', 'Detergent', 'Pcs', 1.00, 2500.00, 100.00, 10.00),
+(100, '2345654631', 'Pulsa Telkomsel 5000', 'Pulsa', 'Rp', 1.00, 5000.00, 208.00, 0.00),
+(101, '7765652326', 'Rinso Pewangi', 'Detergent', 'Pcs', 1.00, 2500.00, 90.00, 10.00),
 (102, '2710797996', 'Rinso Pewangi', 'Detergent', 'Pcs', 1.00, 2500.00, 99.00, 10.00),
-(103, '8783112781', 'Rinso Pewangi', 'Detergent', 'Pcs', 1.00, 2500.00, 101.00, 10.00),
-(104, '117373807', 'Rinso Pewangi', 'Detergent', 'Pcs', 1.00, 2500.00, 99.00, 10.00),
-(105, '4864063947', 'Kopi Gadjah', 'Kopi', 'Sachet', 1.00, 2000.00, 199.00, 10.00),
-(106, '4303369817', 'Kopi Arabica', 'Kopi', 'PCS', 1.00, 1200.00, 79.00, 1.00),
-(110, '00001111100000', 'Beras 10 Kg', 'sembako', 'Kg', 1.00, 110000.00, 85.00, 5.00);
+(103, '8783112781', 'Rinso Pewangi', 'Detergent', 'Pcs', 1.00, 2500.00, 86.00, 10.00),
+(104, '117373807', 'Rinso Pewangi', 'Detergent', 'Pcs', 1.00, 2500.00, 109.00, 10.00),
+(105, '4864063947', 'Kopi Gadjah', 'Kopi', 'Sachet', 1.00, 2000.00, 192.00, 10.00),
+(106, '4303369817', 'Kopi Arabica', 'Kopi', 'PCS', 1.00, 1200.00, 47.00, 1.00),
+(110, '00001111100000', 'Beras 10 Kg', 'sembako', 'Kg', 1.00, 110000.00, 47.00, 5.00);
 
 -- --------------------------------------------------------
 
@@ -836,7 +819,7 @@ CREATE TABLE IF NOT EXISTS `barang_harga` (
   PRIMARY KEY (`id_barang_harga`),
   KEY `id_barang` (`id_barang`),
   KEY `id_barang_kategori_harga` (`id_barang_kategori_harga`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `barang_harga`
@@ -848,7 +831,10 @@ INSERT INTO `barang_harga` (`id_barang_harga`, `id_barang`, `id_barang_kategori_
 (21, 106, 13, 1400.00),
 (22, 110, 11, 120000.00),
 (23, 110, 12, 120000.00),
-(24, 110, 13, 120000.00);
+(24, 110, 13, 120000.00),
+(25, 91, 11, 17500.00),
+(26, 91, 12, 17800.00),
+(27, 91, 13, 18000.00);
 
 -- --------------------------------------------------------
 
@@ -957,7 +943,7 @@ CREATE TABLE IF NOT EXISTS `help` (
   `datetime_update` datetime NOT NULL,
   `status` varchar(15) NOT NULL COMMENT 'Publish, Draft',
   PRIMARY KEY (`id_help`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `help`
@@ -966,7 +952,8 @@ CREATE TABLE IF NOT EXISTS `help` (
 INSERT INTO `help` (`id_help`, `author`, `judul`, `kategori`, `deskripsi`, `datetime_creat`, `datetime_update`, `status`) VALUES
 (2, 'Solihul Hadi', 'Cara Mengirim Pengajuan Akses', 'Pengajuan Akses', '&lt;p&gt;Tahap awal yang harus dilakukan pertama kali untuk dapat menggunakan aplikasi adalah mengirimkan permohonan akses.&lt;/p&gt;', '2024-08-09 05:07:14', '2024-08-10 01:09:35', 'Publish'),
 (3, 'Solihul Hadi', 'Melakukan Login', 'Akses', '&lt;p&gt;Untuk melakukan login, ikuti tahapan berikut ini&lt;/p&gt;\n&lt;p&gt;&lt;img src=&quot;assets/img/Help/43ac4062b48a1b8e.png&quot; alt=&quot;&quot; width=&quot;389&quot; height=&quot;409&quot; /&gt;&lt;/p&gt;', '2024-08-09 05:16:33', '2024-08-10 01:09:28', 'Publish'),
-(4, 'Solihul Hadi', 'Mengubah Password', 'Akses', '&lt;p&gt;Berikut ini adalah langkah-langkah untuk merubah password&lt;/p&gt;\n&lt;ol&gt;\n&lt;li&gt;Login pada akun anda seperti biasa&lt;/li&gt;\n&lt;li&gt;Pada bagian menu kanan atas (profil pengguna) pilih profil saya.&lt;/li&gt;\n&lt;li&gt;Pilih sub menu ubah password&lt;/li&gt;\n&lt;li&gt;Masukan password baru anda pada form yang disediakan&lt;/li&gt;\n&lt;li&gt;Simpan perubahan dan sistem akan menampilkan notifikasi berhasil.&lt;/li&gt;\n&lt;/ol&gt;', '2024-08-10 00:58:00', '2024-08-12 02:12:30', 'Publish');
+(4, 'Solihul Hadi', 'Mengubah Password', 'Akses', '&lt;p&gt;Berikut ini adalah langkah-langkah untuk merubah password&lt;/p&gt;\n&lt;ol&gt;\n&lt;li&gt;Login pada akun anda seperti biasa&lt;/li&gt;\n&lt;li&gt;Pada bagian menu kanan atas (profil pengguna) pilih profil saya.&lt;/li&gt;\n&lt;li&gt;Pilih sub menu ubah password&lt;/li&gt;\n&lt;li&gt;Masukan password baru anda pada form yang disediakan&lt;/li&gt;\n&lt;li&gt;Simpan perubahan dan sistem akan menampilkan notifikasi berhasil.&lt;/li&gt;\n&lt;/ol&gt;', '2024-08-10 00:58:00', '2024-08-12 02:12:30', 'Publish'),
+(6, 'Solihul Hadi', 'Tentang Koperasi', 'Materi Umum', '<p>Koperasi adalah badan usaha yang beranggotakan orang-orang atau badan hukum koperasi, yang kegiatannya didasarkan pada prinsip-prinsip koperasi dan asas kekeluargaan. Secara sederhana, koperasi adalah perkumpulan yang anggotanya bekerja sama untuk memenuhi kebutuhan ekonomi, sosial, dan budaya mereka melalui usaha yang dimiliki dan dikelola bersama.</p>\r\n<p><strong>1. Ciri-ciri Koperasi</strong></p>\r\n<ul>\r\n<li><strong>Bekerja Sama: </strong>Anggota koperasi bekerja sama untuk mencapai tujuan bersama.</li>\r\n<li><strong>Otonom:</strong> Koperasi memiliki kebebasan untuk menjalankan kegiatan usahanya.</li>\r\n<li><strong>Sukarela:</strong> Keanggotaan dalam koperasi bersifat sukarela.</li>\r\n<li><strong>Demokratis:</strong> Pengelolaan koperasi dilakukan secara demokratis.</li>\r\n<li><strong>Asas Kekeluargaan: </strong>Koperasi didasarkan pada asas kekeluargaan</li>\r\n</ul>\r\n<p><strong>2. Prinsip Koperasi</strong></p>\r\n<p>Prinsip-prinsip koperasi meliputi keanggotaan yang sukarela dan terbuka, pengelolaan secara demokratis, pembagian Sisa Hasil Usaha (SHU) secara adil, pemberian balas jasa terbatas terhadap modal, kemandirian, pendidikan perkoperasian, dan kerjasama antar koperasi.</p>\r\n<p><strong>3. Tujuan Koperasi</strong></p>\r\n<p>Tujuan koperasi secara umum adalah untuk meningkatkan kesejahteraan anggotanya dan masyarakat secara luas melalui kegiatan ekonomi yang berdasarkan prinsip-prinsip koperasi. Berikut ini adalah penjelasan beberapa tujuan koperasi:</p>\r\n<ul>\r\n<li>Meningkatkan kesejahteraan anggota.&nbsp;</li>\r\n<li>Meningkatkan Taraf hidup masyarakat</li>\r\n<li>Mengembangkan Kegiatan Ekonomi</li>\r\n<li>Mendorong Sikap Gotong Royong Dan Solidaritas</li>\r\n<li>Menghindari Eksploitasi Ekonomi</li>\r\n<li>Meningkatkan Pendidikan Ekonomi Anggota</li>\r\n</ul>', '2025-05-09 00:00:00', '0000-00-00 00:00:00', '');
 
 -- --------------------------------------------------------
 
@@ -984,6 +971,7 @@ CREATE TABLE IF NOT EXISTS `jurnal` (
   `id_pinjaman_angsuran` int DEFAULT NULL,
   `id_simpanan` int DEFAULT NULL,
   `id_transaksi_jual_beli` char(36) DEFAULT NULL,
+  `id_transaksi_pembayaran` char(36) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   `id_shu_session` int DEFAULT NULL,
   `tanggal` date NOT NULL COMMENT 'tanggal transaksi',
   `kode_perkiraan` varchar(20) NOT NULL,
@@ -996,78 +984,85 @@ CREATE TABLE IF NOT EXISTS `jurnal` (
   KEY `id_transaksi_jual_beli` (`id_transaksi_jual_beli`),
   KEY `id_shu_session` (`id_shu_session`),
   KEY `id_transaksi` (`id_transaksi`),
-  KEY `id_simpanan` (`id_simpanan`)
-) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=latin1;
+  KEY `id_simpanan` (`id_simpanan`),
+  KEY `id_transaksi_pembayaran` (`id_transaksi_pembayaran`)
+) ENGINE=InnoDB AUTO_INCREMENT=355 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `jurnal`
 --
 
-INSERT INTO `jurnal` (`id_jurnal`, `kategori`, `uuid`, `id_transaksi`, `id_pinjaman`, `id_pinjaman_angsuran`, `id_simpanan`, `id_transaksi_jual_beli`, `id_shu_session`, `tanggal`, `kode_perkiraan`, `nama_perkiraan`, `d_k`, `nilai`) VALUES
-(1, 'Pinjaman', '1UYjtSkUTWu1lBLEdM2w9fGVrgTkX1soIz7S', NULL, 26, NULL, NULL, NULL, NULL, '2025-04-02', '1.1.1.3', 'Kas Berangkas ', 'K', 10000000),
-(2, 'Pinjaman', '1UYjtSkUTWu1lBLEdM2w9fGVrgTkX1soIz7S', NULL, 26, NULL, NULL, NULL, NULL, '2025-04-02', '1.1.3.4', 'Pinjaman Anggota', 'D', 10000000),
-(3, 'Angsuran', 'C34JffjFNbXrFOZioIXO4GA97aQUuINJHF09', NULL, NULL, 631, NULL, NULL, NULL, '2025-04-02', '1.1.3.4', 'Pinjaman Anggota ', 'K', 1000000),
-(4, 'Angsuran', 'C34JffjFNbXrFOZioIXO4GA97aQUuINJHF09', NULL, NULL, 631, NULL, NULL, NULL, '2025-04-02', '1.1.1.1.1', 'Kas Brangkas', 'D', 1100000),
-(5, 'Angsuran', 'C34JffjFNbXrFOZioIXO4GA97aQUuINJHF09', NULL, NULL, 631, NULL, NULL, NULL, '2025-04-02', '4.1', 'Pendapatan Jasa ', 'K', 100000),
-(6, 'Penjualan', '5hNgU66pOv6D3zEeeZD72QgE0PlYp7VzqHrn', NULL, NULL, NULL, NULL, '5hNgU66pOv6D3zEeeZD72QgE0PlYp7VzqHrn', NULL, '2025-04-02', '1.1.1.1.1', 'Kas Brangkas', 'D', 120000),
-(7, 'Penjualan', '5hNgU66pOv6D3zEeeZD72QgE0PlYp7VzqHrn', NULL, NULL, NULL, NULL, '5hNgU66pOv6D3zEeeZD72QgE0PlYp7VzqHrn', NULL, '2025-04-02', '5.4', 'Beban Lainnya', 'K', 120000),
-(8, 'Pembelian', 'g8UmVFGyESzGcVnGHD5VxpFCQbYMfncMJL81', NULL, NULL, NULL, NULL, 'g8UmVFGyESzGcVnGHD5VxpFCQbYMfncMJL81', NULL, '2025-04-02', '5.4', 'Beban Lainnya', 'D', 0),
-(9, 'Pembelian', 'g8UmVFGyESzGcVnGHD5VxpFCQbYMfncMJL81', NULL, NULL, NULL, NULL, 'g8UmVFGyESzGcVnGHD5VxpFCQbYMfncMJL81', NULL, '2025-04-02', '1.1.1.3', 'Kas Berangkas', 'K', 2500),
-(10, 'Pembelian', 'g8UmVFGyESzGcVnGHD5VxpFCQbYMfncMJL81', NULL, NULL, NULL, NULL, 'g8UmVFGyESzGcVnGHD5VxpFCQbYMfncMJL81', NULL, '2025-04-02', '2.1.1', 'Hutang Usaha', 'D', 2500),
-(11, 'Pembelian', 'iww8VSRzyRde7DO4CZiCDhyoIdoKAIj3SrHf', NULL, NULL, NULL, NULL, 'iww8VSRzyRde7DO4CZiCDhyoIdoKAIj3SrHf', NULL, '2025-04-02', '5.4', 'Beban Lainnya', 'D', 110000),
-(12, 'Pembelian', 'iww8VSRzyRde7DO4CZiCDhyoIdoKAIj3SrHf', NULL, NULL, NULL, NULL, 'iww8VSRzyRde7DO4CZiCDhyoIdoKAIj3SrHf', NULL, '2025-04-02', '1.1.1.3', 'Kas Berangkas', 'K', 110000),
-(13, 'Transaksi', '67606352644125568139520743013373', 22, NULL, NULL, NULL, NULL, NULL, '2025-04-03', '5.1.4', 'Beban PBB', 'D', 100000),
-(14, 'Transaksi', '67606352644125568139520743013373', 22, NULL, NULL, NULL, NULL, NULL, '2025-04-03', '1.1.1.2.3', 'Kas Bank Mandiri', 'K', 100000),
-(15, 'Transaksi', '92085391979233568469181179157482', 23, NULL, NULL, NULL, NULL, NULL, '2025-04-03', '5.3.4', 'Beban Utilitas', 'D', 20000),
-(16, 'Transaksi', '92085391979233568469181179157482', 23, NULL, NULL, NULL, NULL, NULL, '2025-04-03', '1.1.1.3', 'Kas Berangkas', 'K', 20000),
-(17, 'SHU', 'H9bd9QAbzDbn7vsiYJICiZ9UD9PR1fZmKp9g', NULL, NULL, NULL, NULL, NULL, 6, '2025-04-03', '5.4', 'Beban Lainnya', 'D', 10500005),
-(18, 'SHU', 'H9bd9QAbzDbn7vsiYJICiZ9UD9PR1fZmKp9g', NULL, NULL, NULL, NULL, NULL, 6, '2025-04-03', '2.2', 'Kewajiban Pembayaran Prive Investor', 'K', 10500005),
-(19, 'SHU', 'H9bd9QAbzDbn7vsiYJICiZ9UD9PR1fZmKp9g', NULL, NULL, NULL, NULL, NULL, 6, '2025-04-03', '2.2', 'Kewajiban Pembayaran Prive Investor', 'D', 10500005),
-(20, 'SHU', 'H9bd9QAbzDbn7vsiYJICiZ9UD9PR1fZmKp9g', NULL, NULL, NULL, NULL, NULL, 6, '2025-04-03', '5.4', 'Beban Lainnya', 'K', 10500005),
-(21, 'Simpanan', 'TXrcG3WUbkSW5xVlWmr5FuarHaQ8qGFgqky1', NULL, NULL, NULL, 443, NULL, NULL, '2025-04-03', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
-(22, 'Simpanan', 'TXrcG3WUbkSW5xVlWmr5FuarHaQ8qGFgqky1', NULL, NULL, NULL, 443, NULL, NULL, '2025-04-03', '2.3', 'Simpanan Anggota', 'K', 100000),
-(63, 'Simpanan', 'ZwqQ3NqbkQyvI2PJjy0Yq48RJG6TarnGv2Ct', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
-(64, 'Simpanan', 'ZwqQ3NqbkQyvI2PJjy0Yq48RJG6TarnGv2Ct', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
-(65, 'Simpanan', 'e2xWnXwmzSK1L2M2Bnr9f9o4DDlZs3iLsBO6', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
-(66, 'Simpanan', 'e2xWnXwmzSK1L2M2Bnr9f9o4DDlZs3iLsBO6', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
-(67, 'Simpanan', 'RAsFeQVUmIXfXx9x1GllyD1retvra3q6vvWd', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
-(68, 'Simpanan', 'RAsFeQVUmIXfXx9x1GllyD1retvra3q6vvWd', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
-(69, 'Simpanan', 'rYdJ5jH9khKp4ynnKNR0vP63Ne1gszuZP4mA', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
-(70, 'Simpanan', 'rYdJ5jH9khKp4ynnKNR0vP63Ne1gszuZP4mA', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
-(71, 'Simpanan', 'FpkYJPGo2dpNnVZVlXDDHPkbdEINTOegElZn', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
-(72, 'Simpanan', 'FpkYJPGo2dpNnVZVlXDDHPkbdEINTOegElZn', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
-(73, 'Simpanan', 'kfZa0P3G4YxuzQO2BJh5u55nTByUmDDd2xnf', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
-(74, 'Simpanan', 'kfZa0P3G4YxuzQO2BJh5u55nTByUmDDd2xnf', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
-(75, 'Simpanan', 'Hf09BsPhFlTdZPz2UQHNKJfLbScWbsUTD0Ud', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
-(76, 'Simpanan', 'Hf09BsPhFlTdZPz2UQHNKJfLbScWbsUTD0Ud', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
-(77, 'Simpanan', 'NzBzyrV2Wu1IZjUHrJ0IcnBKb03wFhkVn4v3', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
-(78, 'Simpanan', 'NzBzyrV2Wu1IZjUHrJ0IcnBKb03wFhkVn4v3', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
-(79, 'Simpanan', 'DxdFlO7Azm1iIAm7GSNgwJQ6iLdoqrLvuHuG', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
-(80, 'Simpanan', 'DxdFlO7Azm1iIAm7GSNgwJQ6iLdoqrLvuHuG', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
-(81, 'Simpanan', 'XGC0Ugs7VLBb66JB0NI9HOCGKMh8PV5CQMHj', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
-(82, 'Simpanan', 'XGC0Ugs7VLBb66JB0NI9HOCGKMh8PV5CQMHj', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
-(83, 'Simpanan', 'tPyKinoqvzrXAeRLeEzet8kBXAP9ecOhhuIS', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
-(84, 'Simpanan', 'tPyKinoqvzrXAeRLeEzet8kBXAP9ecOhhuIS', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
-(85, 'Simpanan', 'gVNTbUlFUCHcpjxZlOC232j4X7fiPZNeUXw6', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
-(86, 'Simpanan', 'gVNTbUlFUCHcpjxZlOC232j4X7fiPZNeUXw6', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
-(87, 'Simpanan', 'oA1LOTPWqACRPcV4HgFDG1ZjNygqfIhocsqB', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
-(88, 'Simpanan', 'oA1LOTPWqACRPcV4HgFDG1ZjNygqfIhocsqB', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
-(89, 'Simpanan', 'v2rYs1ic27mjlAoOnntLt9gf9RZkROG3tzHP', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
-(90, 'Simpanan', 'v2rYs1ic27mjlAoOnntLt9gf9RZkROG3tzHP', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
-(91, 'Simpanan', 'M6gIBKEgQJQvm8wqOE7vCkj5jJCKAk6XEv5B', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
-(92, 'Simpanan', 'M6gIBKEgQJQvm8wqOE7vCkj5jJCKAk6XEv5B', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
-(93, 'Simpanan', 'fu1cXGnCtRwmZpJmtrcGpgch2kI63cuTxVNv', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
-(94, 'Simpanan', 'fu1cXGnCtRwmZpJmtrcGpgch2kI63cuTxVNv', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
-(95, 'Simpanan', 'yGLDXB5U6P71yvXECdtZTaReOJt5RIPvkVfp', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
-(96, 'Simpanan', 'yGLDXB5U6P71yvXECdtZTaReOJt5RIPvkVfp', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
-(97, 'Simpanan', 'oFa4hKU7U5K711zikDjX5MadijSTb8s4bfOZ', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
-(98, 'Simpanan', 'oFa4hKU7U5K711zikDjX5MadijSTb8s4bfOZ', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
-(99, 'Simpanan', 'CCP6HLpE4IDSYMbvIVSfjvFjzrohgXoliio7', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
-(100, 'Simpanan', 'CCP6HLpE4IDSYMbvIVSfjvFjzrohgXoliio7', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
-(101, 'Simpanan', 'y7UTMc97WhSkFokdRg9CySTk5payzUEIEhaf', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '1.1.1.2.5', 'Kas Bank Jabar', 'D', 100000),
-(102, 'Simpanan', 'y7UTMc97WhSkFokdRg9CySTk5payzUEIEhaf', NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01', '2.3', 'Simpanan Anggota', 'K', 100000),
-(103, 'Simpanan', 'U4KnPyBcMDcwmDml17nKTuJI1i7M8LClt8Um', NULL, NULL, NULL, 464, NULL, NULL, '2025-04-03', '2.3', 'Simpanan Anggota', 'D', 100000),
-(104, 'Simpanan', 'U4KnPyBcMDcwmDml17nKTuJI1i7M8LClt8Um', NULL, NULL, NULL, 464, NULL, NULL, '2025-04-03', '1.1.1.3', 'Kas Berangkas', 'K', 100000);
+INSERT INTO `jurnal` (`id_jurnal`, `kategori`, `uuid`, `id_transaksi`, `id_pinjaman`, `id_pinjaman_angsuran`, `id_simpanan`, `id_transaksi_jual_beli`, `id_transaksi_pembayaran`, `id_shu_session`, `tanggal`, `kode_perkiraan`, `nama_perkiraan`, `d_k`, `nilai`) VALUES
+(273, 'Penjualan', '5zBHhnGzg7ZatOVqwWekj73eqGamSJHkafBE', NULL, NULL, NULL, NULL, '5zBHhnGzg7ZatOVqwWekj73eqGamSJHkafBE', NULL, NULL, '2025-06-07', '1.1.1.1', 'Kas Utama', 'D', 0),
+(274, 'Penjualan', '5zBHhnGzg7ZatOVqwWekj73eqGamSJHkafBE', NULL, NULL, NULL, NULL, '5zBHhnGzg7ZatOVqwWekj73eqGamSJHkafBE', NULL, NULL, '2025-06-07', '4.5', 'Pendapatan Penjualan', 'K', 600000),
+(275, 'Penjualan', '5zBHhnGzg7ZatOVqwWekj73eqGamSJHkafBE', NULL, NULL, NULL, NULL, '5zBHhnGzg7ZatOVqwWekj73eqGamSJHkafBE', NULL, NULL, '2025-06-07', '5.10', 'HPP Barang', 'D', 550000),
+(276, 'Penjualan', '5zBHhnGzg7ZatOVqwWekj73eqGamSJHkafBE', NULL, NULL, NULL, NULL, '5zBHhnGzg7ZatOVqwWekj73eqGamSJHkafBE', NULL, NULL, '2025-06-07', '1.1.2.7', 'Persediaan Barang Lainnya', 'K', 550000),
+(277, 'Penjualan', '5zBHhnGzg7ZatOVqwWekj73eqGamSJHkafBE', NULL, NULL, NULL, NULL, '5zBHhnGzg7ZatOVqwWekj73eqGamSJHkafBE', NULL, NULL, '2025-06-07', '1.1.3.6', 'Piutang Barang Dagang Sembako', 'D', 600000),
+(278, 'Penjualan', '5zBHhnGzg7ZatOVqwWekj73eqGamSJHkafBE', NULL, NULL, NULL, NULL, '5zBHhnGzg7ZatOVqwWekj73eqGamSJHkafBE', 'KacwkEe7kqmhjJbGyeva5OWTUvDhG2betrH9', NULL, '2025-06-07', '1.1.1.1', 'Kas Utama', 'D', 600000),
+(279, 'Penjualan', '5zBHhnGzg7ZatOVqwWekj73eqGamSJHkafBE', NULL, NULL, NULL, NULL, '5zBHhnGzg7ZatOVqwWekj73eqGamSJHkafBE', 'KacwkEe7kqmhjJbGyeva5OWTUvDhG2betrH9', NULL, '2025-06-07', '1.1.3.6', 'Piutang Barang Dagang Sembako', 'K', 600000),
+(288, 'Penjualan', 'AyfMmNgDYZftwB9WgIwFZe9fbkCHa5lvvQXx', NULL, NULL, NULL, NULL, 'AyfMmNgDYZftwB9WgIwFZe9fbkCHa5lvvQXx', 'pHw2itSBJKt4rXy7FST3lafRiB16UMCFZIP1', NULL, '2025-06-07', '1.1.1.1', 'Kas Utama', 'D', 12500),
+(289, 'Penjualan', 'AyfMmNgDYZftwB9WgIwFZe9fbkCHa5lvvQXx', NULL, NULL, NULL, NULL, 'AyfMmNgDYZftwB9WgIwFZe9fbkCHa5lvvQXx', 'pHw2itSBJKt4rXy7FST3lafRiB16UMCFZIP1', NULL, '2025-06-07', '1.1.3.6', 'Piutang Barang Dagang Sembako', 'K', 12500),
+(292, 'Penjualan', 'CgQe1HBsb1Xxr3CM4Ynih6nliMyHGpOOqZn8', NULL, NULL, NULL, NULL, 'CgQe1HBsb1Xxr3CM4Ynih6nliMyHGpOOqZn8', NULL, NULL, '2025-06-07', '1.1.1.1', 'Kas Utama', 'D', 0),
+(293, 'Penjualan', 'CgQe1HBsb1Xxr3CM4Ynih6nliMyHGpOOqZn8', NULL, NULL, NULL, NULL, 'CgQe1HBsb1Xxr3CM4Ynih6nliMyHGpOOqZn8', NULL, NULL, '2025-06-07', '4.5', 'Pendapatan Penjualan', 'K', 240000),
+(294, 'Penjualan', 'CgQe1HBsb1Xxr3CM4Ynih6nliMyHGpOOqZn8', NULL, NULL, NULL, NULL, 'CgQe1HBsb1Xxr3CM4Ynih6nliMyHGpOOqZn8', NULL, NULL, '2025-06-07', '5.10', 'HPP Barang', 'D', 220000),
+(295, 'Penjualan', 'CgQe1HBsb1Xxr3CM4Ynih6nliMyHGpOOqZn8', NULL, NULL, NULL, NULL, 'CgQe1HBsb1Xxr3CM4Ynih6nliMyHGpOOqZn8', NULL, NULL, '2025-06-07', '1.1.2.7', 'Persediaan Barang Lainnya', 'K', 220000),
+(296, 'Penjualan', 'CgQe1HBsb1Xxr3CM4Ynih6nliMyHGpOOqZn8', NULL, NULL, NULL, NULL, 'CgQe1HBsb1Xxr3CM4Ynih6nliMyHGpOOqZn8', NULL, NULL, '2025-06-07', '1.1.3.6', 'Piutang Barang Dagang Sembako', 'D', 240000),
+(299, 'Pembelian', 'g8UmVFGyESzGcVnGHD5VxpFCQbYMfncMJL81', NULL, NULL, NULL, NULL, 'g8UmVFGyESzGcVnGHD5VxpFCQbYMfncMJL81', 'fv9HyzQPINeADT8CYrGnhFnCRmNouaxHVbj6', NULL, '2025-06-07', '1.1.2.7', 'Persediaan Barang Lainnya', 'D', 500),
+(300, 'Pembelian', 'g8UmVFGyESzGcVnGHD5VxpFCQbYMfncMJL81', NULL, NULL, NULL, NULL, 'g8UmVFGyESzGcVnGHD5VxpFCQbYMfncMJL81', 'fv9HyzQPINeADT8CYrGnhFnCRmNouaxHVbj6', NULL, '2025-06-07', '2.1.10', 'Utang Pembelian', 'K', 500),
+(301, 'Pembelian', 'g8UmVFGyESzGcVnGHD5VxpFCQbYMfncMJL81', NULL, NULL, NULL, NULL, 'g8UmVFGyESzGcVnGHD5VxpFCQbYMfncMJL81', 'hIwD8L16zyrDGYUop4Aee1MSHfz0TktakjTM', NULL, '2025-06-07', '1.1.2.7', 'Persediaan Barang Lainnya', 'D', 2000),
+(302, 'Pembelian', 'g8UmVFGyESzGcVnGHD5VxpFCQbYMfncMJL81', NULL, NULL, NULL, NULL, 'g8UmVFGyESzGcVnGHD5VxpFCQbYMfncMJL81', 'hIwD8L16zyrDGYUop4Aee1MSHfz0TktakjTM', NULL, '2025-06-07', '2.1.10', 'Utang Pembelian', 'K', 2000),
+(303, 'Penjualan', 'DmHp14Ir6Oaw3YNw2A0bCxJkXJjtT2g0ZmcT', NULL, NULL, NULL, NULL, 'DmHp14Ir6Oaw3YNw2A0bCxJkXJjtT2g0ZmcT', 'kvgxfTkUaxa7m5SL5th3oVj1LXzlE6yTY3PU', NULL, '2025-06-07', '1.1.1.1', 'Kas Utama', 'D', 4000),
+(304, 'Penjualan', 'DmHp14Ir6Oaw3YNw2A0bCxJkXJjtT2g0ZmcT', NULL, NULL, NULL, NULL, 'DmHp14Ir6Oaw3YNw2A0bCxJkXJjtT2g0ZmcT', 'kvgxfTkUaxa7m5SL5th3oVj1LXzlE6yTY3PU', NULL, '2025-06-07', '1.1.3.6', 'Piutang Barang Dagang Sembako', 'K', 4000),
+(305, 'Penjualan', 'DmHp14Ir6Oaw3YNw2A0bCxJkXJjtT2g0ZmcT', NULL, NULL, NULL, NULL, 'DmHp14Ir6Oaw3YNw2A0bCxJkXJjtT2g0ZmcT', '4tVEAECZJsYS7rsN6f9RnZKnJSuFZdREsQEf', NULL, '2025-06-07', '1.1.1.1', 'Kas Utama', 'D', 20000),
+(306, 'Penjualan', 'DmHp14Ir6Oaw3YNw2A0bCxJkXJjtT2g0ZmcT', NULL, NULL, NULL, NULL, 'DmHp14Ir6Oaw3YNw2A0bCxJkXJjtT2g0ZmcT', '4tVEAECZJsYS7rsN6f9RnZKnJSuFZdREsQEf', NULL, '2025-06-07', '1.1.3.6', 'Piutang Barang Dagang Sembako', 'K', 20000),
+(307, 'Angsuran', 'x4VKfPzp7igALikAZPLJuNSw2XictRkqIvya', NULL, NULL, 635, NULL, NULL, NULL, NULL, '2025-06-07', '1.1.3.3', 'Piutang Pembiayaan Konsumtif', 'K', 1000000),
+(308, 'Angsuran', 'x4VKfPzp7igALikAZPLJuNSw2XictRkqIvya', NULL, NULL, 635, NULL, NULL, NULL, NULL, '2025-06-07', 'No Value Provided', '', 'D', 1100000),
+(309, 'Penjualan', 'CgQe1HBsb1Xxr3CM4Ynih6nliMyHGpOOqZn8', NULL, NULL, NULL, NULL, 'CgQe1HBsb1Xxr3CM4Ynih6nliMyHGpOOqZn8', '4SsiMzYtirZg5HfaqTw37glEhKiAyeRD8lP2', NULL, '2025-06-07', '1.1.1.1', 'Kas Utama', 'D', 240000),
+(310, 'Penjualan', 'CgQe1HBsb1Xxr3CM4Ynih6nliMyHGpOOqZn8', NULL, NULL, NULL, NULL, 'CgQe1HBsb1Xxr3CM4Ynih6nliMyHGpOOqZn8', '4SsiMzYtirZg5HfaqTw37glEhKiAyeRD8lP2', NULL, '2025-06-07', '1.1.3.6', 'Piutang Barang Dagang Sembako', 'K', 240000),
+(311, 'Pembelian', 'jnwSzegiuLF3uhIx8siDNKVxZVVtLIQv2cVq', NULL, NULL, NULL, NULL, 'jnwSzegiuLF3uhIx8siDNKVxZVVtLIQv2cVq', 'SdordNL7EPIiDue1XGcFVrIEKTArAiTay9Xb', NULL, '2025-06-07', '1.1.2.7', 'Persediaan Barang Lainnya', 'D', 75000),
+(312, 'Pembelian', 'jnwSzegiuLF3uhIx8siDNKVxZVVtLIQv2cVq', NULL, NULL, NULL, NULL, 'jnwSzegiuLF3uhIx8siDNKVxZVVtLIQv2cVq', 'SdordNL7EPIiDue1XGcFVrIEKTArAiTay9Xb', NULL, '2025-06-07', '2.1.10', 'Utang Pembelian', 'K', 75000),
+(313, 'Pembelian', 'DWcVH5dKV5pWxhdm3zyvEJfcbW1C7RvKeFx8', NULL, NULL, NULL, NULL, 'DWcVH5dKV5pWxhdm3zyvEJfcbW1C7RvKeFx8', 'mkZoUx99MYSGqBp15OImrPqcYV4BORZ7fUvM', NULL, '2025-06-07', '1.1.2.7', 'Persediaan Barang Lainnya', 'D', 32000),
+(314, 'Pembelian', 'DWcVH5dKV5pWxhdm3zyvEJfcbW1C7RvKeFx8', NULL, NULL, NULL, NULL, 'DWcVH5dKV5pWxhdm3zyvEJfcbW1C7RvKeFx8', 'mkZoUx99MYSGqBp15OImrPqcYV4BORZ7fUvM', NULL, '2025-06-07', '2.1.10', 'Utang Pembelian', 'K', 32000),
+(315, 'Simpanan', '1B0pEdlOulqzqdEXuNzCtkqNRRxH8PMNkC19', NULL, NULL, NULL, 465, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'D', 300000),
+(316, 'Simpanan', '1B0pEdlOulqzqdEXuNzCtkqNRRxH8PMNkC19', NULL, NULL, NULL, 465, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'K', 300000),
+(317, 'Simpanan', 'GHHIq3nvwSWU5ho1q9kxMYjuyuYeGSrQuTGr', NULL, NULL, NULL, 466, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'D', 300000),
+(318, 'Simpanan', 'GHHIq3nvwSWU5ho1q9kxMYjuyuYeGSrQuTGr', NULL, NULL, NULL, 466, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'K', 300000),
+(319, 'Simpanan', 'uWRAWNBvWJFnf26O1cubJi4mJttPtXaFs404', NULL, NULL, NULL, 467, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'D', 300000),
+(320, 'Simpanan', 'uWRAWNBvWJFnf26O1cubJi4mJttPtXaFs404', NULL, NULL, NULL, 467, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'K', 300000),
+(321, 'Simpanan', '8RQYXk9QjG3GTj9KTcvgBbYgHov0DtMBnGwr', NULL, NULL, NULL, 468, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'D', 300000),
+(322, 'Simpanan', '8RQYXk9QjG3GTj9KTcvgBbYgHov0DtMBnGwr', NULL, NULL, NULL, 468, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'K', 300000),
+(323, 'Simpanan', 'BenVImGii25fp3rKoOju3S0VwPTIANsBdleR', NULL, NULL, NULL, 469, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'D', 300000),
+(324, 'Simpanan', 'BenVImGii25fp3rKoOju3S0VwPTIANsBdleR', NULL, NULL, NULL, 469, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'K', 300000),
+(325, 'Simpanan', '0y2RI5lipuDL7kW4AfEqmaTeFC9bv0cERaCZ', NULL, NULL, NULL, 470, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'D', 300000),
+(326, 'Simpanan', '0y2RI5lipuDL7kW4AfEqmaTeFC9bv0cERaCZ', NULL, NULL, NULL, 470, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'K', 300000),
+(327, 'Simpanan', 'jJWtSiWnFLVED6HH7Y9tmAJUyOzyxgk53HqA', NULL, NULL, NULL, 471, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'D', 300000),
+(328, 'Simpanan', 'jJWtSiWnFLVED6HH7Y9tmAJUyOzyxgk53HqA', NULL, NULL, NULL, 471, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'K', 300000),
+(329, 'Simpanan', 'agGdd4ycCirl4ChwwGet69oMMc005I65M6V1', NULL, NULL, NULL, 472, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'D', 300000),
+(330, 'Simpanan', 'agGdd4ycCirl4ChwwGet69oMMc005I65M6V1', NULL, NULL, NULL, 472, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'K', 300000),
+(331, 'Simpanan', 'FCyeRR6yr6q24ksqpri6CFvW7HQYAGjXx6QV', NULL, NULL, NULL, 473, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'D', 300000),
+(332, 'Simpanan', 'FCyeRR6yr6q24ksqpri6CFvW7HQYAGjXx6QV', NULL, NULL, NULL, 473, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'K', 300000),
+(333, 'Simpanan', 'QRUt5zdYZtd8CrpFmzfKIuphrUNLddI00tiO', NULL, NULL, NULL, 474, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'D', 300000),
+(334, 'Simpanan', 'QRUt5zdYZtd8CrpFmzfKIuphrUNLddI00tiO', NULL, NULL, NULL, 474, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'K', 300000),
+(335, 'Simpanan', 'yDZNXOJvlXwMX0klKXtCWNzRCQ5CSrfoLJPZ', NULL, NULL, NULL, 475, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'D', 300000),
+(336, 'Simpanan', 'yDZNXOJvlXwMX0klKXtCWNzRCQ5CSrfoLJPZ', NULL, NULL, NULL, 475, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'K', 300000),
+(337, 'Simpanan', '1eBuQHtf0BBTyx6llpGS0HC4joa0YBeh9vUU', NULL, NULL, NULL, 476, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'D', 100000),
+(338, 'Simpanan', '1eBuQHtf0BBTyx6llpGS0HC4joa0YBeh9vUU', NULL, NULL, NULL, 476, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'K', 100000),
+(339, 'Simpanan', 'mCFZgFub50i07UjMxegfhHwCyVl3GwxcMajs', NULL, NULL, NULL, 477, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'D', 300000),
+(340, 'Simpanan', 'mCFZgFub50i07UjMxegfhHwCyVl3GwxcMajs', NULL, NULL, NULL, 477, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'K', 300000),
+(341, 'Simpanan', 'r5RXKZIlNdpMxsopT2AMoYx8ioTBD8V6aZlH', NULL, NULL, NULL, 478, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'D', 300000),
+(342, 'Simpanan', 'r5RXKZIlNdpMxsopT2AMoYx8ioTBD8V6aZlH', NULL, NULL, NULL, 478, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'K', 300000),
+(343, 'Simpanan', 'pBygnP0oiD9bA0fnJxupuujYL7Rn1mY8Affe', NULL, NULL, NULL, 479, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'D', 300000),
+(344, 'Simpanan', 'pBygnP0oiD9bA0fnJxupuujYL7Rn1mY8Affe', NULL, NULL, NULL, 479, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'K', 300000),
+(345, 'Simpanan', 'DR6oF2SAHpVfvJxhVgdyfTqTzZRdsPota1ri', NULL, NULL, NULL, 480, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'D', 300000),
+(346, 'Simpanan', 'DR6oF2SAHpVfvJxhVgdyfTqTzZRdsPota1ri', NULL, NULL, NULL, 480, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'K', 300000),
+(347, 'Simpanan', '2dn0cBAKxlBaDG1Mkkj73agECa4JpFALnKld', NULL, NULL, NULL, 481, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'D', 300000),
+(348, 'Simpanan', '2dn0cBAKxlBaDG1Mkkj73agECa4JpFALnKld', NULL, NULL, NULL, 481, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'K', 300000),
+(349, 'Simpanan', 'Ggmf2Lq69s7dnoLeiw2rMi6hRUhqb93IUcA8', NULL, NULL, NULL, 482, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'D', 300000),
+(350, 'Simpanan', 'Ggmf2Lq69s7dnoLeiw2rMi6hRUhqb93IUcA8', NULL, NULL, NULL, 482, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'K', 300000),
+(351, 'Simpanan', 'OOdRP2HKhQPKx2hmOQkCYgok05iEVvsmFQL2', NULL, NULL, NULL, 483, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'D', 300000),
+(352, 'Simpanan', 'OOdRP2HKhQPKx2hmOQkCYgok05iEVvsmFQL2', NULL, NULL, NULL, 483, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'K', 300000),
+(353, 'Simpanan', 'Q5Cy8W2Cb9e1snJ7WRYZsGbetzmhfHyhD0qs', NULL, NULL, NULL, 484, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'D', 300000),
+(354, 'Simpanan', 'Q5Cy8W2Cb9e1snJ7WRYZsGbetzmhfHyhD0qs', NULL, NULL, NULL, 484, NULL, NULL, NULL, '2025-06-01', 'No Value Provided', 'No Value Provided', 'K', 300000);
 
 -- --------------------------------------------------------
 
@@ -1084,7 +1079,7 @@ CREATE TABLE IF NOT EXISTS `log` (
   `deskripsi_log` text NOT NULL,
   PRIMARY KEY (`id_log`),
   KEY `id_akses` (`id_akses`)
-) ENGINE=InnoDB AUTO_INCREMENT=533 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=635 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `log`
@@ -1622,7 +1617,109 @@ INSERT INTO `log` (`id_log`, `id_akses`, `datetime_log`, `kategori_log`, `deskri
 (529, 1, '2025-04-03 01:10:27', 'Akses', 'Input Fitur Akses'),
 (530, 1, '2025-04-03 01:10:40', 'Entitas Akses', 'Edit Entitas Akses'),
 (531, 1, '2025-04-03 02:03:00', 'Akses', 'Input Fitur Akses'),
-(532, 1, '2025-04-03 02:03:17', 'Fitur Akses', 'Hapus Fitur Akses');
+(532, 1, '2025-04-03 02:03:17', 'Fitur Akses', 'Hapus Fitur Akses'),
+(533, 1, '2025-04-08 00:34:47', 'Akses', 'Input Fitur Akses'),
+(534, 1, '2025-04-08 00:35:04', 'Entitas Akses', 'Edit Entitas Akses'),
+(535, 1, '2025-04-13 21:08:22', 'Transaksi Penjualan', 'Tambah Jurnal Manual'),
+(536, 1, '2025-04-13 21:09:18', 'Transaksi Penjualan', 'Tambah Jurnal Manual'),
+(537, 1, '2025-04-13 21:09:44', 'Jurnal', 'Edit Jurnal'),
+(538, 1, '2025-04-13 21:31:03', 'Transaksi Penjualan', 'Tambah Jurnal Manual'),
+(539, 1, '2025-04-13 21:32:02', 'Jurnal', 'Edit Jurnal'),
+(540, 1, '2025-04-13 21:32:22', 'Transaksi Penjualan', 'Tambah Jurnal Manual'),
+(541, 1, '2025-04-13 21:36:04', 'Transaksi Penjualan', 'Tambah Transaksi Penjualan'),
+(542, 1, '2025-04-13 21:37:12', 'Transaksi Penjualan', 'Tambah Transaksi Penjualan'),
+(543, 1, '2025-04-13 21:56:58', 'Transaksi Penjualan', 'Hapus Transaksi Penjualan'),
+(544, 1, '2025-04-20 23:41:12', 'Barang', 'Edit Barang'),
+(545, 1, '2025-04-21 00:16:30', 'Akun Perkiraan', 'Tambah Akun Perkiraan'),
+(546, 6, '2025-04-21 19:57:43', 'Transaksi Pembelian', 'Reset Transaksi Pembelian'),
+(547, 6, '2025-04-24 19:56:00', 'Transaksi Penjualan', 'Tambah Transaksi Penjualan'),
+(548, 6, '2025-04-24 19:57:01', 'Jurnal', 'Edit Jurnal'),
+(549, 1, '2025-05-01 01:00:16', 'Transaksi Penjualan', 'Tambah Transaksi Penjualan'),
+(550, 1, '2025-05-01 01:00:57', 'Transaksi Penjualan', 'Tambah Transaksi Penjualan'),
+(551, 1, '2025-05-01 01:01:29', 'Transaksi Penjualan', 'Tambah Transaksi Penjualan'),
+(552, 1, '2025-05-01 01:06:38', 'Transaksi Penjualan', 'Tambah Transaksi Penjualan'),
+(553, 1, '2025-05-01 01:08:22', 'Transaksi Penjualan', 'Tambah Transaksi Penjualan'),
+(554, 1, '2025-05-01 04:14:58', 'Transaksi Penjualan', 'Tambah Transaksi Penjualan'),
+(555, 1, '2025-05-01 04:16:38', 'Transaksi Penjualan', 'Tambah Transaksi Penjualan'),
+(556, 1, '2025-05-04 21:03:27', 'Dokumentasi', 'Tambah Dokumentasi'),
+(557, 1, '2025-05-04 21:08:24', 'Dokumentasi', 'Edit Dokumentasi'),
+(558, 1, '2025-05-09 22:29:51', 'Transaksi Penjualan', 'Tambah Transaksi Penjualan'),
+(559, 1, '2025-05-09 22:30:26', 'Transaksi Penjualan', 'Tambah Transaksi Penjualan'),
+(560, 1, '2025-05-09 22:32:34', 'Transaksi Penjualan', 'Tambah Transaksi Penjualan'),
+(561, 1, '2025-05-09 22:41:18', 'Transaksi Penjualan', 'Tambah Transaksi Penjualan'),
+(562, 1, '2025-05-09 22:52:36', 'Dokumentasi', 'Edit Dokumentasi'),
+(563, 1, '2025-05-09 23:04:31', 'Transaksi Penjualan', 'Tambah Transaksi Penjualan'),
+(564, 1, '2025-05-09 23:13:05', 'Transaksi Pembelian', 'Tambah Transaksi Pembelian'),
+(565, 1, '2025-05-26 00:40:05', 'Utang Piutang', 'Pembayaran Utang Piutang'),
+(566, 1, '2025-05-26 00:40:16', 'Utang Piutang', 'Pembayaran Utang Piutang'),
+(567, 1, '2025-05-26 00:43:37', 'Utang Piutang', 'Pembayaran Utang Piutang'),
+(568, 1, '2025-05-26 00:44:14', 'Utang Piutang', 'Pembayaran Utang Piutang'),
+(569, 1, '2025-05-26 00:46:25', 'Utang Piutang', 'Pembayaran Utang Piutang'),
+(570, 1, '2025-05-26 00:46:26', 'Utang Piutang', 'Pembayaran Utang Piutang'),
+(571, 1, '2025-05-26 00:46:26', 'Utang Piutang', 'Pembayaran Utang Piutang'),
+(572, 1, '2025-05-26 00:46:31', 'Utang Piutang', 'Pembayaran Utang Piutang'),
+(573, 1, '2025-05-26 00:46:46', 'Utang Piutang', 'Pembayaran Utang Piutang'),
+(574, 1, '2025-05-26 00:47:08', 'Utang Piutang', 'Pembayaran Utang Piutang'),
+(575, 1, '2025-05-26 00:48:33', 'Utang Piutang', 'Pembayaran Utang Piutang'),
+(576, 1, '2025-05-26 00:51:36', 'Utang Piutang', 'Pembayaran Utang Piutang'),
+(577, 1, '2025-05-26 00:56:56', 'Utang Piutang', 'Pembayaran Utang Piutang'),
+(578, 1, '2025-05-26 01:05:22', 'Utang Piutang', 'Pembayaran Utang Piutang'),
+(579, 1, '2025-05-26 01:08:49', 'Utang Piutang', 'Pembayaran Utang Piutang'),
+(580, 6, '2025-05-26 23:08:35', 'Utang Piutang', 'Pembayaran Utang Piutang'),
+(581, 6, '2025-05-26 23:08:50', 'Utang Piutang', 'Pembayaran Utang Piutang'),
+(582, 6, '2025-05-26 23:09:06', 'Utang Piutang', 'Pembayaran Utang Piutang'),
+(583, 6, '2025-05-26 23:13:52', 'Transaksi Penjualan', 'Hapus Rincian Bulk Penjualan'),
+(584, 6, '2025-05-26 23:15:06', 'Transaksi Penjualan', 'Tambah Transaksi Penjualan'),
+(585, 1, '2025-05-27 00:54:42', 'Utang Piutang', 'Pembayaran Utang Piutang'),
+(586, 1, '2025-05-27 01:10:06', 'Transaksi Penjualan', 'Tambah Transaksi Penjualan'),
+(587, 1, '2025-05-27 01:10:28', 'Transaksi Penjualan', 'Tambah Transaksi Penjualan'),
+(588, 1, '2025-05-27 01:11:50', 'Transaksi Penjualan', 'Hapus Transaksi Penjualan'),
+(589, 1, '2025-05-27 01:12:27', 'Transaksi Penjualan', 'Tambah Transaksi Penjualan'),
+(590, 1, '2025-05-27 01:12:46', 'Transaksi Penjualan', 'Tambah Transaksi Penjualan'),
+(591, 1, '2025-05-27 01:15:46', 'Transaksi Penjualan', 'Tambah Transaksi Penjualan'),
+(592, 1, '2025-05-27 03:39:00', 'Transaksi Penjualan', 'Tambah Transaksi Penjualan'),
+(593, 1, '2025-05-29 20:34:09', 'Transaksi Pembelian', 'Tambah Transaksi Pembelian'),
+(594, 1, '2025-05-29 20:35:59', 'Transaksi Pembelian', 'Tambah Transaksi Pembelian'),
+(595, 1, '2025-05-29 20:36:15', 'Transaksi Penjualan', 'Tambah Transaksi Penjualan'),
+(596, 1, '2025-05-29 20:45:11', 'Transaksi Penjualan', 'Tambah Transaksi Penjualan'),
+(597, 1, '2025-06-07 01:23:29', 'Transaksi Penjualan', 'Tambah Transaksi Penjualan'),
+(598, 1, '2025-06-07 01:33:37', 'Utang Piutang', 'Pembayaran Utang Piutang'),
+(599, 1, '2025-06-07 01:56:45', 'Transaksi Penjualan', 'Tambah Transaksi Penjualan'),
+(600, 1, '2025-06-07 01:56:50', 'Utang Piutang', 'Pembayaran Utang Piutang'),
+(601, 1, '2025-06-07 01:58:05', 'Utang Piutang', 'Edit Pembayaran Utang Piutang'),
+(602, 1, '2025-06-07 01:59:29', 'Transaksi Penjualan', 'Edit Transaksi Penjualan'),
+(603, 1, '2025-06-07 02:42:47', 'Utang Piutang', 'Hapus Pembayaran Utang Piutang'),
+(604, 1, '2025-06-07 02:45:56', 'Utang Piutang', 'Hapus Pembayaran Utang Piutang'),
+(605, 1, '2025-06-07 02:46:21', 'Utang Piutang', 'Hapus Pembayaran Utang Piutang'),
+(606, 1, '2025-06-07 02:46:26', 'Utang Piutang', 'Hapus Pembayaran Utang Piutang'),
+(607, 1, '2025-06-07 02:48:07', 'Utang Piutang', 'Hapus Pembayaran Utang Piutang'),
+(608, 1, '2025-06-07 02:50:53', 'Utang Piutang', 'Hapus Pembayaran Utang Piutang'),
+(609, 1, '2025-06-07 02:51:35', 'Utang Piutang', 'Hapus Pembayaran Utang Piutang'),
+(610, 1, '2025-06-07 02:52:53', 'Utang Piutang', 'Hapus Pembayaran Utang Piutang'),
+(611, 1, '2025-06-07 02:55:03', 'Utang Piutang', 'Pembayaran Utang Piutang'),
+(612, 1, '2025-06-07 02:55:12', 'Utang Piutang', 'Edit Pembayaran Utang Piutang'),
+(613, 1, '2025-06-07 02:55:20', 'Utang Piutang', 'Pembayaran Utang Piutang'),
+(614, 1, '2025-06-07 02:56:07', 'Utang Piutang', 'Pembayaran Utang Piutang'),
+(615, 1, '2025-06-07 03:00:01', 'Utang Piutang', 'Pembayaran Utang Piutang'),
+(616, 1, '2025-07-27 03:13:13', 'Fitur Akses', 'Hapus Fitur Akses'),
+(617, 1, '2025-07-27 03:13:17', 'Fitur Akses', 'Hapus Fitur Akses'),
+(618, 1, '2025-07-27 03:13:20', 'Fitur Akses', 'Hapus Fitur Akses'),
+(619, 1, '2025-07-27 03:13:46', 'Fitur Akses', 'Hapus Fitur Akses'),
+(620, 1, '2025-07-27 03:13:52', 'Fitur Akses', 'Hapus Fitur Akses'),
+(621, 1, '2025-07-27 03:13:58', 'Fitur Akses', 'Hapus Fitur Akses'),
+(622, 1, '2025-07-27 03:14:04', 'Fitur Akses', 'Hapus Fitur Akses'),
+(623, 1, '2025-07-27 03:14:08', 'Fitur Akses', 'Hapus Fitur Akses'),
+(624, 1, '2025-08-05 18:21:22', 'Akses', 'Input Fitur Akses'),
+(625, 1, '2025-08-05 18:24:13', 'Akses', 'Input Fitur Akses'),
+(626, 1, '2025-08-05 18:25:43', 'Akses', 'Input Fitur Akses'),
+(627, 1, '2025-08-05 18:26:21', 'Akses', 'Input Fitur Akses'),
+(628, 1, '2025-08-05 18:26:58', 'Akses', 'Input Fitur Akses'),
+(629, 1, '2025-08-09 21:51:50', 'Setting', 'Setting Email'),
+(630, 1, '2025-08-09 21:53:36', 'Setting', 'Setting Email'),
+(631, 1, '2025-08-09 21:54:22', 'Setting', 'Setting Email'),
+(632, 1, '2025-08-09 22:00:00', 'Setting', 'Setting Email'),
+(633, 1, '2025-08-13 17:25:11', 'Simpanan Wajib', 'Tambah Simpanan Wajib'),
+(634, 1, '2025-08-16 23:35:54', 'Fitur Akses', 'Edit Fitur Akses');
 
 -- --------------------------------------------------------
 
@@ -1735,7 +1832,7 @@ CREATE TABLE IF NOT EXISTS `pinjaman_angsuran` (
   PRIMARY KEY (`id_pinjaman_angsuran`),
   KEY `id_pinjaman` (`id_pinjaman`),
   KEY `id_anggota` (`id_anggota`)
-) ENGINE=InnoDB AUTO_INCREMENT=632 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=636 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `pinjaman_angsuran`
@@ -1743,7 +1840,10 @@ CREATE TABLE IF NOT EXISTS `pinjaman_angsuran` (
 
 INSERT INTO `pinjaman_angsuran` (`id_pinjaman_angsuran`, `uuid_angsuran`, `id_pinjaman`, `id_anggota`, `tanggal_angsuran`, `tanggal_bayar`, `keterlambatan`, `pokok`, `jasa`, `denda`, `jumlah`) VALUES
 (630, 'VjhcEj0lx8g9JV4X3CRbfbAQRGbhWGvJUD5a', 26, 1, '2025-05-01', '2025-04-02', 0, 1000000, 100000, 0, 1100000),
-(631, 'C34JffjFNbXrFOZioIXO4GA97aQUuINJHF09', 26, 1, '2025-06-01', '2025-04-02', 0, 1000000, 100000, 0, 1100000);
+(631, 'C34JffjFNbXrFOZioIXO4GA97aQUuINJHF09', 26, 1, '2025-06-01', '2025-04-02', 0, 1000000, 100000, 0, 1100000),
+(633, 'khfYbUTgCXA7miVBirG9LlZG3aaUPE9JF7ed', 26, 1, '2025-07-01', '2025-04-13', 0, 1000000, 100000, 0, 1100000),
+(634, 'up3JkY9GM35dojC3fvSIWWKGHWB0uh886O4j', 26, 1, '2025-05-02', '2025-05-04', 0, 1000000, 100000, 0, 1100000),
+(635, 'x4VKfPzp7igALikAZPLJuNSw2XictRkqIvya', 26, 1, '2025-06-02', '2025-06-07', 0, 1000000, 100000, 0, 1100000);
 
 -- --------------------------------------------------------
 
@@ -1758,7 +1858,7 @@ CREATE TABLE IF NOT EXISTS `pinjaman_jenis` (
   `periode_angsuran` int NOT NULL,
   `persen_jasa` decimal(10,2) NOT NULL,
   PRIMARY KEY (`id_pinjaman_jenis`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `pinjaman_jenis`
@@ -1808,17 +1908,19 @@ CREATE TABLE IF NOT EXISTS `setting_autojurnal_jual_beli` (
   `kategori` varchar(15) NOT NULL,
   `debet` int DEFAULT NULL,
   `kredit` int DEFAULT NULL,
+  `hpp` int DEFAULT NULL,
+  `persediaan` int DEFAULT NULL,
   `utang_piutang` int DEFAULT NULL,
   PRIMARY KEY (`id_autojurnal_jual_beli`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `setting_autojurnal_jual_beli`
 --
 
-INSERT INTO `setting_autojurnal_jual_beli` (`id_autojurnal_jual_beli`, `kategori`, `debet`, `kredit`, `utang_piutang`) VALUES
-(1, 'Penjualan', 155, 119, 77),
-(2, 'Pembelian', 119, 135, 28);
+INSERT INTO `setting_autojurnal_jual_beli` (`id_autojurnal_jual_beli`, `kategori`, `debet`, `kredit`, `hpp`, `persediaan`, `utang_piutang`) VALUES
+(1, 'Penjualan', 121, 215, 214, 179, 169),
+(2, 'Pembelian', 179, 121, 214, NULL, 216);
 
 -- --------------------------------------------------------
 
@@ -1833,7 +1935,7 @@ CREATE TABLE IF NOT EXISTS `setting_autojurnal_shu` (
   `id_perkiraan_kredit` int NOT NULL,
   `komponen` varchar(15) NOT NULL,
   PRIMARY KEY (`id_setting_autojurnal_shu`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `setting_autojurnal_shu`
@@ -1869,7 +1971,7 @@ CREATE TABLE IF NOT EXISTS `setting_email_gateway` (
 --
 
 INSERT INTO `setting_email_gateway` (`id_setting_email_gateway`, `email_gateway`, `password_gateway`, `url_provider`, `port_gateway`, `nama_pengirim`, `url_service`, `validasi_email`, `redirect_validasi`, `pesan_validasi_email`) VALUES
-(1, 'dhiforester@rsuelsyifa.com', 'solihulhadi1412', 'mail.rsuelsyifa.com', '465', 'Admin Koperasi Sejahtera', 'https://mailer.rsuelsyifa.com/index.php', 'No', '', 'Berikut ini kami kirimkan URL untuk melakukan validasi pendaftaran anda');
+(1, 'admin@kdmppadamukti.web.id', 'Padamukti1971#@', 'smtp.hostinger.com', '465', 'Admin Koperasi', 'https://mailer.kdmppadamukti.web.id/', 'No', '', 'Berikut ini kami kirimkan URL untuk melakukan validasi pendaftaran anda');
 
 -- --------------------------------------------------------
 
@@ -1898,7 +2000,7 @@ CREATE TABLE IF NOT EXISTS `setting_general` (
 --
 
 INSERT INTO `setting_general` (`id_setting_general`, `title_page`, `kata_kunci`, `deskripsi`, `alamat_bisnis`, `email_bisnis`, `telepon_bisnis`, `favicon`, `logo`, `base_url`, `author`) VALUES
-(1, 'Koperasi Sejahtera', 'Koperasi', 'Aplikasi POS Koperasi', 'Jalan RE Martadinata No 108 Ancaran Kuningan', 'dhiforester@gmail.com', '0232876240', '06b6155b2f6f04e9a0deba6df45747.png', 'ca979b24e6662ba7cbd9e6b70a943a.png', 'http://localhost:81/koperasi_v3', 'Solihul Hadi');
+(1, 'Toko Wacana', 'Toko Wacana', 'Aplikasi POS Koperasi', 'PT.Gunze Indonesia, Ejip Industrial Park Plot 7 H-1 ,Cikarang Selatan,Bekasi 17550 Indonesia', 'dhiforester@gmail.com', '0232876240', 'fe9461878c31c816f7fb902b1e4499.png', '1d5f93cefc042ed838b637f5c0e510.png', 'http://localhost:81/koperasi_v3', 'Solihul Hadi');
 
 -- --------------------------------------------------------
 
@@ -2144,7 +2246,7 @@ CREATE TABLE IF NOT EXISTS `simpanan` (
   `jumlah` int NOT NULL,
   PRIMARY KEY (`id_simpanan`),
   KEY `id_anggota` (`id_anggota`)
-) ENGINE=InnoDB AUTO_INCREMENT=465 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=485 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `simpanan`
@@ -2519,7 +2621,27 @@ INSERT INTO `simpanan` (`id_simpanan`, `uuid_simpanan`, `id_anggota`, `id_akses`
 (461, 'oFa4hKU7U5K711zikDjX5MadijSTb8s4bfOZ', 23, 1, 4, 1, '1111111111111', 'Tri Heru', 'GIS', 1, '2024-10-01', 'Simpanan Pokok', '', 100000),
 (462, 'CCP6HLpE4IDSYMbvIVSfjvFjzrohgXoliio7', 24, 1, 4, 1, '2222222222', 'Sugito', 'GIS', 1, '2024-10-01', 'Simpanan Pokok', '', 100000),
 (463, 'y7UTMc97WhSkFokdRg9CySTk5payzUEIEhaf', 25, 1, 4, 1, '2024/07/Contoh-20', 'Ulya Handayani', 'Lembaga B', 2, '2024-10-01', 'Simpanan Pokok', '', 100000),
-(464, 'U4KnPyBcMDcwmDml17nKTuJI1i7M8LClt8Um', 1, 1, 4, 0, '2024/07/Contoh-01', 'Adam Saputra', 'GIS', 1, '2025-04-03', 'Penarikan', '', 100000);
+(464, 'U4KnPyBcMDcwmDml17nKTuJI1i7M8LClt8Um', 1, 1, 4, 0, '2024/07/Contoh-01', 'Adam Saputra', 'GIS', 1, '2025-04-03', 'Penarikan', '', 100000),
+(465, '1B0pEdlOulqzqdEXuNzCtkqNRRxH8PMNkC19', 1, 1, 1, 1, '2024/07/Contoh-01', 'Adam Saputra', 'GIS', 1, '2025-06-01', 'Simpanan Wajib', '', 300000),
+(466, 'GHHIq3nvwSWU5ho1q9kxMYjuyuYeGSrQuTGr', 2, 1, 1, 1, '2024/07/Contoh-02', 'Budi Santoso', 'GIS', 1, '2025-06-01', 'Simpanan Wajib', '', 300000),
+(467, 'uWRAWNBvWJFnf26O1cubJi4mJttPtXaFs404', 3, 1, 1, 1, '2024/07/Contoh-111', 'Citra Dewi', 'GIS', 1, '2025-06-01', 'Simpanan Wajib', '', 300000),
+(468, '8RQYXk9QjG3GTj9KTcvgBbYgHov0DtMBnGwr', 5, 1, 1, 1, '2024/07/Contoh-05', 'Eka Prasetyo', 'GIS', 1, '2025-06-01', 'Simpanan Wajib', '', 300000),
+(469, 'BenVImGii25fp3rKoOju3S0VwPTIANsBdleR', 6, 1, 1, 1, '2024/07/Contoh-06', 'Farah Amalia', 'GIS', 2, '2025-06-01', 'Simpanan Wajib', '', 300000),
+(470, '0y2RI5lipuDL7kW4AfEqmaTeFC9bv0cERaCZ', 7, 1, 1, 1, '2024/07/Contoh-07', 'Guntur Wibowo', 'GIS', 2, '2025-06-01', 'Simpanan Wajib', '', 300000),
+(471, 'jJWtSiWnFLVED6HH7Y9tmAJUyOzyxgk53HqA', 9, 1, 1, 1, '2024/07/Contoh-09', 'Indah Permatasari', 'GIS', 2, '2025-06-01', 'Simpanan Wajib', '', 300000),
+(472, 'agGdd4ycCirl4ChwwGet69oMMc005I65M6V1', 10, 1, 1, 1, '2024/07/Contoh-10', 'Joko Susanto', 'GIS', 2, '2025-06-01', 'Simpanan Wajib', '', 300000),
+(473, 'FCyeRR6yr6q24ksqpri6CFvW7HQYAGjXx6QV', 11, 1, 1, 1, '2024/07/Contoh-11', 'Karina Putri', 'GIS', 1, '2025-06-01', 'Simpanan Wajib', '', 300000),
+(474, 'QRUt5zdYZtd8CrpFmzfKIuphrUNLddI00tiO', 12, 1, 1, 1, '2024/07/Contoh-12', 'Leo Pradipta', 'GIS', 1, '2025-06-01', 'Simpanan Wajib', '', 300000),
+(475, 'yDZNXOJvlXwMX0klKXtCWNzRCQ5CSrfoLJPZ', 13, 1, 1, 1, '2024/07/Contoh-13', 'Maya Sari', 'GIS', 1, '2025-06-01', 'Simpanan Wajib', '', 300000),
+(476, '1eBuQHtf0BBTyx6llpGS0HC4joa0YBeh9vUU', 14, 1, 1, 1, '2024/07/Contoh-14', 'Nanda Kusuma', 'GIS', 1, '2025-06-01', 'Simpanan Wajib', '', 100000),
+(477, 'mCFZgFub50i07UjMxegfhHwCyVl3GwxcMajs', 15, 1, 1, 1, '2024/07/Contoh-15', 'Oki Pratama', 'GIS', 1, '2025-06-01', 'Simpanan Wajib', '', 300000),
+(478, 'r5RXKZIlNdpMxsopT2AMoYx8ioTBD8V6aZlH', 16, 1, 1, 1, '2024/07/Contoh-16', 'Putri Ayu', 'GIS', 2, '2025-06-01', 'Simpanan Wajib', '', 300000),
+(479, 'pBygnP0oiD9bA0fnJxupuujYL7Rn1mY8Affe', 18, 1, 1, 1, '2024/07/Contoh-18', 'Sinta Maharani', 'GIS', 2, '2025-06-01', 'Simpanan Wajib', '', 300000),
+(480, 'DR6oF2SAHpVfvJxhVgdyfTqTzZRdsPota1ri', 19, 1, 1, 1, '2024/07/Contoh-19', 'Tio Nugroho', 'GIS', 2, '2025-06-01', 'Simpanan Wajib', '', 300000),
+(481, '2dn0cBAKxlBaDG1Mkkj73agECa4JpFALnKld', 22, 1, 1, 1, '123122221', 'Aruna Parasilva', 'GIS', 1, '2025-06-01', 'Simpanan Wajib', '', 300000),
+(482, 'Ggmf2Lq69s7dnoLeiw2rMi6hRUhqb93IUcA8', 23, 1, 1, 1, '1111111111111', 'Tri Heru', 'GIS', 1, '2025-06-01', 'Simpanan Wajib', '', 300000),
+(483, 'OOdRP2HKhQPKx2hmOQkCYgok05iEVvsmFQL2', 24, 1, 1, 1, '2222222222', 'Sugito', 'GIS', 1, '2025-06-01', 'Simpanan Wajib', '', 300000),
+(484, 'Q5Cy8W2Cb9e1snJ7WRYZsGbetzmhfHyhD0qs', 25, 1, 1, 1, '2024/07/Contoh-20', 'Ulya Handayani', 'Lembaga B', 2, '2025-06-01', 'Simpanan Wajib', '', 300000);
 
 -- --------------------------------------------------------
 
@@ -2545,7 +2667,7 @@ CREATE TABLE IF NOT EXISTS `simpanan_jenis` (
 
 INSERT INTO `simpanan_jenis` (`id_simpanan_jenis`, `nama_simpanan`, `keterangan`, `rutin`, `nominal`, `id_perkiraan_debet`, `id_perkiraan_kredit`) VALUES
 (1, 'Simpanan Wajib', '', 1, 300000, 154, 163),
-(3, 'Simpanan Suka rela(Tabungan)', 'Simpanan anggota atas dasar suka rela', 0, 0, 154, 163),
+(3, 'Simpanan Suka Rela', 'Simpanan anggota atas dasar suka rela', 0, 0, 154, 163),
 (4, 'Simpanan Pokok', 'Simpanan yang wajib masuk pada saat pertama kali menjadi anggota', 1, 100000, 154, 163),
 (7, 'Simpanan Penghasilan', 'Simpanan yang berasal dari jumlah penghasilan', 0, 0, 155, 160);
 
@@ -2700,7 +2822,7 @@ CREATE TABLE IF NOT EXISTS `transaksi_bulk` (
   PRIMARY KEY (`id_transaksi_bulk`),
   KEY `id_akses` (`id_akses`),
   KEY `id_barang` (`id_barang`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1 COMMENT='Datara rincian transaksi sementara';
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=latin1 COMMENT='Datara rincian transaksi sementara';
 
 -- --------------------------------------------------------
 
@@ -2760,14 +2882,56 @@ CREATE TABLE IF NOT EXISTS `transaksi_jual_beli` (
 --
 
 INSERT INTO `transaksi_jual_beli` (`id_transaksi_jual_beli`, `id_anggota`, `id_supplier`, `kategori`, `tanggal`, `subtotal`, `diskon`, `ppn`, `total`, `cash`, `kembalian`, `status`) VALUES
+('3YSULfTIoxJ3HlEEeeJV7jSnFH4OVHtoDRSd', 25, NULL, 'Penjualan', '2025-05-01 00:48:00', 122600.00, 0.00, 0.00, 122600.00, 150000.00, 27400.00, 'Lunas'),
+('4QyUUpBo4rklqG45glJtBIcSitqBFuy9z1QE', 25, NULL, 'Penjualan', '2025-05-01 00:48:00', 122600.00, 0.00, 0.00, 122600.00, 150000.00, 27400.00, 'Lunas'),
 ('5hNgU66pOv6D3zEeeZD72QgE0PlYp7VzqHrn', 19, NULL, 'Penjualan', '2025-04-02 16:19:00', 120000.00, 0.00, 0.00, 120000.00, 150000.00, 30000.00, 'Lunas'),
+('5zBHhnGzg7ZatOVqwWekj73eqGamSJHkafBE', 25, NULL, 'Penjualan', '2025-06-07 01:23:00', 600000.00, 0.00, 0.00, 600000.00, 0.00, 0.00, 'Lunas'),
+('63r5iwi3lBryqXin8SNNi2hPvKsL9A8GH4pY', NULL, NULL, 'Penjualan', '2025-05-01 04:16:00', 131300.00, 0.00, 0.00, 131300.00, 0.00, 0.00, 'Lunas'),
+('AyfMmNgDYZftwB9WgIwFZe9fbkCHa5lvvQXx', 18, NULL, 'Penjualan', '2025-05-27 03:38:00', 12500.00, 0.00, 0.00, 12500.00, 0.00, 0.00, 'Lunas'),
+('BPpmIawx7SynZjUYFnRJYPNHAebY2dFeC9zW', 23, NULL, 'Penjualan', '2025-04-24 19:55:00', 120000.00, 0.00, 0.00, 120000.00, 0.00, 0.00, 'Lunas'),
+('c8yx6KAdxN50CAB2SI6nxCp5FIblkMdyH5l0', 25, NULL, 'Penjualan', '2025-05-01 00:48:00', 122600.00, 0.00, 0.00, 122600.00, 150000.00, 27400.00, 'Lunas'),
 ('cCuZBSPb97TGDVxl8I8RDbSRoKgQW0MxS8jh', 1, NULL, 'Penjualan', '2025-02-26 01:12:00', 121200.00, 0.00, 0.00, 121200.00, 150000.00, 28800.00, 'Lunas'),
-('g8UmVFGyESzGcVnGHD5VxpFCQbYMfncMJL81', NULL, NULL, 'Pembelian', '2025-04-02 16:22:00', 2500.00, 0.00, 0.00, 2500.00, 0.00, 0.00, 'Kredit'),
-('HFY6ibbDqHJuTcEDL2i1yvLGjmgKIqFDLVV2', 25, NULL, 'Penjualan', '2025-04-02 15:32:00', 120000.00, 0.00, 0.00, 120000.00, 0.00, 0.00, 'Kredit'),
+('CgQe1HBsb1Xxr3CM4Ynih6nliMyHGpOOqZn8', 25, NULL, 'Penjualan', '2025-06-07 01:56:00', 240000.00, 0.00, 0.00, 240000.00, 0.00, 0.00, 'Lunas'),
+('DmHp14Ir6Oaw3YNw2A0bCxJkXJjtT2g0ZmcT', 25, NULL, 'Penjualan', '2025-04-13 21:36:00', 24000.00, 0.00, 0.00, 24000.00, 0.00, 0.00, 'Lunas'),
+('DWcVH5dKV5pWxhdm3zyvEJfcbW1C7RvKeFx8', NULL, NULL, 'Pembelian', '2025-05-29 20:33:00', 32000.00, 0.00, 0.00, 32000.00, 0.00, 0.00, 'Lunas'),
+('dWjzfVBL1vtL7MTl7zCm5L8bSx6rN5F3tdt3', 25, NULL, 'Penjualan', '2025-05-01 00:48:00', 122600.00, 0.00, 0.00, 122600.00, 150000.00, 27400.00, 'Lunas'),
+('EXT5HUs16mkOacEZFcHmCy8DCH9DuArVCCRH', 25, NULL, 'Penjualan', '2025-05-01 00:48:00', 122600.00, 0.00, 0.00, 122600.00, 150000.00, 27400.00, 'Lunas'),
+('FlPDnGSwx8nOcvsVD8v4GlRirdFTdLSvHozg', NULL, NULL, 'Penjualan', '2025-05-01 01:01:00', 121200.00, 0.00, 0.00, 121200.00, 0.00, 0.00, 'Lunas'),
+('g8UmVFGyESzGcVnGHD5VxpFCQbYMfncMJL81', NULL, NULL, 'Pembelian', '2025-04-02 16:22:00', 2500.00, 0.00, 0.00, 2500.00, 0.00, 0.00, 'Lunas'),
+('ggaYwLDLGmvFZgul4GplWnPnObAXBuswxIf5', 24, NULL, 'Retur Penjualan', '2025-05-09 23:04:00', 120000.00, 0.00, 0.00, 120000.00, 120000.00, 0.00, 'Lunas'),
+('gmKKLeGlXba8vcVKbVLPnQxaeQgHZxHImDC2', 24, NULL, 'Penjualan', '2025-05-26 23:14:00', 242400.00, 0.00, 0.00, 242400.00, 0.00, 0.00, 'Lunas'),
+('GP3T3KzlphAKT3xgwdteSKb7j8X0ISm5CnRC', 25, NULL, 'Penjualan', '2025-05-01 00:48:00', 122600.00, 0.00, 0.00, 122600.00, 150000.00, 27400.00, 'Lunas'),
+('HFY6ibbDqHJuTcEDL2i1yvLGjmgKIqFDLVV2', 25, NULL, 'Penjualan', '2025-04-02 15:32:00', 120000.00, 0.00, 0.00, 120000.00, 0.00, 0.00, 'Lunas'),
+('hqM2yJOUHLESRdiMv5FoecIPCswcn4WkrcmK', 25, NULL, 'Penjualan', '2025-05-01 00:48:00', 122600.00, 0.00, 0.00, 122600.00, 150000.00, 27400.00, 'Lunas'),
+('I0NsNVXSq1rA39NtgxJKQpoCtn65z9Pvqn5r', 25, NULL, 'Penjualan', '2025-05-09 22:28:00', 278000.00, 0.00, 0.00, 278000.00, 300000.00, 22000.00, 'Lunas'),
 ('InZRNjXySMQC6gVU0Ubhg2te44i4PwkeXk3r', 1, NULL, 'Penjualan', '2025-02-26 01:04:00', 252000.00, 600.00, 0.00, 251400.00, 260000.00, 8600.00, 'Lunas'),
-('iww8VSRzyRde7DO4CZiCDhyoIdoKAIj3SrHf', NULL, NULL, 'Pembelian', '2025-04-02 16:26:00', 110000.00, 0.00, 0.00, 110000.00, 200000.00, 90000.00, 'Lunas'),
+('jnwSzegiuLF3uhIx8siDNKVxZVVtLIQv2cVq', NULL, NULL, 'Pembelian', '2025-05-29 20:35:00', 75000.00, 0.00, 0.00, 75000.00, 0.00, 0.00, 'Lunas'),
+('jobk99vHOJuYXFJfSuTG62eKuZq1US3Fl6Hb', NULL, NULL, 'Penjualan', '2025-05-01 01:00:00', 246000.00, 0.00, 0.00, 246000.00, 0.00, 0.00, 'Lunas'),
+('knPq5MMGvAV7LnSdYmb0wTGvtoX9G3fylqYu', 24, NULL, 'Penjualan', '2025-05-27 01:10:00', 12500.00, 0.00, 0.00, 12500.00, 0.00, 0.00, 'Lunas'),
+('kXeQpIuTWL6nh2ROmfWnf3XIynlaprbfw68b', NULL, NULL, 'Penjualan', '2025-05-09 22:32:00', 31000.00, 0.00, 0.00, 31000.00, 50000.00, 19000.00, 'Lunas'),
+('LDF8h70dXQtyyKV0Vr4Oy3569g7rnlDfHPSI', NULL, NULL, 'Penjualan', '2025-05-29 20:45:00', 247500.00, 0.00, 0.00, 247500.00, 0.00, 0.00, 'Piutang'),
+('lG4WHvjt9EmQUJ7OxjDEmVU1QMLZdEdXDjWp', NULL, NULL, 'Penjualan', '2025-05-01 01:06:00', 250000.00, 0.00, 0.00, 250000.00, 300000.00, 50000.00, 'Lunas'),
+('mEi5lcogOzUR2RjrsZCqLl6EzlzvPFQXbNRd', 25, NULL, 'Penjualan', '2025-05-27 01:09:00', 10000.00, 0.00, 0.00, 10000.00, 0.00, 0.00, 'Lunas'),
 ('nlGRhXP0BADC89e5EhTUaQhszX0UuaHHTRjP', NULL, NULL, 'Penjualan', '2025-02-26 01:24:00', 240000.00, 0.00, 0.00, 240000.00, 250000.00, 10000.00, 'Lunas'),
-('QykQPMxwqJHqFn3jMgstnd3FhPH36HfabjQj', NULL, NULL, 'Penjualan', '2025-02-26 01:39:00', 120000.00, 0.00, 0.00, 120000.00, 0.00, 0.00, 'Kredit');
+('nua2b1HoTfpIhZEI8sCVm0y9fnaphBvez9Ah', 25, NULL, 'Penjualan', '2025-05-01 00:48:00', 122600.00, 0.00, 0.00, 122600.00, 150000.00, 27400.00, 'Lunas'),
+('QCnJOQoE2en07VgwKgWBheHenvgjb9sZVRLl', 25, NULL, 'Penjualan', '2025-05-01 00:48:00', 122600.00, 0.00, 0.00, 122600.00, 150000.00, 27400.00, 'Lunas'),
+('quuNBCWEEScLA1iyl5CPAdi9i1F3eZEyztfw', 25, NULL, 'Penjualan', '2025-05-01 00:48:00', 122600.00, 0.00, 0.00, 122600.00, 150000.00, 27400.00, 'Lunas'),
+('QykQPMxwqJHqFn3jMgstnd3FhPH36HfabjQj', NULL, NULL, 'Penjualan', '2025-02-26 01:39:00', 120000.00, 0.00, 0.00, 120000.00, 0.00, 0.00, 'Lunas'),
+('qzh833lUVz54d9ODGQ3TuU1UTewBSH1eCx4s', 25, NULL, 'Penjualan', '2025-05-01 00:48:00', 122600.00, 0.00, 0.00, 122600.00, 150000.00, 27400.00, 'Lunas'),
+('rAQHUSUSxUS2luATFWBf7LrSlhGvfCBRKgz1', 19, NULL, 'Penjualan', '2025-05-27 01:12:00', 12500.00, 0.00, 0.00, 12500.00, 0.00, 0.00, 'Lunas'),
+('rrhodHPhZi98fMdRISADMdfI582YLyZ6GvgG', 25, NULL, 'Penjualan', '2025-05-01 00:48:00', 122600.00, 0.00, 0.00, 122600.00, 150000.00, 27400.00, 'Lunas'),
+('sT0rwZAgmw01yWiVbRpHnrtbJrnRGrFMHgqB', 16, NULL, 'Penjualan', '2025-05-27 01:15:00', 2250.00, 0.00, 0.00, 2250.00, 0.00, 0.00, 'Lunas'),
+('ubNIC2wRIeXulrBWWlHfPf3iBckhhkwbsfvm', 23, NULL, 'Penjualan', '2025-05-27 01:12:00', 240000.00, 0.00, 0.00, 240000.00, 0.00, 0.00, 'Lunas'),
+('uTNuknNywZ6zrgSBFR8y2kuI4H9CWsbjGI37', NULL, NULL, 'Penjualan', '2025-05-09 22:30:00', 1200000.00, 0.00, 0.00, 1200000.00, 2000000.00, 800000.00, 'Lunas'),
+('uuFOtijfDDBT76hBVVFHbWyu2GmcZG9LGtPe', NULL, NULL, 'Penjualan', '2025-05-29 20:36:00', 9000.00, 0.00, 0.00, 9000.00, 0.00, 0.00, 'Piutang'),
+('vVsZVIkdUQoYsap6kMktYU1tuLj0CN1nlSzX', 25, NULL, 'Penjualan', '2025-05-01 00:48:00', 122600.00, 0.00, 0.00, 122600.00, 150000.00, 27400.00, 'Lunas'),
+('VvVvBsmwFLrcU8srxrijJCYIFVs1qF66fgq0', NULL, NULL, 'Penjualan', '2025-05-01 04:14:00', 120000.00, 0.00, 0.00, 120000.00, 200000.00, 80000.00, 'Lunas'),
+('WCPhmBIVdLNkwb3NGxudT4KBzQzeAeuKAATw', 25, NULL, 'Penjualan', '2025-05-01 00:48:00', 122600.00, 0.00, 0.00, 122600.00, 150000.00, 27400.00, 'Lunas'),
+('wTreIko3jUnadS0ORPkGhfFjl97Vjo7frB2d', 25, NULL, 'Penjualan', '2025-05-01 00:48:00', 122600.00, 0.00, 0.00, 122600.00, 150000.00, 27400.00, 'Lunas'),
+('YbvadoSRogWP4j4dA7XUYo4GUI4u0iGUBWC3', NULL, 18, 'Pembelian', '2025-05-09 23:12:00', 220000.00, 0.00, 0.00, 220000.00, 250000.00, 30000.00, 'Lunas'),
+('yPlbN7pFk8N1LBtxpPmzFhXKrHTrOtuAJElm', 25, NULL, 'Penjualan', '2025-05-01 00:48:00', 122600.00, 0.00, 0.00, 122600.00, 150000.00, 27400.00, 'Lunas'),
+('Yy0XcEl7YgVdLuf7ppBeKcVL0pV9QoPoV8Il', 25, NULL, 'Penjualan', '2025-04-13 21:35:00', 240000.00, 0.00, 0.00, 240000.00, 0.00, 0.00, 'Lunas'),
+('z0B6Toyu9TJ1GLZLaYlTAUw4dqnb1t3N8y4D', NULL, NULL, 'Penjualan', '2025-05-01 01:08:00', 241200.00, 0.00, 0.00, 241200.00, 0.00, 0.00, 'Lunas');
 
 -- --------------------------------------------------------
 
@@ -2783,6 +2947,7 @@ CREATE TABLE IF NOT EXISTS `transaksi_jual_beli_rincian` (
   `nama_barang` varchar(100) NOT NULL,
   `satuan` varchar(20) NOT NULL,
   `qty` decimal(10,2) NOT NULL,
+  `hpp` decimal(10,2) DEFAULT NULL,
   `harga` decimal(10,2) DEFAULT NULL,
   `ppn` decimal(10,2) DEFAULT NULL,
   `diskon` decimal(10,2) DEFAULT NULL,
@@ -2790,27 +2955,70 @@ CREATE TABLE IF NOT EXISTS `transaksi_jual_beli_rincian` (
   PRIMARY KEY (`id_transaksi_jual_beli_rincian`),
   KEY `id_transaksi_jual_beli` (`id_transaksi_jual_beli`),
   KEY `id_barang` (`id_barang`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `transaksi_jual_beli_rincian`
 --
 
-INSERT INTO `transaksi_jual_beli_rincian` (`id_transaksi_jual_beli_rincian`, `id_transaksi_jual_beli`, `id_barang`, `nama_barang`, `satuan`, `qty`, `harga`, `ppn`, `diskon`, `subtotal`) VALUES
-(1, 'InZRNjXySMQC6gVU0Ubhg2te44i4PwkeXk3r', 106, 'Kopi Arabica', 'PCS', 10.00, 1200.00, 0.00, 600.00, 11400.00),
-(2, 'InZRNjXySMQC6gVU0Ubhg2te44i4PwkeXk3r', 110, 'Beras 10 Kg', 'Kg', 2.00, 120000.00, 0.00, 0.00, 240000.00),
-(3, 'cCuZBSPb97TGDVxl8I8RDbSRoKgQW0MxS8jh', 106, 'Kopi Arabica', 'PCS', 1.00, 1200.00, 0.00, 0.00, 1200.00),
-(4, 'cCuZBSPb97TGDVxl8I8RDbSRoKgQW0MxS8jh', 110, 'Beras 10 Kg', 'Kg', 1.00, 120000.00, 0.00, 0.00, 120000.00),
-(5, 'nlGRhXP0BADC89e5EhTUaQhszX0UuaHHTRjP', 105, 'Kopi Gadjah', 'Sachet', 1.00, 0.00, 0.00, 0.00, 0.00),
-(6, 'nlGRhXP0BADC89e5EhTUaQhszX0UuaHHTRjP', 98, 'Lifebuoy Hairfall Trmt 9ml', 'RCG', 1.00, 0.00, 0.00, 0.00, 0.00),
-(7, 'nlGRhXP0BADC89e5EhTUaQhszX0UuaHHTRjP', 102, 'Rinso Pewangi', 'Pcs', 1.00, 0.00, 0.00, 0.00, 0.00),
-(8, 'nlGRhXP0BADC89e5EhTUaQhszX0UuaHHTRjP', 104, 'Rinso Pewangi', 'Pcs', 1.00, 0.00, 0.00, 0.00, 0.00),
-(9, 'nlGRhXP0BADC89e5EhTUaQhszX0UuaHHTRjP', 110, 'Beras 10 Kg', 'Kg', 2.00, 120000.00, 0.00, 0.00, 240000.00),
-(10, 'QykQPMxwqJHqFn3jMgstnd3FhPH36HfabjQj', 110, 'Beras 10 Kg', 'Kg', 1.00, 120000.00, 0.00, 0.00, 120000.00),
-(11, 'HFY6ibbDqHJuTcEDL2i1yvLGjmgKIqFDLVV2', 110, 'Beras 10 Kg', 'Kg', 1.00, 120000.00, 0.00, 0.00, 120000.00),
-(12, '5hNgU66pOv6D3zEeeZD72QgE0PlYp7VzqHrn', 110, 'Beras 10 Kg', 'Kg', 1.00, 120000.00, 0.00, 0.00, 120000.00),
-(13, 'g8UmVFGyESzGcVnGHD5VxpFCQbYMfncMJL81', 103, 'Rinso Pewangi', 'Pcs', 1.00, 2500.00, 0.00, 0.00, 2500.00),
-(14, 'iww8VSRzyRde7DO4CZiCDhyoIdoKAIj3SrHf', 110, 'Beras 10 Kg', 'Kg', 1.00, 110000.00, 0.00, 0.00, 110000.00);
+INSERT INTO `transaksi_jual_beli_rincian` (`id_transaksi_jual_beli_rincian`, `id_transaksi_jual_beli`, `id_barang`, `nama_barang`, `satuan`, `qty`, `hpp`, `harga`, `ppn`, `diskon`, `subtotal`) VALUES
+(1, 'InZRNjXySMQC6gVU0Ubhg2te44i4PwkeXk3r', 106, 'Kopi Arabica', 'PCS', 10.00, NULL, 1200.00, 0.00, 600.00, 11400.00),
+(2, 'InZRNjXySMQC6gVU0Ubhg2te44i4PwkeXk3r', 110, 'Beras 10 Kg', 'Kg', 2.00, NULL, 120000.00, 0.00, 0.00, 240000.00),
+(3, 'cCuZBSPb97TGDVxl8I8RDbSRoKgQW0MxS8jh', 106, 'Kopi Arabica', 'PCS', 1.00, NULL, 1200.00, 0.00, 0.00, 1200.00),
+(4, 'cCuZBSPb97TGDVxl8I8RDbSRoKgQW0MxS8jh', 110, 'Beras 10 Kg', 'Kg', 1.00, NULL, 120000.00, 0.00, 0.00, 120000.00),
+(5, 'nlGRhXP0BADC89e5EhTUaQhszX0UuaHHTRjP', 105, 'Kopi Gadjah', 'Sachet', 1.00, NULL, 0.00, 0.00, 0.00, 0.00),
+(6, 'nlGRhXP0BADC89e5EhTUaQhszX0UuaHHTRjP', 98, 'Lifebuoy Hairfall Trmt 9ml', 'RCG', 1.00, NULL, 0.00, 0.00, 0.00, 0.00),
+(7, 'nlGRhXP0BADC89e5EhTUaQhszX0UuaHHTRjP', 102, 'Rinso Pewangi', 'Pcs', 1.00, NULL, 0.00, 0.00, 0.00, 0.00),
+(8, 'nlGRhXP0BADC89e5EhTUaQhszX0UuaHHTRjP', 104, 'Rinso Pewangi', 'Pcs', 1.00, NULL, 0.00, 0.00, 0.00, 0.00),
+(9, 'nlGRhXP0BADC89e5EhTUaQhszX0UuaHHTRjP', 110, 'Beras 10 Kg', 'Kg', 2.00, NULL, 120000.00, 0.00, 0.00, 240000.00),
+(10, 'QykQPMxwqJHqFn3jMgstnd3FhPH36HfabjQj', 110, 'Beras 10 Kg', 'Kg', 1.00, NULL, 120000.00, 0.00, 0.00, 120000.00),
+(11, 'HFY6ibbDqHJuTcEDL2i1yvLGjmgKIqFDLVV2', 110, 'Beras 10 Kg', 'Kg', 1.00, NULL, 120000.00, 0.00, 0.00, 120000.00),
+(12, '5hNgU66pOv6D3zEeeZD72QgE0PlYp7VzqHrn', 110, 'Beras 10 Kg', 'Kg', 1.00, NULL, 120000.00, 0.00, 0.00, 120000.00),
+(13, 'g8UmVFGyESzGcVnGHD5VxpFCQbYMfncMJL81', 103, 'Rinso Pewangi', 'Pcs', 1.00, NULL, 2500.00, 0.00, 0.00, 2500.00),
+(14, 'iww8VSRzyRde7DO4CZiCDhyoIdoKAIj3SrHf', 110, 'Beras 10 Kg', 'Kg', 1.00, NULL, 110000.00, 0.00, 0.00, 110000.00),
+(15, 'Yy0XcEl7YgVdLuf7ppBeKcVL0pV9QoPoV8Il', 110, 'Beras 10 Kg', 'Kg', 2.00, NULL, 120000.00, 0.00, 0.00, 240000.00),
+(16, 'DmHp14Ir6Oaw3YNw2A0bCxJkXJjtT2g0ZmcT', 106, 'Kopi Arabica', 'PCS', 20.00, NULL, 1200.00, 0.00, 0.00, 24000.00),
+(17, 'BPpmIawx7SynZjUYFnRJYPNHAebY2dFeC9zW', 110, 'Beras 10 Kg', 'Kg', 1.00, NULL, 120000.00, 0.00, 0.00, 120000.00),
+(18, '4QyUUpBo4rklqG45glJtBIcSitqBFuy9z1QE', 106, 'Kopi Arabica', 'PCS', 2.00, 1000.00, 1300.00, 0.00, 0.00, 2600.00),
+(19, '4QyUUpBo4rklqG45glJtBIcSitqBFuy9z1QE', 110, 'Beras 10 Kg', 'Kg', 1.00, 1000.00, 120000.00, 0.00, 0.00, 120000.00),
+(20, 'jobk99vHOJuYXFJfSuTG62eKuZq1US3Fl6Hb', 105, 'Kopi Gadjah', 'Sachet', 1.00, 1000.00, 0.00, 0.00, 0.00, 0.00),
+(21, 'jobk99vHOJuYXFJfSuTG62eKuZq1US3Fl6Hb', 106, 'Kopi Arabica', 'PCS', 5.00, 1000.00, 1200.00, 0.00, 0.00, 6000.00),
+(22, 'jobk99vHOJuYXFJfSuTG62eKuZq1US3Fl6Hb', 110, 'Beras 10 Kg', 'Kg', 2.00, 1000.00, 120000.00, 0.00, 0.00, 240000.00),
+(23, 'FlPDnGSwx8nOcvsVD8v4GlRirdFTdLSvHozg', 106, 'Kopi Arabica', 'PCS', 1.00, 1000.00, 1200.00, 0.00, 0.00, 1200.00),
+(24, 'FlPDnGSwx8nOcvsVD8v4GlRirdFTdLSvHozg', 110, 'Beras 10 Kg', 'Kg', 1.00, 1000.00, 120000.00, 0.00, 0.00, 120000.00),
+(25, 'lG4WHvjt9EmQUJ7OxjDEmVU1QMLZdEdXDjWp', 110, 'Beras 10 Kg', 'Kg', 2.00, 1000.00, 120000.00, 0.00, 0.00, 240000.00),
+(26, 'lG4WHvjt9EmQUJ7OxjDEmVU1QMLZdEdXDjWp', 100, 'Pulsa Telkomsel 5000', 'Rp', 2.00, 1000.00, 5000.00, 0.00, 0.00, 10000.00),
+(27, 'z0B6Toyu9TJ1GLZLaYlTAUw4dqnb1t3N8y4D', 105, 'Kopi Gadjah', 'Sachet', 1.00, 1000.00, 0.00, 0.00, 0.00, 0.00),
+(28, 'z0B6Toyu9TJ1GLZLaYlTAUw4dqnb1t3N8y4D', 106, 'Kopi Arabica', 'PCS', 1.00, 1000.00, 1200.00, 0.00, 0.00, 1200.00),
+(29, 'z0B6Toyu9TJ1GLZLaYlTAUw4dqnb1t3N8y4D', 110, 'Beras 10 Kg', 'Kg', 2.00, 1000.00, 120000.00, 0.00, 0.00, 240000.00),
+(30, 'VvVvBsmwFLrcU8srxrijJCYIFVs1qF66fgq0', 110, 'Beras 10 Kg', 'Kg', 1.00, 1000.00, 120000.00, 0.00, 0.00, 120000.00),
+(31, '63r5iwi3lBryqXin8SNNi2hPvKsL9A8GH4pY', 106, 'Kopi Arabica', 'PCS', 1.00, 1200.00, 1300.00, 0.00, 0.00, 1300.00),
+(32, '63r5iwi3lBryqXin8SNNi2hPvKsL9A8GH4pY', 110, 'Beras 10 Kg', 'Kg', 1.00, 110000.00, 130000.00, 0.00, 0.00, 130000.00),
+(33, 'I0NsNVXSq1rA39NtgxJKQpoCtn65z9Pvqn5r', 105, 'Kopi Gadjah', 'Sachet', 10.00, 2000.00, 2500.00, 0.00, 0.00, 25000.00),
+(34, 'I0NsNVXSq1rA39NtgxJKQpoCtn65z9Pvqn5r', 106, 'Kopi Arabica', 'PCS', 10.00, 1200.00, 1300.00, 0.00, 0.00, 13000.00),
+(35, 'I0NsNVXSq1rA39NtgxJKQpoCtn65z9Pvqn5r', 110, 'Beras 10 Kg', 'Kg', 2.00, 110000.00, 120000.00, 0.00, 0.00, 240000.00),
+(36, 'uTNuknNywZ6zrgSBFR8y2kuI4H9CWsbjGI37', 110, 'Beras 10 Kg', 'Kg', 10.00, 110000.00, 120000.00, 0.00, 0.00, 1200000.00),
+(37, 'kXeQpIuTWL6nh2ROmfWnf3XIynlaprbfw68b', 101, 'Rinso Pewangi', 'Pcs', 10.00, 2500.00, 2600.00, 0.00, 0.00, 26000.00),
+(38, 'kXeQpIuTWL6nh2ROmfWnf3XIynlaprbfw68b', 98, 'Lifebuoy Hairfall Trmt 9ml', 'RCG', 2.00, 2250.00, 2500.00, 0.00, 0.00, 5000.00),
+(39, 'v3LNju24WfZPEUhZvXC2tmk15HRivuRtoSys', 110, 'Beras 10 Kg', 'Kg', 5.00, 110000.00, 120000.00, 0.00, 0.00, 600000.00),
+(40, 'ggaYwLDLGmvFZgul4GplWnPnObAXBuswxIf5', 110, 'Beras 10 Kg', 'Kg', 1.00, 110000.00, 120000.00, 0.00, 0.00, 120000.00),
+(41, 'YbvadoSRogWP4j4dA7XUYo4GUI4u0iGUBWC3', 110, 'Beras 10 Kg', 'Kg', 2.00, NULL, 110000.00, 0.00, 0.00, 220000.00),
+(42, 'gmKKLeGlXba8vcVKbVLPnQxaeQgHZxHImDC2', 106, 'Kopi Arabica', 'PCS', 2.00, 1200.00, 1200.00, 0.00, 0.00, 2400.00),
+(43, 'gmKKLeGlXba8vcVKbVLPnQxaeQgHZxHImDC2', 110, 'Beras 10 Kg', 'Kg', 2.00, 110000.00, 120000.00, 0.00, 0.00, 240000.00),
+(44, 'mEi5lcogOzUR2RjrsZCqLl6EzlzvPFQXbNRd', 105, 'Kopi Gadjah', 'Sachet', 5.00, 2000.00, 2000.00, 0.00, 0.00, 10000.00),
+(45, 'knPq5MMGvAV7LnSdYmb0wTGvtoX9G3fylqYu', 103, 'Rinso Pewangi', 'Pcs', 5.00, 2500.00, 2500.00, 0.00, 0.00, 12500.00),
+(46, 'ubNIC2wRIeXulrBWWlHfPf3iBckhhkwbsfvm', 110, 'Beras 10 Kg', 'Kg', 2.00, 110000.00, 120000.00, 0.00, 0.00, 240000.00),
+(47, 'rAQHUSUSxUS2luATFWBf7LrSlhGvfCBRKgz1', 103, 'Rinso Pewangi', 'Pcs', 5.00, 2500.00, 2500.00, 0.00, 0.00, 12500.00),
+(48, 'sT0rwZAgmw01yWiVbRpHnrtbJrnRGrFMHgqB', 98, 'Lifebuoy Hairfall Trmt 9ml', 'RCG', 1.00, 2250.00, 2250.00, 0.00, 0.00, 2250.00),
+(49, 'AyfMmNgDYZftwB9WgIwFZe9fbkCHa5lvvQXx', 103, 'Rinso Pewangi', 'Pcs', 5.00, 2500.00, 2500.00, 0.00, 0.00, 12500.00),
+(50, 'DWcVH5dKV5pWxhdm3zyvEJfcbW1C7RvKeFx8', 106, 'Kopi Arabica', 'PCS', 10.00, NULL, 1200.00, 0.00, 0.00, 12000.00),
+(51, 'DWcVH5dKV5pWxhdm3zyvEJfcbW1C7RvKeFx8', 105, 'Kopi Gadjah', 'Sachet', 10.00, NULL, 2000.00, 0.00, 0.00, 20000.00),
+(52, 'jnwSzegiuLF3uhIx8siDNKVxZVVtLIQv2cVq', 100, 'Pulsa Telkomsel 5000', 'Rp', 10.00, NULL, 5000.00, 0.00, 0.00, 50000.00),
+(53, 'jnwSzegiuLF3uhIx8siDNKVxZVVtLIQv2cVq', 104, 'Rinso Pewangi', 'Pcs', 10.00, NULL, 2500.00, 0.00, 0.00, 25000.00),
+(54, 'uuFOtijfDDBT76hBVVFHbWyu2GmcZG9LGtPe', 98, 'Lifebuoy Hairfall Trmt 9ml', 'RCG', 4.00, 2250.00, 2250.00, 0.00, 0.00, 9000.00),
+(55, 'LDF8h70dXQtyyKV0Vr4Oy3569g7rnlDfHPSI', 98, 'Lifebuoy Hairfall Trmt 9ml', 'RCG', 110.00, 2250.00, 2250.00, 0.00, 0.00, 247500.00),
+(56, '5zBHhnGzg7ZatOVqwWekj73eqGamSJHkafBE', 110, 'Beras 10 Kg', 'Kg', 5.00, 110000.00, 120000.00, 0.00, 0.00, 600000.00),
+(57, 'CgQe1HBsb1Xxr3CM4Ynih6nliMyHGpOOqZn8', 110, 'Beras 10 Kg', 'Kg', 2.00, 110000.00, 120000.00, 0.00, 0.00, 240000.00);
 
 -- --------------------------------------------------------
 
@@ -2820,18 +3028,30 @@ INSERT INTO `transaksi_jual_beli_rincian` (`id_transaksi_jual_beli_rincian`, `id
 
 DROP TABLE IF EXISTS `transaksi_pembayaran`;
 CREATE TABLE IF NOT EXISTS `transaksi_pembayaran` (
-  `id_pembayaran` int NOT NULL AUTO_INCREMENT,
-  `id_transaksi` int DEFAULT NULL,
-  `id_akses` int DEFAULT NULL,
-  `id_anggota` int DEFAULT NULL,
-  `id_supplier` int DEFAULT NULL,
-  `kategori` varchar(20) DEFAULT NULL,
-  `tanggal` varchar(30) NOT NULL,
-  `metode` varchar(20) NOT NULL,
-  `jumlah` int DEFAULT NULL,
-  `keterangan` text,
-  PRIMARY KEY (`id_pembayaran`)
+  `id_transaksi_pembayaran` char(36) NOT NULL,
+  `id_transaksi_jual_beli` char(36) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `kategori` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL COMMENT 'Ex: Pembayaran Piutang Penjualan',
+  `tanggal` timestamp NOT NULL COMMENT 'Tanggal-Jam Bayar',
+  `jumlah` decimal(10,2) DEFAULT NULL,
+  `datetime_creat` timestamp NOT NULL COMMENT 'tanggal-jam diubuat',
+  PRIMARY KEY (`id_transaksi_pembayaran`),
+  KEY `id_transaksi_jual_beli` (`id_transaksi_jual_beli`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `transaksi_pembayaran`
+--
+
+INSERT INTO `transaksi_pembayaran` (`id_transaksi_pembayaran`, `id_transaksi_jual_beli`, `kategori`, `tanggal`, `jumlah`, `datetime_creat`) VALUES
+('4SsiMzYtirZg5HfaqTw37glEhKiAyeRD8lP2', 'CgQe1HBsb1Xxr3CM4Ynih6nliMyHGpOOqZn8', 'Penjualan', '2025-06-07 13:15:00', 240000.00, '2025-06-07 13:16:53'),
+('4tVEAECZJsYS7rsN6f9RnZKnJSuFZdREsQEf', 'DmHp14Ir6Oaw3YNw2A0bCxJkXJjtT2g0ZmcT', 'Penjualan', '2025-06-06 19:59:52', 20000.00, '2025-06-06 20:00:01'),
+('fv9HyzQPINeADT8CYrGnhFnCRmNouaxHVbj6', 'g8UmVFGyESzGcVnGHD5VxpFCQbYMfncMJL81', 'Pembelian', '2025-06-06 19:54:00', 500.00, '2025-06-06 19:55:03'),
+('hIwD8L16zyrDGYUop4Aee1MSHfz0TktakjTM', 'g8UmVFGyESzGcVnGHD5VxpFCQbYMfncMJL81', 'Pembelian', '2025-06-06 19:55:14', 2000.00, '2025-06-06 19:55:20'),
+('KacwkEe7kqmhjJbGyeva5OWTUvDhG2betrH9', '5zBHhnGzg7ZatOVqwWekj73eqGamSJHkafBE', 'Penjualan', '2025-06-06 18:33:29', 600000.00, '0000-00-00 00:00:00'),
+('kvgxfTkUaxa7m5SL5th3oVj1LXzlE6yTY3PU', 'DmHp14Ir6Oaw3YNw2A0bCxJkXJjtT2g0ZmcT', 'Penjualan', '2025-06-06 19:55:55', 4000.00, '2025-06-06 19:56:07'),
+('mkZoUx99MYSGqBp15OImrPqcYV4BORZ7fUvM', 'DWcVH5dKV5pWxhdm3zyvEJfcbW1C7RvKeFx8', 'Pembelian', '2025-06-07 13:15:00', 32000.00, '2025-06-07 13:16:53'),
+('pHw2itSBJKt4rXy7FST3lafRiB16UMCFZIP1', 'AyfMmNgDYZftwB9WgIwFZe9fbkCHa5lvvQXx', 'Penjualan', '2025-06-06 18:37:00', 12500.00, '0000-00-00 00:00:00'),
+('SdordNL7EPIiDue1XGcFVrIEKTArAiTay9Xb', 'jnwSzegiuLF3uhIx8siDNKVxZVVtLIQv2cVq', 'Pembelian', '2025-06-07 13:15:00', 75000.00, '2025-06-07 13:16:53');
 
 -- --------------------------------------------------------
 
@@ -2923,12 +3143,6 @@ ALTER TABLE `akses_ijin`
   ADD CONSTRAINT `ijin_to_fitur` FOREIGN KEY (`id_akses_fitur`) REFERENCES `akses_fitur` (`id_akses_fitur`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `akses_login`
---
-ALTER TABLE `akses_login`
-  ADD CONSTRAINT `login_to_akses` FOREIGN KEY (`id_akses`) REFERENCES `akses` (`id_akses`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
 -- Constraints for table `akses_referensi`
 --
 ALTER TABLE `akses_referensi`
@@ -2965,10 +3179,12 @@ ALTER TABLE `barang_satuan`
 --
 ALTER TABLE `jurnal`
   ADD CONSTRAINT `jurnal_to_angsuran` FOREIGN KEY (`id_pinjaman_angsuran`) REFERENCES `pinjaman_angsuran` (`id_pinjaman_angsuran`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `jurnal_to_jual_beli` FOREIGN KEY (`id_transaksi_jual_beli`) REFERENCES `transaksi_jual_beli` (`id_transaksi_jual_beli`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `jurnal_to_pinjaman` FOREIGN KEY (`id_pinjaman`) REFERENCES `pinjaman` (`id_pinjaman`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `jurnal_to_shu` FOREIGN KEY (`id_shu_session`) REFERENCES `jurnal` (`id_jurnal`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `jurnal_to_simpanan` FOREIGN KEY (`id_simpanan`) REFERENCES `simpanan` (`id_simpanan`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `jurnal_to_transaksi` FOREIGN KEY (`id_transaksi`) REFERENCES `transaksi` (`id_transaksi`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `jurnal_to_transaksi` FOREIGN KEY (`id_transaksi`) REFERENCES `transaksi` (`id_transaksi`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `jurnal_to_transaksi_pembayaran` FOREIGN KEY (`id_transaksi_pembayaran`) REFERENCES `transaksi_pembayaran` (`id_transaksi_pembayaran`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `log`
@@ -3010,6 +3226,12 @@ ALTER TABLE `transaksi_bulk`
 ALTER TABLE `transaksi_jual_beli`
   ADD CONSTRAINT `transaksi_to_anggota` FOREIGN KEY (`id_anggota`) REFERENCES `anggota` (`id_anggota`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `transaksi_to_supplier` FOREIGN KEY (`id_supplier`) REFERENCES `supplier` (`id_supplier`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints for table `transaksi_pembayaran`
+--
+ALTER TABLE `transaksi_pembayaran`
+  ADD CONSTRAINT `pembayaran_transaksi` FOREIGN KEY (`id_transaksi_jual_beli`) REFERENCES `transaksi_jual_beli` (`id_transaksi_jual_beli`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

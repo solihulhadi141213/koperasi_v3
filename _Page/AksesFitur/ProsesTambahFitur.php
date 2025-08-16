@@ -30,8 +30,8 @@
                     $kode=validateAndSanitizeInput($_POST['kode']);
                     $keterangan=validateAndSanitizeInput($_POST['keterangan']);
                     
-                    $ValidasiNamaDuplikat=mysqli_num_rows(mysqli_query($Conn, "SELECT * FROM akses_fitur WHERE nama=?"));
-                    $ValidasiKodeDuplikat=mysqli_num_rows(mysqli_query($Conn, "SELECT * FROM akses_fitur WHERE kode=?"));
+                    $ValidasiNamaDuplikat=mysqli_num_rows(mysqli_query($Conn, "SELECT * FROM akses_fitur WHERE nama='$nama'"));
+                    $ValidasiKodeDuplikat=mysqli_num_rows(mysqli_query($Conn, "SELECT * FROM akses_fitur WHERE kode='$kode'"));
                     
                     if(!empty($ValidasiKodeDuplikat)){
                         echo '<code class="text-danger">Kode tersebut sudah terdaftar</code>';
