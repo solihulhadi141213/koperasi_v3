@@ -43,7 +43,9 @@
                 <div class="card-body">
                     <div class="row mb-3 border-1 border-bottom">
                         <div class="col col-md-12 text-center mb-4">
-                            <img src="assets/img/User/<?php echo "$SessionGambar"; ?>" alt="" width="70%" class="rounded-circle">
+                            <div class="rounded-circle overflow-hidden mx-auto" style="width: 70%; aspect-ratio: 1 / 1;">
+                                <img src="assets/img/User/<?php echo "$SessionGambar"; ?>" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
                         </div>
                     </div>
                     <div class="row mb-3">

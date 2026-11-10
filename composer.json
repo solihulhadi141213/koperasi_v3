@@ -1,2 +1,17 @@
 {
+    "name":  "koperasi/koperasi-v3",
+    "description":  "Aplikasi koperasi",
+    "type":  "project",
+    "require":  {
+                    "php":  "\u003e=8.1",
+                    "ext-gd":  "*",
+                    "ext-mbstring":  "*",
+                    "phpoffice/phpspreadsheet":  "1.8.2",
+                    "mpdf/mpdf":  "8.1.2",
+                    "setasign/fpdi":  "2.3.6"
+                },
+    "config":  {
+                   "platform-check":  true,
+                   "sort-packages":  true
+               }
 }

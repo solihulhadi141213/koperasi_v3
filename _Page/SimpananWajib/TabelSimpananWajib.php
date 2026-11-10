@@ -361,12 +361,12 @@
                                                         $id_simpanan_jenis=$_POST['id_simpanan_jenis'];
                                                         //Menghitung Jumlah Simpanan
                                                         $Sum = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(jumlah) AS total FROM simpanan WHERE (id_anggota='$id_anggota' AND id_simpanan_jenis='$id_simpanan_jenis') AND (tanggal like '%$PeriodeKey%')"));
-                                                        $jumlah_simpanan = $Sum['total'];
+                                                        $jumlah_simpanan = $Sum['total'] ?? 0;
                                                         $jumlah_simpanan = "" . number_format($jumlah_simpanan,0,',','.');
                                                     }else{
                                                         //Menghitung Jumlah Simpanan
                                                         $Sum = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(jumlah) AS total FROM simpanan WHERE (id_anggota='$id_anggota' AND rutin=1) AND (tanggal like '%$PeriodeKey%')"));
-                                                        $jumlah_simpanan = $Sum['total'];
+                                                        $jumlah_simpanan = $Sum['total'] ?? 0;
                                                         $jumlah_simpanan = "" . number_format($jumlah_simpanan,0,',','.');
                                                     }
                                                     if($jumlah_simpanan==0){
@@ -399,12 +399,12 @@
                                                         $id_simpanan_jenis=$_POST['id_simpanan_jenis'];
                                                         //Menghitung Jumlah Simpanan
                                                         $Sum = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(jumlah) AS total FROM simpanan WHERE (id_anggota='$id_anggota' AND id_simpanan_jenis='$id_simpanan_jenis') AND (tanggal like '%$PeriodeKey%')"));
-                                                        $jumlah_simpanan = $Sum['total'];
+                                                        $jumlah_simpanan = $Sum['total'] ?? 0;
                                                         $jumlah_simpanan = "" . number_format($jumlah_simpanan,0,',','.');
                                                     }else{
                                                         //Menghitung Jumlah Simpanan
                                                         $Sum = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(jumlah) AS total FROM simpanan WHERE (id_anggota='$id_anggota' AND rutin=1) AND (tanggal like '%$PeriodeKey%')"));
-                                                        $jumlah_simpanan = $Sum['total'];
+                                                        $jumlah_simpanan = $Sum['total'] ?? 0;
                                                         $jumlah_simpanan = "" . number_format($jumlah_simpanan,0,',','.');
                                                     }
                                                     if($jumlah_simpanan==0){

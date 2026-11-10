@@ -2,8 +2,8 @@
     //Ini adalah halaman untuk melakukan konfigurasi database
     $servername = "localhost";
     $username = "root";
-    $password = "arunaparasilvanursari";
-    $db = "koperasi_v3";
+    $password = "";
+    $db = "koperasi";
     // Create connection
     $Conn = new mysqli($servername, $username, $password, $db);
     // Check connection

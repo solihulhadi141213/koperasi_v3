@@ -147,11 +147,11 @@
                                     $ranking= $data['ranking'];
                                     //Jumlah Simpanan
                                     $SumSimpanan = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(jumlah) AS total FROM simpanan WHERE ranking='$ranking' AND kategori!='Penarikan' AND tanggal like '%$keyword%'"));
-                                    $jumlah_simpanan = $SumSimpanan['total'];
+                                    $jumlah_simpanan = $SumSimpanan['total'] ?? 0;
                                     $JumlahSimpananFormat = "" . number_format($jumlah_simpanan,0,',','.');
                                     //Jumlah Penarikan
                                     $SumPenarikan = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(jumlah) AS total FROM simpanan WHERE ranking='$ranking' AND kategori='Penarikan' AND tanggal like '%$keyword%'"));
-                                    $jumlah_penarikan = $SumPenarikan['total'];
+                                    $jumlah_penarikan = $SumPenarikan['total'] ?? 0;
                                     $JumlahPenarikanFormat = "" . number_format($jumlah_penarikan,0,',','.');
                                     //Menghitung Saldo
                                     $Saldo=$jumlah_simpanan-$jumlah_penarikan;
@@ -177,7 +177,7 @@
                                                 $nama_simpanan= $data_simpanan['nama_simpanan'];
                                                 //Menghitung Jumlah Simpanan Berdasarkan Jenis
                                                 $SumSimpananByJenis = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(jumlah) AS total FROM simpanan WHERE ranking='$ranking' AND kategori='$nama_simpanan' AND tanggal like '%$keyword%'"));
-                                                $jumlah_simpanan_jenis = $SumSimpananByJenis['total'];
+                                                $jumlah_simpanan_jenis = $SumSimpananByJenis['total'] ?? 0;
                                                 $jumlah_simpanan_jenis_format = "" . number_format($jumlah_simpanan_jenis,0,',','.');
                                                 echo '<td align="right"><small class="credit"><code class="text-dark">'.$jumlah_simpanan_jenis_format.'</code></small></td>';
                                             }
@@ -221,7 +221,7 @@
                                     $nama_simpanan= $data_simpanan['nama_simpanan'];
                                     //Menghitung Jumlah Simpanan Berdasarkan Jenis
                                     $SumSimpananByJenis = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(jumlah) AS total FROM simpanan WHERE kategori='$nama_simpanan' AND tanggal like '%$keyword%'"));
-                                    $jumlah_simpanan_jenis = $SumSimpananByJenis['total'];
+                                    $jumlah_simpanan_jenis = $SumSimpananByJenis['total'] ?? 0;
                                     $jumlah_simpanan_jenis_format = "" . number_format($jumlah_simpanan_jenis,0,',','.');
                                     echo '<td align="right"><b>'.$jumlah_simpanan_jenis_format.'</b></td>';
                                 }
