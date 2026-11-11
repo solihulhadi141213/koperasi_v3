@@ -21,7 +21,13 @@
         }else{
             $sertakan_denda=$_POST['sertakan_denda'];
         }
-        $JumlahData = mysqli_num_rows(mysqli_query($Conn, "SELECT * FROM pinjaman WHERE status='Berjalan'"));
+        $status_berjalan = 'Berjalan';
+        $stmt_count = mysqli_prepare($Conn, "SELECT * FROM pinjaman WHERE status = ?");
+        mysqli_stmt_bind_param($stmt_count, "s", $status_berjalan);
+        mysqli_stmt_execute($stmt_count);
+        $result_count = mysqli_stmt_get_result($stmt_count);
+        $JumlahData = mysqli_num_rows($result_count);
+        mysqli_stmt_close($stmt_count);
         if(empty($JumlahData)){
             echo "Belum Ada Data Pinjaman Pada Periode Tersebut";
             exit;
@@ -89,7 +95,10 @@
 
             $no = 1;
             $row = 2;
-            $query = mysqli_query($Conn, "SELECT * FROM pinjaman WHERE status='Berjalan' ORDER BY tanggal ASC");
+            $stmt = mysqli_prepare($Conn, "SELECT * FROM pinjaman WHERE status = ? ORDER BY tanggal ASC");
+            mysqli_stmt_bind_param($stmt, "s", $status_berjalan);
+            mysqli_stmt_execute($stmt);
+            $query = mysqli_stmt_get_result($stmt);
             while ($data = mysqli_fetch_array($query)) {
                 $id_pinjaman= $data['id_pinjaman'];
                 $uuid_pinjaman= $data['uuid_pinjaman'];
@@ -120,8 +129,15 @@
                     $GetPeriodePinjaman2=date('Y-m-d', strtotime('+'.$i.' month', strtotime($tanggal))); 
                     if($TanggalSekarang>$GetPeriodePinjaman2){
                         //Cek Apakah Sudah Ada Angsuran
-                        $QryAngsuran = mysqli_query($Conn,"SELECT * FROM pinjaman_angsuran WHERE id_pinjaman='$id_pinjaman' AND tanggal_angsuran='$GetPeriodePinjaman2'")or die(mysqli_error($Conn));
-                        $DataAngsuran = mysqli_fetch_array($QryAngsuran);
+                        $stmt_angsuran = mysqli_prepare($Conn, "SELECT * FROM pinjaman_angsuran WHERE id_pinjaman = ? AND tanggal_angsuran = ?");
+                        if (!$stmt_angsuran) {
+                            die("Error dalam persiapan statement: " . mysqli_error($Conn));
+                        }
+                        mysqli_stmt_bind_param($stmt_angsuran, "is", $id_pinjaman, $GetPeriodePinjaman2);
+                        mysqli_stmt_execute($stmt_angsuran);
+                        $result_angsuran = mysqli_stmt_get_result($stmt_angsuran);
+                        $DataAngsuran = mysqli_fetch_array($result_angsuran);
+                        mysqli_stmt_close($stmt_angsuran);
                         if(empty($DataAngsuran['id_pinjaman_angsuran'])){
                             $JumlahPeriodeTagihan=$JumlahPeriodeTagihan+1;
                             $JumlahTunggakan=$JumlahTunggakan+$angsuran_total;
@@ -226,7 +242,8 @@
             header('Cache-Control: max-age=0');
             
             // Menulis Spreadsheet ke dalam output PHP
+            ob_clean();
             $writer->save('php://output');
+            exit;
         }
     }
-?>

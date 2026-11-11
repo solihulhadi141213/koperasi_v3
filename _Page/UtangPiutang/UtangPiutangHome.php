@@ -1,41 +1,106 @@
 <?php
     //Data Penjualan
-    $jumlah_data_penjualan=mysqli_num_rows(mysqli_query($Conn, "SELECT id_transaksi_jual_beli FROM transaksi_jual_beli WHERE kategori='Penjualan'"));
+    $kategori_penjualan = 'Penjualan';
+    $kategori_retur_penjualan = 'Retur Penjualan';
+    $status_lunas = 'Lunas';
+    $status_kredit = 'Kredit';
+
+    // Jumlah data penjualan
+    $stmt = mysqli_prepare($Conn, "SELECT id_transaksi_jual_beli FROM transaksi_jual_beli WHERE kategori = ?");
+    mysqli_stmt_bind_param($stmt, "s", $kategori_penjualan);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $jumlah_data_penjualan = mysqli_num_rows($result);
+    mysqli_stmt_close($stmt);
     $jumlah_data_penjualan_format = "" . number_format($jumlah_data_penjualan,0,',','.');
 
-    $data_penjualan=mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(total) AS total FROM transaksi_jual_beli WHERE kategori='Penjualan'"));
+    // Total penjualan
+    $stmt = mysqli_prepare($Conn, "SELECT COALESCE(SUM(total), 0) AS total FROM transaksi_jual_beli WHERE kategori = ?");
+    mysqli_stmt_bind_param($stmt, "s", $kategori_penjualan);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $data_penjualan = mysqli_fetch_array($result);
     $jumlah_penjualan = $data_penjualan['total'];
+    mysqli_stmt_close($stmt);
     $jumlah_penjualan_format = "Rp " . number_format($jumlah_penjualan,0,',','.');
 
-    $jumlah_data_retur_penjualan=mysqli_num_rows(mysqli_query($Conn, "SELECT id_transaksi_jual_beli FROM transaksi_jual_beli WHERE kategori='Retur Penjualan'"));
+    // Jumlah data retur penjualan
+    $stmt = mysqli_prepare($Conn, "SELECT id_transaksi_jual_beli FROM transaksi_jual_beli WHERE kategori = ?");
+    mysqli_stmt_bind_param($stmt, "s", $kategori_retur_penjualan);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $jumlah_data_retur_penjualan = mysqli_num_rows($result);
+    mysqli_stmt_close($stmt);
     $jumlah_data_retur_penjualan_format = "" . number_format($jumlah_data_retur_penjualan,0,',','.');
 
-    $data_retur_penjualan=mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(total) AS total FROM transaksi_jual_beli WHERE kategori='Retur Penjualan'"));
+    // Total retur penjualan
+    $stmt = mysqli_prepare($Conn, "SELECT COALESCE(SUM(total), 0) AS total FROM transaksi_jual_beli WHERE kategori = ?");
+    mysqli_stmt_bind_param($stmt, "s", $kategori_retur_penjualan);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $data_retur_penjualan = mysqli_fetch_array($result);
     $jumlah_retur_penjualan = $data_retur_penjualan['total'];
+    mysqli_stmt_close($stmt);
     $jumlah_retur_penjualan_format = "Rp " . number_format($jumlah_retur_penjualan,0,',','.');
 
     $jumlah_penjualan_bersih=$jumlah_penjualan-$jumlah_retur_penjualan;
     $jumlah_penjualan_bersih_format = "Rp " . number_format($jumlah_penjualan_bersih,0,',','.');
 
-    $jumlah_data_penjualan_lunas=mysqli_num_rows(mysqli_query($Conn, "SELECT id_transaksi_jual_beli FROM transaksi_jual_beli WHERE kategori='Penjualan' AND status='Lunas'"));
+    // Jumlah data penjualan lunas
+    $stmt = mysqli_prepare($Conn, "SELECT id_transaksi_jual_beli FROM transaksi_jual_beli WHERE kategori = ? AND status = ?");
+    mysqli_stmt_bind_param($stmt, "ss", $kategori_penjualan, $status_lunas);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $jumlah_data_penjualan_lunas = mysqli_num_rows($result);
+    mysqli_stmt_close($stmt);
     $jumlah_data_penjualan_lunas_format = "" . number_format($jumlah_data_penjualan_lunas,0,',','.');
 
-    $data_penjualan_lunas=mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(total) AS total FROM transaksi_jual_beli WHERE kategori='Penjualan' AND status='Lunas'"));
+    // Total penjualan lunas
+    $stmt = mysqli_prepare($Conn, "SELECT COALESCE(SUM(total), 0) AS total FROM transaksi_jual_beli WHERE kategori = ? AND status = ?");
+    mysqli_stmt_bind_param($stmt, "ss", $kategori_penjualan, $status_lunas);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $data_penjualan_lunas = mysqli_fetch_array($result);
     $jumlah_penjualan_lunas = $data_penjualan_lunas['total'];
+    mysqli_stmt_close($stmt);
     $jumlah_penjualan_lunas_format = "Rp " . number_format($jumlah_penjualan_lunas,0,',','.');
 
-    $jumlah_data_piutang_penjualan=mysqli_num_rows(mysqli_query($Conn, "SELECT id_transaksi_jual_beli FROM transaksi_jual_beli WHERE kategori='Penjualan' AND status='Kredit'"));
+    // Jumlah data piutang penjualan
+    $stmt = mysqli_prepare($Conn, "SELECT id_transaksi_jual_beli FROM transaksi_jual_beli WHERE kategori = ? AND status = ?");
+    mysqli_stmt_bind_param($stmt, "ss", $kategori_penjualan, $status_kredit);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $jumlah_data_piutang_penjualan = mysqli_num_rows($result);
+    mysqli_stmt_close($stmt);
     $jumlah_data_piutang_penjualan_format = "" . number_format($jumlah_data_piutang_penjualan,0,',','.');
 
-    $data_piutang_penjualan=mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(total) AS total FROM transaksi_jual_beli WHERE kategori='Penjualan' AND status='Kredit'"));
+    // Total piutang penjualan
+    $stmt = mysqli_prepare($Conn, "SELECT COALESCE(SUM(total), 0) AS total FROM transaksi_jual_beli WHERE kategori = ? AND status = ?");
+    mysqli_stmt_bind_param($stmt, "ss", $kategori_penjualan, $status_kredit);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $data_piutang_penjualan = mysqli_fetch_array($result);
     $jumlah_piutang_penjualan = $data_piutang_penjualan['total'];
+    mysqli_stmt_close($stmt);
     $jumlah_piutang_penjualan_format = "Rp " . number_format($jumlah_piutang_penjualan,0,',','.');
 
-    $jumlah_data_utang_penjualan=mysqli_num_rows(mysqli_query($Conn, "SELECT id_transaksi_jual_beli FROM transaksi_jual_beli WHERE kategori='Retur Penjualan' AND status='Kredit'"));
+    // Jumlah data utang penjualan
+    $stmt = mysqli_prepare($Conn, "SELECT id_transaksi_jual_beli FROM transaksi_jual_beli WHERE kategori = ? AND status = ?");
+    mysqli_stmt_bind_param($stmt, "ss", $kategori_retur_penjualan, $status_kredit);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $jumlah_data_utang_penjualan = mysqli_num_rows($result);
+    mysqli_stmt_close($stmt);
     $jumlah_data_utang_penjualan_format = "Rp " . number_format($jumlah_data_utang_penjualan,0,',','.');
 
-    $data_utang_penjualan=mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(total) AS total FROM transaksi_jual_beli WHERE kategori='Retur Penjualan' AND status='Kredit'"));
+    // Total utang penjualan
+    $stmt = mysqli_prepare($Conn, "SELECT COALESCE(SUM(total), 0) AS total FROM transaksi_jual_beli WHERE kategori = ? AND status = ?");
+    mysqli_stmt_bind_param($stmt, "ss", $kategori_retur_penjualan, $status_kredit);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $data_utang_penjualan = mysqli_fetch_array($result);
     $jumlah_utang_penjualan = $data_utang_penjualan['total'];
+    mysqli_stmt_close($stmt);
     $jumlah_utang_penjualan_format = "Rp " . number_format($jumlah_utang_penjualan,0,',','.');
     //Data Pembelian
 ?>

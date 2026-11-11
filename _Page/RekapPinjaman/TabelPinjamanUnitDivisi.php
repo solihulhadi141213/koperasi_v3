@@ -65,20 +65,39 @@
                             while ($data = mysqli_fetch_array($query)) {
                                 $lembaga= $data['lembaga'];
                                 //Menghitung Jumlah Anggota Yang Melakukan Pinjaman Secara Distinct Pada Periode Tersebut
-                                $JumlahAnggota = mysqli_num_rows(mysqli_query($Conn, "SELECT id_anggota FROM pinjaman WHERE( lembaga='$lembaga') AND (tanggal like '%$tahun%')"));
+                                $stmt_anggota = mysqli_prepare($Conn, "SELECT id_anggota FROM pinjaman WHERE lembaga = ? AND tanggal LIKE CONCAT('%', ?, '%')");
+                                mysqli_stmt_bind_param($stmt_anggota, "ss", $lembaga, $tahun);
+                                mysqli_stmt_execute($stmt_anggota);
+                                $result_anggota = mysqli_stmt_get_result($stmt_anggota);
+                                $JumlahAnggota = mysqli_num_rows($result_anggota);
+                                mysqli_stmt_close($stmt_anggota);
                                 //Sum Jumlah Pinjaman Pada Periode Tersebut
-                                $SumPinjaman = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(jumlah_pinjaman) AS jumlah FROM pinjaman WHERE lembaga='$lembaga' AND tanggal like '%$tahun%'"));
+                                $stmt_pinjaman = mysqli_prepare($Conn, "SELECT COALESCE(SUM(jumlah_pinjaman), 0) AS jumlah FROM pinjaman WHERE lembaga = ? AND tanggal LIKE CONCAT('%', ?, '%')");
+                                mysqli_stmt_bind_param($stmt_pinjaman, "ss", $lembaga, $tahun);
+                                mysqli_stmt_execute($stmt_pinjaman);
+                                $result_pinjaman = mysqli_stmt_get_result($stmt_pinjaman);
+                                $SumPinjaman = mysqli_fetch_array($result_pinjaman);
                                 $JumlahPinjaman = $SumPinjaman['jumlah'];
+                                mysqli_stmt_close($stmt_pinjaman);
                                 $JumlahPinjamanFormat = "Rp " . number_format($JumlahPinjaman,0,',','.');
                                 //Menghitung Angsuran Masuk
                                 $JumlahAngsuran=0;
-                                $QryPinjaman = mysqli_query($Conn, "SELECT id_pinjaman FROM pinjaman WHERE lembaga='$lembaga' AND tanggal like '%$tahun%'");
-                                while ($DataPinjaman = mysqli_fetch_array($QryPinjaman)) {
+                                $stmt_pinjam_list = mysqli_prepare($Conn, "SELECT id_pinjaman FROM pinjaman WHERE lembaga = ? AND tanggal LIKE CONCAT('%', ?, '%')");
+                                mysqli_stmt_bind_param($stmt_pinjam_list, "ss", $lembaga, $tahun);
+                                mysqli_stmt_execute($stmt_pinjam_list);
+                                $result_pinjam_list = mysqli_stmt_get_result($stmt_pinjam_list);
+                                while ($DataPinjaman = mysqli_fetch_array($result_pinjam_list)) {
                                     $id_pinjaman=$DataPinjaman['id_pinjaman'];
-                                    $SumAngsuran = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(jumlah) AS total FROM pinjaman_angsuran WHERE id_pinjaman='$id_pinjaman' AND tanggal_bayar like '%$tahun%'"));
+                                    $stmt_angsuran = mysqli_prepare($Conn, "SELECT COALESCE(SUM(jumlah), 0) AS total FROM pinjaman_angsuran WHERE id_pinjaman = ? AND tanggal_bayar LIKE CONCAT('%', ?, '%')");
+                                    mysqli_stmt_bind_param($stmt_angsuran, "is", $id_pinjaman, $tahun);
+                                    mysqli_stmt_execute($stmt_angsuran);
+                                    $result_angsuran = mysqli_stmt_get_result($stmt_angsuran);
+                                    $SumAngsuran = mysqli_fetch_array($result_angsuran);
                                     $total = $SumAngsuran['total'];
                                     $JumlahAngsuran=$JumlahAngsuran+$total;
+                                    mysqli_stmt_close($stmt_angsuran);
                                 }
+                                mysqli_stmt_close($stmt_pinjam_list);
                                 $JumlahAngsuranFormat = "Rp " . number_format($JumlahAngsuran,0,',','.');
                                 //Akumulasi Jumlah Total
                                 $JumlahTotalAnggota=$JumlahTotalAnggota+$JumlahAnggota;

@@ -12,19 +12,20 @@
 <link href="assets/fonts/fonts.css" rel="stylesheet">
 
 <!-- Vendor CSS Files -->
-<link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-<link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-<link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
-<link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
-<link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-<link href="assets/vendor/simple-datatables/style.css?v=<?php echo date('YmdHis'); ?>" rel="stylesheet">
+<link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="node_modules/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="node_modules/boxicons/css/boxicons.min.css" rel="stylesheet">
+<link href="node_modules/quill/dist/quill.snow.css" rel="stylesheet">
+<link href="node_modules/quill/dist/quill.bubble.css" rel="stylesheet">
+<link href="node_modules/remixicon/fonts/remixicon.css" rel="stylesheet">
+<link href="node_modules/simple-datatables/dist/style.css?v=<?php echo date('YmdHis'); ?>" rel="stylesheet">
 
 <!-- Calendar -->
-<script src='assets/fullcalendar-6.1.17/dist/index.global.min.js'></script>
+<script src="node_modules/@fullcalendar/core/index.global.min.js"></script>
+<script src="node_modules/@fullcalendar/daygrid/index.global.min.js"></script>
 
 <!-- Template Main CSS File -->
 <link href="assets/css/style.css?v=<?php echo date('YmdHis'); ?>" rel="stylesheet">
 <link href="node_modules/mdb-ui-kit/css/mdb.min.css" rel="stylesheet">
-<script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
-<script type="text/javascript" src="node_modules/marked/marked.min.js"></script>
+<script src="node_modules/jquery/dist/jquery.min.js" type="text/javascript"></script>
+<script src="node_modules/marked/marked.min.js" type="text/javascript"></script>
