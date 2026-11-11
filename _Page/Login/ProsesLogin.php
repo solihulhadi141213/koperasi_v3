@@ -35,7 +35,7 @@
             $stmt->bind_param("ss", $email, $passwordMd5);
         } else {
             $stmt = $Conn->prepare("SELECT * FROM anggota WHERE email = ? AND password = ?");
-            $stmt->bind_param("ss", $email, $password);
+            $stmt->bind_param("ss", $email, $passwordMd5);
         }
 
         if ($stmt === false) {

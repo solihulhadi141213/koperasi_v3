@@ -198,7 +198,7 @@
                                     }
                                     //Sum Data Angsuran
                                     $Sum = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(jumlah) AS total FROM pinjaman_angsuran WHERE id_pinjaman='$id_pinjaman'"));
-                                    $JumlahAngsuran = $Sum['total'];
+                                    $JumlahAngsuran = $Sum['total'] ?? 0;
                                     $JumlahAngsuranFormat = "Rp " . number_format($JumlahAngsuran,0,',','.');
                                     //Row Data Angsuran
                                     $JumlahDataAngsuran = mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM pinjaman_angsuran WHERE id_pinjaman='$id_pinjaman'"));

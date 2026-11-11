@@ -226,54 +226,64 @@ function ShowPinjamanTerbaru() {
 }
 // Fungsi Untuk Menampilkan Grafik
 function ShowGrafikSiimpanPinjam() {
-    // Fungsi untuk mengambil data dari file JSON
-    $.getJSON("_Page/Dashboard/GrafikTransaksi.json", function (data) {
-        // Mengolah data untuk ApexCharts
-        const categories = data.map(item => item.x);
-        const simpananSeries = data.map(item => parseFloat(item.ySimpanan));
-        const pinjamanSeries = data.map(item => parseFloat(item.yPinjaman));
+    const chartElement = document.querySelector("#chart");
+    if (!chartElement) {
+        return;
+    }
 
-        // Konfigurasi grafik
-        var options = {
-            chart: {
-                type: 'bar',
-                height: 400
-            },
-            series: [
-                {
-                    name: 'Simpanan',
-                    data: simpananSeries
-                },
-                {
-                    name: 'Pinjaman',
-                    data: pinjamanSeries
-                }
-            ],
-            xaxis: {
-                categories: categories
-            },
-            yaxis: {
-                labels: {
-                    formatter: function (value) {
-                        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(value);
-                    }
-                }
-            },
-            tooltip: {
-                y: {
-                    formatter: function (value) {
-                        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(value);
-                    }
-                }
-            },
-            dataLabels: {
-                enabled: false // Menonaktifkan label nilai pada bar
+    $.ajax({
+        type: 'POST',
+        url: '_Page/Dashboard/ProsesHitungSimpanPinjam.php',
+        dataType: 'json',
+        success: function (response) {
+            if (response.status !== 'Success') {
+                $('#notifikasi_proses').hide().html('<div class="alert alert-danger"><small>' + response.message + '</small></div>').fadeIn(500);
+                return;
             }
-        };
 
-        // Inisialisasi grafik
-        var chart = new ApexCharts(document.querySelector("#chart"), options);
-        chart.render();
+            const options = {
+                chart: {
+                    type: 'bar',
+                    height: 400
+                },
+                series: [
+                    {
+                        name: 'Simpanan',
+                        data: response.simpanan
+                    },
+                    {
+                        name: 'Pinjaman',
+                        data: response.pinjaman
+                    }
+                ],
+                xaxis: {
+                    categories: response.categories
+                },
+                yaxis: {
+                    labels: {
+                        formatter: function (value) {
+                            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(value);
+                        }
+                    }
+                },
+                tooltip: {
+                    y: {
+                        formatter: function (value) {
+                            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(value);
+                        }
+                    }
+                },
+                dataLabels: {
+                    enabled: false
+                }
+            };
+
+            const chart = new ApexCharts(chartElement, options);
+            chart.render();
+        },
+        error: function () {
+            $('#notifikasi_proses').hide().html('<div class="alert alert-danger"><small>Terjadi kesalahan saat mengambil data grafik simpan pinjam.</small></div>').fadeIn(500);
+        }
     });
 }
 
@@ -298,6 +308,10 @@ function tampilkanTanggal() {
 // Fungsi Untuk Menampilkan Kalendaer
 function show_calendar() {
     var calendarEl = document.getElementById('show_calendar');
+    if (!calendarEl) {
+        return;
+    }
+
     var calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth'
     });

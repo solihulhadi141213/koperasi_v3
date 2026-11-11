@@ -10,8 +10,6 @@
     $JumlahTransaksi = $SumTransaksi['jumlah'];
     $JumlahTransaksi = "Rp " . number_format($JumlahTransaksi,0,',','.');
 
-    //Untuk Menampilkan grafik maka dibuat dulu file json
-    include "_Page/Dashboard/ProsesHitungSimpanPinjam.php";
 ?>
 <div class="pagetitle">
     <h1>
@@ -33,8 +31,10 @@
     </div>
     <div class="row">
         <div class="col-lg-12">
-            <div class="row">
-                <div class="col-md-8">
+            <div class="row align-items-stretch dashboard-summary-row">
+
+                <!-- Block Dashboard Card -->
+                <div class="col-md-8 d-flex dashboard-summary-cards">
                     <div class="row">
                         <div class="col-xxl-4 col-md-6 col-6">
                             <div class="card info-card sales-card">
@@ -285,15 +285,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="col-12">
+
+                <!-- Block Jam dan Pemberitahuan Sistem -->
+                <div class="col-md-4 d-flex dashboard-system-panel">
+                    <div class="dashboard-system-cards">
                         <div class="card" id="card_jam_menarik">
                             <div class="card-body">
                                 <div id="tanggal_menarik">Hari, 01 Januari 1900</div>
                                 <div id="jam_menarik">00:00:00</div>
                             </div>
                         </div>
-                        <div class="card">
+                        <div class="card dashboard-system-notifications">
                             <div class="card-header">
                                 <b class="card-title"># Pemberitahuan Sistem</b> 
                             </div>
@@ -305,6 +307,7 @@
                 </div>
             </div>
             
+            <!-- Block Chart -->
             <div class="row">
                 <!-- Reports -->
                 <div class="col-md-12">
@@ -321,7 +324,9 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+
+            <!-- Block data List -->
+            <div class="row align-items-stretch dashboard-data-list">
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-header">
@@ -392,13 +397,6 @@
                                 <i class="bi bi-chevron-right"></i>
                             </a>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="card">
-                    <div class="card-body" id="show_calendar">
-                        <!-- Menampilkan Plugin Kalendaer -->
                     </div>
                 </div>
             </div>

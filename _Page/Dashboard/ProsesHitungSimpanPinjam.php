@@ -1,38 +1,67 @@
 <?php
+    include __DIR__ . '/../../_Config/Connection.php';
     date_default_timezone_set('Asia/Jakarta');
-    $a = 1;
-    $b = 12;
-    $data = [];
-    $tahun = date('Y'); // Ambil tahun saat ini
-    for ($i = $a; $i <= $b; $i++) {
-        // Zero padding
-        $i = sprintf("%02d", $i);
-        $WaktuPencarian = "$tahun-$i";
-        $WaktuFormating = "$tahun-$i-01";
-        $Waktu = strtotime($WaktuFormating);
-        $Waktu = date('F', $Waktu);
+    header('Content-Type: application/json; charset=utf-8');
 
-        // Jumlah Simpanan
-        $SumSimpanan = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(jumlah) AS total FROM simpanan WHERE tanggal LIKE '%$WaktuPencarian%'"));
-        $DataSimpanan = $SumSimpanan['total'];
-        $JumlahSimpanan = $DataSimpanan ? $DataSimpanan : 0;
+    $tahun = (int) date('Y');
+    $simpanan = array_fill(1, 12, 0);
+    $pinjaman = array_fill(1, 12, 0);
+    $queries = [
+        ['table' => 'simpanan', 'column' => 'jumlah', 'key' => 'simpanan'],
+        ['table' => 'pinjaman', 'column' => 'jumlah_pinjaman', 'key' => 'pinjaman']
+    ];
 
-        // Jumlah Pinjaman
-        $SumPinjaman = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(jumlah_pinjaman) AS total FROM pinjaman WHERE tanggal LIKE '%$WaktuPencarian%'"));
-        $DataPinjaman = $SumPinjaman['total'];
-        $JumlahPinjaman = $DataPinjaman ? $DataPinjaman : 0;
+    foreach ($queries as $query) {
+        $sql = "SELECT MONTH(tanggal) AS bulan, SUM({$query['column']}) AS total
+                FROM {$query['table']}
+                WHERE YEAR(tanggal) = ?
+                GROUP BY MONTH(tanggal)";
+        $stmt = $Conn->prepare($sql);
+        if (!$stmt) {
+            http_response_code(500);
+            echo json_encode(['status' => 'Error', 'message' => 'Gagal menyiapkan data grafik.']);
+            exit;
+        }
 
-        $data[] = array(
-            'x' => $Waktu,
-            'ySimpanan' => $JumlahSimpanan,
-            'yPinjaman' => $JumlahPinjaman
-        );
+        $stmt->bind_param('i', $tahun);
+        if (!$stmt->execute()) {
+            $stmt->close();
+            http_response_code(500);
+            echo json_encode(['status' => 'Error', 'message' => 'Gagal mengambil data grafik.']);
+            exit;
+        }
+
+        $stmt->bind_result($bulan, $total);
+        while (true) {
+            $fetchResult = $stmt->fetch();
+            if ($fetchResult === null) {
+                break;
+            }
+            if ($fetchResult === false) {
+                $stmt->close();
+                http_response_code(500);
+                echo json_encode(['status' => 'Error', 'message' => 'Gagal membaca data grafik.']);
+                exit;
+            }
+
+            if ($query['key'] === 'simpanan') {
+                $simpanan[(int) $bulan] = (float) $total;
+            } else {
+                $pinjaman[(int) $bulan] = (float) $total;
+            }
+        }
+        $stmt->close();
     }
 
-    $json = json_encode($data, JSON_PRETTY_PRINT);
-    if (file_put_contents("_Page/Dashboard/GrafikTransaksi.json", $json)) {
-        
-    } else {
-        echo '<small class="text-danger">Gagal Membuat File JSON</small>';
+    $categories = [];
+    for ($bulan = 1; $bulan <= 12; $bulan++) {
+        $categories[] = date('F', mktime(0, 0, 0, $bulan, 1, $tahun));
     }
+
+    echo json_encode([
+        'status' => 'Success',
+        'categories' => $categories,
+        'simpanan' => array_values($simpanan),
+        'pinjaman' => array_values($pinjaman)
+    ]);
 ?>

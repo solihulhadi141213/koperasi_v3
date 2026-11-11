@@ -16,16 +16,16 @@
 
     // Simpan hasil ke variabel
     $id_setting_general = $DataSettingGeneral['id_setting_general'] ?? null;
-    $title_page = $DataSettingGeneral['title_page'] ?? null;
-    $kata_kunci = $DataSettingGeneral['kata_kunci'] ?? null;
-    $deskripsi = $DataSettingGeneral['deskripsi'] ?? null;
-    $alamat_bisnis = $DataSettingGeneral['alamat_bisnis'] ?? null;
-    $email_bisnis = $DataSettingGeneral['email_bisnis'] ?? null;
-    $telepon_bisnis = $DataSettingGeneral['telepon_bisnis'] ?? null;
-    $favicon = $DataSettingGeneral['favicon'] ?? null;
-    $logo = $DataSettingGeneral['logo'] ?? null;
-    $base_url = $DataSettingGeneral['base_url'] ?? null;
-    $AuthorAplikasi = $DataSettingGeneral['author'] ?? null;
+    $title_page         = $DataSettingGeneral['title_page'] ?? null;
+    $kata_kunci         = $DataSettingGeneral['kata_kunci'] ?? null;
+    $deskripsi          = $DataSettingGeneral['deskripsi'] ?? null;
+    $alamat_bisnis      = $DataSettingGeneral['alamat_bisnis'] ?? null;
+    $email_bisnis       = $DataSettingGeneral['email_bisnis'] ?? null;
+    $telepon_bisnis     = $DataSettingGeneral['telepon_bisnis'] ?? null;
+    $favicon            = $DataSettingGeneral['favicon'] ?? null;
+    $logo               = $DataSettingGeneral['logo'] ?? null;
+    $base_url           = $DataSettingGeneral['base_url'] ?? null;
+    $AuthorAplikasi     = $DataSettingGeneral['author'] ?? null;
 
     // Tutup statement
     $stmt->close();

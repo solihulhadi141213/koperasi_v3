@@ -402,6 +402,18 @@ h6 {
   margin-right: 6px;
 }
 
+.logo img.dashboard-logo-image {
+  width: 150px;
+  height: auto;
+  max-height: none;
+}
+
+@media (max-width: 1199px) {
+  .logo img.dashboard-logo-image {
+    width: 120px;
+  }
+}
+
 .logo span {
   font-size: 26px;
   font-weight: 700;
@@ -834,6 +846,53 @@ h6 {
 /* Info Cards */
 .dashboard .info-card {
   padding-bottom: 10px;
+}
+
+.dashboard .dashboard-summary-cards > .row {
+  flex: 1;
+  width: 100%;
+}
+
+.dashboard .dashboard-summary-cards > .row > [class*="col-"] {
+  display: flex;
+}
+
+.dashboard .dashboard-summary-cards .info-card {
+  flex: 1;
+}
+
+.dashboard .dashboard-system-panel {
+  align-items: stretch;
+}
+
+.dashboard .dashboard-system-cards {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.dashboard .dashboard-system-notifications {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.dashboard .dashboard-system-notifications .card-body {
+  flex: 1;
+}
+
+.dashboard .dashboard-data-list > [class*="col-"] {
+  display: flex;
+}
+
+.dashboard .dashboard-data-list .card {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.dashboard .dashboard-data-list .card-body {
+  flex: 1;
 }
 
 .dashboard .info-card h6 {

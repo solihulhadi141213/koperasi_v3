@@ -25,8 +25,15 @@
                 $SessionModeAkses=validateAndSanitizeInput($SessionModeAkses);
                 $SessionLoginToken=validateAndSanitizeInput($SessionLoginToken);
                 //Validasi Token Akses
-                $QryAksesLogin = mysqli_query($Conn,"SELECT * FROM akses_login WHERE id_akses='$SessionIdAkses' AND token='$SessionLoginToken' AND kategori='$SessionModeAkses'")or die(mysqli_error($Conn));
-                $DataAksesLogin = mysqli_fetch_array($QryAksesLogin);
+                $stmt = mysqli_prepare($Conn, "SELECT * FROM akses_login WHERE id_akses = ? AND token = ? AND kategori = ?");
+                if (!$stmt) {
+                    die("Error dalam persiapan statement: " . mysqli_error($Conn));
+                }
+                mysqli_stmt_bind_param($stmt, "iss", $SessionIdAkses, $SessionLoginToken, $SessionModeAkses);
+                mysqli_stmt_execute($stmt);
+                $result = mysqli_stmt_get_result($stmt);
+                $DataAksesLogin = mysqli_fetch_array($result);
+                mysqli_stmt_close($stmt);
                 //Apabila Tidak Ada
                 if(empty($DataAksesLogin['id_akses'])){
                     $SessionIdAkses="";
@@ -49,9 +56,12 @@
                         $now=date('Y-m-d H:i:s');
                         $date_expired_new=calculateExpirationTimeFromDateTime($now, $expired_milisecond);
                         //Update Token Yang Ada
-                        $UpdateToken = mysqli_query($Conn,"UPDATE akses_login SET 
-                            date_expired='$date_expired_new'
-                        WHERE id_akses='$SessionIdAkses' AND kategori='$SessionModeAkses'") or die(mysqli_error($Conn)); 
+                        $stmt_update = mysqli_prepare($Conn, "UPDATE akses_login SET date_expired = ? WHERE id_akses = ? AND kategori = ?");
+                        if (!$stmt_update) {
+                            die("Error dalam persiapan statement: " . mysqli_error($Conn));
+                        }
+                        mysqli_stmt_bind_param($stmt_update, "sis", $date_expired_new, $SessionIdAkses, $SessionModeAkses);
+                        $UpdateToken = mysqli_stmt_execute($stmt_update);
                         if($UpdateToken){
                             $SessionIdAkses=$DataAksesLogin['id_akses'];
                             $SessionModeAkses=$DataAksesLogin['kategori'];
@@ -61,6 +71,7 @@
                             $SessionModeAkses="";
                             $SessionLoginToken="";
                         }
+                        mysqli_stmt_close($stmt_update);
                     }
                 }
             }
