@@ -4,8 +4,12 @@
     $username = "root";
     $password = "";
     $db = "koperasi";
-    // Create connection
-    $Conn = new mysqli($servername, $username, $password, $db);
+    // The installer needs a server connection before the configured database exists.
+    if (defined('KOPERASI_INSTALL_MODE') && KOPERASI_INSTALL_MODE) {
+        $Conn = new mysqli($servername, $username, $password);
+    } else {
+        $Conn = new mysqli($servername, $username, $password, $db);
+    }
     // Check connection
     if ($Conn->connect_error) {
         die("Connection failed: " . $Conn->connect_error);

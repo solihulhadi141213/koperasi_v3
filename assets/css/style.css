@@ -242,8 +242,7 @@ h6 {
   background: linear-gradient(90deg, rgba(28,59,103,1) 0%, rgba(10,40,83,1) 54%, rgba(28,59,103,1) 100%);
 }
 .landing_background {
-  background: rgb(114,171,230);
-  background: linear-gradient(90deg, #006677 37.5%, #69C8D9 97.92%, #6CCBDC 100%);
+  background: #00bfa5;
 }
 .menu_background {
   background: rgb(35,49,66);
@@ -1421,7 +1420,7 @@ body .title_page_app {
 #card_jam_menarik {
   padding: 15px;
   border-radius: 12px;
-  background: url('../../assets/img/calendar/calendar.jpg') no-repeat center center;
+  background: url('../../assets/img/Ui/calendar.jpg') no-repeat center center;
   background-size: cover;
   position: relative;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);

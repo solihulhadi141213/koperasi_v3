@@ -2,18 +2,24 @@
   "dependencies": {
     "@fullcalendar/core": "^6.1.19",
     "@fullcalendar/daygrid": "^6.1.19",
+    "apexcharts": "^8.8.1",
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
     "boxicons": "^2.1.4",
+    "chart.js": "^4.6.1",
+    "echarts": "^6.1.0",
     "html2canvas": "^1.4.1",
     "jquery": "^3.7.1",
+    "jquery-mask-plugin": "^1.14.16",
     "jspdf": "^3.0.0",
+    "jsqr": "^1.4.0",
     "marked": "^15.0.7",
     "mdb-ui-kit": "^8.2.0",
     "quill": "^2.0.3",
     "remixicon": "^4.7.0",
     "signature_pad": "^5.0.4",
     "simple-datatables": "^9.0.3",
-    "sweetalert2": "^11.17.2"
+    "sweetalert2": "^11.17.2",
+    "tinymce": "^8.10.2"
   }
 }

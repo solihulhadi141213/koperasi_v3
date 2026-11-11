@@ -9,6 +9,14 @@
             include "_Config/SettingGeneral.php";
             include "_Partial/Head.php";
         ?>
+        <style>
+            .login-logo img {
+                display: block;
+                width: 100%;
+                max-width: 280px;
+                height: auto;
+            }
+        </style>
     </head>
     <body>
         <main class="landing_background">
@@ -17,13 +25,8 @@
                     <div class="container">
                         <div class="row justify-content-center">
                             <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
-                                <img src="assets/img/<?php echo $logo;?>" alt="<?php echo $title_page;?>" width="100px">
-                                <div class="d-flex justify-content-center py-2">
-                                    <p>
-                                        <a href="" class="logo d-flex align-items-center w-auto">
-                                            <span class="d-none d-lg-block text-light"><?php echo $title_page;?></span>
-                                        </a>
-                                    </p>
+                                <div class="login-logo d-flex justify-content-center w-100 py-2">
+                                    <img src="assets/img/Ui/logo.png" alt="Koperasi">
                                 </div>
                                 <div class="card mb-3">
                                     <?php
