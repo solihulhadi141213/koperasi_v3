@@ -10,6 +10,11 @@
             include "_Partial/Head.php";
         ?>
         <style>
+            .landing_background {
+                background: linear-gradient(rgba(0, 191, 165, 0.75), rgba(0, 191, 165, 0.75)),
+                    url("assets/img/Ui/texture.svg?v=2") 0 0 / 32px 32px repeat;
+            }
+
             .login-logo img {
                 display: block;
                 width: 100%;

@@ -19,138 +19,102 @@
         </nav>
     </div>
     <section class="section dashboard">
+        
         <div class="row">
-            <div class="col-md-12">
-                <?php
-                    echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">';
-                    echo '  <small>';
-                    echo '      Berikut ini adalah halaman pengaturan umum aplikasi.';
-                    echo '      Pada halaman ini anda bisa mengatur properti aplikasi sesuai yang anda inginkan dari mulai judul, deskripsi, informasi kontak dan logo.';
-                    echo '      Periksa kembali pengaturan yang anda gunakan agar aplikasi berjalan dengan baik.';
-                    echo '      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
-                    echo '  </small>';
-                    echo '</div>';
-                ?>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <form action="javascript:void(0);" id="ProsesSettingGeneral">
-                    <div class="card">
+            <div class="col-md-6 mb-3 d-flex">
+                <form action="javascript:void(0);" class="h-100 w-100" id="ProsesSettingGeneral">
+                    <div class="card h-100">
                         <div class="card-header">
-                            <b class="card-title">Form Pengaturan Umum</b>
+                            <b class="card-title">
+                                <i class="bi bi-info-circle"></i> Informasi Koperasi
+                            </b>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body flex-grow-1">
                             <div class="row mb-3">
-                                <div class="col-md-3">
-                                    <label for="title_page">Judul/Nama Perusahaan</label>
-                                </div>
-                                <div class="col-md-9">
+                                <div class="col-md-12">
+                                    <label for="title_page">Nama Koperasi</label>
                                     <input type="text" name="title_page" id="title_page" class="form-control" placeholder="Koperasi Andalan Jaya" value="<?php echo "$title_page"; ?>">
                                     <small>Maksimal 20 karakter</small>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <div class="col-md-3">
-                                    <label for="kata_kunci">Kata Kunci</label>
-                                </div>
-                                <div class="col-md-9">
-                                    <input type="text" name="kata_kunci" id="kata_kunci" class="form-control" value="<?php echo "$kata_kunci"; ?>">
-                                    <small>(Contoh: keyword1, keyword2, keyword3)</small>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-md-3">
+                                <div class="col-md-12">
                                     <label for="deskripsi">Deskripsi</label>
-                                </div>
-                                <div class="col-md-9">
                                     <textarea name="deskripsi" id="deskripsi" cols="30" rows="3" class="form-control"><?php echo "$deskripsi"; ?></textarea>
-                                    <small>Menjelaskan gambaran umum aplikasi ini</small>
+                                    <small>Deskripsikan Koperasi Anda</small>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <div class="col-md-3">
-                                    <label for="alamat_bisnis">Alamat/Kantor</label>
-                                </div>
-                                <div class="col-md-9">
+                                <div class="col-md-12">
+                                    <label for="alamat_bisnis">Alamat Operasional</label>
                                     <textarea name="alamat_bisnis" id="alamat_bisnis" cols="30" rows="3" class="form-control"><?php echo "$alamat_bisnis"; ?></textarea>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <div class="col-md-3">
+                                <div class="col-md-12">
                                     <label for="email">Email Perusahaan</label>
-                                </div>
-                                <div class="col-md-9">
                                     <input type="email" name="email_bisnis" id="email_bisnis" class="form-control" placeholder="email@domain.com" value="<?php echo "$email_bisnis"; ?>">
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <div class="col-md-3">
-                                    <label for="telepon_bisnis">Nomor Telepon</label>
-                                </div>
-                                <div class="col-md-9">
-                                    <input type="text" name="telepon_bisnis" id="telepon_bisnis" class="form-control" placeholder="+62" value="<?php echo "$telepon_bisnis"; ?>">
+                                <div class="col-md-12">
+                                    <label for="telepon_bisnis">Kontak (WA/Telepon)</label>
+                                    <input type="text" name="telepon_bisnis" id="telepon_bisnis" class="form-control" placeholder="62" value="<?php echo "$telepon_bisnis"; ?>">
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <div class="col-md-3">
-                                    <label for="favicon">File Favicon</label>
-                                </div>
-                                <div class="col-md-9">
-                                    <input type="file" name="favicon" id="favicon" class="form-control">
-                                    <small>
-                                        Maksimal File 2 Mb (JPG, JPEG, PNG and GIF)
-                                        <?php
-                                            if(!empty($favicon)){
-                                                echo '<a href="assets/img/'.$favicon.'" target="_blank">View Image Here</a>';
-                                            }
-                                        ?>
-                                    </small>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-md-3">
-                                    <label for="logo">Logo Image</label>
-                                </div>
-                                <div class="col-md-9">
-                                    <input type="file" name="logo" id="logo" class="form-control">
-                                    <small>
-                                        Maksimal File 2 Mb (JPG, JPEG, PNG and GIF)
-                                        <?php
-                                            if(!empty($logo)){
-                                                echo '<a href="assets/img/'.$logo.'" target="_blank">View Image Here</a>';
-                                            }
-                                        ?>
-                                    </small>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-md-3">
+                                <div class="col-md-12">
                                     <label for="base_url">Base URL</label>
-                                </div>
-                                <div class="col-md-9">
                                     <input type="text" name="base_url" id="base_url" class="form-control" placeholder="https://" value="<?php echo "$base_url"; ?>">
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <div class="col-md-3">
-                                    <label for="author">Author Aplikasi</label>
-                                </div>
-                                <div class="col-md-9">
-                                    <input type="text" name="author" id="author" class="form-control" value="<?php echo "$AuthorAplikasi"; ?>">
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-md-3">
-                                </div>
-                                <div class="col-md-9 text-right" id="NotifikasiSimpanSettingGeneral">
-                                    <small class="text-dark">Pastikan pengaturan yang anda gunakan sudah sesuai.</small>
+                                <div class="col-md-12" id="NotifikasiSimpanSettingGeneral">
+                                    <!-- Notifikasi Simpan Setting Akan Muncul Disini -->
                                 </div>
                             </div>
                         </div>
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-md btn-primary btn-rounded">
+                            <button type="submit" class="btn btn-md btn-primary" id="ButtonSettingGeneral">
                                 <i class="bi bi-save"></i> Simpan Pengaturan
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-md-6 mb-3 d-flex">
+                <form action="javascript:void(0);" class="h-100 w-100" id="ProsesSettingImage">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <b class="card-title">
+                                <i class="bi bi-image"></i> Logo Perusahaan
+                            </b>
+                        </div>
+                        <div class="card-body flex-grow-1">
+                            <div class="row mb-3">
+                                <div class="col-12 text-center">
+                                    <img src="assets/img/Company/<?php echo $logo;?>" width="80%" alt="My Company">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="logo">Logo Koperasi</label>
+                                    <input type="file" name="logo" id="logo" class="form-control">
+                                    <small>
+                                        Maksimal File 2 Mb (JPG, JPEG, PNG dan GIF)
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12" id="NotifikasiSettingImage">
+                                    <!-- Notifikasi Proses Simpan Image Akan Tampil Disini -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-md btn-primary" id="ButtonSettingImage">
+                                <i class="bi bi-save"></i> Simpan Logo
                             </button>
                         </div>
                     </div>
