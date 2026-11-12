@@ -6,6 +6,7 @@
 
     use PhpOffice\PhpSpreadsheet\Spreadsheet;
     use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+    use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
     use PhpOffice\PhpSpreadsheet\Cell\DataType;
     use PhpOffice\PhpSpreadsheet\Style\Alignment;
     use PhpOffice\PhpSpreadsheet\Style\Fill;
@@ -26,7 +27,7 @@
     $spreadsheet = new Spreadsheet();
     $sheet = $spreadsheet->getActiveSheet();
 
-    // Menulis judul
+    // Menulis judul menggunakan indeks kolom numerik untuk mendukung kolom Excel dinamis.
     $headers = ['No', 'Kode Barang', 'Nama Barang', 'Kategori', 'Stock', 'Satuan', 'Harga Beli'];
 
     // Ambil semua kategori harga
@@ -38,15 +39,17 @@
         $kategoriHarga[$rowKategoriHarga['id_barang_kategori_harga']] = $rowKategoriHarga['kategori_harga'];
     }
 
-    $columnIndex = 'A';
+    $columnIndex = 1;
     foreach ($headers as $header) {
-        $sheet->setCellValue($columnIndex . '1', $header);
+        $column = Coordinate::stringFromColumnIndex($columnIndex);
+        $sheet->setCellValue($column . '1', $header);
         $columnIndex++;
     }
 
     // Mengatur gaya baris judul
-    $sheet->getStyle('A1:' . $columnIndex . '1')->getFont()->setBold(true);
-    $sheet->getStyle('A1:' . $columnIndex . '1')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+    $lastHeaderColumn = Coordinate::stringFromColumnIndex($columnIndex - 1);
+    $sheet->getStyle('A1:' . $lastHeaderColumn . '1')->getFont()->setBold(true);
+    $sheet->getStyle('A1:' . $lastHeaderColumn . '1')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
     // Query untuk mendapatkan data dengan JOIN agar lebih efisien
     $query = "SELECT * FROM barang ORDER BY id_barang ASC";
@@ -79,10 +82,11 @@
         }
 
         // Isi data harga barang ke dalam kolom yang sesuai
-        $columnIndexHarga = 'H';
+        $columnIndexHarga = 8;
         foreach ($kategoriHarga as $id_kategori_harga => $kategori) {
             $harga = isset($hargaBarang[$id_kategori_harga]) ? pembulatan_nilai($hargaBarang[$id_kategori_harga]) : '-';
-            $sheet->setCellValueExplicit($columnIndexHarga . $row, $harga, DataType::TYPE_STRING);
+            $columnHarga = Coordinate::stringFromColumnIndex($columnIndexHarga);
+            $sheet->setCellValueExplicit($columnHarga . $row, $harga, DataType::TYPE_STRING);
             $columnIndexHarga++;
         }
 
@@ -91,7 +95,8 @@
     }
 
     // Menyesuaikan lebar kolom otomatis
-    foreach (range('A', $columnIndex) as $columnID) {
+    foreach (range(1, $columnIndex - 1) as $columnNumber) {
+        $columnID = Coordinate::stringFromColumnIndex($columnNumber);
         $sheet->getColumnDimension($columnID)->setAutoSize(true);
     }
 

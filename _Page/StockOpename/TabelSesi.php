@@ -107,12 +107,12 @@
                 //Menghitung jumlah kelebihan
                 $SumKelebihan = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(jumlah) AS jumlah FROM stok_opename_barang WHERE id_stok_opename='$id_stok_opename' AND jumlah>0"));
                 $JumlahKelebihan = $SumKelebihan['jumlah'];
-                $JumlahKelebihan_rp = "Rp " . number_format($JumlahKelebihan,0,',','.');
+                $JumlahKelebihan_rp = "Rp " . number_format($JumlahKelebihan ?? 0,0,',','.');
                 
                 //Menghitung jumlah Kekurangan
                 $SumKekurangan = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(jumlah) AS jumlah FROM stok_opename_barang WHERE id_stok_opename='$id_stok_opename' AND jumlah<0"));
                 $JumlahKekurangan = $SumKekurangan['jumlah'];
-                $JumlahKekurangan_rp = "Rp " . number_format($JumlahKekurangan,0,',','.');
+                $JumlahKekurangan_rp = "Rp " . number_format($JumlahKekurangan ?? 0,0,',','.');
                 echo '
                     <tr>
                         <td><small>'.$no.'</small></td>

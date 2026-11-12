@@ -35,7 +35,7 @@
             </div>
         </div>
         <div class="row mb-3">
-            <div class="col-lg-12">
+            <div class="col-md-8">
                 <form action="javascript:void(0);" id="ProsesSettingEmail">
                     <div class="card">
                         <div class="card-header">
@@ -143,9 +143,7 @@
                     </div>
                 </form>
             </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-md-12">
+            <div class="col-md-4">
                 <form action="javascript:void(0);" id="ProsesTestKirimEmail">
                     <div class="card">
                         <div class="card-header">

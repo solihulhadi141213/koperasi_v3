@@ -40,7 +40,7 @@
                             <div class="row mb-3">
                                 <div class="col-md-12">
                                     <label for="deskripsi">Deskripsi</label>
-                                    <textarea name="deskripsi" id="deskripsi" cols="30" rows="3" class="form-control"><?php echo "$deskripsi"; ?></textarea>
+                                    <input type="text" name="deskripsi" id="deskripsi" class="form-control" value="<?php echo "$deskripsi"; ?>">
                                     <small>Deskripsikan Koperasi Anda</small>
                                 </div>
                             </div>
@@ -68,7 +68,7 @@
                                     <input type="text" name="base_url" id="base_url" class="form-control" placeholder="https://" value="<?php echo "$base_url"; ?>">
                                 </div>
                             </div>
-                            <div class="row mb-3">
+                            <div class="row">
                                 <div class="col-md-12" id="NotifikasiSimpanSettingGeneral">
                                     <!-- Notifikasi Simpan Setting Akan Muncul Disini -->
                                 </div>
@@ -94,12 +94,16 @@
                         <div class="card-body flex-grow-1">
                             <div class="row mb-3">
                                 <div class="col-12 text-center">
-                                    <img src="assets/img/Company/<?php echo $logo;?>" width="80%" alt="My Company">
+                                    <!-- Bingkai menyesuaikan tampilan logo pada desktop dan perangkat mobile. -->
+                                    <div class="setting-general-logo-frame">
+                                        <img src="assets/img/Company/<?php echo htmlspecialchars($logo ?? '', ENT_QUOTES, 'UTF-8'); ?>"
+                                            class="setting-general-logo" alt="Logo Perusahaan">
+                                    </div>
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-12">
-                                    <label for="logo">Logo Koperasi</label>
+                                    <label for="logo">upload File Logo Koperasi</label>
                                     <input type="file" name="logo" id="logo" class="form-control">
                                     <small>
                                         Maksimal File 2 Mb (JPG, JPEG, PNG dan GIF)

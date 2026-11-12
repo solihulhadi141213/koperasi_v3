@@ -3,13 +3,15 @@
     "description":  "Aplikasi koperasi",
     "type":  "project",
     "require":  {
-                    "php":  "\u003e=8.1",
-                    "ext-gd":  "*",
-                    "ext-mbstring":  "*",
-                    "phpoffice/phpspreadsheet":  "1.8.2",
-                    "mpdf/mpdf":  "8.1.2",
-                    "setasign/fpdi":  "2.3.6"
-                },
+        "php": ">=8.1",
+        "ext-gd": "*",
+        "ext-mbstring": "*",
+        "chillerlan/php-qrcode": "^6.0.1",
+        "mpdf/mpdf": "^8.3.1",
+        "phpoffice/phpspreadsheet": "^5.11.0",
+        "picqer/php-barcode-generator": "^3.3",
+        "setasign/fpdi": "^2.6.10"
+    },
     "config":  {
                    "platform-check":  true,
                    "sort-packages":  true

@@ -61,42 +61,52 @@
                                         $utang_piutang_penjualan = validateAndSanitizeInput($_POST['utang_piutang_penjualan']);
                                         $utang_piutang_pembelian = validateAndSanitizeInput($_POST['utang_piutang_pembelian']);
 
+                                        // Menjalankan perintah tulis dengan semua nilai diikat sebagai parameter.
+                                        $executePreparedQuery = function($sql, $types, $parameters) use ($Conn) {
+                                            $statement = $Conn->prepare($sql);
+                                            if ($statement === false) {
+                                                die($Conn->error);
+                                            }
+                                            $bindParameters = array($types);
+                                            foreach ($parameters as $index => $parameter) {
+                                                $parameters[$index] = $parameter;
+                                                $bindParameters[] = &$parameters[$index];
+                                            }
+                                            if (!call_user_func_array(array($statement, 'bind_param'), $bindParameters)) {
+                                                $error = $statement->error;
+                                                $statement->close();
+                                                die($error);
+                                            }
+                                            if (!$statement->execute()) {
+                                                $statement->close();
+                                                return false;
+                                            }
+                                            $statement->close();
+                                            return true;
+                                        };
+
                                         //Cek Keberadaan Data
                                         $id_autojurnal_penjualan=GetDetailData($Conn,'setting_autojurnal_jual_beli','kategori','Penjualan','id_autojurnal_jual_beli');
                                         $id_autojurnal_pembelian=GetDetailData($Conn,'setting_autojurnal_jual_beli','kategori','Pembelian','id_autojurnal_jual_beli');
 
                                         //Apabila Autojurnal Penjualan Belum Ada maka insert
                                         if(empty($id_autojurnal_penjualan)){
-                                            $EntryAutoJurnalPenjualan="INSERT INTO setting_autojurnal_jual_beli (
-                                                kategori,
-                                                debet,
-                                                kredit,
-                                                hpp,
-                                                persediaan,
-                                                utang_piutang
-                                            ) VALUES (
-                                                'Penjualan',
-                                                '$debet_penjualan',
-                                                '$kredit_penjualan',
-                                                '$hpp_penjualan',
-                                                '$persediaan_penjualan',
-                                                '$utang_piutang_penjualan'
-                                            )";
-                                            $InputAutoJurnalPenjualan=mysqli_query($Conn, $EntryAutoJurnalPenjualan);
+                                            $InputAutoJurnalPenjualan = $executePreparedQuery(
+                                                "INSERT INTO setting_autojurnal_jual_beli (kategori, debet, kredit, hpp, persediaan, utang_piutang) VALUES (?, ?, ?, ?, ?, ?)",
+                                                "ssssss",
+                                                array("Penjualan", $debet_penjualan, $kredit_penjualan, $hpp_penjualan, $persediaan_penjualan, $utang_piutang_penjualan)
+                                            );
                                             if($InputAutoJurnalPenjualan){
                                                 $validasi_proses_simpen_penjualan="Berhasil";
                                             }else{
                                                 $validasi_proses_simpen_penjualan="Terjadi Kesalahan Pada Saat Insert Setting Auto Jurnal Penjualan!";
                                             }
                                         }else{
-                                            $UpdatePenjualan = mysqli_query($Conn,"UPDATE setting_autojurnal_jual_beli SET 
-                                                kategori='Penjualan',
-                                                debet='$debet_penjualan',
-                                                kredit='$kredit_penjualan',
-                                                hpp='$hpp_penjualan',
-                                                persediaan='$persediaan_penjualan',
-                                                utang_piutang='$utang_piutang_penjualan'
-                                            WHERE id_autojurnal_jual_beli='$id_autojurnal_penjualan'") or die(mysqli_error($Conn)); 
+                                            $UpdatePenjualan = $executePreparedQuery(
+                                                "UPDATE setting_autojurnal_jual_beli SET kategori = ?, debet = ?, kredit = ?, hpp = ?, persediaan = ?, utang_piutang = ? WHERE id_autojurnal_jual_beli = ?",
+                                                "sssssss",
+                                                array("Penjualan", $debet_penjualan, $kredit_penjualan, $hpp_penjualan, $persediaan_penjualan, $utang_piutang_penjualan, $id_autojurnal_penjualan)
+                                            );
                                             if($UpdatePenjualan){
                                                 $validasi_proses_simpen_penjualan="Berhasil";
                                             }else{
@@ -111,30 +121,22 @@
 
                                             //Lanjutkan Setting Auto Jurnal Pembelian
                                             if(empty($id_autojurnal_pembelian)){
-                                                $EntryAutoJurnalPembelian="INSERT INTO setting_autojurnal_jual_beli (
-                                                    kategori,
-                                                    debet,
-                                                    kredit,
-                                                    utang_piutang
-                                                ) VALUES (
-                                                    'Pembelian',
-                                                    '$debet_pembelian',
-                                                    '$kredit_pembelian',
-                                                    '$utang_piutang_pembelian'
-                                                )";
-                                                $InputAutoJurnalPembelian=mysqli_query($Conn, $EntryAutoJurnalPembelian);
+                                                $InputAutoJurnalPembelian = $executePreparedQuery(
+                                                    "INSERT INTO setting_autojurnal_jual_beli (kategori, debet, kredit, utang_piutang) VALUES (?, ?, ?, ?)",
+                                                    "ssss",
+                                                    array("Pembelian", $debet_pembelian, $kredit_pembelian, $utang_piutang_pembelian)
+                                                );
                                                 if($InputAutoJurnalPembelian){
                                                     $validasi_proses_simpen_pembelian="Berhasil";
                                                 }else{
                                                     $validasi_proses_simpen_pembelian="Terjadi Kesalahan Pada Saat Insert Setting Auto Jurnal Pembelian!";
                                                 }
                                             }else{
-                                                $UpdateUpdatePembelian = mysqli_query($Conn,"UPDATE setting_autojurnal_jual_beli SET 
-                                                    kategori='Pembelian',
-                                                    debet='$debet_pembelian',
-                                                    kredit='$kredit_pembelian',
-                                                    utang_piutang='$utang_piutang_pembelian'
-                                                WHERE id_autojurnal_jual_beli='$id_autojurnal_pembelian'") or die(mysqli_error($Conn)); 
+                                                $UpdateUpdatePembelian = $executePreparedQuery(
+                                                    "UPDATE setting_autojurnal_jual_beli SET kategori = ?, debet = ?, kredit = ?, utang_piutang = ? WHERE id_autojurnal_jual_beli = ?",
+                                                    "sssss",
+                                                    array("Pembelian", $debet_pembelian, $kredit_pembelian, $utang_piutang_pembelian, $id_autojurnal_pembelian)
+                                                );
                                                 if($UpdateUpdatePembelian){
                                                     $validasi_proses_simpen_pembelian="Berhasil";
                                                 }else{

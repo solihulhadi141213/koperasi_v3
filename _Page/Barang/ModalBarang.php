@@ -453,12 +453,33 @@
                         <div class="col-7">
                             <select name="kategori_harga_kode" id="kategori_harga_kode" class="form-control">
                                 <?php
-                                    $query = mysqli_query($Conn, "SELECT*FROM barang_kategori_harga ORDER BY id_barang_kategori_harga DESC");
-                                    while ($data = mysqli_fetch_array($query)) {
-                                        $id_barang_kategori_harga= $data['id_barang_kategori_harga'];
-                                        $kategori_harga= $data['kategori_harga'];
-                                        echo '<option value="'.$id_barang_kategori_harga.'">'.$kategori_harga.'</option>';
+                                $QryKategori = $Conn->prepare("
+                                    SELECT id_barang_kategori_harga, kategori_harga
+                                    FROM barang_kategori_harga
+                                    ORDER BY id_barang_kategori_harga DESC
+                                ");
+
+                                if ($QryKategori && $QryKategori->execute()) {
+                                    $ResultKategori = $QryKategori->get_result();
+
+                                    while ($DataKategori = $ResultKategori->fetch_assoc()) {
+                                        $IdKategori = htmlspecialchars(
+                                            (string) $DataKategori['id_barang_kategori_harga'],
+                                            ENT_QUOTES,
+                                            'UTF-8'
+                                        );
+
+                                        $NamaKategori = htmlspecialchars(
+                                            (string) $DataKategori['kategori_harga'],
+                                            ENT_QUOTES,
+                                            'UTF-8'
+                                        );
+
+                                        echo '<option value="' . $IdKategori . '">' . $NamaKategori . '</option>';
                                     }
+
+                                    $QryKategori->close();
+                                }
                                 ?>
                                 <option value="">Jangan Tampilkan</option>
                             </select>

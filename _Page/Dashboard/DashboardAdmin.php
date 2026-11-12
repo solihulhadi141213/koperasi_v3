@@ -64,11 +64,11 @@
                                         <!-- Data Info -->
                                         <div>
                                             <div class="d-flex">
-                                                <span class="text-success small pt-2" style="width: 60px;">Aktif</span>
+                                                <span class="text-success small pt-2 dashboard-member-status-label">Aktif</span>
                                                 <span class="text-muted small pt-2" id="put_anggota_aktif">0.000</span>
                                             </div>
                                             <div class="d-flex">
-                                                <span class="text-danger small pt-2" style="width: 60px;">Keluar</span>
+                                                <span class="text-danger small pt-2 dashboard-member-status-label">Keluar</span>
                                                 <span class="text-muted small pt-2" id="put_anggota_keluar">0.000</span>
                                             </div>
                                         </div>
@@ -291,6 +291,43 @@
                     <div class="dashboard-system-cards">
                         <div class="card" id="card_jam_menarik">
                             <div class="card-body">
+                                <!-- Identitas koperasi dan informasi kontak ditampilkan di atas kartu jam. -->
+                                <div class="dashboard-system-identity">
+                                    <?php if (!empty($logo)) { ?>
+                                        <img src="assets/img/Company/<?php echo rawurlencode(basename($logo)); ?>"
+                                            alt="Logo <?php echo htmlspecialchars($title_page ?? '', ENT_QUOTES, 'UTF-8'); ?>"
+                                            class="dashboard-system-identity__logo">
+                                    <?php } ?>
+                                    <div class="dashboard-system-identity__details">
+                                        <strong class="dashboard-system-identity__name">
+                                            <?php echo htmlspecialchars($title_page ?? '', ENT_QUOTES, 'UTF-8'); ?>
+                                        </strong>
+                                        <div class="dashboard-system-identity__contact">
+                                            <?php if (!empty($alamat_bisnis)) { ?>
+                                                <div>
+                                                    <i class="bi bi-geo-alt" aria-hidden="true"></i>
+                                                    <?php echo htmlspecialchars($alamat_bisnis, ENT_QUOTES, 'UTF-8'); ?>
+                                                </div>
+                                            <?php } ?>
+                                            <?php if (!empty($telepon_bisnis) || !empty($email_bisnis)) { ?>
+                                                <div class="dashboard-system-identity__contact-line">
+                                                    <?php if (!empty($telepon_bisnis)) { ?>
+                                                        <span>
+                                                            <i class="bi bi-telephone" aria-hidden="true"></i>
+                                                            <?php echo htmlspecialchars($telepon_bisnis, ENT_QUOTES, 'UTF-8'); ?>
+                                                        </span>
+                                                    <?php } ?>
+                                                    <?php if (!empty($email_bisnis)) { ?>
+                                                        <span>
+                                                            <i class="bi bi-envelope" aria-hidden="true"></i>
+                                                            <?php echo htmlspecialchars($email_bisnis, ENT_QUOTES, 'UTF-8'); ?>
+                                                        </span>
+                                                    <?php } ?>
+                                                </div>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div id="tanggal_menarik">Hari, 01 Januari 1900</div>
                                 <div id="jam_menarik">00:00:00</div>
                             </div>

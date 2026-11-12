@@ -1,13 +1,13 @@
 <div class="pagetitle">
     <h1>
         <a href="">
-            <i class="bi bi-box"></i> Stock Opename</a>
+            <i class="bi bi-box"></i> Stock Opname</a>
         </a>
     </h1>
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
-            <li class="breadcrumb-item active"> Stock Opename</li>
+            <li class="breadcrumb-item active"> Stock Opname</li>
         </ol>
     </nav>
 </div>
@@ -17,9 +17,9 @@
             <?php
                 echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">';
                 echo '  <small>';
-                echo '      Berikut ini adalah halaman stock opename.';
+                echo '      Berikut ini adalah halaman stock Opname.';
                 echo '      Anda bisa mengelola perubahan stock barang dengan melakukan pemeriksaan stok secara rutin.';
-                echo '      Ketika anda menambahkan record stock opename maka sistem akan melakukan update pada data stock barang.';
+                echo '      Ketika anda menambahkan record stock Opname maka sistem akan melakukan update pada data stock barang.';
                 echo '      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
                 echo '  </small>';
                 echo '</div>';
@@ -38,7 +38,7 @@
                             </button>
                         </div>
                         <div class="col-6 col-md-2 mb-2">
-                            <button type="button" class="btn btn-md btn-primary btn-block btn-rounded" data-bs-toggle="modal" data-bs-target="#ModalTambahSesi" title="Tambah Sesi Stock Opename">
+                            <button type="button" class="btn btn-md btn-primary btn-block btn-rounded" data-bs-toggle="modal" data-bs-target="#ModalTambahSesi" title="Tambah Sesi Stock Opname">
                                 <i class="bi bi-plus"></i> Tambah Sesi
                             </button>
                         </div>

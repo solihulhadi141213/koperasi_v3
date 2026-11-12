@@ -1,131 +1,110 @@
 <?php
-    //Koneksi
+    // Muat koneksi, fungsi bersama, dan sesi untuk menyimpan konfigurasi SHU.
     include "../../_Config/Connection.php";
     include "../../_Config/GlobalFunction.php";
     include "../../_Config/Session.php";
-    date_default_timezone_set('Asia/Jakarta');
-    //Time Now Tmp
-    $now=date('Y-m-d H:i:s');
-    if(empty($SessionIdAkses)){
+
+    if (empty($SessionIdAkses)) {
         echo '<div class="alert alert-danger">Sesi Akses Sudah Berakhir, Silahkan Login Ulang</div>';
-    }else{
-        //Validasi debet_pembagian tidak boleh kosong
-        if(empty($_POST['debet_pembagian'])){
-            echo '<div class="alert alert-danger">Debet Penjualan Tidak Boleh Kosong</div>';
-        }else{
-            //Validasi kredit_pembagian tidak boleh kosong
-            if(empty($_POST['kredit_pembagian'])){
-                echo '<div class="alert alert-danger">Kredit Penjualan Tidak Boleh Kosong</div>';
-            }else{
-                //Validasi debet_pembayaran tidak boleh kosong
-                if(empty($_POST['debet_pembayaran'])){
-                    echo '<div class="alert alert-danger">Debet Pembelian Tidak Boleh Kosong</div>';
-                }else{
-                    //Validasi kredit_pembayaran tidak boleh kosong
-                    if(empty($_POST['kredit_pembayaran'])){
-                        echo '<div class="alert alert-danger">Kredit Pembelian Tidak Boleh Kosong</div>';
-                    }else{
-                        //Buat Variabel
-                        $debet_pembagian=$_POST['debet_pembagian'];
-                        $kredit_pembagian=$_POST['kredit_pembagian'];
-                        $debet_pembayaran=$_POST['debet_pembayaran'];
-                        $kredit_pembayaran=$_POST['kredit_pembayaran'];
-
-                        //Berssihkan Variabel
-                        $debet_pembagian = validateAndSanitizeInput($_POST['debet_pembagian']);
-                        $kredit_pembagian = validateAndSanitizeInput($_POST['kredit_pembagian']);
-                        $debet_pembayaran = validateAndSanitizeInput($_POST['debet_pembayaran']);
-                        $kredit_pembayaran = validateAndSanitizeInput($_POST['kredit_pembayaran']);
-
-                        // Mendapatkan data Pembagian SHU
-                        $pembagianShu = getAutoJurnalSHU($Conn, 'Pembagian');
-                        $id_setting_autojurnal_shu_pembagian = $pembagianShu['id_setting_autojurnal_shu'];
-                        $id_perkiraan_debet_pembagian = $pembagianShu['id_perkiraan_debet'];
-                        $id_perkiraan_kredit_pembagian = $pembagianShu['id_perkiraan_kredit'];
-
-                        // Mendapatkan data Pembayaran SHU
-                        $pembayaranShu = getAutoJurnalSHU($Conn, 'Pembayaran');
-                        $id_setting_autojurnal_shu_pembayaran = $pembayaranShu['id_setting_autojurnal_shu'];
-                        $id_perkiraan_debet_pembayaran = $pembayaranShu['id_perkiraan_debet'];
-                        $id_perkiraan_kredit_pembayaran = $pembayaranShu['id_perkiraan_kredit'];
-
-                        //Apabila Autojurnal Pembagian Belum Ada maka insert
-                        if(empty($id_setting_autojurnal_shu_pembagian)){
-                            $EntryAutoJurnalPembagian="INSERT INTO setting_autojurnal_shu (
-                                komponen,
-                                id_perkiraan_debet,
-                                id_perkiraan_kredit
-                            ) VALUES (
-                                'Pembagian',
-                                '$debet_pembagian',
-                                '$kredit_pembagian'
-                            )";
-                            $InputAutoJurnalPembagian=mysqli_query($Conn, $EntryAutoJurnalPembagian);
-                            if($InputAutoJurnalPembagian){
-                                $validasi_proses_simpen_pembagian="Berhasil";
-                            }else{
-                                $validasi_proses_simpen_pembagian="Terjadi Kesalahan Pada Saat Insert Setting Auto Jurnal Pembagian SHU!";
-                            }
-                        }else{
-                            $UpdatePembagian = mysqli_query($Conn,"UPDATE setting_autojurnal_shu SET 
-                                id_perkiraan_debet='$debet_pembagian',
-                                id_perkiraan_kredit='$kredit_pembagian'
-                            WHERE id_setting_autojurnal_shu='$id_setting_autojurnal_shu_pembagian'") or die(mysqli_error($Conn)); 
-                            if($UpdatePembagian){
-                                $validasi_proses_simpen_pembagian="Berhasil";
-                            }else{
-                                $validasi_proses_simpen_pembagian="Terjadi Kesalahan Pada Saat Update Setting Auto Jurnal Penjualan!";
-                            }
-                        }
-
-                        //Validasi Prosess Setting Autojurnal Penjualan
-                        if($validasi_proses_simpen_pembagian!=="Berhasil"){
-                            echo '<div class="alert alert-danger">'.$validasi_proses_simpen_pembagian.'</div>';
-                        }else{
-
-                            //Lanjutkan Setting Auto Jurnal pembayaran
-                            if(empty($id_setting_autojurnal_shu_pembayaran)){
-                                $EntryAutoJurnalPembayaran="INSERT INTO setting_autojurnal_shu (
-                                    komponen,
-                                    id_perkiraan_debet,
-                                    id_perkiraan_kredit
-                                ) VALUES (
-                                    'Pembayaran',
-                                    '$debet_pembayaran',
-                                    '$kredit_pembayaran'
-                                )";
-                                $InputAutoJurnalPembayaran=mysqli_query($Conn, $EntryAutoJurnalPembayaran);
-                                if($InputAutoJurnalPembayaran){
-                                    $validasi_proses_simpen_pembayaran="Berhasil";
-                                }else{
-                                    $validasi_proses_simpen_pembayaran="Terjadi Kesalahan Pada Saat Insert Setting Auto Jurnal Pembayaran!";
-                                }
-                            }else{
-                                $UpdateUpdatePembayaran = mysqli_query($Conn,"UPDATE setting_autojurnal_shu SET 
-                                    id_perkiraan_debet='$debet_pembayaran',
-                                    id_perkiraan_kredit='$kredit_pembayaran'
-                                WHERE id_setting_autojurnal_shu='$id_setting_autojurnal_shu_pembayaran'") or die(mysqli_error($Conn)); 
-                                if($UpdateUpdatePembayaran){
-                                    $validasi_proses_simpen_pembayaran="Berhasil";
-                                }else{
-                                    $validasi_proses_simpen_pembayaran="Terjadi Kesalahan Pada Saat Update Setting Auto Jurnal Pembayaran!";
-                                }
-                            }
-                            if($validasi_proses_simpen_pembayaran!=="Berhasil"){
-                                echo '<div class="alert alert-danger">'.$validasi_proses_simpen_pembelian.'</div>';
-                            }else{
-
-                                //Apabila Semua Prosses Berhasil
-                                echo '
-                                    <div class="alert alert-success">
-                                        <small id="NotifikasiSimpanAutoJurnalShuBerhasil">Berhasil</small>
-                                    </div>
-                                ';
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        exit;
     }
+
+    // Pastikan setiap pilihan akun berisi ID integer positif sebelum diproses.
+    $requiredAccounts = array(
+        "debet_pembagian" => "Debet Pembagian SHU Tidak Boleh Kosong",
+        "kredit_pembagian" => "Kredit Pembagian SHU Tidak Boleh Kosong",
+        "debet_pembayaran" => "Debet Pembayaran SHU Tidak Boleh Kosong",
+        "kredit_pembayaran" => "Kredit Pembayaran SHU Tidak Boleh Kosong"
+    );
+    $accountIds = array();
+
+    foreach ($requiredAccounts as $field => $message) {
+        if (!isset($_POST[$field]) || !is_scalar($_POST[$field]) || trim((string)$_POST[$field]) === "") {
+            echo '<div class="alert alert-danger">' . $message . '</div>';
+            exit;
+        }
+
+        $accountId = filter_var(trim((string)$_POST[$field]), FILTER_VALIDATE_INT);
+        if ($accountId === false || $accountId < 1) {
+            echo '<div class="alert alert-danger">ID akun yang dipilih tidak valid</div>';
+            exit;
+        }
+        $accountIds[$field] = (int)$accountId;
+    }
+
+    // Jalankan INSERT atau UPDATE dengan seluruh nilai terikat sebagai parameter.
+    $executePreparedStatement = function($sql, $types, $parameters) use ($Conn) {
+        $statement = $Conn->prepare($sql);
+        if ($statement === false) {
+            return false;
+        }
+
+        $bindParameters = array($types);
+        foreach ($parameters as $index => $parameter) {
+            $parameters[$index] = $parameter;
+            $bindParameters[] = &$parameters[$index];
+        }
+
+        if (!call_user_func_array(array($statement, "bind_param"), $bindParameters)) {
+            $statement->close();
+            return false;
+        }
+        if (!$statement->execute()) {
+            $statement->close();
+            return false;
+        }
+
+        $statement->close();
+        return true;
+    };
+
+    // Simpan pilihan untuk satu komponen SHU, membuat data jika belum tersedia.
+    $saveAutoJurnalShu = function($component, $settingId, $debitAccountId, $creditAccountId) use ($executePreparedStatement) {
+        if (empty($settingId)) {
+            return $executePreparedStatement(
+                "INSERT INTO setting_autojurnal_shu (komponen, id_perkiraan_debet, id_perkiraan_kredit) VALUES (?, ?, ?)",
+                "sii",
+                array($component, $debitAccountId, $creditAccountId)
+            );
+        }
+
+        return $executePreparedStatement(
+            "UPDATE setting_autojurnal_shu SET id_perkiraan_debet = ?, id_perkiraan_kredit = ? WHERE id_setting_autojurnal_shu = ?",
+            "iii",
+            array($debitAccountId, $creditAccountId, (int)$settingId)
+        );
+    };
+
+    // Ambil ID pengaturan yang ada agar masing-masing komponen dipilih INSERT atau UPDATE.
+    $pembagianShu = getAutoJurnalSHU($Conn, "Pembagian");
+    $pembayaranShu = getAutoJurnalSHU($Conn, "Pembayaran");
+    $idPembagian = $pembagianShu["id_setting_autojurnal_shu"] ?? null;
+    $idPembayaran = $pembayaranShu["id_setting_autojurnal_shu"] ?? null;
+
+    if (!$saveAutoJurnalShu(
+        "Pembagian",
+        $idPembagian,
+        $accountIds["debet_pembagian"],
+        $accountIds["kredit_pembagian"]
+    )) {
+        echo '<div class="alert alert-danger">Terjadi kesalahan saat menyimpan pengaturan Auto Jurnal Pembagian SHU</div>';
+        exit;
+    }
+
+    if (!$saveAutoJurnalShu(
+        "Pembayaran",
+        $idPembayaran,
+        $accountIds["debet_pembayaran"],
+        $accountIds["kredit_pembayaran"]
+    )) {
+        echo '<div class="alert alert-danger">Terjadi kesalahan saat menyimpan pengaturan Auto Jurnal Pembayaran SHU</div>';
+        exit;
+    }
+
+    // ID notifikasi ini digunakan JavaScript untuk mengenali keberhasilan penyimpanan.
+    echo '
+        <div class="alert alert-success">
+            <small id="NotifikasiSimpanAutoJurnalShuBerhasil">Berhasil</small>
+        </div>
+    ';
 ?>

@@ -864,6 +864,55 @@ h6 {
   align-items: stretch;
 }
 
+/* Samakan lebar label status anggota */
+.dashboard .dashboard-member-status-label {
+  width: 60px;
+}
+
+/* Identitas koperasi pada kartu jam dashboard */
+.dashboard-system-identity {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  position: relative;
+  z-index: 2;
+}
+
+.dashboard-system-identity__logo {
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+.dashboard-system-identity__details {
+  min-width: 0;
+}
+
+.dashboard-system-identity__name {
+  display: block;
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.dashboard-system-identity__contact {
+  margin-top: 0.25rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.75rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.dashboard-system-identity__contact-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.75rem;
+}
+
 .dashboard .dashboard-system-cards {
   display: flex;
   flex: 1;
@@ -891,6 +940,26 @@ h6 {
 }
 
 .dashboard .dashboard-data-list .card-body {
+  flex: 1;
+}
+
+/* Samakan tinggi kartu pada halaman pengaturan Auto Jurnal */
+.autojurnal-card-row > [class*="col-"] {
+  display: flex;
+}
+
+.autojurnal-card-row > [class*="col-"] > form {
+  display: flex;
+  flex: 1;
+}
+
+.autojurnal-card-row .card {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.autojurnal-card-row .card-body {
   flex: 1;
 }
 
@@ -1378,6 +1447,36 @@ body .title_page_app {
   font-weight: bold; /* Opsi: Anda bisa menyesuaikan gaya teks */
   margin-right: 10px; /* Memberi jarak antara teks dan isi list */
 }
+
+/* Bingkai responsif untuk logo perusahaan */
+.setting-general-logo-frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 340px;
+  min-height: 220px;
+  margin: 0 auto;
+  padding: 1rem;
+  border: 2px dashed #9ec5fe;
+  border-radius: 0.5rem;
+}
+
+.setting-general-logo {
+  display: block;
+  width: 100%;
+  max-width: 260px;
+  height: 180px;
+  object-fit: contain;
+}
+
+@media (max-width: 575.98px) {
+  .setting-general-logo {
+    max-width: 100%;
+    height: 200px;
+  }
+}
+
 .card .album img {
   height: 200px;
   object-fit: cover;

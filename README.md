@@ -8,16 +8,18 @@ Aplikasi Koperasi V 3.0.0 adalah aplikasi open source untuk membantu pengelolaan
 
 | Modul | Deskripsi |
 |-------|-----------|
+| **Dashboard** | Ringkasan informasi, jam dan pemberitahuan sistem, serta logo, nama, alamat, dan kontak koperasi. |
 | **Akses** | Manajemen kode otentifikasi, entitas/level akses (pengurus), dan data pengguna. |
 | **Anggota** | Kelola data anggota, pencarian, impor/eksport Excel, dan rekap keluar-masuk anggota. |
 | **Simpanan Anggota** | Jenis simpanan, simpanan wajib, log simpanan, dan rekapitulasi simpanan. |
 | **Pinjaman Anggota** | Jenis pinjaman, sesi pinjaman, tagihan/tunggakan, dan rekap pinjaman. |
-| **Barang/Inventory** | Master barang, batch & expired, stok, supplier, dan multi harga/satuan. |
+| **Barang/Inventory** | Master barang, batch & expired, stok, supplier, multi harga/satuan, dan ekspor Excel. |
+| **Stock Opname** | Daftar sesi, detail, dan ekspor stock opname; nilai selisih tanpa data ditampilkan sebagai Rp 0. |
 | **Transaksi Operasional** | Kategori, transaksi, dan rekap transaksi operasional. |
 | **Transaksi Jual/Beli** | Penjualan, pembelian, dan rekap transaksi. |
 | **Pembukuan Keuangan** | Bagi hasil (SHU), akun perkiraan, dan jurnal keuangan. |
 | **Laporan** | Simpan pinjam, buku besar, neraca saldo, laba rugi, riwayat transaksi. |
-| **Pengaturan Aplikasi** | Pengaturan umum, auto jurnal, dan email gateway. |
+| **Pengaturan Aplikasi** | Pengaturan umum dengan logo perusahaan responsif, kartu auto jurnal berketinggian seragam, serta konfigurasi auto jurnal simpan-pinjam, jual-beli, dan SHU menggunakan kueri terparameterisasi sesuai tipe kolom database dan toast sukses setelah penyimpanan. |
 | **Lainnya** | Log aktivitas, konten bantuan, profil pengguna. |
 
 ## Panduan Instalasi
