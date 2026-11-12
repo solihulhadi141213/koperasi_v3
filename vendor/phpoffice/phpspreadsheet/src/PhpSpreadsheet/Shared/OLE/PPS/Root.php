@@ -20,55 +20,41 @@ namespace PhpOffice\PhpSpreadsheet\Shared\OLE\PPS;
 // | Based on OLE::Storage_Lite by Kawai, Takanori                        |
 // +----------------------------------------------------------------------+
 //
+use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Shared\OLE;
 use PhpOffice\PhpSpreadsheet\Shared\OLE\PPS;
-use PhpOffice\PhpSpreadsheet\Writer\Exception as WriterException;
 
 /**
  * Class for creating Root PPS's for OLE containers.
  *
  * @author   Xavier Noguer <xnoguer@php.net>
- *
- * @category PhpSpreadsheet
  */
 class Root extends PPS
 {
-    /**
-     * Directory for temporary files.
-     *
-     * @var string
-     */
-    protected $tempDirectory;
+    private const BIG_BLOCK_SIZE = 512;
+
+    private const SMALL_BLOCK_SIZE = 64;
+
+    private const MAX_VERSION_3_STREAM_SIZE = 0x80000000;
+
+    private const MAX_REGULAR_SECTOR_COUNT = 0xFFFFFFFB;
 
     /**
      * @var resource
      */
     private $fileHandle;
 
-    /**
-     * @var string
-     */
-    private $tempFilename;
+    private int $smallBlockSize = self::SMALL_BLOCK_SIZE;
+
+    private int $bigBlockSize = self::BIG_BLOCK_SIZE;
 
     /**
-     * @var int
-     */
-    private $smallBlockSize;
-
-    /**
-     * @var int
-     */
-    private $bigBlockSize;
-
-    /**
-     * @param int $time_1st A timestamp
-     * @param int $time_2nd A timestamp
+     * @param null|float|int $time_1st A timestamp
+     * @param null|float|int $time_2nd A timestamp
      * @param File[] $raChild
      */
-    public function __construct($time_1st, $time_2nd, $raChild)
+    public function __construct($time_1st, $time_2nd, array $raChild)
     {
-        $this->tempDirectory = \PhpOffice\PhpSpreadsheet\Shared\File::sysGetTempDir();
-
         parent::__construct(null, OLE::ascToUcs('Root Entry'), OLE::OLE_PPS_TYPE_ROOT, null, null, null, $time_1st, $time_2nd, null, $raChild);
     }
 
@@ -79,62 +65,36 @@ class Root extends PPS
      * If a resource pointer to a stream created by fopen() is passed
      * it will be used, but you have to close such stream by yourself.
      *
-     * @param resource|string $filename the name of the file or stream where to save the OLE container
-     *
-     * @throws WriterException
+     * @param resource $fileHandle the name of the file or stream where to save the OLE container
      *
      * @return bool true on success
      */
-    public function save($filename)
+    public function save($fileHandle): bool
     {
-        // Initial Setting for saving
-        $this->bigBlockSize = pow(
-            2,
-            (isset($this->bigBlockSize)) ? self::adjust2($this->bigBlockSize) : 9
-        );
-        $this->smallBlockSize = pow(
-            2,
-            (isset($this->smallBlockSize)) ? self::adjust2($this->smallBlockSize) : 6
-        );
+        $this->fileHandle = $fileHandle;
 
-        if (is_resource($filename)) {
-            $this->fileHandle = $filename;
-        } elseif ($filename == '-' || $filename == '') {
-            if ($this->tempDirectory === null) {
-                $this->tempDirectory = \PhpOffice\PhpSpreadsheet\Shared\File::sysGetTempDir();
-            }
-            $this->tempFilename = tempnam($this->tempDirectory, 'OLE_PPS_Root');
-            $this->fileHandle = fopen($this->tempFilename, 'w+b');
-            if ($this->fileHandle == false) {
-                throw new WriterException("Can't create temporary file.");
-            }
-        } else {
-            $this->fileHandle = fopen($filename, 'wb');
-        }
-        if ($this->fileHandle == false) {
-            throw new WriterException("Can't open $filename. It may be in use or protected.");
-        }
+        // This writer implements the version-3 CFB profile only.
+        $this->bigBlockSize = self::BIG_BLOCK_SIZE;
+        $this->smallBlockSize = self::SMALL_BLOCK_SIZE;
+
         // Make an array of PPS's (for Save)
         $aList = [];
-        PPS::_savePpsSetPnt($aList, [$this]);
+        PPS::savePpsSetPnt($aList, [$this]);
         // calculate values for header
-        list($iSBDcnt, $iBBcnt, $iPPScnt) = $this->_calcSize($aList); //, $rhInfo);
+        [$iSBDcnt, $iBBcnt, $iPPScnt] = $this->calcSize($aList); //, $rhInfo);
         // Save Header
-        $this->_saveHeader($iSBDcnt, $iBBcnt, $iPPScnt);
+        $this->saveHeader((int) $iSBDcnt, (int) $iBBcnt, (int) $iPPScnt);
 
         // Make Small Data string (write SBD)
-        $this->_data = $this->_makeSmallData($aList);
+        $this->_data = $this->makeSmallData($aList);
+        $this->assertVersion3StreamSize(strlen($this->_data));
 
         // Write BB
-        $this->_saveBigData($iSBDcnt, $aList);
+        $this->saveBigData((int) $iSBDcnt, $aList);
         // Write PPS
-        $this->_savePps($aList);
+        $this->savePps($aList);
         // Write Big Block Depot and BDList and Adding Header informations
-        $this->_saveBbd($iSBDcnt, $iBBcnt, $iPPScnt);
-
-        if (!is_resource($filename)) {
-            fclose($this->fileHandle);
-        }
+        $this->saveBbd((int) $iSBDcnt, (int) $iBBcnt, (int) $iPPScnt);
 
         return true;
     }
@@ -142,34 +102,35 @@ class Root extends PPS
     /**
      * Calculate some numbers.
      *
-     * @param array $raList Reference to an array of PPS's
+     * @param PPS[] $raList Reference to an array of PPS's
      *
      * @return float[] The array of numbers
      */
-    public function _calcSize(&$raList)
+    private function calcSize(array &$raList): array
     {
         // Calculate Basic Setting
-        list($iSBDcnt, $iBBcnt, $iPPScnt) = [0, 0, 0];
-        $iSmallLen = 0;
+        $iBBcnt = 0;
         $iSBcnt = 0;
         $iCount = count($raList);
         for ($i = 0; $i < $iCount; ++$i) {
             if ($raList[$i]->Type == OLE::OLE_PPS_TYPE_FILE) {
                 $raList[$i]->Size = $raList[$i]->getDataLen();
+                $this->assertVersion3StreamSize($raList[$i]->Size);
                 if ($raList[$i]->Size < OLE::OLE_DATA_SIZE_SMALL) {
                     $iSBcnt += floor($raList[$i]->Size / $this->smallBlockSize)
-                                  + (($raList[$i]->Size % $this->smallBlockSize) ? 1 : 0);
+                        + (($raList[$i]->Size % $this->smallBlockSize) ? 1 : 0);
                 } else {
-                    $iBBcnt += (floor($raList[$i]->Size / $this->bigBlockSize) +
-                        (($raList[$i]->Size % $this->bigBlockSize) ? 1 : 0));
+                    $iBBcnt += (floor($raList[$i]->Size / $this->bigBlockSize)
+                        + (($raList[$i]->Size % $this->bigBlockSize) ? 1 : 0));
                 }
             }
         }
+        $this->assertVersion3MiniStreamSize((int) $iSBcnt);
         $iSmallLen = $iSBcnt * $this->smallBlockSize;
         $iSlCnt = floor($this->bigBlockSize / OLE::OLE_LONG_INT_SIZE);
         $iSBDcnt = floor($iSBcnt / $iSlCnt) + (($iSBcnt % $iSlCnt) ? 1 : 0);
-        $iBBcnt += (floor($iSmallLen / $this->bigBlockSize) +
-                      (($iSmallLen % $this->bigBlockSize) ? 1 : 0));
+        $iBBcnt += (floor($iSmallLen / $this->bigBlockSize)
+            + (($iSmallLen % $this->bigBlockSize) ? 1 : 0));
         $iCnt = count($raList);
         $iBdCnt = $this->bigBlockSize / OLE::OLE_PPS_SIZE;
         $iPPScnt = (floor($iCnt / $iBdCnt) + (($iCnt % $iBdCnt) ? 1 : 0));
@@ -177,30 +138,22 @@ class Root extends PPS
         return [$iSBDcnt, $iBBcnt, $iPPScnt];
     }
 
-    /**
-     * Helper function for caculating a magic value for block sizes.
-     *
-     * @param int $i2 The argument
-     *
-     * @see save()
-     *
-     * @return float
-     */
-    private static function adjust2($i2)
+    private function assertVersion3StreamSize(int $size): void
     {
-        $iWk = log($i2) / log(2);
+        if ($size > self::MAX_VERSION_3_STREAM_SIZE) {
+            throw new Exception('OLE version-3 streams cannot exceed 2 GiB.');
+        }
+    }
 
-        return ($iWk > floor($iWk)) ? floor($iWk) + 1 : $iWk;
+    private function assertVersion3MiniStreamSize(int $smallBlockCount): void
+    {
+        $this->assertVersion3StreamSize($smallBlockCount * self::SMALL_BLOCK_SIZE);
     }
 
     /**
      * Save OLE header.
-     *
-     * @param int $iSBDcnt
-     * @param int $iBBcnt
-     * @param int $iPPScnt
      */
-    public function _saveHeader($iSBDcnt, $iBBcnt, $iPPScnt)
+    private function saveHeader(int $iSBDcnt, int $iBBcnt, int $iPPScnt): void
     {
         $FILE = $this->fileHandle;
 
@@ -221,10 +174,14 @@ class Root extends PPS
                 ++$iAllW;
                 $iBdCntW = floor($iAllW / $iBlCnt) + (($iAllW % $iBlCnt) ? 1 : 0);
                 $iBdCnt = floor(($iAllW + $iBdCntW) / $iBlCnt) + ((($iAllW + $iBdCntW) % $iBlCnt) ? 1 : 0);
-                if ($iBdCnt <= ($iBdExL * $iBlCnt + $i1stBdL)) {
+                if ($iBdCnt <= ($iBdExL * ($iBlCnt - 1) + $i1stBdL)) {
                     break;
                 }
             }
+        }
+
+        if ($iAllW + $iBdCnt > self::MAX_REGULAR_SECTOR_COUNT) {
+            throw new Exception('OLE version-3 output exceeds the maximum sector count.');
         }
 
         // Save Header
@@ -235,7 +192,7 @@ class Root extends PPS
             . "\x00\x00\x00\x00"
             . "\x00\x00\x00\x00"
             . "\x00\x00\x00\x00"
-            . pack('v', 0x3b)
+            . pack('v', 0x3E)
             . pack('v', 0x03)
             . pack('v', -2)
             . pack('v', 9)
@@ -251,7 +208,7 @@ class Root extends PPS
             . pack('V', $iSBDcnt)
         );
         // Extra BDList Start, Count
-        if ($iBdCnt < $i1stBdL) {
+        if ($iBdCnt <= $i1stBdL) {
             fwrite(
                 $FILE,
                 pack('V', -2) // Extra BDList Start
@@ -276,10 +233,9 @@ class Root extends PPS
     /**
      * Saving big data (PPS's with data bigger than \PhpOffice\PhpSpreadsheet\Shared\OLE::OLE_DATA_SIZE_SMALL).
      *
-     * @param int $iStBlk
-     * @param array &$raList Reference to array of PPS's
+     * @param PPS[] $raList Reference to array of PPS's
      */
-    public function _saveBigData($iStBlk, &$raList)
+    private function saveBigData(int $iStBlk, array &$raList): void
     {
         $FILE = $this->fileHandle;
 
@@ -296,9 +252,9 @@ class Root extends PPS
                     }
                     // Set For PPS
                     $raList[$i]->startBlock = $iStBlk;
-                    $iStBlk +=
-                            (floor($raList[$i]->Size / $this->bigBlockSize) +
-                                (($raList[$i]->Size % $this->bigBlockSize) ? 1 : 0));
+                    $iStBlk
+                        += ((int) floor($raList[$i]->Size / $this->bigBlockSize)
+                            + (($raList[$i]->Size % $this->bigBlockSize) ? 1 : 0));
                 }
             }
         }
@@ -307,11 +263,9 @@ class Root extends PPS
     /**
      * get small data (PPS's with data smaller than \PhpOffice\PhpSpreadsheet\Shared\OLE::OLE_DATA_SIZE_SMALL).
      *
-     * @param array &$raList Reference to array of PPS's
-     *
-     * @return string
+     * @param PPS[] $raList Reference to array of PPS's
      */
-    public function _makeSmallData(&$raList)
+    private function makeSmallData(array &$raList): string
     {
         $sRes = '';
         $FILE = $this->fileHandle;
@@ -325,8 +279,8 @@ class Root extends PPS
                     continue;
                 }
                 if ($raList[$i]->Size < OLE::OLE_DATA_SIZE_SMALL) {
-                    $iSmbCnt = floor($raList[$i]->Size / $this->smallBlockSize)
-                                  + (($raList[$i]->Size % $this->smallBlockSize) ? 1 : 0);
+                    $iSmbCnt = (int) floor($raList[$i]->Size / $this->smallBlockSize)
+                        + (($raList[$i]->Size % $this->smallBlockSize) ? 1 : 0);
                     // Add to SBD
                     $jB = $iSmbCnt - 1;
                     for ($j = 0; $j < $jB; ++$j) {
@@ -359,31 +313,31 @@ class Root extends PPS
     /**
      * Saves all the PPS's WKs.
      *
-     * @param array $raList Reference to an array with all PPS's
+     * @param PPS[] $raList Reference to an array with all PPS's
      */
-    public function _savePps(&$raList)
+    private function savePps(array &$raList): void
     {
         // Save each PPS WK
         $iC = count($raList);
         for ($i = 0; $i < $iC; ++$i) {
-            fwrite($this->fileHandle, $raList[$i]->_getPpsWk());
+            fwrite($this->fileHandle, $raList[$i]->getPpsWk());
         }
         // Adjust for Block
         $iCnt = count($raList);
         $iBCnt = $this->bigBlockSize / OLE::OLE_PPS_SIZE;
         if ($iCnt % $iBCnt) {
-            fwrite($this->fileHandle, str_repeat("\x00", ($iBCnt - ($iCnt % $iBCnt)) * OLE::OLE_PPS_SIZE));
+            // MS-CFB 2.6.3: unused entries are zero except for NOSTREAM tree pointers.
+            $unusedEntry = str_repeat("\x00", 68)
+                . str_repeat("\xFF", 12)
+                . str_repeat("\x00", 48);
+            fwrite($this->fileHandle, str_repeat($unusedEntry, (int) ($iBCnt - ($iCnt % $iBCnt))));
         }
     }
 
     /**
      * Saving Big Block Depot.
-     *
-     * @param int $iSbdSize
-     * @param int $iBsize
-     * @param int $iPpsCnt
      */
-    public function _saveBbd($iSbdSize, $iBsize, $iPpsCnt)
+    private function saveBbd(int $iSbdSize, int $iBsize, int $iPpsCnt): void
     {
         $FILE = $this->fileHandle;
         // Calculate Basic Setting
@@ -402,7 +356,7 @@ class Root extends PPS
                 ++$iAllW;
                 $iBdCntW = floor($iAllW / $iBbCnt) + (($iAllW % $iBbCnt) ? 1 : 0);
                 $iBdCnt = floor(($iAllW + $iBdCntW) / $iBbCnt) + ((($iAllW + $iBdCntW) % $iBbCnt) ? 1 : 0);
-                if ($iBdCnt <= ($iBdExL * $iBbCnt + $i1stBdL)) {
+                if ($iBdCnt <= ($iBdExL * ($iBbCnt - 1) + $i1stBdL)) {
                     break;
                 }
             }
