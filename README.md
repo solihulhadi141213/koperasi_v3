@@ -25,9 +25,9 @@ Aplikasi Koperasi V 3.0.0 adalah aplikasi open source untuk membantu pengelolaan
 ## Panduan Instalasi
 ### Persyaratan Sistem
 
-- **PHP**: 7.4 atau lebih baru
-- **Database**: MySQL 5.7 / MariaDB 10.3 atau lebih baru
-- **Web Server**: Apache (XAMPP, WAMP Server, atau serupa)
+- **PHP**: 8.5 atau lebih baru
+- **Database**: MySQL 8.4.7 / MariaDB 11.4.9 atau lebih baru
+- **Web Server**: Apache 2.4.65 (XAMPP, WAMP Server, atau serupa)
 - **Git**: Untuk mengunduh aplikasi langsung dari repositori
 - **Browser**: Chrome, Firefox, Edge, atau Safari (versi terbaru)
 - **Ekstensi PHP yang diperlukan**: `mysqli`, `gd`, `mbstring`, `zip` 
