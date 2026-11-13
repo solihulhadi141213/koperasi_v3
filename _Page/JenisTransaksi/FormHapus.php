@@ -39,7 +39,7 @@
             $TotalTransaksi = $Sum['total'];
             //Format Angka
             $JumlahTransaksiFormat = "" . number_format($JumlahTransaksi,0,',','.');
-            $TotalTransaksiFormat = "Rp " . number_format($TotalTransaksi,0,',','.');
+            $TotalTransaksiFormat = "Rp " . number_format($TotalTransaksi ?? 0,0,',','.');
 ?>
     <input type="hidden" name="id_transaksi_jenis" value="<?php echo "$id_transaksi_jenis"; ?>">
     <div class="col-md-12 mb-4">

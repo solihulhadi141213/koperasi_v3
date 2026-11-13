@@ -36,7 +36,7 @@
             $JumlahTransaksi = mysqli_num_rows(mysqli_query($Conn, "SELECT*FROM transaksi WHERE id_transaksi_jenis='$id_transaksi_jenis'"));
             //Menghitung Jumlah Total (SUM) Transaksi
             $Sum = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(jumlah) AS total FROM transaksi WHERE id_transaksi_jenis='$id_transaksi_jenis'"));
-            $TotalTransaksi = $Sum['total'];
+            $TotalTransaksi = $Sum['total'] ?? 0;
             //Format Angka
             $JumlahTransaksiFormat = "" . number_format($JumlahTransaksi,0,',','.');
             $TotalTransaksiFormat = "Rp " . number_format($TotalTransaksi,0,',','.');

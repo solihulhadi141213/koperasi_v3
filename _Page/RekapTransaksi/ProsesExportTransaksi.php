@@ -3,6 +3,7 @@
     include "../../_Config/Connection.php";
     include "../../_Config/GlobalFunction.php";
     include "../../_Config/Session.php";
+    include "../../_Config/SettingGeneral.php";
     include '../../vendor/autoload.php';
     date_default_timezone_set('Asia/Jakarta');
     if(empty($_POST['jenis_transaksi'])){
@@ -43,28 +44,72 @@
 <html>
     <head>
             <style type="text/css">
+                .report-header{
+                    border-bottom:2px solid #333;
+                    color:#333;
+                    margin-bottom:14px;
+                    padding-bottom:10px;
+                    text-align:center;
+                }
+                .business-name{
+                    font-size:16px;
+                    font-weight:bold;
+                    text-transform:uppercase;
+                }
+                .business-details{
+                    font-size:10px;
+                    line-height:1.4;
+                }
+                .report-title{
+                    font-size:13px;
+                    margin-top:8px;
+                }
+                .report-period{
+                    font-size:11px;
+                    margin-top:2px;
+                }
                 table{
                     border-collapse: collapse;
-                    margin-top:10px;
+                    margin-top:0;
                 }
-                table tr td {
+                table tr th, table tr td {
                     border: 1px solid #666;
                     font-size:11px;
                     color:#333;
-                    border-spacing: 0px;
                     padding: 4px;
-                    border-spacing: 0px;
                 }
             </style>
     </head>
     <body>
+        <div class="report-header">
+            <div class="business-name"><?php echo htmlspecialchars($title_page ?? '', ENT_QUOTES, 'UTF-8'); ?></div>
+            <?php if (!empty($alamat_bisnis)) { ?>
+                <div class="business-details"><?php echo htmlspecialchars($alamat_bisnis, ENT_QUOTES, 'UTF-8'); ?></div>
+            <?php } ?>
+            <?php if (!empty($telepon_bisnis) || !empty($email_bisnis)) { ?>
+                <div class="business-details">
+                    <?php if (!empty($telepon_bisnis)) { ?>
+                        Telp: <?php echo htmlspecialchars($telepon_bisnis, ENT_QUOTES, 'UTF-8'); ?>
+                    <?php } ?>
+                    <?php if (!empty($telepon_bisnis) && !empty($email_bisnis)) { ?> | <?php } ?>
+                    <?php if (!empty($email_bisnis)) { ?>
+                        Email: <?php echo htmlspecialchars($email_bisnis, ENT_QUOTES, 'UTF-8'); ?>
+                    <?php } ?>
+                </div>
+            <?php } ?>
+            <div class="report-title"><b>Laporan Rekap Transaksi</b></div>
+            <div class="report-period"><b>Periode: <?php echo htmlspecialchars($periode, ENT_QUOTES, 'UTF-8'); ?></b></div>
+        </div>
         <table width="100%">
-            <tr>
-                <td align="center"><b>No</b></td>
-                <td align="center"><b>Periode</b></td>
-                <td align="center"><b>Record</b></td>
-                <td align="center"><b>Transaksi</b></td>
-            </tr>
+            <thead>
+                <tr>
+                    <th align="center">No</th>
+                    <th align="center">Periode</th>
+                    <th align="center">Record</th>
+                    <th align="center">Transaksi</th>
+                </tr>
+            </thead>
+            <tbody>
                 <?php
                     $JumlahTotalRp=0;
                     $JumlahTotalData=0;
@@ -140,6 +185,7 @@
                     <td align="right"><b><?php echo "$JumlahTotalData"; ?> Record</b></td>
                     <td align="right"><b><?php echo "$JumlahTotalRpFormat"; ?></b></td>
                 </tr>
+            </tbody>
         </table>
     </body>
 </html>

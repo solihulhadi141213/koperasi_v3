@@ -28,6 +28,7 @@ Aplikasi Koperasi V 3.0.0 adalah aplikasi open source untuk membantu pengelolaan
 - **PHP**: 7.4 atau lebih baru
 - **Database**: MySQL 5.7 / MariaDB 10.3 atau lebih baru
 - **Web Server**: Apache (XAMPP, WAMP Server, atau serupa)
+- **Git**: Untuk mengunduh aplikasi langsung dari repositori
 - **Browser**: Chrome, Firefox, Edge, atau Safari (versi terbaru)
 - **Ekstensi PHP yang diperlukan**: `mysqli`, `gd`, `mbstring`, `zip` 
 ---
@@ -39,10 +40,20 @@ Ikuti langkah-langkah berikut jika Anda menggunakan komputer lokal:
 #### 1. Siapkan Web Server
 - Pastikan **XAMPP** atau **WAMP Server** terinstal dan berjalan (Apache dan MySQL aktif).
 - Buka browser dan kunjungi `http://localhost/` untuk memastikan web server berjalan normal.
-#### 2. Letakkan File Aplikasi
-- Salin folder aplikasi `koperasi_v3` ke direktori root web server:
-  - **XAMPP**: `C:\xampp\htdocs\koperasi_v3`
-  - **WAMP Server**: `C:\wamp64\www\koperasi_v3`
+#### 2. Unduh Aplikasi dari GitHub
+- Pastikan Git sudah terinstal, lalu buka Command Prompt, PowerShell, atau Git Bash.
+- Jalankan perintah berikut sesuai web server yang digunakan:
+  - **XAMPP**:
+    ```bash
+    cd C:\xampp\htdocs
+    git clone https://github.com/solihulhadi141213/koperasi_v3.git koperasi_v3
+    ```
+  - **WAMP Server**:
+    ```bash
+    cd C:\wamp64\www
+    git clone https://github.com/solihulhadi141213/koperasi_v3.git koperasi_v3
+    ```
+- Perintah tersebut akan membuat folder aplikasi di `C:\xampp\htdocs\koperasi_v3` atau `C:\wamp64\www\koperasi_v3`.
 - Pastikan struktur folder terlihat seperti berikut:
   ```
   koperasi_v3/
@@ -95,7 +106,12 @@ Ikuti langkah-langkah berikut jika Anda menggunakan komputer lokal:
 Ikuti langkah-langkah berikut jika Anda mengunggah aplikasi ke hosting:
 
 #### 1. Upload File ke Hosting
-- Unggah seluruh isi folder `koperasi_v3` ke `public_html` (atau folder domain Anda) melalui FTP, File Manager cPanel, atau Git.
+- Jika hosting menyediakan akses terminal dan Git, masuk ke direktori tempat aplikasi akan dipasang (misalnya `public_html`), lalu jalankan:
+  ```bash
+  cd ~/public_html
+  git clone https://github.com/solihulhadi141213/koperasi_v3.git koperasi_v3
+  ```
+- Jika hosting tidak menyediakan Git, unduh kode dari [repositori GitHub](https://github.com/solihulhadi141213/koperasi_v3), lalu unggah isi folder `koperasi_v3` ke `public_html/koperasi_v3` (atau folder domain Anda) melalui FTP atau File Manager cPanel.
 
 #### 2. Buat Database di Hosting
 - Masuk ke cPanel (atau panel kontrol hosting Anda).

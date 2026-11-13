@@ -103,13 +103,13 @@
                     <div class="card-body">
                         <div class="row mb-3">
                             <div class="col-md-12 table table-responsive">
-                                <table class="table table-bordered table-hover">
+                                <table class="table table-md table-hover">
                                     <thead>
                                         <tr>
                                             <td align="center"><b>No</b></td>
-                                            <td align="center"><b>Periode</b></td>
-                                            <td align="center"><b>Record</b></td>
-                                            <td align="center"><b>Jumlah Transaksi</b></td>
+                                            <td align="left"><b>Periode</b></td>
+                                            <td align="left"><b>Record</b></td>
+                                            <td align="right"><b>Jumlah Transaksi</b></td>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -144,7 +144,7 @@
                                                     echo '<tr>';
                                                     echo '  <td align="center">'.$i.'</td>';
                                                     echo '  <td align="left">'.$namaBulanIni.' '.$tahun.'</td>';
-                                                    echo '  <td align="right">'.$jml_data.' Record</td>';
+                                                    echo '  <td align="left">'.$jml_data.' Record</td>';
                                                     echo '  <td align="right">'.$JumlahTransaksiFormat.'</td>';
                                                     echo '</tr>';
                                                 }
@@ -176,7 +176,7 @@
                                                     echo '<tr>';
                                                     echo '  <td align="center">'.$i.'</td>';
                                                     echo '  <td align="left">'.$namaBulanIni.' '.$tahun.'</td>';
-                                                    echo '  <td align="right">'.$jml_data.' Record</td>';
+                                                    echo '  <td align="left">'.$jml_data.' Record</td>';
                                                     echo '  <td align="right">'.$JumlahTransaksiFormat.'</td>';
                                                     echo '</tr>';
                                                 }
@@ -184,10 +184,10 @@
                                             $JumlahTotalRpFormat = "Rp " . number_format($JumlahTotalRp,0,',','.');
                                         ?>
                                         <tr>
-                                            <td colspan="2" align="center">
+                                            <td colspan="2" align="left">
                                                 <b>JUMLAH/TOTAL</b>
                                             </td>
-                                            <td align="right"><b><?php echo "$JumlahTotalData"; ?> Record</b></td>
+                                            <td align="left"><b><?php echo "$JumlahTotalData"; ?> Record</b></td>
                                             <td align="right"><b><?php echo "$JumlahTotalRpFormat"; ?></b></td>
                                         </tr>
                                     </tbody>
