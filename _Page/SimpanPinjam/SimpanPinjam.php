@@ -42,7 +42,7 @@
                                 <div class="col-md-3 mt-3">
                                     <select name="lembaga" id="lembaga" class="form-control">
                                             <?php
-                                                echo '<option value="">Pilih</option>';
+                                                echo '<option value="Semua">Semua</option>';
                                                 // Query untuk mengambil lembaga
                                                 $QryLembaga = mysqli_query($Conn, "SELECT DISTINCT lembaga FROM anggota");
                                                 while ($DataLembaga = mysqli_fetch_array($QryLembaga)) {

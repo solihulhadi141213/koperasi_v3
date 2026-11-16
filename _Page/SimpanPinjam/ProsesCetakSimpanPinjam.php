@@ -3,6 +3,7 @@
     require '../../vendor/autoload.php';
     use PhpOffice\PhpSpreadsheet\Spreadsheet;
     use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+    use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 
     // Set timezone
     date_default_timezone_set('Asia/Jakarta');
@@ -14,10 +15,9 @@
     if (empty($SessionIdAkses)) {
         die('Sesi Akses Sudah Berakhir, Silahkan Login Ulang');
     } else {
-        if (empty($_GET['lembaga']) || empty($_GET['tahun']) || empty($_GET['periode'])) {
-            die('Nama Lembaga, Tahun, dan Periode tidak boleh kosong!');
+        if (empty($_GET['tahun']) || empty($_GET['periode'])) {
+            die('Tahun dan Periode tidak boleh kosong!');
         } else {
-            $lembaga = validateAndSanitizeInput($_GET['lembaga']);
             $tahun = validateAndSanitizeInput($_GET['tahun']);
             $periode = validateAndSanitizeInput($_GET['periode']);
 
@@ -50,7 +50,7 @@
 
                 // Judul laporan
                 $sheet->setCellValue('A1', 'LAPORAN SIMPAN PINJAM');
-                $sheet->setCellValue('A2', 'Lembaga : ' . $lembaga);
+                $sheet->setCellValue('A2', 'Lembaga : Semua Lembaga');
                 if($periode=="Bulan"){
                     $sheet->setCellValue('A3', 'Periode : Bulan ' . getNamaBulan($bulan) . ' ' . $tahun);
                 }else{
@@ -60,27 +60,28 @@
 
                 // Header kolom
                 $sheet->setCellValue('A5', 'NO');
-                $sheet->setCellValue('B5', 'ANGGOTA');
+                $sheet->setCellValue('B5', 'LEMBAGA');
+                $sheet->setCellValue('C5', 'ANGGOTA');
 
                 // Menampilkan header jenis simpanan
                 $qrySimpanan = mysqli_query($Conn, "SELECT * FROM simpanan_jenis ORDER BY id_simpanan_jenis ASC");
-                $col = 'C';
+                $colIndex = 4;
                 while ($dataSimpanan = mysqli_fetch_array($qrySimpanan)) {
-                    $sheet->setCellValue($col . '5', $dataSimpanan['nama_simpanan']);
-                    $col++;
+                    $sheet->setCellValue(Coordinate::stringFromColumnIndex($colIndex) . '5', $dataSimpanan['nama_simpanan']);
+                    $colIndex++;
                 }
 
                 // Header kolom pinjaman
-                $sheet->setCellValue($col . '5', 'ANGSURAN');
-                $col++;
-                $sheet->setCellValue($col . '5', 'PER');
-                $col++;
-                $sheet->setCellValue($col . '5', 'JASA');
-                $col++;
-                $sheet->setCellValue($col . '5', 'JUMLAH');
+                $sheet->setCellValue(Coordinate::stringFromColumnIndex($colIndex) . '5', 'ANGSURAN');
+                $colIndex++;
+                $sheet->setCellValue(Coordinate::stringFromColumnIndex($colIndex) . '5', 'PER');
+                $colIndex++;
+                $sheet->setCellValue(Coordinate::stringFromColumnIndex($colIndex) . '5', 'JASA');
+                $colIndex++;
+                $sheet->setCellValue(Coordinate::stringFromColumnIndex($colIndex) . '5', 'JUMLAH');
 
                 // Fetch data anggota dan simpanan/pinjaman
-                $qryAnggota = mysqli_query($Conn, "SELECT * FROM anggota WHERE lembaga='$lembaga' ORDER BY nama ASC");
+                $qryAnggota = mysqli_query($Conn, "SELECT * FROM anggota ORDER BY lembaga ASC, nama ASC");
                 $row = 6; // Mulai dari baris ke-6
                 $no = 1;
                 $qrySimpanan = mysqli_query($Conn, "SELECT * FROM simpanan_jenis ORDER BY id_simpanan_jenis ASC");
@@ -98,13 +99,15 @@
                 while ($dataAnggota = mysqli_fetch_array($qryAnggota)) {
                     $id_anggota = $dataAnggota['id_anggota'];
                     $nama = $dataAnggota['nama'];
+                    $lembagaAnggota = $dataAnggota['lembaga'];
 
                     $sheet->setCellValue('A' . $row, $no);
-                    $sheet->setCellValue('B' . $row, $nama);
+                    $sheet->setCellValue('B' . $row, $lembagaAnggota);
+                    $sheet->setCellValue('C' . $row, $nama);
 
                     // Menampilkan simpanan
                     $qrySimpanan = mysqli_query($Conn, "SELECT * FROM simpanan_jenis ORDER BY id_simpanan_jenis ASC");
-                    $col = 'C';
+                    $colIndex = 4;
                     $jumlahSimpananAnggota = 0;
                     while ($dataSimpanan = mysqli_fetch_array($qrySimpanan)) {
                         $id_simpanan_jenis = $dataSimpanan['id_simpanan_jenis'];
@@ -112,36 +115,46 @@
                         $jumlahSimpanan = $sumSimpanan['jumlah'] ?? 0;
                         $totalSimpanan[$id_simpanan_jenis] += $jumlahSimpanan;
                         $jumlahSimpananAnggota += $jumlahSimpanan;
-                        $sheet->setCellValue($col . $row, $jumlahSimpanan);
-                        $col++;
+                        $sheet->setCellValue(Coordinate::stringFromColumnIndex($colIndex) . $row, $jumlahSimpanan);
+                        $colIndex++;
                     }
 
                     // Menampilkan angsuran dan jasa
                     $qryPinjaman = mysqli_query($Conn, "SELECT * FROM pinjaman WHERE id_anggota='$id_anggota' AND status='Berjalan'");
                     $dataPinjaman = mysqli_fetch_array($qryPinjaman);
-                    $jumlahPinjaman = $dataPinjaman['jumlah_pinjaman'] ?? 0;
+                    if ($dataPinjaman) {
+                        $jumlahPinjaman = $dataPinjaman['jumlah_pinjaman'] ?? 0;
+                    } else {
+                        $jumlahPinjaman = 0;
+                    }
 
                     $sumAngsuran = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(pokok) AS pokok FROM pinjaman_angsuran WHERE id_anggota='$id_anggota' AND tanggal_bayar LIKE '%$keyword%'"));
                     $jumlahPokok = $sumAngsuran['pokok'] ?? 0;
                     $totalAngsuran += $jumlahPokok;
-                    $sheet->setCellValue($col . $row, $jumlahPokok);
-                    $col++;
+                    $sheet->setCellValue(Coordinate::stringFromColumnIndex($colIndex) . $row, $jumlahPokok);
+                    $colIndex++;
 
-                    $periodeAngsuran = $dataPinjaman['periode_angsuran'] ?? 0;
-                    $angsuranMasuk = mysqli_num_rows(mysqli_query($Conn, "SELECT * FROM pinjaman_angsuran WHERE id_pinjaman='{$dataPinjaman['id_pinjaman']}'"));
-                    $sheet->setCellValue($col . $row, "$angsuranMasuk/$periodeAngsuran");
-                    $col++;
+                    // Null check for dataPinjaman
+                    if ($dataPinjaman) {
+                        $periodeAngsuran = $dataPinjaman['periode_angsuran'] ?? 0;
+                        $angsuranMasuk = mysqli_num_rows(mysqli_query($Conn, "SELECT * FROM pinjaman_angsuran WHERE id_pinjaman='{$dataPinjaman['id_pinjaman']}'"));
+                    } else {
+                        $periodeAngsuran = 0;
+                        $angsuranMasuk = 0;
+                    }
+                    $sheet->setCellValue(Coordinate::stringFromColumnIndex($colIndex) . $row, "$angsuranMasuk/$periodeAngsuran");
+                    $colIndex++;
 
                     $sumJasa = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(jasa) AS jasa FROM pinjaman_angsuran WHERE id_anggota='$id_anggota' AND tanggal_bayar LIKE '%$keyword%'"));
                     $jumlahJasa = $sumJasa['jasa'] ?? 0;
                     $totalJasa += $jumlahJasa;
-                    $sheet->setCellValue($col . $row, $jumlahJasa);
-                    $col++;
+                    $sheet->setCellValue(Coordinate::stringFromColumnIndex($colIndex) . $row, $jumlahJasa);
+                    $colIndex++;
 
                     // Total per anggota
                     $jumlahPemasukan = $jumlahSimpananAnggota + $jumlahPokok + $jumlahJasa;
                     $totalGrand += $jumlahPemasukan;
-                    $sheet->setCellValue($col . $row, $jumlahPemasukan);
+                    $sheet->setCellValue(Coordinate::stringFromColumnIndex($colIndex) . $row, $jumlahPemasukan);
 
                     $row++;
                     $no++;
@@ -149,23 +162,59 @@
 
                 // Tambahkan baris total di bagian akhir
                 $sheet->setCellValue('A' . $row, 'JUMLAH');
-                $sheet->mergeCells('A' . $row . ':B' . $row);
+                $sheet->mergeCells('A' . $row . ':C' . $row);
 
-                $col = 'C';
+                $colIndex = 4;
                 foreach ($totalSimpanan as $total) {
-                    $sheet->setCellValue($col . $row, $total);
-                    $col++;
+                    $sheet->setCellValue(Coordinate::stringFromColumnIndex($colIndex) . $row, $total);
+                    $colIndex++;
                 }
-                $sheet->setCellValue($col . $row, $totalAngsuran);
-                $col++;
-                $sheet->setCellValue($col . $row, '');
-                $col++;
-                $sheet->setCellValue($col . $row, $totalJasa);
-                $col++;
-                $sheet->setCellValue($col . $row, $totalGrand);
+                $sheet->setCellValue(Coordinate::stringFromColumnIndex($colIndex) . $row, $totalAngsuran);
+                $colIndex++;
+                $sheet->setCellValue(Coordinate::stringFromColumnIndex($colIndex) . $row, '');
+                $colIndex++;
+                $sheet->setCellValue(Coordinate::stringFromColumnIndex($colIndex) . $row, $totalJasa);
+                $colIndex++;
+                $sheet->setCellValue(Coordinate::stringFromColumnIndex($colIndex) . $row, $totalGrand);
+
+                // === Dinamisasi lebar kolom sesuai karakter paling panjang ===
+                $columnWidths = [];
+                $minWidth = 8;
+                $maxWidth = 60;
+                $padding = 2;
+                $highColumn = $sheet->getHighestColumn();
+                $highRow = $sheet->getHighestRow();
+                $maxColIndex = Coordinate::columnIndexFromString($highColumn);
+
+                // Inisialisasi lebar kolom dengan minWidth
+                for ($c = 1; $c <= $maxColIndex; $c++) {
+                    $colLetter = Coordinate::stringFromColumnIndex($c);
+                    $columnWidths[$colLetter] = $minWidth;
+                }
+
+                // Hitung panjang karakter maksimum per kolom (termasuk header)
+                for ($r = 1; $r <= $highRow; $r++) {
+                    for ($c = 1; $c <= $maxColIndex; $c++) {
+                        $colLetter = Coordinate::stringFromColumnIndex($c);
+                        $cellValue = $sheet->getCell($colLetter . $r)->getValue();
+                        if ($cellValue !== null && $cellValue !== '') {
+                            $len = mb_strlen((string) $cellValue, 'UTF-8');
+                            if ($len > $columnWidths[$colLetter]) {
+                                $columnWidths[$colLetter] = $len;
+                            }
+                        }
+                    }
+                }
+
+                // Terapkan lebar kolom (tambahkan padding, batas maksimal maxWidth)
+                foreach ($columnWidths as $colLetter => $width) {
+                    $finalWidth = min(max($width + $padding, $minWidth), $maxWidth);
+                    $sheet->getColumnDimension($colLetter)->setWidth($finalWidth);
+                }
+                // ============================================================
 
                 // Simpan file ke Excel
-                $filename = 'Laporan_Simpan_Pinjam_' . $lembaga . '_' . $bulan . '_' . $tahun . '.xlsx';
+                $filename = 'Laporan_Simpan_Pinjam_SemuaLembaga_' . $bulan . '_' . $tahun . '.xlsx';
                 $writer = new Xlsx($spreadsheet);
                 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
                 header('Content-Disposition: attachment; filename="' . $filename . '"');

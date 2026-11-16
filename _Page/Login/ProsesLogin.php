@@ -73,10 +73,20 @@
                 $_SESSION["login_token"] = $token;
                 $_SESSION["NotifikasiSwal"] = "Login Berhasil";
             } else {
-                echo '<code>Terjadi kesalahan pada saat membuat sesi login '.$mode_akses.'</code>';
+                echo '
+                    <div class="alert alert-danger text-center">
+                        <b>Opss!</b><br>
+                        Terjadi kesalahan pada saat membuat sesi login.
+                    </div>
+                ';
             }
         } else {
-            echo '<code>Kombinasi password dan email yang Anda gunakan tidak valid mode: '.$mode_akses.' '.$passwordMd5.'</code>';
+            echo '
+                <div class="alert alert-danger text-center">
+                    <b>Opss!</b><br>
+                    Kombinasi Password dan Email yang anda gunakan tidak valid.
+                </div>
+            ';
         }
     }
 ?>

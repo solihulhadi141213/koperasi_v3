@@ -75,7 +75,7 @@
                         if ($result_angsuran->num_rows > 0) {
                             // Ambil hasil
                             $row_angsuran = $result_angsuran->fetch_assoc();
-                            $total_angsuran = $row_angsuran["total_jumlah"];
+                            $total_angsuran = $row_angsuran["total_jumlah"] ?? 0;
                         } else {
                             $total_angsuran=0;
                         }

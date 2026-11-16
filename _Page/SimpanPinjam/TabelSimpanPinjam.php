@@ -57,6 +57,9 @@
                         $lembaga=validateAndSanitizeInput($lembaga);
                         $tahun=validateAndSanitizeInput($tahun);
 
+                        // Deteksi apakah lembaga adalah semua
+                        $isSemuaLembaga = (strtolower($lembaga) === 'semua');
+
                         //Buat Keyword Berdasarkan Periode
                         if($periode=="Tahun"){
                             $keyword="$tahun";
@@ -73,11 +76,11 @@
                             <?php
                                 if($periode=="Tahun"){
                                     echo '<b>LAPORAN SIMPAN PINJAM</b><br>';
-                                    echo '<b>Unit/Divisi : '.$lembaga.'</b><br>';
+                                    echo '<b>Unit/Divisi : '.($isSemuaLembaga ? 'Semua' : $lembaga).'</b><br>';
                                     echo '<span>Periode Tahun '.$tahun.'</span><br>';
                                 }else{
                                     echo '<b>LAPORAN SIMPAN PINJAM</b><br>';
-                                    echo '<b>Unit/Divisi : '.$lembaga.'</b><br>';
+                                    echo '<b>Unit/Divisi : '.($isSemuaLembaga ? 'Semua' : $lembaga).'</b><br>';
                                     echo '<span>Periode Bulan '.$NamaBulan.' '.$tahun.'</span><br>';
                                 }
                                 
@@ -119,7 +122,7 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                        $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT * FROM anggota WHERE lembaga='$lembaga'"));
+                                        $jml_data = mysqli_num_rows(mysqli_query($Conn, ($isSemuaLembaga ? "SELECT * FROM anggota" : "SELECT * FROM anggota WHERE lembaga='$lembaga'")));
                                         if(empty($jml_data)){
                                             echo '<tr>';
                                             echo '  <td colspan="'.$TotalJumlahKolom.'" class="text-center">';
@@ -138,7 +141,7 @@
                                             $JumlahTotalAngsuran=0;
                                             $JumlahTotalJasa=0;
                                             $JumlahTotalGrand=0;
-                                            $query = mysqli_query($Conn, "SELECT*FROM anggota WHERE lembaga='$lembaga' ORDER BY nama ASC");
+                                            $query = mysqli_query($Conn, ($isSemuaLembaga ? "SELECT*FROM anggota ORDER BY nama ASC" : "SELECT*FROM anggota WHERE lembaga='$lembaga' ORDER BY nama ASC"));
                                             while ($data = mysqli_fetch_array($query)) {
                                                 $id_anggota= $data['id_anggota'];
                                                 $nama= $data['nama'];

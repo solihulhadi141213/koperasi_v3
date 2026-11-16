@@ -2,12 +2,12 @@
 
     //Jumlah Shu
     $SumShu = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(shu) AS jumlah_shu FROM shu_rincian"));
-    $JumlahShu = $SumShu['jumlah_shu'];
+    $JumlahShu = $SumShu['jumlah_shu'] ?? 0;
     $JumlahShu = "" . number_format($JumlahShu,0,',','.');
 
     //Jumlah Transaksi
     $SumTransaksi = mysqli_fetch_array(mysqli_query($Conn, "SELECT SUM(jumlah) AS jumlah FROM transaksi"));
-    $JumlahTransaksi = $SumTransaksi['jumlah'];
+    $JumlahTransaksi = $SumTransaksi['jumlah'] ?? 0;
     $JumlahTransaksi = "Rp " . number_format($JumlahTransaksi,0,',','.');
 
 ?>
